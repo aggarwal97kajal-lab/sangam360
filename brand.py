@@ -69,7 +69,7 @@ json.dump(cfg, open(cp, "w"), indent=2)
 
 # 4) Make the page itself fill the whole screen
 w = open("www/index.html", encoding="utf-8").read()
-css = '<style>html,body{margin:0;padding:0;background:#f6fafe}#splash{position:fixed;top:0;left:0;right:0;bottom:0;width:100%;height:100%}</style>'
+css = '<style>html,body{margin:0;padding:0}#splash{position:fixed;top:0;left:0;right:0;bottom:0;width:100%;height:100%;background:#f6fafe!important}#splash .spi{padding:0!important;margin:0!important;border:0!important;gap:0!important;background:transparent!important;box-sizing:border-box!important;display:block!important;width:100%!important;height:100%!important;object-fit:cover!important}</style>'
 assert "</head>" in w
 w = w.replace("</head>", css + "</head>", 1)
 open("www/index.html", "w", encoding="utf-8").write(w)

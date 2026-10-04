@@ -51,8 +51,7 @@ open(os.path.join(res, "values", "ic_launcher_background.xml"), "w").write(
 # 2) Make the window and system bars match the splash picture (no dark frame)
 sp = os.path.join(res, "values", "styles.xml")
 st = open(sp, encoding="utf-8").read()
-items = ('<item name="android:background">#F6FAFE</item>\n'
-         '        <item name="android:windowBackground">#F6FAFE</item>\n'
+items = ('<item name="android:background">@null</item>\n'
          '        <item name="android:statusBarColor">#F6FAFE</item>\n'
          '        <item name="android:navigationBarColor">#F6FAFE</item>\n'
          '        <item name="android:windowLightStatusBar">true</item>\n'

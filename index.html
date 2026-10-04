@@ -1807,22 +1807,23 @@ const idThumbs=(r,big)=>{if(!okImg(r.idUrl)&&!okImg(r.photoUrl)){const d=mk("div
 
 /* admin: Residents ID proof pages  (society > building > flat > residents) */
 function openIdPages(){let ov=$("idp");if(!ov){ov=mk("div");ov.id="idp";document.body.appendChild(ov)}ov.classList.remove("hide");ov.scrollTop=0;
- const par=m=>{const x=/^(?:(.*) · )?Flat (.+)$/.exec(String(m.flat||""));return x?{b:x[1]||S.soc.towers[0].name,f:x[2]}:{b:"Admin & staff",f:String(m.flat||"—")}};
+ const org=isOrg(),GR=org?KINDS[KIND].grp:null;
+ const par=m=>{if(org){const z=String(m.flat||""),i=z.indexOf(" · ");return i>0?{b:z.slice(0,i),f:z.slice(i+3)}:{b:"Admin & staff",f:z||"—"}}const x=/^(?:(.*) · )?Flat (.+)$/.exec(String(m.flat||""));return x?{b:x[1]||S.soc.towers[0].name,f:x[2]}:{b:"Admin & staff",f:String(m.flat||"—")}};
  const mem=()=>Object.values(D.mem).filter(x=>x.status!=="rejected").map(x=>({...x,P:par(x)}));
  const st=[];let cur={t:"soc"};
  const row=(t,s,fn,dim)=>{const e=mk("div","ex"),l=mk("div",null,t);l.appendChild(mk("span",null,s));e.append(l,mk("b",null,"›"));e.style.cursor="pointer";if(dim)e.style.opacity=".55";e.onclick=fn;return e};
  const nav=n=>{st.push(cur);cur=n;draw()};
  function draw(){ov.innerHTML="";ov.scrollTop=0;const w=mk("div","w"),h=mk("div","idh"),bk=mk("button","btn s o","← Back");bk.onclick=()=>{if(st.length){cur=st.pop();draw()}else ov.classList.add("hide")};
-  h.append(bk,mk("b",null,cur.t==="soc"?"🪪 Residents ID proof":cur.t==="bld"?"Buildings":cur.t==="flat"?cur.b+" · Flats":cur.b+" · Flat "+cur.f));w.appendChild(h);
+  h.append(bk,mk("b",null,cur.t==="soc"?"🪪 Residents ID proof":cur.t==="bld"?(org?GR.t:"Buildings"):cur.t==="flat"?cur.b+" · Flats":(org?cur.b:cur.b+" · Flat "+cur.f)));w.appendChild(h);
   const c=mk("div","card");w.appendChild(c);const M=mem(),idn=a=>a.filter(x=>okImg(x.idUrl)).length;
   if(cur.t==="soc"){c.appendChild(mk("h2",null,"Select society"));c.appendChild(row(S.soc.name,(S.soc.city?S.soc.city+" · ":"")+M.length+" members · "+idn(M)+" with ID",()=>nav({t:"bld"})))}
-  else if(cur.t==="bld"){c.appendChild(mk("h2",null,S.soc.name+" · select building"));const names=S.soc.towers.map(t=>t.name);if(M.some(x=>x.P.b==="Admin & staff"))names.push("Admin & staff");
-   names.forEach(b=>{const L=M.filter(x=>x.P.b===b);c.appendChild(row("🏢 "+b,L.length+" member"+(L.length===1?"":"s")+" · "+idn(L)+" with ID",()=>nav({t:"flat",b}),!L.length))})}
+  else if(cur.t==="bld"){c.appendChild(mk("h2",null,S.soc.name+" · select "+(org?GR.one:"building")));const names=S.soc.towers.map(t=>t.name);if(org)M.forEach(x=>{if(x.P.b!=="Admin & staff"&&!names.includes(x.P.b))names.push(x.P.b)});if(M.some(x=>x.P.b==="Admin & staff"))names.push("Admin & staff");
+   names.forEach(b=>{const L=M.filter(x=>x.P.b===b);c.appendChild(row((org?(KIND==="school"?"🎓 ":"💼 "):"🏢 ")+b,L.length+" member"+(L.length===1?"":"s")+" · "+idn(L)+" with ID",()=>nav({t:org?"res":"flat",b,f:null}),!L.length))})}
   else if(cur.t==="flat"){c.appendChild(mk("h2",null,"Select flat"));const one=S.soc.towers.length===1,tw=S.soc.towers.find(t=>t.name===cur.b);let fl=tw?gF(tw,one):[];
    M.filter(x=>x.P.b===cur.b).forEach(x=>{if(!fl.includes(x.P.f))fl.push(x.P.f)});
    fl.forEach(f=>{const L=M.filter(x=>x.P.b===cur.b&&x.P.f===f);c.appendChild(row("Flat "+f,L.length?L.map(x=>x.name).join(", ")+" · "+idn(L)+"/"+L.length+" ID":"No residents",()=>nav({t:"res",b:cur.b,f}),!L.length))})}
-  else{const L=M.filter(x=>x.P.b===cur.b&&x.P.f===cur.f);c.appendChild(mk("h2",null,"Residents ("+L.length+")"));if(!L.length)c.appendChild(mk("div","empty","No residents in this flat"));
-   L.forEach(x=>{const d=mk("div","item ann"),r=mk("div","vid"),t=mk("div","vit");t.append(mk("b",null,x.name),mk("small",null,String(x.role||"").replace("_"," ").toLowerCase()+(x.mobile?" · "+x.mobile:"")),mk("small",null,"Status: "+x.status));r.append(av(x.name,x.photoUrl,46),t);d.appendChild(r);
+  else{const L=M.filter(x=>x.P.b===cur.b&&(org||x.P.f===cur.f));c.appendChild(mk("h2",null,(org?KINDS[KIND].person+"s":"Residents")+" ("+L.length+")"));if(!L.length)c.appendChild(mk("div","empty",org?"Nobody here yet":"No residents in this flat"));
+   L.forEach(x=>{const d=mk("div","item ann"),r=mk("div","vid"),t=mk("div","vit");t.append(mk("b",null,x.name),mk("small",null,String(x.role||"").replace("_"," ").toLowerCase()+(x.mobile?" · "+x.mobile:"")),mk("small",null,(org&&x.P.b!=="Admin & staff"?"ID: "+x.P.f+" · ":"")+"Status: "+x.status));r.append(av(x.name,x.photoUrl,46),t);d.appendChild(r);
     if(okImg(x.idUrl)||okImg(x.photoUrl))d.appendChild(idThumbs(x,true));else d.appendChild(mk("div","meta","No ID on file (joined before ID upload was required)"));c.appendChild(d)})}
   ov.appendChild(w)}
  draw()}

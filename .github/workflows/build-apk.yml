@@ -20,71 +20,13 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      - name: Put app in www folder
+      - name: Prepare app files
         run: |
           mkdir -p www
           cp index.html www/index.html
-
-      - name: Add file download support
-        run: |
-          cat > www/native-bridge.js <<'EOF'
-          (function () {
-            var C = window.Capacitor;
-            if (!C || !C.isNativePlatform || !C.isNativePlatform()) return;
-            var P = C.Plugins || {};
-            function toast(m) {
-              try {
-                var d = document.createElement('div');
-                d.textContent = m;
-                d.style.cssText = 'position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:#222;color:#fff;padding:10px 16px;border-radius:20px;z-index:2147483647;font:14px sans-serif;max-width:80%;text-align:center';
-                document.body.appendChild(d);
-                setTimeout(function () { d.remove(); }, 2500);
-              } catch (e) {}
-            }
-            function b64(blob) {
-              return new Promise(function (ok, no) {
-                var r = new FileReader();
-                r.onload = function () { ok(String(r.result).split(',')[1] || ''); };
-                r.onerror = no;
-                r.readAsDataURL(blob);
-              });
-            }
-            async function save(href, name) {
-              try {
-                toast('Preparing file...');
-                var res = await fetch(href);
-                var blob = await res.blob();
-                var fn = String(name || 'download').replace(/[\\\/:*?"<>|]+/g, '_');
-                if (fn.indexOf('.') < 0 && blob.type === 'application/pdf') fn += '.pdf';
-                var data = await b64(blob);
-                var w = await P.Filesystem.writeFile({ path: fn, data: data, directory: 'CACHE' });
-                await P.Share.share({ title: fn, url: w.uri, dialogTitle: 'Save or open ' + fn });
-              } catch (e) {
-                var msg = String((e && e.message) || e);
-                if (/cancel/i.test(msg)) return;
-                if (/^https?:/i.test(href)) { window.open(href, '_blank'); }
-                else { toast('Could not save file'); }
-              }
-            }
-            var oc = HTMLAnchorElement.prototype.click;
-            HTMLAnchorElement.prototype.click = function () {
-              if (this.hasAttribute('download') && this.href) {
-                save(this.href, this.getAttribute('download') || this.download);
-                return;
-              }
-              return oc.apply(this, arguments);
-            };
-            document.addEventListener('click', function (e) {
-              var a = e.target && e.target.closest ? e.target.closest('a[download]') : null;
-              if (a && a.href) {
-                e.preventDefault();
-                save(a.href, a.getAttribute('download'));
-              }
-            }, true);
-          })();
-          EOF
+          cp native-bridge.js www/native-bridge.js
           sed -i 's#<head>#<head><script src="native-bridge.js"></script>#' www/index.html
-          grep -c 'native-bridge.js' www/index.html
+          python3 patch_push.py
 
       - name: Install packages
         run: npm install
@@ -92,9 +34,16 @@ jobs:
       - name: Create Android project
         run: npx cap add android
 
-      - name: Allow camera and location
+      - name: Add app icon and fix screen fit
         run: |
-          sed -i 's#</manifest>#    <uses-permission android:name="android.permission.CAMERA" />\n    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />\n    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />\n</manifest>#' android/app/src/main/AndroidManifest.xml
+          pip install pillow
+          python3 brand.py
+
+      - name: Add Firebase config and permissions
+        run: |
+          test -f google-services.json || (echo "google-services.json is missing from the repo" && exit 1)
+          cp google-services.json android/app/google-services.json
+          sed -i 's#</manifest>#    <uses-permission android:name="android.permission.CAMERA" />\n    <uses-permission android:name="android.permission.RECORD_AUDIO" />\n    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />\n    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />\n    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />\n    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />\n</manifest>#' android/app/src/main/AndroidManifest.xml
 
       - name: Copy app files
         run: npx cap sync android

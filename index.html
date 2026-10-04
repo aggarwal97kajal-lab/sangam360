@@ -652,10 +652,10 @@ const BRAND = "Sangam360", TAGLINE = "One Platform. Every Community.", LOGO_SRC 
 const KINDS={
  society:{ico:"🏘️",card:"For Societies",cardS:"Residents, visitors, bills & community",tag:"One Platform. Every Community.",c1:"#5b3df5",c2:"#8a4dff",rc:"#3b5bfd",word:"society",unit:"Flat",person:"Resident",fee:"maintenance",createT:"🏢 Create my society",createS:"Set up a new building or complex as its admin",joinT:"🔑 Join my society",joinS:"Use the code or link from your society"},
  company:{ico:"🏢",card:"For Corporates",cardS:"Employees, attendance, visitors & billing",tag:"One Platform. Every Community.",c1:"#0f766e",c2:"#2563eb",rc:"#2563eb",word:"company",unit:"Desk",person:"Employee",fee:"billing",createT:"🏢 Create my company",createS:"Set up your company as its admin",joinT:"🔑 Join my company",joinS:"Use the code from your company admin",grp:{t:"Departments",one:"department",s:"Add the departments or teams. Employees pick theirs when they join.",ph:"Department name",pre:["Engineering","HR","Sales"],jl:"Choose your department and tell us who you are.",idp:"Employee ID (e.g. EMP-104)"},x:[["Industry","sel",["IT / Software","Manufacturing","Finance / Banking","Retail","Healthcare","Other"]],["Employee strength","sel",["1-10","11-50","51-200","200+"]],["GST number","txt"]],
-  nav:{svc:["💼","Work"],comm:["💬","Team"],fin:["🧾","Billing"]},subList:["att","leave","room","comp","vis","del","park"],subs:{comp:"Helpdesk",del:"Couriers"},
+  nav:{svc:["💼","Work"],comm:["💬","Team"],fin:["🧾","Billing"]},subList:["att","leave","room","hol","comp","vis","del","park"],subs:{comp:"Helpdesk",del:"Couriers"},
   skin:[["Societies","Companies"],["societies","companies"],["Society","Company"],["society","company"],["Residents","Employees"],["residents","employees"],["Resident","Employee"],["resident","employee"],["Flats","Desks"],["flats","desks"],["Flat","Desk"],["flat","desk"],["Towers","Offices"],["towers","offices"],["Tower","Office"],["tower","office"],["Maintenance","Billing"],["maintenance","billing"],["Committee member","Manager"],["committee member","manager"],["Tenant","Contractor"],["tenant","contractor"]]},
  school:{ico:"🎓",card:"For Schools",cardS:"Students, staff attendance, fees & notices",tag:"One Platform. Every Community.",c1:"#c2410c",c2:"#d97706",rc:"#d97706",word:"school",unit:"Class",person:"Student",fee:"fees",createT:"🏫 Create my school",createS:"Set up your school as its admin",joinT:"🔑 Join my school",joinS:"Use the code from your school",grp:{t:"Classes",one:"class",s:"Add classes or sections, e.g. Class 5-A. Students pick theirs when they join.",ph:"Class / section",pre:["Class 1","Class 2","Class 3"],jl:"Choose your class and tell us who you are.",idp:"Roll / admission no."},x:[["Board","sel",["CBSE","ICSE","State board","IB / Cambridge","Other"]],["School level","sel",["Primary","Secondary","Senior secondary","K-12"]],["Affiliation no. (optional)","txt"]],
-  nav:{svc:["🏫","Campus"],comm:["💬","Community"],fin:["💳","Fees"]},subList:["att","tt","hw","leave","comp","vis","del"],subs:{comp:"Complaints",del:"Parcels"},
+  nav:{svc:["🏫","Campus"],comm:["💬","Community"],fin:["💳","Fees"]},subList:["att","tt","hw","leave","hol","comp","vis","del"],subs:{comp:"Complaints",del:"Parcels"},
   skin:[["Societies","Schools"],["societies","schools"],["Society","School"],["society","school"],["Residents","Students"],["residents","students"],["Resident","Student"],["resident","student"],["Flats","Classes"],["flats","classes"],["Flat","Class"],["flat","class"],["Towers","Blocks"],["towers","blocks"],["Tower","Block"],["tower","block"],["Maintenance","Fee"],["maintenance","fee"],["Committee member","Teacher"],["committee member","teacher"],["Tenant","Parent"],["tenant","parent"]]}
 };
 let KIND=(()=>{try{const k=localStorage.getItem("sh-kind");return KINDS[k]?k:"society"}catch(e){return"society"}})();
@@ -872,7 +872,7 @@ $("jsub").onclick=()=>run($("jsub"),async()=>{$("jerr").textContent="";const nm=
 /* ---------- navigation ---------- */
 const navCfg0=()=>isGuard()?[["home","🏠","Home"],["svc:vis","🚪","Visitors"],["svc:del","📦","Parcels"],["svc:veh","🚗","Vehicles"],["svc:help","🧹","Help"],["more","👤","Me"]]:[["home","🏠","Home"],["svc","🛠️","Services"],["comm","💬","Community"],["fin","💰","Finance"],["more","👤",isAdm()?"People":"Me"]].concat(isOwner()?[["sub","⭐","Plan"]]:[]);
 const SUBS={comp:"Complaints",vis:"Visitors",del:"Parcels",veh:"Vehicles",park:"Parking",help:"Domestic help",mkt:"Classifieds"};
-const SUBSK=()=>Object.assign({att:"Attendance",leave:"Leave",room:"Meeting rooms",tt:"Timetable",hw:"Homework"},SUBS,KINDS[KIND].subs||{});
+const SUBSK=()=>Object.assign({att:"Attendance",leave:"Leave",room:"Meetings",tt:"Timetable",hol:"Holidays",hw:"Homework"},SUBS,KINDS[KIND].subs||{});
 const subList=()=>isGuard()?["vis","del","veh","help"]:(KIND!=="society"?KINDS[KIND].subList:["comp","vis","del","veh","park","help","mkt"]);
 const navCfg=()=>{if(isGuard()||KIND==="society")return navCfg0();const o=KINDS[KIND].nav;return navCfg0().map(c=>o[c[0]]?[c[0],o[c[0]][0],o[c[0]][1]]:c)};
 function drawNav(){const n=$("nav");n.innerHTML="";navCfg().forEach(c=>{const b=mk("button");b.id="n_"+c[0].replace(":","_");b.appendChild(mk("span",null,c[1]));b.appendChild(document.createTextNode(c[2]));b.onclick=()=>go(c[0]);n.appendChild(b)});n.classList.toggle("six",navCfg().length>5);markNav();subDot()}
@@ -881,7 +881,7 @@ function go(key){const k=key.split(":");if(k[1])sub=k[1];goTab(k[0])}
 function goTab(t){if(t==="sub"&&!isOwner())t="home";tab=t;["home","svc","comm","fin","more","sub"].forEach(x=>$("t_"+x).classList.toggle("hide",x!==t));markNav();
  if(t==="home")rHome();if(t==="more")rMore();if(t==="sub")rSub();if(t==="svc")setSub(sub);if(t==="comm"&&!$("v_chat").classList.contains("hide"))bottom()}
 function setSub(s){sub=s;if(!subList().includes(s))sub=subList()[0];const g=$("ssg"),key=subList().join();g.classList.toggle("hide",isGuard());if(g.dataset.k!==key){g.dataset.k=key;g.innerHTML="";g.appendChild(mk("i","sind"));subList().forEach(k=>{const b=mk("button",null,SUBSK()[k]);b.dataset.k=k;b.onclick=()=>{setSub(k);markNav()};g.appendChild(b)});g.dataset.init=""}
- const ind=g.querySelector(".sind");[...g.querySelectorAll("button")].forEach(b=>b.classList.toggle("on",b.dataset.k===sub));const mv=()=>{const b=g.querySelector("button.on");if(!b||!ind||!b.offsetWidth)return;if(!g.dataset.init){ind.style.transition="none"}ind.style.width=b.offsetWidth+"px";ind.style.transform="translateX("+b.offsetLeft+"px)";if(!g.dataset.init){void ind.offsetWidth;ind.style.transition="";g.dataset.init="1"}const l=b.offsetLeft-(g.clientWidth-b.offsetWidth)/2;g.scrollTo({left:Math.max(0,l),behavior:"smooth"})};mv();requestAnimationFrame(mv);["att","comp","vis","del","veh","park","help","mkt","leave","room","tt","hw"].forEach(k=>{const e=$("p_"+k)||Object.assign($("p_att").parentNode.appendChild(mk("div","hide")),{id:"p_"+k});e.classList.toggle("hide",k!==sub)});if(MODS[sub])rMod(sub);if(sub==="att")rAtt();if(sub==="help")rHelp();if(sub==="mkt")rMkt();markNav()}
+ const ind=g.querySelector(".sind");[...g.querySelectorAll("button")].forEach(b=>b.classList.toggle("on",b.dataset.k===sub));const mv=()=>{const b=g.querySelector("button.on");if(!b||!ind||!b.offsetWidth)return;if(!g.dataset.init){ind.style.transition="none"}ind.style.width=b.offsetWidth+"px";ind.style.transform="translateX("+b.offsetLeft+"px)";if(!g.dataset.init){void ind.offsetWidth;ind.style.transition="";g.dataset.init="1"}const l=b.offsetLeft-(g.clientWidth-b.offsetWidth)/2;g.scrollTo({left:Math.max(0,l),behavior:"smooth"})};mv();requestAnimationFrame(mv);["att","comp","vis","del","veh","park","help","mkt","leave","room","tt","hw","hol"].forEach(k=>{const e=$("p_"+k)||Object.assign($("p_att").parentNode.appendChild(mk("div","hide")),{id:"p_"+k});e.classList.toggle("hide",k!==sub)});if(MODS[sub])rMod(sub);if(sub==="att")rAtt();watchSub();if(sub==="help")rHelp();if(sub==="mkt")rMkt();markNav()}
 const bottom=()=>setTimeout(()=>{const b=$("msgs");if(b)b.scrollTop=b.scrollHeight},60);
 
 async function syncDirPhoto(){const ref=doc(db,"societies",S.sid,"directory",S.uid),o={uid:S.uid,name:S.me.name,flat:S.me.flat,role:S.me.role};
@@ -902,7 +902,7 @@ const flats=()=>{const one=S.soc.towers.length===1,r=[];S.soc.towers.forEach(t=>
 function setHero(){const h=$("hav");h.innerHTML="";h.appendChild(av(S.me.name,photoOf(S.uid),42));h.onclick=()=>go("more")}
 function w(qr,key,after,onNew){let first=true;unsubs.push(onSnapshot(qr,s=>{const o={};s.docs.forEach(d=>o[d.id]={id:d.id,...d.data()});D[key]=o;
  if(!first&&onNew)s.docChanges().forEach(c=>{if(c.type!=="removed"&&!c.doc.metadata.hasPendingWrites)onNew({id:c.doc.id,...c.doc.data()},c.type)});first=false;after&&after();if(tab==="home")rHome()},e=>{console.error(e);if(e&&e.code==="permission-denied"){/* silent: normal while a profile or workspace is being deleted */}else toast("⚠️","Could not load "+key,"Check your connection.",true)}))}
-function listen(){unsubs.forEach(f=>f());unsubs=[];const C=n=>collection(db,"societies",S.sid,n),L=(n,k)=>query(C(n),orderBy("ts","desc"),limit(k)),F=n=>query(C(n),where("flat","==",S.me.flat),limit(60));
+function listen(){unsubs.forEach(f=>f());unsubs=[];if(wsub){wsub();wsub=null}wsubK="";const C=n=>collection(db,"societies",S.sid,n),L=(n,k)=>query(C(n),orderBy("ts","desc"),limit(k)),F=n=>query(C(n),where("flat","==",S.me.flat),limit(60));
  w(isAdm()?L("complaints",50):query(C("complaints"),where("uid","==",S.uid),limit(50)),"comp",rComp,(d,t)=>{if(t==="added"&&isAdm()&&d.uid!==S.uid)toast("🛠️","New complaint",d.title)});
  w(L("announcements",30),"ann",rAnn,(d,t)=>{if(t==="added"&&d.uid!==S.uid)toast(d.type==="Emergency"?"🚨":"📢",d.title,d.type)});
  w(L("messages",80),"msg",rChat,(d,t)=>{if(t==="added"&&d.uid!==S.uid&&!(tab==="comm"&&!$("v_chat").classList.contains("hide")&&!dmc))toast("💬",d.name,lbl(d))});
@@ -915,7 +915,13 @@ function listen(){unsubs.forEach(f=>f());unsubs=[];const C=n=>collection(db,"soc
   else{if(t==="added"&&d.status==="Waiting")toast("🚪","Visitor at the gate",d.name+" wants to visit — please approve or deny");if(t==="modified"&&d.status==="Inside")toast("🚪","Visitor arrived",d.name+" has entered")}});
  w(staff()?L("deliveries",100):F("deliveries"),"del",rDel,(d,t)=>{if(t==="added"&&!staff())toast("📦","Parcel received","Your "+d.courier+" parcel is at the security desk")});
  w(staff()?query(C("vehicles"),limit(300)):query(C("vehicles"),where("uid","==",S.uid),limit(20)),"veh",rVeh);
- w(query(C("parking"),limit(200)),"park",rPark);listen3(C,L);listen4(C)}
+ w(query(C("parking"),limit(200)),"park",rPark);
+ if(KIND!=="society"){
+  w(isAdm()?query(C("leaves"),limit(300)):query(C("leaves"),where("uid","==",S.uid),limit(300)),"lv",()=>{if(tab==="svc"&&sub==="leave"&&!busyIn("leave"))rMod("leave")},(d,t)=>{
+   if(isAdm()){if(t==="added"&&d.status==="Pending"&&d.uid!==S.uid)toast("🏖️","New leave request",d.name+" · "+d.from+" → "+d.to)}
+   else if(t==="modified"&&d.uid===S.uid&&d.status&&d.status!=="Pending")toast(d.status==="Approved"?"✅":"⛔","Leave "+d.status.toLowerCase(),d.type+" · "+d.from+" → "+d.to)});
+  w(query(C("holidays"),limit(200)),"hol",()=>{if(tab==="svc"&&sub==="hol"&&!busyIn("hol"))rMod("hol")},(d,t)=>{if(t==="added"&&d.uid!==S.uid)toast("🎉","New holiday added",d.title+" · "+d.date)})}
+ listen3(C,L);listen4(C)}
 
 /* ---------- home ---------- */
 function rHome(){const h=$("hm");h.innerHTML="";const hr=new Date().getHours();h.appendChild(mk("div","card","👋 Good "+(hr<12?"morning":hr<17?"afternoon":"evening")+", "+S.me.name.split(" ")[0]+" · "+S.me.flat));
@@ -925,7 +931,8 @@ function rHome(){const h=$("hm");h.innerHTML="";const hr=new Date().getHours();h
  const qa=mk("div","qa"+(isGuard()?" gd":""));const Q=isGuard()?[["✅","Verify visitor","svc:vis"],["🚶","New visitor","svc:vis"],["📦","Parcel","svc:del"],["🚗","Vehicle","svc:veh"]]:[["🛠️","Complaint","svc:comp"],["🎟️","Invite visitor","svc:vis"],["📦","Parcels","svc:del"],["🚗","Vehicles","svc:veh"],["📢","Notices","comm"]].concat(isAdm()?[["💰","Fund","fin"]]:[]);
  Q.forEach((q,i)=>{const b=mk("button");b.style.animationDelay=i*50+"ms";b.appendChild(mk("span",null,q[0]));b.appendChild(document.createTextNode(q[1]));b.onclick=()=>go(q[2]);qa.appendChild(b)});h.appendChild(qa);
  const g=mk("div","stats");(isGuard()?[["🚪",exp,"Expected today"],["🟢",inside,"Inside now"],["⏳",wait,"Waiting approval"],["📦",parc,"Parcels at desk"]]:[["🛠️",open,"Open complaints"],["🎟️",exp,"Visitors expected today"],["📦",parc,"Parcels waiting"]].concat(isAdm()?[["💰",rs(bal),"Society fund"],["🙋",pend,"Pending approvals"],["🟢",inside,"Visitors inside"]]:[])).forEach((s,i)=>{const d=mk("div","st");d.style.animationDelay=i*70+"ms";d.appendChild(mk("b",null,s[0]+" "+s[1]));d.appendChild(mk("span",null,s[2]));g.appendChild(d)});h.appendChild(g);
- const a=Object.values(D.ann).sort((x,y)=>y.ts-x.ts)[0];if(a){const c=mk("div","card");c.appendChild(mk("h2",null,"Latest notice"));c.appendChild(mk("b",null,a.title));c.appendChild(mk("p","desc",a.text));h.appendChild(c)}}
+ const a=Object.values(D.ann).sort((x,y)=>y.ts-x.ts)[0];if(a){const c=mk("div","card");c.appendChild(mk("h2",null,"Latest notice"));c.appendChild(mk("b",null,a.title));c.appendChild(mk("p","desc",a.text));h.appendChild(c)}
+ if(KIND!=="society"){const H=Object.values(D.hol||{}).filter(x=>x.date>=td()).sort((p,q)=>String(p.date).localeCompare(String(q.date))).slice(0,3);if(H.length){const c=mk("div","card");c.appendChild(mk("h2",null,"🎉 Upcoming holidays"));H.forEach(x=>c.appendChild(mk("div","meta",x.date+" · "+x.title)));h.appendChild(c)}}}
 
 /* ---------- complaints (with photo) ---------- */
 let cphoto="";$("cph").onchange=async e=>{const f=e.target.files[0];if(!f)return;try{cphoto=await shrink(f,900,.6);$("cpv").src=cphoto;$("cpv").classList.remove("hide");$("cphn").textContent="Photo added ✔"}catch(x){fail(x,"Could not read photo")}};
@@ -983,7 +990,7 @@ $("vsc").onclick=()=>sheet(s=>{
 async function verify(){const c=$("vcode").value.trim(),out=$("vres");out.innerHTML="";if(!/^\d{6}$/.test(c))return;
  let v=Object.values(D.vis).find(x=>x.code===c&&["Expected","Approved"].includes(x.status));
  if(!v){try{const s=await getDocs(query(vcol("visitors"),where("code","==",c),limit(5)));const a=s.docs.map(d=>({id:d.id,...d.data()}));v=a.find(x=>["Expected","Approved"].includes(x.status))||a[0]}catch(e){fail(e);return}}
- if(!v){out.appendChild(mk("div","empty","No visitor found with this code."));return}out.appendChild(visCard(v));if(["Expected","Approved"].includes(v.status))fx("Verified","QR pass is valid",{ms:1500})}
+ if(!v){out.appendChild(mk("div","empty","No visitor found with this code."));return}out.appendChild(visCard(v));out.dataset.vid=v.id;if(["Expected","Approved"].includes(v.status))fx("Verified","QR pass is valid",{ms:1500})}
 $("vv").onclick=verify;$("vcode").addEventListener("keydown",e=>{if(e.key==="Enter")verify()});
 const vref=id=>doc(db,"societies",S.sid,"visitors",id);
 function visCard(v){const d=mk("div","item"+({Inside:" s4",Waiting:" s2",Expected:" ann",Approved:" s4"}[v.status]||" gr")),h=mk("div","vid"),pic=okImg(v.photo),a=av(v.name,pic?v.photo:"",56);if(pic){a.style.cursor="zoom-in";a.onclick=()=>viewImg(v.photo)}
@@ -993,14 +1000,15 @@ function visCard(v){const d=mk("div","item"+({Inside:" s4",Waiting:" s2",Expecte
  if(v.status==="Expected"&&v.date!==td()&&staff())d.appendChild(mk("div","note","⚠️ This pass is for "+v.date+", not today."));
  {const si={Waiting:1,Approved:2,Inside:3,Exited:3}[v.status];if(si!=null)d.appendChild(stepper(["Arriving","Notified","Approved","Inside"],si,["🚗","🔔","👤","🟢"]))}
  const g=mk("div","g2");g.style.marginTop="8px";const B=(t,c,fn)=>{const b=mk("button","btn s "+c,t);b.onclick=()=>run(b,fn);g.appendChild(b)};
- if(staff()){if(["Expected","Approved"].includes(v.status))B("Allow entry","g",()=>updateDoc(vref(v.id),{status:"Inside",entryTs:Date.now()}));if(v.status==="Inside")B("Mark exit","",()=>updateDoc(vref(v.id),{status:"Exited",exitTs:Date.now()}))}
+ if(staff()){if(["Expected","Approved"].includes(v.status))B("Allow entry","g",async()=>{await updateDoc(vref(v.id),{status:"Inside",entryTs:Date.now()});clearVres()});if(v.status==="Inside")B("Mark exit","",async()=>{await updateDoc(vref(v.id),{status:"Exited",exitTs:Date.now()});clearVres()})}
  if(v.uid===S.uid||(!staff()&&v.flat===S.me.flat)){if(v.status==="Waiting"){B("Approve","g",async()=>{await updateDoc(vref(v.id),{status:"Approved",decidedTs:Date.now()});fx("Approved","Visitor allowed — "+v.name)});B("Deny","r",()=>updateDoc(vref(v.id),{status:"Denied",decidedTs:Date.now()}))}
   if(v.status==="Expected"&&!staff()){const p=mk("button","btn s o","Show pass");p.onclick=()=>passSheet(v);g.appendChild(p);B("Cancel","r",()=>updateDoc(vref(v.id),{status:"Cancelled"}))}}
  if(!okImg(v.photo)&&["Waiting","Expected","Approved","Inside"].includes(v.status)&&(staff()||v.uid===S.uid)){const l=mk("label","btn s o","📷 Add visitor photo");l.style.cssText="width:auto;display:inline-flex;margin:8px 0 0";const f=mk("input");f.type="file";f.accept="image/*";f.style.display="none";l.appendChild(f);
   f.onchange=async e=>{const x=e.target.files[0];e.target.value="";if(!x)return;l.textContent="Uploading…";try{const u=await shrink(x,480,.72,true);await updateDoc(vref(v.id),{photo:u});v.photo=u;toast("✅","Photo added",v.name,true);d.replaceWith(visCard(v))}catch(er){fail(er,"Photo not added");l.textContent="📷 Add visitor photo";l.appendChild(f)}};d.appendChild(l)}
  if(v.uid===S.uid||isAdm()||isGuard())B("Delete entry","r",async()=>{if(!confirm("Delete this visitor entry?"))return;await deleteDoc(vref(v.id));toast("🗑","Visitor entry deleted","",true)});
  if(g.children.length)d.appendChild(g);return d}
-function rVis(){const l=$("vlist");l.innerHTML="";const V=Object.values(D.vis).sort((a,b)=>b.ts-a.ts);if(!V.length){l.appendChild(mk("div","empty","No visitors yet"));return}
+function clearVres(){const r=$("vres");if(r){r.innerHTML="";delete r.dataset.vid}const c=$("vcode");if(c)c.value=""}
+function rVis(){const l=$("vlist");l.innerHTML="";{const vr=$("vres");if(vr&&vr.dataset.vid){const x=D.vis[vr.dataset.vid];if(!x||!["Expected","Approved"].includes(x.status))clearVres()}}const V=Object.values(D.vis).sort((a,b)=>b.ts-a.ts);if(!V.length){l.appendChild(mk("div","empty","No visitors yet"));return}
  const grp=[["⏳ Waiting for approval",x=>x.status==="Waiting"],["✅ Approved – let in",x=>x.status==="Approved"],["🎟️ Expected",x=>x.status==="Expected"],["🟢 Inside now",x=>x.status==="Inside"],["🕘 History",x=>["Exited","Denied","Cancelled"].includes(x.status)]];
  grp.forEach(g=>{const a=V.filter(g[1]).slice(0,g[0].includes("History")?20:50);if(!a.length)return;l.appendChild(mk("div","sec",g[0]+" ("+a.length+")"));a.forEach(v=>l.appendChild(visCard(v)))})}
 
@@ -1581,27 +1589,36 @@ function setKind(k){if(!KINDS[k])k="society";KIND=k;try{localStorage.setItem("sh
 $("aback").onclick=()=>show("sLand");setKind(KIND);
 /* attendance (companies & schools) */
 const DAYS=["Mon","Tue","Wed","Thu","Fri","Sat"];
+let wsub=null,wsubK="";
+const busyIn=k=>{const ae=document.activeElement,p=$("p_"+k);return !!(ae&&p&&p.contains(ae)&&/INPUT|SELECT|TEXTAREA/.test(ae.tagName))};
+function watchSub(){const k=sub;if(wsubK===k)return;if(wsub){wsub();wsub=null}wsubK=k;if(!S.sid||k==="leave")return;
+ const C=n=>collection(db,"societies",S.sid,n);let q=null;
+ if(k==="att")q=query(C("attendance"),where("uid","==",S.uid),limit(62));else if(MODS[k])q=query(C(MODS[k].col),limit(300));
+ if(!q)return;let first=true;
+ wsub=onSnapshot(q,()=>{if(first){first=false;return}if(sub!==k||tab!=="svc"||busyIn(k))return;if(k==="att")rAtt();else rMod(k)},e=>{console.warn("watch",e)})}
 const MODS={
  leave:{col:"leaves",ic:"🏖️",t:"Leave",all:1,own:1,appr:1,f:[["type","sel","Leave type",["Casual","Sick","Earned","Other"]],["from","date","From"],["to","date","To"],["reason","txt","Reason"]],line:x=>x.type+" leave · "+x.from+" → "+x.to,sub:x=>x.name+" · "+x.reason,ord:(a,b)=>b.ts-a.ts},
- room:{col:"rooms",ic:"🚪",t:"Book a room",all:1,clash:1,f:[["room","sel","Room",["Conference A","Conference B","Board room","Training room"]],["date","date","Date"],["from","time","Start"],["to","time","End"],["reason","txt","Purpose"]],line:x=>x.room+" · "+x.date+" "+x.from+"–"+x.to,sub:x=>x.name+" · "+x.reason,keep:x=>x.date>=td(),ord:(a,b)=>(a.date+a.from).localeCompare(b.date+b.from)},
+ room:{col:"rooms",ic:"🚪",t:"Schedule a meeting",all:1,adm:1,clash:1,f:[["room","sel","Room",["Conference A","Conference B","Board room","Training room"]],["date","date","Date"],["from","time","Start"],["to","time","End"],["reason","txt","Purpose"]],line:x=>x.room+" · "+x.date+" "+x.from+"–"+x.to,sub:x=>x.name+" · "+x.reason,keep:x=>x.date>=td(),ord:(a,b)=>(a.date+a.from).localeCompare(b.date+b.from)},
  tt:{col:"timetable",ic:"🗓️",t:"Add timetable slot",f:[["cls","cls","Class"],["day","sel","Day",DAYS],["from","time","Start time"],["subject","txt","Subject"]],line:x=>x.day+" "+x.from+" · "+x.subject,sub:x=>x.cls,cls:1,ord:(a,b)=>DAYS.indexOf(a.day)-DAYS.indexOf(b.day)||a.from.localeCompare(b.from)},
- hw:{col:"homework",ic:"📚",t:"Assign homework",f:[["cls","cls","Class"],["subject","txt","Subject"],["title","txt","Homework"],["due","date","Due date"]],line:x=>x.subject+" · "+x.title,sub:x=>x.cls+" · due "+x.due+" · by "+x.name,cls:1,ord:(a,b)=>a.due.localeCompare(b.due)}};
+ hw:{col:"homework",ic:"📚",t:"Assign homework",f:[["cls","cls","Class"],["subject","txt","Subject"],["title","txt","Homework"],["due","date","Due date"],["file","file","Attach a photo or PDF (optional)"]],line:x=>x.subject+" · "+x.title,sub:x=>x.cls+" · due "+x.due+" · by "+x.name,cls:1,ord:(a,b)=>a.due.localeCompare(b.due)},
+ hol:{col:"holidays",ic:"🎉",t:"Add a holiday",owner:1,f:[["title","txt","Holiday name"],["date","date","Date"],["file","file","Attach the holiday list as photo or PDF (optional)"]],line:x=>x.title,sub:x=>x.date,ord:(a,b)=>String(a.date).localeCompare(String(b.date))}};
 async function rMod(k){const M=MODS[k],b=$("p_"+k);b.innerHTML="";const col=collection(db,"societies",S.sid,M.col);let L=[];
  try{L=(await getDocs(M.own&&!isAdm()?query(col,where("uid","==",S.uid),limit(300)):query(col,limit(300)))).docs.map(d=>({id:d.id,...d.data()}))}catch(e){b.appendChild(mk("div","meta","Couldn't load. Check your internet or Firestore rules."))}
  const mc=(S.me.flat||"").split(" · ")[0];
- if(M.all||isAdm()){const c=mk("div","card"),E={};c.appendChild(mk("h2",null,M.ic+" "+M.t));
-  M.f.forEach(f=>{let e;if(f[1]==="sel"||f[1]==="cls"){e=mk("select");e.appendChild(Object.assign(mk("option",null,f[2]),{value:"",disabled:true,selected:true}));(f[1]==="cls"?(S.soc.towers||[]).map(t=>t.name):f[3]).forEach(v=>e.appendChild(Object.assign(mk("option",null,v),{value:v})))}else{e=mk("input");e.type=f[1]==="txt"?"text":f[1];e.maxLength=80;if(f[1]==="txt")e.placeholder=f[2];else c.appendChild(mk("div","meta",f[2]))}E[f[0]]=e;c.appendChild(e)});
-  const bt=mk("button","btn",M.appr?"Send request":"Save");bt.onclick=()=>run(bt,async()=>{const o={};for(const f of M.f){const v=E[f[0]].value.trim();if(!v){toast("⚠️","Please fill: "+f[2],"",true);return}o[f[0]]=v}
+ if(M.owner?isOwner():((M.all&&!(M.adm&&!isAdm()))||isAdm())){const c=mk("div","card"),E={};c.appendChild(mk("h2",null,M.ic+" "+M.t));
+  M.f.forEach(f=>{let e;if(f[1]==="sel"||f[1]==="cls"){e=mk("select");e.appendChild(Object.assign(mk("option",null,f[2]),{value:"",disabled:true,selected:true}));(f[1]==="cls"?(S.soc.towers||[]).map(t=>t.name):f[3]).forEach(v=>e.appendChild(Object.assign(mk("option",null,v),{value:v})))}else if(f[1]==="file"){c.appendChild(mk("div","meta",f[2]));e=mk("input");e.type="file";e.accept="image/*,application/pdf"}else{e=mk("input");e.type=f[1]==="txt"?"text":f[1];e.maxLength=80;if(f[1]==="txt")e.placeholder=f[2];else c.appendChild(mk("div","meta",f[2]))}E[f[0]]=e;c.appendChild(e)});
+  const bt=mk("button","btn",M.appr?"Send request":"Save");bt.onclick=()=>run(bt,async()=>{const o={};for(const f of M.f){if(f[1]==="file"){const fl=E[f[0]].files[0];if(fl){o.fileName=fl.name;o.file=await UP(fl,"docs",fl.name)}continue}const v=E[f[0]].value.trim();if(!v){toast("⚠️","Please fill: "+f[2],"",true);return}o[f[0]]=v}
    if(o.to&&o.from&&o.to<o.from&&k==="leave"){toast("⚠️","End date is before start","",true);return}
    if(M.clash&&(o.to<=o.from||L.some(x=>x.room===o.room&&x.date===o.date&&x.from<o.to&&o.from<x.to))){toast("⚠️","Room not free then","Pick another time",true);return}
    await addDoc(col,{...o,uid:S.uid,name:S.me.name,status:M.appr?"Pending":"",ts:Date.now()});toast("✅","Saved","",true);rMod(k)});c.appendChild(bt);b.appendChild(c)}
  let V=L.filter(x=>(!M.own||isAdm()||x.uid===S.uid)&&(!M.cls||isAdm()||!mc||x.cls===mc)&&(!M.keep||M.keep(x))).sort(M.ord);
- const c2=mk("div","card");c2.appendChild(mk("h2",null,M.ic+" "+(k==="leave"?(isAdm()?"All leave requests":"My requests"):k==="room"?"Upcoming bookings":k==="tt"?"Timetable":"Homework")));
+ const c2=mk("div","card");c2.appendChild(mk("h2",null,M.ic+" "+(k==="leave"?(isAdm()?"All leave requests":"My requests"):k==="room"?"Upcoming meetings":k==="tt"?"Timetable":k==="hol"?"Holiday list":"Homework")));
  if(!V.length)c2.appendChild(mk("div","meta","Nothing here yet."));
  V.forEach(x=>{const d=mk("div","item");d.appendChild(mk("b",null,M.line(x)));d.appendChild(mk("div","meta",M.sub(x)+(x.status?" · "+x.status:"")));
+  if(x.file){const a=mk("button","btn s o","📎 "+(x.fileName||"Attachment"));a.style.cssText="width:auto;padding:6px 12px;margin:8px 8px 0 0";a.onclick=()=>openRef(x.file,x.fileName);d.appendChild(a)}
   const bx=(t,fn,cl)=>{const z=mk("button","btn s "+(cl||"o"),t);z.style.cssText="width:auto;padding:6px 12px;margin:8px 8px 0 0";z.onclick=()=>run(z,async()=>{await fn();rMod(k)});d.appendChild(z)};
   if(M.appr&&isAdm()&&x.status==="Pending"){bx("Approve",()=>updateDoc(doc(col,x.id),{status:"Approved"}),"g");bx("Reject",()=>updateDoc(doc(col,x.id),{status:"Rejected"}))}
-  if(isAdm()||x.uid===S.uid)bx("Delete",()=>deleteDoc(doc(col,x.id)));c2.appendChild(d)});b.appendChild(c2)}
+  if(M.owner?isOwner():(isAdm()||x.uid===S.uid))bx("Delete",()=>deleteDoc(doc(col,x.id)));c2.appendChild(d)});b.appendChild(c2)}
 async function rAtt(){const b=$("p_att");b.innerHTML="";const day=td(),col=collection(db,"societies",S.sid,"attendance"),ref=doc(col,S.uid+"_"+day),K=KINDS[KIND],
  tf=x=>x?new Date(x).toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"}):"—",hrs=x=>x&&x.in&&x.out?((x.out-x.in)/36e5).toFixed(1)+" h":"";
  let cur=null,perm=false;
@@ -1610,22 +1627,36 @@ async function rAtt(){const b=$("p_att");b.innerHTML="";const day=td(),col=colle
  c.appendChild(mk("p","sub","Today · "+day+" · In: "+tf(cur&&cur.in)+" · Out: "+tf(cur&&cur.out)+(hrs(cur)?" · "+hrs(cur):"")));
  const bt=mk("button","btn",cur&&cur.in?(cur.out?"Done for today ✅":"Check out"):"Check in");bt.disabled=!!(cur&&cur.out);
  bt.onclick=()=>run(bt,async()=>{const n=Date.now(),out=!!(cur&&cur.in);try{if(out)await updateDoc(ref,{out:n});else await setDoc(ref,{uid:S.uid,name:S.me.name,flat:S.me.flat||"",role:S.me.role||"",date:day,in:n})}catch(e){if(e&&e.code==="permission-denied")throw new Error("Attendance is not allowed right now. Please contact your admin.");throw e}toast("✅",out?"Checked out":"Checked in",tf(n),true);rAtt()});
- c.appendChild(bt);
+ if(KIND==="school"&&!isAdm()){c.appendChild(mk("div","meta","Your attendance is marked by your school. It appears here once your teacher or principal checks you in or out."))}else c.appendChild(bt);
  if(perm){const w=mk("div","meta","⚠️ Attendance isn't available for your account right now. Please contact your admin.");w.style.marginTop="8px";c.appendChild(w)}
  b.appendChild(c);
  try{const q=await getDocs(query(col,where("uid","==",S.uid),limit(62))),H=q.docs.map(d=>d.data()).sort((x,y)=>String(y.date).localeCompare(String(x.date))).slice(0,14),h=mk("div","card");h.appendChild(mk("h2",null,"📅 My recent attendance"));if(!H.length)h.appendChild(mk("div","meta","Nothing yet."));
   H.forEach(x=>{const r=mk("div","ex"),l=mk("div",null,x.date);l.appendChild(mk("span",null,"In "+tf(x.in)+(x.out?" · Out "+tf(x.out)+(hrs(x)?" · "+hrs(x):""):" · not checked out")));r.appendChild(l);h.appendChild(r)});b.appendChild(h)}catch(e){}
  if(isAdm()){const a=mk("div","card");a.appendChild(mk("h2",null,"👥 "+K.person+" attendance"));const di=mk("input");di.type="date";di.value=day;di.max=day;a.appendChild(di);const lst=mk("div");a.appendChild(lst);b.appendChild(a);
   const load=async()=>{lst.innerHTML="";const d0=di.value||day;
+   const addMk=(r,x,kind)=>{if(KIND!=="school"||d0!==day)return;const b=mk("button","btn s "+(kind==="in"?"g":"o"),kind==="in"?"Check in":"Check out");b.style.cssText="width:auto;padding:6px 12px;margin-left:auto";b.onclick=()=>run(b,async()=>{const u=x.id||x.uid,rf=doc(col,u+"_"+day),n=Date.now();try{if(kind==="in")await setDoc(rf,{uid:u,name:x.name,flat:x.flat||"",role:x.role||"",date:day,in:n,by:S.uid});else await updateDoc(rf,{out:n,by:S.uid})}catch(e){if(e&&e.code==="permission-denied")throw new Error("Not allowed. The database rules must let teachers mark attendance.");throw e}toast("✅",kind==="in"?"Checked in":"Checked out",x.name,true);load()});r.appendChild(b)};
    try{const q=await getDocs(query(col,where("date","==",d0))),P=q.docs.map(d=>d.data()).sort((x,y)=>(x.in||0)-(y.in||0)),ids=new Set(P.map(x=>x.uid)),all=Object.values(D.mem).filter(x=>x.status==="approved"&&x.role!=="SECURITY_GUARD");
     const s=mk("div","meta");s.style.margin="8px 0";s.textContent="Present "+P.length+(all.length?" of "+all.length:"")+" · "+d0;lst.appendChild(s);
     if(!P.length)lst.appendChild(mk("div","meta","No check-ins on this day."));
-    P.forEach(x=>{const r=mk("div","ex"),l=mk("div",null,x.name);l.appendChild(mk("span",null,"In "+tf(x.in)+(x.out?" · Out "+tf(x.out)+(hrs(x)?" · "+hrs(x):""):" · still in")));r.appendChild(l);lst.appendChild(r)});
+    P.forEach(x=>{const r=mk("div","ex"),l=mk("div",null,x.name);l.appendChild(mk("span",null,"In "+tf(x.in)+(x.out?" · Out "+tf(x.out)+(hrs(x)?" · "+hrs(x):""):" · still in")));r.appendChild(l);if(!x.out)addMk(r,x,"out");lst.appendChild(r)});
     const ab=all.filter(x=>!ids.has(x.id||x.uid));
-    if(ab.length){const t=mk("div","meta","Absent / not checked in ("+ab.length+")");t.style.cssText="margin:12px 0 4px;font-weight:600";lst.appendChild(t);ab.forEach(x=>{const r=mk("div","ex"),l=mk("div",null,x.name);l.appendChild(mk("span",null,x.flat||""));r.appendChild(l);lst.appendChild(r)})}
+    if(ab.length){const t=mk("div","meta","Absent / not checked in ("+ab.length+")");t.style.cssText="margin:12px 0 4px;font-weight:600";lst.appendChild(t);ab.forEach(x=>{const r=mk("div","ex"),l=mk("div",null,x.name);l.appendChild(mk("span",null,x.flat||""));r.appendChild(l);addMk(r,x,"in");lst.appendChild(r)})}
     if(P.length){const eb=mk("button","btn s o","⬇️ Export CSV");eb.style.marginTop="10px";eb.onclick=()=>exportCSV("attendance-"+d0,["Date","Name","Check-in","Check-out","Hours"],P.map(x=>[x.date,x.name,tf(x.in),x.out?tf(x.out):"",hrs(x)]));lst.appendChild(eb)}
    }catch(e){lst.appendChild(mk("div","meta","Couldn't load the list."+""))}};
   di.onchange=load;load()}}
+window.__back=function(){try{
+ const pm=$("permd");if(pm){pm.remove();return true}
+ if($("pdfv")){closePdf();return true}
+ const ov=$("ov");if(ov&&!ov.classList.contains("hide")){closeSheet();return true}
+ const ip=$("idp");if(ip&&!ip.classList.contains("hide")){const b=ip.querySelector("button");if(b){b.click();return true}}
+ if(!$("sMain").classList.contains("hide")){
+  if(dmc){dmBack();return true}
+  if(tab!=="home"){go("home");return true}
+  return false}
+ if(!$("sLand").classList.contains("hide"))return false;
+ const vis=SCR.map(k=>$(k)).find(e=>e&&!e.classList.contains("hide"));
+ if(vis){const b=[...vis.querySelectorAll("button,a")].find(e=>/^\s*←/.test(e.textContent||""));if(b){b.click();return true}}
+ return false}catch(e){console.warn("back",e);return false}};
 setTimeout(firstRunPerms,1500);
 [["mimg","media"],["mdoc","media"],["pfile","media"],["dph","cam"]].forEach(([a,k])=>gateInput($(a),k));
 async function openRef(p,name,mime){const isPdfN=/\.pdf(\?|$)/i.test(name||"")||mime==="application/pdf";

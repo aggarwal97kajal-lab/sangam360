@@ -51,4 +51,12 @@
       save(a.href, a.getAttribute('download'));
     }
   }, true);
+  var A = P.App;
+  if (A && A.addListener) {
+    A.addListener('backButton', function () {
+      var handled = false;
+      try { handled = !!(window.__back && window.__back()); } catch (e) {}
+      if (!handled && A.exitApp) A.exitApp();
+    });
+  }
 })();

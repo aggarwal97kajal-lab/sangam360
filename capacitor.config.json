@@ -1,0 +1,6 @@
+{
+  "appId": "com.sangam360.app",
+  "appName": "Sangam360",
+  "webDir": "www",
+  "server": { "androidScheme": "https" }
+}

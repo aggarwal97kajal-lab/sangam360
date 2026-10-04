@@ -23,5 +23,11 @@ assert s.count(a) == 1, "startApp not found"
 assert s.count(b) == 1, "listen call not found"
 s = s.replace(a, fn + a)
 s = s.replace(b, 'registerPush();' + b)
+
+# remember microphone / location permission after the first time
+c = 'if(st==="unknown"&&pHint(k)&&k!=="media")return true;'
+assert s.count(c) == 1, "permission check not found"
+s = s.replace(c, 'if(pHint(k)&&st!=="denied")return true;')
+
 open(p, "w", encoding="utf-8").write(s)
 print("patched ok")

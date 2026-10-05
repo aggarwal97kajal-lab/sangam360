@@ -51,19 +51,17 @@
       save(a.href, a.getAttribute('download'));
     }
   }, true);
-  // Android back button: go back inside the app, exit only from the home screen (no plugin needed)
-  var ARM = { sg: 1 }, waiting = false;
-  function arm() { try { history.pushState(ARM, ''); } catch (e) {} }
-  window.addEventListener('load', function () { setTimeout(arm, 400); });
-  window.addEventListener('popstate', function () {
-    var st = history.state;
-    if (st && (st.sg || st.pdfv)) return;
-    var ok = false;
-    try { ok = !!(window.__back && window.__back()); } catch (e) {}
-    if (ok) { waiting = false; arm(); return; }
-    if (waiting) return;
-    waiting = true;
-    toast('Press back again to exit');
-    setTimeout(function () { waiting = false; arm(); }, 2200);
-  });
+  // Android back button: go back inside the app, leave only from the home screen
+  var A = P.App, waiting = false;
+  if (A && A.addListener) {
+    A.addListener('backButton', function () {
+      var ok = false;
+      try { ok = !!(window.__back && window.__back()); } catch (e) {}
+      if (ok) return;
+      if (waiting) { try { A.exitApp(); } catch (e) {} return; }
+      waiting = true;
+      toast('Press back again to exit');
+      setTimeout(function () { waiting = false; }, 2200);
+    });
+  }
 })();

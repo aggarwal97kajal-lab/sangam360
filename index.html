@@ -549,7 +549,7 @@ nav button{font-weight:550;font-size:10.5px;border-radius:10px;color:var(--muted
  <div class="box"><div class="steps"><i id="p1" class="on"></i><i id="p2"></i><i id="p3"></i><i id="p4"></i></div>
   <div id="c1"><h2>Step 1 · Society details</h2><p class="sub">Tell us about your society.</p>
    <input id="sn" placeholder="Society name" maxlength="60"><input id="sa" placeholder="Address" maxlength="120">
-   <div class="g2"><input id="sc" placeholder="City" maxlength="40"><input id="ss" placeholder="State" maxlength="40"></div><input id="sp" placeholder="PIN code" inputmode="numeric" maxlength="6">
+   <div class="g2"><input id="sc" placeholder="City" maxlength="40"><input id="ss" placeholder="State" maxlength="40"></div><input id="spin" placeholder="PIN code" inputmode="numeric" maxlength="6">
    <div id="kx"></div><button class="btn" id="n1">Next</button></div>
   <div id="c2" class="hide"><h2>Step 2 · Property structure</h2><p class="sub">Flats are created automatically (e.g. floor 2, flat 3 → 203).</p>
    <div class="seg"><button id="mS" class="on">Single building</button><button id="mM">Multiple towers</button></div>
@@ -828,7 +828,7 @@ function kindUI(){const K=KINDS[KIND],o=isOrg(),kx=$("kx");kx.innerHTML="";kx._f
   grps=K.grp.pre.slice();drawG();h.textContent="Step 2 · "+K.grp.t;sb.textContent=K.grp.s;$("addG").textContent="+ Add "+K.grp.one}
  else{h.textContent="Step 2 · Property structure";sb.textContent="Flats are created automatically (e.g. floor 2, flat 3 → 203)."}}
 $("goC").onclick=()=>{$("cn").value=S.user.displayName||"";step(1);drawT();kindUI();show("sCreate")};$("cb").onclick=()=>show("sChoice");
-$("n1").onclick=()=>{if(!$("sn").value.trim()||!$("sc").value.trim()||!$("ss").value.trim()||!/^\d{6}$/.test($("sp").value.trim())){$("cerr").textContent="Fill all fields. PIN must be 6 digits.";return}if(isOrg()&&$("kx")._f.some(f=>f[1].tagName==="SELECT"&&!f[1].value)){$("cerr").textContent="Please choose all the options.";return}if(KIND==="company"){const gf=$("kx")._f.find(f=>f[0]==="GST number"),gv=gf?gf[1].value.trim().toUpperCase():"";if(!GSTRE.test(gv)){$("cerr").textContent="GST number is mandatory for companies. Enter a valid 15-character GSTIN (e.g. 22AAAAA0000A1Z5).";return}gf[1].value=gv}step(2)};
+$("n1").onclick=()=>{if(!$("sn").value.trim()||!$("sc").value.trim()||!$("ss").value.trim()||!/^\d{6}$/.test($("spin").value.trim())){$("cerr").textContent="Fill all fields. PIN must be 6 digits.";return}if(isOrg()&&$("kx")._f.some(f=>f[1].tagName==="SELECT"&&!f[1].value)){$("cerr").textContent="Please choose all the options.";return}if(KIND==="company"){const gf=$("kx")._f.find(f=>f[0]==="GST number"),gv=gf?gf[1].value.trim().toUpperCase():"";if(!GSTRE.test(gv)){$("cerr").textContent="GST number is mandatory for companies. Enter a valid 15-character GSTIN (e.g. 22AAAAA0000A1Z5).";return}gf[1].value=gv}step(2)};
 $("b2b").onclick=()=>step(1);$("b3b").onclick=()=>step(2);
 $("n2").onclick=()=>{if(isOrg()){const g=grps.map(x=>x.trim()).filter(Boolean);if(!g.length||new Set(g.map(x=>x.toLowerCase())).size!==g.length){$("cerr").textContent="Add at least one "+KINDS[KIND].grp.one+" (no duplicates).";return}grps=g;step(3);return}if(towers.some(t=>!t.name.trim())){$("cerr").textContent="Give every tower a name.";return}if(flatTotal()>FREE_FLAT_LIMIT){$("cerr").textContent="The FREE plan allows up to "+FREE_FLAT_LIMIT+" flats.";return}step(3)};
 const gen=()=>{const c="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";let s="";for(let i=0;i<6;i++)s+=c[Math.floor(Math.random()*c.length)];return s};
@@ -838,7 +838,7 @@ $("n3").onclick=()=>run($("n3"),async()=>{
  const sid=doc(collection(db,"societies")).id,now=Date.now(),tw=(isOrg()?grps.map(n=>({name:n,floors:1,perFloor:1})):towers).map(t=>({name:t.name.trim(),floors:t.floors,perFloor:t.perFloor})),ex={};if(isOrg())$("kx")._f.forEach(f=>ex[f[0].replace(" (optional)","")]=f[1].value.trim());
  await rSet(rRef(rtdb,"soc/"+sid+"/owner"),S.uid);await rUpdate(rRef(rtdb,"soc/"+sid),{["members/"+S.uid]:true,["admins/"+S.uid]:true});const [idUrl,photoUrl]=await Promise.all([upID(sid,fId,"idproofs"),upID(sid,fPh,"idphotos",true)]);
  for(let k=0;k<4;k++){const code=gen(),b=writeBatch(db);
-  b.set(doc(db,"societies",sid),{name:$("sn").value.trim(),address:$("sa").value.trim(),city:$("sc").value.trim(),state:$("ss").value.trim(),pin:$("sp").value.trim(),code,adminUid:S.uid,plan:"FREE",type:KIND,active:true,createdAt:now,towers:tw,flatCount:isOrg()?0:flatTotal(),extra:ex,gstin:(ex["GST number"]||"").toUpperCase(),settings:{monthlyAmount:0,upiId:"",payMode:"upi"}});
+  b.set(doc(db,"societies",sid),{name:$("sn").value.trim(),address:$("sa").value.trim(),city:$("sc").value.trim(),state:$("ss").value.trim(),pin:$("spin").value.trim(),code,adminUid:S.uid,plan:"FREE",type:KIND,active:true,createdAt:now,towers:tw,flatCount:isOrg()?0:flatTotal(),extra:ex,gstin:(ex["GST number"]||"").toUpperCase(),settings:{monthlyAmount:0,upiId:"",payMode:"upi"}});
   b.set(doc(db,"societies",sid,"members",S.uid),{uid:S.uid,name:nm,mobile:mo,role:"SOCIETY_ADMIN",status:"approved",flat:"Admin",ts:now,idUrl,photoUrl});
   b.set(doc(db,"joinCodes",code),{societyId:sid,name:$("sn").value.trim(),towers:tw,type:KIND});b.set(doc(db,"userSociety",S.uid),{societyId:sid,list:arrayUnion(...(S.sid&&S.sid!==sid?[S.sid,sid]:[sid]))},{merge:true});
   try{await b.commit();newCode=code;break}catch(e){if(k===3)throw e}}
@@ -1686,6 +1686,7 @@ window.__back=function(){try{
  const ip=$("idp");if(ip&&!ip.classList.contains("hide")){const b=ip.querySelector("button");if(b){b.click();return true}}
  if(!$("sMain").classList.contains("hide")){
   if(dmc){dmBack();return true}
+  if(tab==="comm"&&$("v_ann")&&$("v_ann").classList.contains("hide")){cview("ann");return true}
   if(tab!=="home"){go("home");return true}
   return false}
  if(!$("sLand").classList.contains("hide"))return false;

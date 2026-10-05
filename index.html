@@ -682,6 +682,88 @@ nav button{font-weight:550;font-size:10.5px;border-radius:10px;color:var(--muted
 .fxkv{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:13.5px;margin:8px 0}.fxkv span{color:var(--muted)}
 .fxmap{position:relative;border-radius:12px;overflow:hidden;height:96px;margin:8px 0}.fxmap svg{width:100%;height:100%;display:block}
 .fxbd{display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--line)}.fxbd:last-child{border-bottom:0}.fxbd div.t{flex:1;min-width:0}.fxbd b{display:block;font-size:14px}.fxbd small{color:var(--muted);font-size:12px}.fxbd .btn{width:auto;padding:6px 12px;margin:0}
+/* side bar: animated menu icon, role badge, groups that open and close, finger drag */
+.bgr{position:relative;display:block;width:20px;height:14px;pointer-events:none}
+.bgr i{position:absolute;left:0;top:0;height:2.2px;width:100%;border-radius:2px;background:currentColor;transition:transform .3s cubic-bezier(.3,.9,.3,1),opacity .2s,width .3s cubic-bezier(.3,.9,.3,1)}
+.bgr i:nth-child(1){transform:translateY(0)}.bgr i:nth-child(2){transform:translateY(5.9px)}.bgr i:nth-child(3){transform:translateY(11.8px);width:68%}
+.x>.bgr i:nth-child(1),body.drwon #hmb .bgr i:nth-child(1){transform:translateY(5.9px) rotate(45deg)}
+.x>.bgr i:nth-child(2),body.drwon #hmb .bgr i:nth-child(2){opacity:0;transform:translateY(5.9px) scaleX(.2)}
+.x>.bgr i:nth-child(3),body.drwon #hmb .bgr i:nth-child(3){transform:translateY(5.9px) rotate(-45deg);width:100%}
+.drh{position:relative}.drx{position:absolute;top:calc(14px + env(safe-area-inset-top,0px));right:12px;width:38px;height:38px;border:0;border-radius:12px;background:rgba(255,255,255,.2);color:#fff;display:grid;place-items:center;cursor:pointer;padding:0;-webkit-tap-highlight-color:transparent}
+.drr{display:flex;align-items:center;gap:8px;margin-top:5px;min-width:0}.drfl{font-size:12.5px;opacity:.92;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.drb{flex:none;display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;letter-spacing:.02em;padding:3px 9px 3px 8px;border-radius:99px;background:rgba(255,255,255,.22);color:#fff;line-height:1.3}
+.drb.badm{background:rgba(255,255,255,.92);color:var(--a)}.drb.bown{background:linear-gradient(135deg,#ffe08a,#f5b301);color:#5a3d00;box-shadow:0 2px 8px rgba(0,0,0,.18)}
+.drgw{margin-top:2px}.drg{width:100%;border:0;background:transparent;display:flex;align-items:center;justify-content:space-between;cursor:pointer;font-family:inherit;-webkit-tap-highlight-color:transparent;border-radius:10px}
+.drg svg{transition:transform .25s ease;opacity:.7}.drgw.shut .drg svg{transform:rotate(-90deg)}
+.drgc{display:grid;grid-template-rows:1fr;transition:grid-template-rows .26s cubic-bezier(.3,.8,.3,1)}.drgw.shut .drgc{grid-template-rows:0fr}
+.drgi{overflow:hidden;min-height:0;transition:opacity .22s}.drgw.shut .drgi{opacity:0}
+#drw.drag{visibility:visible!important;transition:none!important}#drs.drag{transition:none!important;pointer-events:auto}
+#fxb.fresh>*{animation:pop .42s cubic-bezier(.2,.8,.2,1) both}#fxb.fresh>*:nth-child(2){animation-delay:.05s}#fxb.fresh>*:nth-child(3){animation-delay:.1s}#fxb.fresh>*:nth-child(4){animation-delay:.15s}#fxb.fresh>*:nth-child(5){animation-delay:.2s}#fxb.fresh>*:nth-child(n+6){animation-delay:.25s}
+.fxk.skl i{display:block;height:12px;border-radius:8px;margin:9px 0;background:linear-gradient(90deg,var(--line) 25%,var(--bg) 50%,var(--line) 75%);background-size:200% 100%;animation:shm 1.2s linear infinite}.fxk.skl .w1{width:40%;height:14px}.fxk.skl .w2{width:88%}.fxk.skl .w3{width:62%}
+
+/* ===== form fields: floating label, password eye, counter, live format, shake ===== */
+.flw{position:relative;display:block;margin-bottom:10px;min-width:0}.flw>input,.flw>textarea{margin:0!important;width:100%}
+.flw:has(>input.hide),.flw:has(>textarea.hide),.flw:has(>[style*="display: none"]),.flw:has(>[style*="display:none"]){display:none}
+.flw>label{position:absolute;left:10px;top:23px;transform:translateY(-50%);padding:0 5px;margin:0;font-size:14.5px;font-weight:400;line-height:1.25;color:var(--muted);pointer-events:none;border-radius:5px;max-width:calc(100% - 24px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:transparent;
+ transition:top .22s cubic-bezier(.2,.8,.2,1),font-size .22s cubic-bezier(.2,.8,.2,1),color .22s,background-color .22s,left .22s}
+.flw>input:focus+label,.flw>input:not(:placeholder-shown)+label,.flw>input:-webkit-autofill+label,.flw>textarea:focus+label,.flw>textarea:not(:placeholder-shown)+label{top:0;left:9px;font-size:11.5px;font-weight:600;background:var(--card)}
+.flw>input:focus+label,.flw>textarea:focus+label{color:var(--a)}
+.flw>input::placeholder,.flw>textarea::placeholder{color:var(--muted);opacity:.65}
+.flw.pw>input{padding-right:46px}
+.fle{position:absolute;right:4px;top:3px;width:40px;height:40px;border:0;border-radius:50%;background:transparent;color:var(--muted);display:grid;place-items:center;cursor:pointer;padding:0;-webkit-tap-highlight-color:transparent;transition:color .2s,background-color .2s}
+.fle:active{background:var(--bg)}.fle.on{color:var(--a)}.fle svg{overflow:visible}
+.fle .e1,.fle .e2{transform-origin:12px 12px;transition:transform .25s cubic-bezier(.3,1.4,.5,1)}.fle .e3{stroke-dasharray:24;stroke-dashoffset:0;transition:stroke-dashoffset .26s ease}
+.fle.on .e3{stroke-dashoffset:24}.fle.on .e2{transform:scale(1.15)}.fle.uxb .e1{animation:flblink .26s}
+@keyframes flblink{50%{transform:scaleY(.15)}}
+.flc,.flx{position:absolute;bottom:-7px;font-size:10.5px;line-height:1.3;color:var(--muted);background:var(--card);padding:0 5px;border-radius:5px;opacity:0;transform:translateY(-3px);transition:opacity .2s,transform .2s,color .2s;pointer-events:none;white-space:nowrap}
+.flc{right:10px;font-variant-numeric:tabular-nums}.flx{left:10px;font-weight:600;color:var(--a)}
+.flw:focus-within>.flc,.flc.uxs,.flx.uxs{opacity:1;transform:none}.flc.uxw{color:var(--amb)}.flc.uxf{color:var(--red)}
+.flc b{display:inline-block;font-weight:600}.flc b.uxk{animation:fltick .2s ease}.flx.uxk{animation:fltick .22s ease}
+@keyframes fltick{from{opacity:.2;transform:translateY(5px)}}
+.flh{font-size:11.5px;color:var(--muted);margin:-4px 6px 10px;max-height:0;opacity:0;overflow:hidden;transition:max-height .25s ease,opacity .25s ease}.flw:focus-within+.flh{max-height:40px;opacity:1}
+.flbad{animation:flshk .4s cubic-bezier(.36,.07,.19,.97)}.flbad>input,.flbad>textarea,input.flbad,select.flbad,textarea.flbad{border-color:var(--red)!important;box-shadow:0 0 0 3px rgba(239,68,68,.14)!important}.flbad>label{color:var(--red)!important}
+@keyframes flshk{15%{transform:translateX(-6px)}30%{transform:translateX(5px)}45%{transform:translateX(-4px)}60%{transform:translateX(3px)}75%{transform:translateX(-2px)}}
+.shp{display:none!important}
+#mt::placeholder{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* ===== motion ===== */
+/* dark / light switch: a plain cross-fade, and the decorative loops rest while it runs */
+html.vt::view-transition-old(root){animation:uxthO .28s ease both!important}html.vt::view-transition-new(root){animation:uxthI .28s ease both!important}
+@keyframes uxthO{to{opacity:0}}@keyframes uxthI{from{opacity:0}}
+html.vt *,html.vt *::before,html.vt *::after{animation-play-state:paused!important;transition:none!important}
+/* pages slide in from the side they are on */
+main>section{animation:uxpgR .26s cubic-bezier(.2,.8,.2,1) both}main[data-dir="l"]>section{animation-name:uxpgL}main>#t_comm{animation-name:uxpgF}
+@keyframes uxpgR{from{opacity:0;transform:translateX(22px)}}@keyframes uxpgL{from{opacity:0;transform:translateX(-22px)}}@keyframes uxpgF{from{opacity:0}}
+.scr:not(.hide)>.box{animation:uxpgR .32s cubic-bezier(.2,.8,.2,1) both}
+/* home: cards arrive one after another, only when the page is opened (not on every data refresh) */
+#hm.noan *,#hm.noan{animation:none!important}
+/* cards lift a little under the finger / pointer */
+.st,.qa button,.fxk,.item,.card{transition:transform .22s cubic-bezier(.3,1.3,.5,1),box-shadow .22s}
+@media(hover:hover){.st:hover,.qa button:hover,.fxk:hover,.card:hover{transform:translateY(-3px);box-shadow:0 10px 26px rgba(60,40,140,.14)}.item:hover{transform:translateY(-2px)}}
+.st:active,.qa button:active,.fxk:active{transform:translateY(-2px) scale(.985);box-shadow:0 8px 22px rgba(60,40,140,.16)}
+/* bottom bar: one pill that slides to the active tab */
+nav{position:fixed}nav .nind{position:absolute;left:0;top:0;border-radius:12px;background:var(--tint,rgba(91,61,245,.11));pointer-events:none;z-index:0;opacity:0;transition:transform .32s cubic-bezier(.3,1.2,.4,1),width .32s cubic-bezier(.3,1.2,.4,1),opacity .2s}
+nav .nind.rdy{opacity:1}nav.hasind button{z-index:1}nav.hasind button.on{background:transparent!important}
+/* bell: wiggles now and then while something is unread; the count pulses */
+.ib:has(.bc:not(.hide))>span{display:inline-block;transform-origin:50% 0;animation:uxbell 4.2s ease-in-out infinite}.shake>span{animation:ring .9s!important}
+@keyframes uxbell{0%,84%,100%{transform:none}87%{transform:rotate(-16deg)}90%{transform:rotate(13deg)}93%{transform:rotate(-9deg)}96%{transform:rotate(5deg)}}
+.bc:not(.hide){animation:pop .3s both,uxpulse 2.1s ease-out .4s infinite}@keyframes uxpulse{0%{box-shadow:0 0 0 0 rgba(239,68,68,.55)}70%,100%{box-shadow:0 0 0 8px rgba(239,68,68,0)}}
+/* pop-ups: 95% -> 100% with a fade; sheets rise */
+#permd{animation:uxfd .2s ease both}#permd .pc{animation:uxmd .24s cubic-bezier(.2,.9,.3,1.1) both}@keyframes uxfd{from{opacity:0}}@keyframes uxmd{from{opacity:0;transform:scale(.95)}}
+#ov{animation:uxfd .2s ease both}.sheet{animation:uxsh .3s cubic-bezier(.2,.85,.25,1) both}@keyframes uxsh{from{opacity:0;transform:translateY(28px) scale(.97)}}
+#dpop{animation:uxmd .18s ease both;transform-origin:50% 0}
+/* new profile photo settles into place */
+body.avnew #hav .ava img,body.avnew #mr .ava img,body.avnew .drh .ava img{animation:uxav .6s cubic-bezier(.2,.9,.3,1.2) both}@keyframes uxav{from{opacity:0;transform:scale(.55) rotate(-8deg);filter:blur(4px)}}
+/* collection ring + count-up */
+.uxr{display:flex;align-items:center;gap:16px}.uxr svg{flex:none;width:86px;height:86px;transform:rotate(-90deg)}.uxr circle{fill:none;stroke-width:9;stroke-linecap:round}.uxr .uxt{stroke:var(--line)}.uxr .uxp{stroke:url(#uxrg);transition:stroke-dashoffset 1s cubic-bezier(.2,.8,.2,1)}
+.uxr .rw{position:relative;flex:none}.uxr .rw b{position:absolute;inset:0;display:grid;place-items:center;font-size:17px;font-weight:700}.uxr .t{min-width:0}.uxr .t b{display:block;font-size:15px}.uxr .t small{display:block;color:var(--muted);font-size:12.5px;line-height:1.45}
+/* hints */
+#uxtip{position:fixed;z-index:110;max-width:min(260px,calc(100vw - 24px));background:#1b2038;color:#fff;font-size:12.5px;line-height:1.4;font-weight:500;padding:8px 12px;border-radius:11px;box-shadow:0 10px 28px rgba(10,12,30,.35);pointer-events:none;opacity:0;transform:translateY(6px) scale(.96);transition:opacity .2s ease,transform .22s cubic-bezier(.2,.9,.3,1.2)}
+#uxtip.on{opacity:1;transform:none}#uxtip.tup{transform:translateY(-6px) scale(.96)}#uxtip.tup.on{transform:none}
+#uxtip i{position:absolute;width:10px;height:10px;background:#1b2038;transform:rotate(45deg);top:-4px;left:var(--ax,20px);margin-left:-5px;border-radius:2px}#uxtip.tup i{top:auto;bottom:-4px}
+[data-theme="dark"] #uxtip,[data-theme="dark"] #uxtip i{background:#eef0ff;color:#12152b}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #uxtip,:root:not([data-theme="light"]) #uxtip i{background:#eef0ff;color:#12152b}}
+@media (prefers-reduced-motion:reduce){.flw>label,.bgr i,.drgc,nav .nind,#uxtip{transition-duration:.01s!important}}
 </style>
 <style>
 #splash{position:fixed;inset:0;z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(900px 500px at 50% 35%,rgba(99,102,241,.45),transparent 70%),radial-gradient(700px 400px at 80% 90%,rgba(20,184,166,.3),transparent 70%),#080d1a;color:#fff;transition:opacity .55s,transform .55s}
@@ -785,7 +867,7 @@ nav button{font-weight:550;font-size:10.5px;border-radius:10px;color:var(--muted
   <div id="cap" class="cap hide"><div class="cbx" id="cbx"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><i class="spn"></i></div><span id="capt">I'm not a robot</span><small>🛡️<br>Secure</small></div><label class="agr hide" id="agr" data-noskin><input type="checkbox" id="agc"><span>By selecting "Create account", you are confirming that you have read and agree to Sangam360 <a id="lkT" role="link" tabindex="0">Terms of Use</a> and <a id="lkP" role="link" tabindex="0">Privacy Policy</a>.</span></label><button class="btn" id="asub">Login</button><a class="lnk" id="afg">Forgot password?</a><p class="err" id="aerr"></p><a class="lnk" id="aback">← Change (corporate / school / society)</a><p class="lgl" data-noskin><a id="lkP2" role="link" tabindex="0">Privacy Policy</a> · <a id="lkT2" role="link" tabindex="0">Terms &amp; Conditions</a></p></div></section>
 
 <section id="sChoice" class="scr hide"><div class="brand"><h1 id="b2"></h1><p>What would you like to do?</p></div>
- <div class="box big"><button id="goC"><b>🏢 Create my society</b>Set up a new building or complex as its admin</button><button id="goJ"><b>🔑 Join my society</b>Use the code or link from your society</button><a class="lnk hide" id="bk">← Back to my society</a><a class="lnk" id="lo1">Log out</a></div></section>
+ <div class="box big"><button id="goC"><b>🏢 Create my society</b>Set up a new building or complex as its admin</button><button id="goT" class="hide" data-noskin><b>🧑‍🏫 Join as a teacher</b>Use the school code from your Principal</button><button id="goJ"><b>🔑 Join my society</b>Use the code or link from your society</button><a class="lnk hide" id="bk">← Back to my society</a><a class="lnk" id="lo1">Log out</a></div></section>
 
 <section id="sCreate" class="scr hide"><div class="brand"><h1>Create your society</h1></div>
  <div class="box"><div class="steps"><i id="p1" class="on"></i><i id="p2"></i><i id="p3"></i><i id="p4"></i></div>
@@ -1106,7 +1188,7 @@ const KINDS={
  company:{ico:"🏢",card:"For Corporates",cardS:"Employees, attendance, visitors & billing",tag:"One Platform. Every Community.",c1:"#0f766e",c2:"#2563eb",rc:"#2563eb",word:"company",unit:"Desk",person:"Employee",fee:"billing",createT:"🏢 Create my company",createS:"Set up your company as its admin",joinT:"🔑 Join my company",joinS:"Use the code from your company admin",grp:{t:"Departments",one:"department",s:"Add the departments or teams. Employees pick theirs when they join.",ph:"Department name",pre:["Engineering","HR","Sales"],jl:"Choose your department and tell us who you are.",idp:"Employee ID (e.g. EMP-104)"},x:[["Industry","sel",["IT / Software","Manufacturing","Finance / Banking","Retail","Healthcare","Other"]],["Employee strength","sel",["1-10","11-50","51-200","200+"]],["GST number","txt"]],
   nav:{svc:["💼","Work"],comm:["💬","Team"],fin:["🧾","Billing"]},subList:["att","leave","room","hol","comp","gc","vis","del","park"],subs:{comp:"Helpdesk",del:"Couriers"},
   skin:[["Societies","Companies"],["societies","companies"],["Society","Company"],["society","company"],["Residents","Employees"],["residents","employees"],["Resident","Employee"],["resident","employee"],["Flats","Desks"],["flats","desks"],["Flat","Desk"],["flat","desk"],["Towers","Offices"],["towers","offices"],["Tower","Office"],["tower","office"],["Maintenance","Billing"],["maintenance","billing"],["Committee member","Manager"],["committee member","manager"],["Tenant","Contractor"],["tenant","contractor"]]},
- school:{ico:"🎓",card:"For Schools",cardS:"Students, staff attendance, fees & notices",tag:"One Platform. Every Community.",c1:"#c2410c",c2:"#d97706",rc:"#d97706",word:"school",unit:"Class",person:"Student",fee:"fees",createT:"🏫 Create my school",createS:"Principal: set up the school · Teacher: join with the Principal's code",joinT:"🔑 Join my school",joinS:"Students: use the class code from your class teacher",grp:{t:"Classes",one:"class",s:"Add classes or sections, e.g. Class 5-A. Students pick theirs when they join.",ph:"Class / section",pre:["Class 1","Class 2","Class 3"],jl:"Choose your class and tell us who you are.",idp:"Roll / admission no."},x:[["Board","sel",["CBSE","ICSE","State board","IB / Cambridge","Other"]],["School level","sel",["Primary","Secondary","Senior secondary","K-12"]],["Affiliation no. (optional)","txt"]],
+ school:{ico:"🎓",card:"For Schools",cardS:"Students, staff attendance, fees & notices",tag:"One Platform. Every Community.",c1:"#c2410c",c2:"#d97706",rc:"#d97706",word:"school",unit:"Class",person:"Student",fee:"fees",createT:"🏫 Create my school",createS:"Principal: set up your school and get the code for your teachers",joinT:"🎓 Join as a student",joinS:"Use the class code from your class teacher",grp:{t:"Classes",one:"class",s:"Add classes or sections, e.g. Class 5-A. Students pick theirs when they join.",ph:"Class / section",pre:["Class 1","Class 2","Class 3"],jl:"Choose your class and tell us who you are.",idp:"Roll / admission no."},x:[["Board","sel",["CBSE","ICSE","State board","IB / Cambridge","Other"]],["School level","sel",["Primary","Secondary","Senior secondary","K-12"]],["Affiliation no. (optional)","txt"]],
   nav:{svc:["🏫","Campus"],comm:["💬","Community"],fin:["💳","Fees"]},subList:["att","tt","hw","leave","hol","comp","gc","vis","del"],subs:{comp:"Complaints",del:"Parcels"},
   skin:[["Societies","Schools"],["societies","schools"],["Society","School"],["society","school"],["Residents","Students"],["residents","students"],["Resident","Student"],["resident","student"],["Flats","Classes"],["flats","classes"],["Flat","Class"],["flat","class"],["Towers","Blocks"],["towers","blocks"],["Tower","Block"],["tower","block"],["Maintenance","Fee"],["maintenance","fee"],["Committee member","Teacher"],["committee member","teacher"],["Tenant","Parent"],["tenant","parent"]]}
 };
@@ -1303,7 +1385,7 @@ function cMode(){const t=KIND==="school"&&$("crole").value==="COMMITTEE_MEMBER";
 $("crole").onchange=cMode;
 function c3Txt(){const h=$("c3").querySelector("h2"),sb=$("c3").querySelector(".sub");if(KIND!=="school"){h.textContent="Step 3 · Admin account";sb.textContent="You become the society administrator.";return}
  const t=cRole()==="COMMITTEE_MEMBER";h.textContent="Step 3 · "+(t?"Teacher":"Principal")+" account";sb.textContent=t?"You set up this school as a teacher. You can appoint the Principal later from the People tab.":"You become the Principal, with full rights over students, teachers and records."}
-function kindUI(){const K=KINDS[KIND],o=isOrg(),kx=$("kx");kx.innerHTML="";kx._f=[];$("crw").classList.toggle("hide",KIND!=="school");$("crole").value="";$("cpc").value="";c3Txt();cMode();
+function kindUI(){const K=KINDS[KIND],o=isOrg(),kx=$("kx");kx.innerHTML="";kx._f=[];$("crw").classList.add("hide");$("crole").value=KIND==="school"?"SOCIETY_ADMIN":"";$("cpc").value="";c3Txt();cMode();
  $("mS").parentNode.classList.toggle("hide",o);$("tw").classList.toggle("hide",o);$("fc").classList.toggle("hide",o);$("gx").classList.toggle("hide",!o);if(o)$("addT").classList.add("hide");
  const h=$("c2").querySelector("h2"),sb=$("c2").querySelector(".sub");
  if(o){K.x.forEach(f=>{let e;if(f[1]==="sel"){e=mk("select");e.appendChild(Object.assign(mk("option",null,f[0]),{value:"",disabled:true,selected:true}));f[2].forEach(v=>e.appendChild(Object.assign(mk("option",null,v),{value:v})))}else{e=mk("input");e.placeholder=f[0];e.maxLength=40;if(f[0]==="GST number"){e.maxLength=15;e.placeholder="GST number (15 characters) *";e.style.textTransform="uppercase"}}kx.appendChild(e);kx._f.push([f[0],e])});
@@ -1327,21 +1409,27 @@ $("n3").onclick=()=>run($("n3"),async()=>{
   b.set(doc(db,"societies",sid,"members",S.uid),{uid:S.uid,name:nm,mobile:mo,role:cRole(),status:"approved",flat:KIND==="school"?(cRole()==="COMMITTEE_MEMBER"?"Teacher":"Principal"):"Admin",ts:now,idUrl,photoUrl});
   b.set(doc(db,"joinCodes",code),{societyId:sid,name:$("sn").value.trim(),towers:tw,type:KIND});b.set(doc(db,"userSociety",S.uid),{societyId:sid,list:arrayUnion(...(S.sid&&S.sid!==sid?[S.sid,sid]:[sid]))},{merge:true});
   try{await b.commit();newCode=code;break}catch(e){if(k===3)throw e}}
- $("ccode").textContent=newCode;const sc4=KIND==="school";$("c4").querySelector(".sub").textContent=sc4?"This is your Principal's code. Share it only with your teachers: they choose Create my school → Create as Teacher and enter it. Each teacher then gets a class code for students.":"Invite residents with this code or link.";$("wa").href="https://wa.me/?text="+encodeURIComponent(sc4?"Join "+$("sn").value.trim()+" on "+BRAND+" as a teacher: "+link(newCode)+"  (Principal's code: "+newCode+")":"Join our "+KINDS[KIND].word+" on "+BRAND+": "+link(newCode)+"  (code: "+newCode+")");step(4)});
+ $("ccode").textContent=newCode;const sc4=KIND==="school";$("c4").querySelector(".sub").textContent=sc4?"This is your Principal's code. Share it only with your teachers: they choose Join as a teacher and enter it. Each teacher then gets a class code for students.":"Invite residents with this code or link.";$("wa").href="https://wa.me/?text="+encodeURIComponent(sc4?"Join "+$("sn").value.trim()+" on "+BRAND+" as a teacher: "+link(newCode)+"  (Principal's code: "+newCode+")":"Join our "+KINDS[KIND].word+" on "+BRAND+": "+link(newCode)+"  (code: "+newCode+")");step(4)});
 const link=c=>location.origin+location.pathname+"?join="+c;
 const cp=t=>navigator.clipboard.writeText(t).then(()=>toast("✅","Copied ✓",t,true)).catch(()=>toast("ℹ️","Copy this",t,true));
 $("cpc").onclick=()=>cp(newCode);$("cpl").onclick=()=>cp(link(newCode));$("open").onclick=boot;
 
 /* ---------- join society ---------- */
-const gotoJoin=()=>{$("j1").classList.remove("hide");$("j2").classList.add("hide");$("jerr").textContent="";$("jnm").value=S.user.displayName||"";show("sJoin")};
-$("goJ").onclick=gotoJoin;$("jb").onclick=()=>show("sChoice");
+let joinWant=null;
+const gotoJoin=w=>{joinWant=KIND==="school"&&(w==="teacher"||w==="student")?w:null;{const h=$("j1").querySelector("h2"),p=$("j1").querySelector("p.sub");
+  if(joinWant==="teacher"){h.textContent="Enter the Principal's code";p.textContent="Your Principal gets this code after creating the school. Ask your Principal for it.";$("jf").textContent="Verify code"}
+  else if(joinWant==="student"){h.textContent="Enter your class code";p.textContent="Ask your class teacher for the class code or invitation link.";$("jf").textContent="Find my class"}
+  else{h.textContent="Enter society code";p.textContent="Ask your society admin for the code or invitation link.";$("jf").textContent="Find society"}}
+ $("jc").value="";$("j1").classList.remove("hide");$("j2").classList.add("hide");$("jerr").textContent="";$("jnm").value=S.user.displayName||"";show("sJoin")};
+$("goJ").onclick=()=>gotoJoin(KIND==="school"?"student":null);$("goT").onclick=()=>gotoJoin("teacher");$("jb").onclick=()=>show("sChoice");
 let joinAs="student";
 /* A school has two kinds of code: the Principal's code (for teachers) and each teacher's class code (for students). */
-async function findJoin(c,er,needP){c=String(c||"").trim().toUpperCase();if(c.length<4){er.textContent="Not found";return false}const s=await getDoc(doc(db,"joinCodes",c));
+async function findJoin(c,er,needP,needC){c=String(c||"").trim().toUpperCase();if(c.length<4){er.textContent="Not found";return false}const s=await getDoc(doc(db,"joinCodes",c));
  if(!s.exists()){er.textContent=needP?"This code was not found. Check it with your Principal.":"Not found";return false}join=s.data();join.code=c;er.textContent="";
  {const jt0=join.type||"society";if(S.soc&&(S.soc.type||"society")!==jt0){er.textContent="This email is already registered with a "+KINDS[S.soc.type||"society"].word+" ("+KINDS[S.soc.type||"society"].person+" account). Use a different email to join a "+KINDS[jt0].word+".";join=null;return false}}
  {const jt=join.type||"society";if(jt!==KIND){if(qp&&!needP){setKind(jt)}else{er.textContent="This code is for a "+KINDS[jt].word+". Go back and choose \""+KINDS[jt].card+"\".";join=null;return false}}}
  if(needP&&join.teacherUid){er.textContent="This is a class code for students. Ask your Principal for the Principal's code.";join=null;return false}
+ if(needC&&KIND==="school"&&!join.teacherUid){er.textContent="This is the Principal's code, which is only for teachers. Ask your class teacher for your class code.";join=null;return false}
  {const ex=await memCheck(join.societyId,join.name);if(ex){er.textContent=ex;join=null;return false}}
  joinAs=KIND==="school"&&!join.teacherUid?"teacher":"student";joinForm();return true}
 function joinForm(){const T=KIND==="school"&&joinAs==="teacher",fixed=KIND==="school"&&!!join.teacherUid,K=KINDS[KIND];
@@ -1354,7 +1442,7 @@ function joinForm(){const T=KIND==="school"&&joinAs==="teacher",fixed=KIND==="sc
  else if(isOrg()){$("jx").placeholder=K.grp.idp;jsb.textContent=K.grp.jl}else jsb.textContent="Choose your flat and tell us who you are.";
  $("jsub").textContent=T?"Request to join as Teacher":"Request to join";if(!$("jnm").value)$("jnm").value=(S.user&&S.user.displayName)||"";
  $("j1").classList.add("hide");$("j2").classList.remove("hide")}
-$("jf").onclick=()=>run($("jf"),()=>findJoin($("jc").value,$("jerr")));
+$("jf").onclick=()=>run($("jf"),()=>findJoin($("jc").value,$("jerr"),joinWant==="teacher",joinWant==="student"));
 $("jsub").onclick=()=>run($("jsub"),async()=>{$("jerr").textContent="";const nm=$("jnm").value.trim(),mo=$("jm").value.trim();const xv=$("jx").value.trim();if(!nm||mo.length<8){$("jerr").textContent="Enter your name and mobile number.";return}const T=KIND==="school"&&joinAs==="teacher";if(isOrg()&&!xv&&!T){$("jerr").textContent="Enter your "+KINDS[KIND].grp.idp.split(" (")[0]+".";return}
  const fId=$("jid").files[0],fPh=$("jph").files[0];if(!fId||!fPh){$("jerr").textContent="ID proof and your photo are both required to sign up.";return}
  {const ex=await memCheck(join.societyId,join.name);if(ex){$("jerr").textContent=ex;return}}
@@ -1376,9 +1464,9 @@ const SUBSK=()=>Object.assign({att:"Attendance",leave:"Leave",room:"Meetings",tt
 const subList=()=>isGuard()?["vis","del","veh","help"]:(KIND!=="society"?KINDS[KIND].subList:["comp","vis","del","veh","park","help","mkt"]);
 const navCfg=()=>{if(isGuard()||KIND==="society")return navCfg0();const o=KINDS[KIND].nav;return navCfg0().map(c=>o[c[0]]?[c[0],o[c[0]][0],o[c[0]][1]]:c)};
 function drawNav(){const n=$("nav");n.innerHTML="";navCfg().forEach(c=>{const b=mk("button");b.id="n_"+c[0].replace(":","_");b.appendChild(mk("span",null,c[1]));b.appendChild(document.createTextNode(c[2]));b.onclick=()=>go(c[0]);n.appendChild(b)});n.classList.toggle("six",navCfg().length>5);markNav();subDot()}
-function markNav(){const T=tab==="sub"&&!isMgr()?"more":tab;navCfg().forEach(c=>{const k=c[0].split(":"),on=k[0]===T&&(k.length<2||k[1]===sub);$("n_"+c[0].replace(":","_")).classList.toggle("on",on)})}
+function markNav(){const T=tab==="sub"&&!isMgr()?"more":tab;navCfg().forEach(c=>{const k=c[0].split(":"),on=k[0]===T&&(k.length<2||k[1]===sub);$("n_"+c[0].replace(":","_")).classList.toggle("on",on)});try{navInd()}catch(e){}}
 function go(key){const k=key.split(":");if(k[1])sub=k[1];goTab(k[0])}
-function goTab(t){if(t==="sub"&&!isMgr())t="home";tab=t;["home","svc","comm","fin","more","sub"].forEach(x=>$("t_"+x).classList.toggle("hide",x!==t));markNav();
+function goTab(t){if(t==="sub"&&!isMgr())t="home";try{const O=["home","svc","comm","fin","more","sub"],mn=document.querySelector("#sMain main");if(mn&&t!==tab)mn.dataset.dir=O.indexOf(t)<O.indexOf(tab)?"l":"r";if(t==="home")homeAt=Date.now()}catch(e){}tab=t;["home","svc","comm","fin","more","sub"].forEach(x=>$("t_"+x).classList.toggle("hide",x!==t));markNav();
  if(t==="home")rHome();if(t==="more")rMore();if(t==="sub")rSub();if(t==="svc")setSub(sub);if(t==="comm"&&!$("v_chat").classList.contains("hide"))bottom()}
 function setSub(s){sub=s;if(!subList().includes(s))sub=subList()[0];const g=$("ssg"),key=subList().join();g.classList.toggle("hide",isGuard());if(g.dataset.k!==key){g.dataset.k=key;g.innerHTML="";g.appendChild(mk("i","sind"));subList().forEach(k=>{const b=mk("button",null,SUBSK()[k]);b.dataset.k=k;b.onclick=()=>{setSub(k);markNav()};g.appendChild(b)});g.dataset.init=""}
  const ind=g.querySelector(".sind");[...g.querySelectorAll("button")].forEach(b=>b.classList.toggle("on",b.dataset.k===sub));const mv=()=>{const b=g.querySelector("button.on");if(!b||!ind||!b.offsetWidth)return;if(!g.dataset.init){ind.style.transition="none"}ind.style.width=b.offsetWidth+"px";ind.style.transform="translateX("+b.offsetLeft+"px)";if(!g.dataset.init){void ind.offsetWidth;ind.style.transition="";g.dataset.init="1"}const l=b.offsetLeft-(g.clientWidth-b.offsetWidth)/2;g.scrollTo({left:Math.max(0,l),behavior:"smooth"})};mv();requestAnimationFrame(mv);["att","comp","vis","del","veh","park","help","mkt","leave","room","tt","hw","hol","gc"].forEach(k=>{const e=$("p_"+k)||Object.assign($("p_att").parentNode.appendChild(mk("div","hide")),{id:"p_"+k});e.classList.toggle("hide",k!==sub)});if(MODS[sub])rMod(sub);if(sub==="att")rAtt();if(sub==="gc")rGc();watchSub();if(sub==="help")rHelp();if(sub==="mkt")rMkt();markNav()}
@@ -1403,7 +1491,7 @@ function startApp(){
  $("annf").classList.toggle("hide",!isAdm());annSetup();ensureTCode();document.querySelector("#t_fin .bal").classList.toggle("hide",!canFin());$("finf").classList.toggle("hide",!canFin());$("pk_adm").classList.toggle("hide",!isAdm());
  $("vf_res").classList.toggle("hide",isGuard());$("vf_grd").classList.toggle("hide",!staff());$("df_grd").classList.toggle("hide",!staff());$("vh_res").classList.toggle("hide",isGuard());$("vsr").classList.toggle("hide",!staff());
  setFin("inc");setHero();drawNav();syncDirPhoto();if(KIND==="company"&&isAdm()&&!socGst())setTimeout(()=>toast("🧾","Add your GST number","Finance → Payment details. It is printed on every invoice.",true),2500);
- listen();show("sMain");go("home");fxStart();liveResume();setTimeout(firstRunPerms,900);
+ listen();show("sMain");go("home");fxStart();uxCoach();liveResume();setTimeout(firstRunPerms,900);
 }
 const flats=()=>{const one=S.soc.towers.length===1,r=[];S.soc.towers.forEach(t=>gF(t,one).forEach(l=>r.push((one?"":t.name+" · ")+"Flat "+l)));return r};
 function setHero(){const h=$("hav");h.innerHTML="";h.appendChild(av(S.me.name,photoOf(S.uid),42));h.onclick=()=>go("more")}
@@ -1442,7 +1530,7 @@ function rHome(){const h=$("hm");h.innerHTML="";const hr=new Date().getHours();h
  Q.forEach((q,i)=>{const b=mk("button");b.style.animationDelay=i*50+"ms";b.appendChild(mk("span",null,q[0]));b.appendChild(document.createTextNode(q[1]));b.onclick=()=>go(q[2]);qa.appendChild(b)});h.appendChild(qa);
  const g=mk("div","stats");(isGuard()?[["🚪",exp,"Expected today"],["🟢",inside,"Inside now"],["⏳",wait,"Waiting approval"],["📦",parc,"Parcels at desk"]]:[["🛠️",open,"Open complaints"],["🎟️",exp,"Visitors expected today"],["📦",parc,"Parcels waiting"]].concat(isAdm()?[["💰",rs(bal),"Society fund"],["🙋",pend,"Pending approvals"],["🟢",inside,"Visitors inside"]]:[])).forEach((s,i)=>{const d=mk("div","st");d.style.animationDelay=i*70+"ms";d.appendChild(mk("b",null,s[0]+" "+s[1]));d.appendChild(mk("span",null,s[2]));g.appendChild(d)});h.appendChild(g);
  const a=Object.values(D.ann).sort((x,y)=>y.ts-x.ts)[0];if(a){const c=mk("div","card");c.appendChild(mk("h2",null,"Latest notice"));c.appendChild(mk("b",null,a.title));c.appendChild(mk("p","desc",a.text));h.appendChild(c)}
- if(KIND!=="society"){const H=Object.values(D.hol||{}).filter(x=>x.date>=td()).sort((p,q)=>String(p.date).localeCompare(String(q.date))).slice(0,3);if(H.length){const c=mk("div","card");c.appendChild(mk("h2",null,"🎉 Upcoming holidays"));H.forEach(x=>c.appendChild(mk("div","meta",x.date+" · "+x.title)));h.appendChild(c)}}}
+ if(KIND!=="society"){const H=Object.values(D.hol||{}).filter(x=>x.date>=td()).sort((p,q)=>String(p.date).localeCompare(String(q.date))).slice(0,3);if(H.length){const c=mk("div","card");c.appendChild(mk("h2",null,"🎉 Upcoming holidays"));H.forEach(x=>c.appendChild(mk("div","meta",x.date+" · "+x.title)));h.appendChild(c)}}try{uxHome(h)}catch(e){}}
 
 /* ---------- complaints (with photo) ---------- */
 let cphoto="";$("cph").onchange=async e=>{const f=e.target.files[0];if(!f)return;try{cphoto=await shrink(f,900,.6);$("cpv").src=cphoto;$("cpv").classList.remove("hide");$("cphn").textContent="Photo added ✔"}catch(x){fail(x,"Could not read photo")}};
@@ -1588,7 +1676,7 @@ function fdayUpd(){const b=$("msgs"),f=$("fday");if(!b||!f)return;if(Date.now()-
  if(!cur){f.classList.add("hide");return}f.textContent=cur.textContent;f.style.top=(b.offsetTop+8)+"px";f.classList.remove("hide");clearTimeout(fdT);fdT=setTimeout(()=>f.classList.add("hide"),1200)}
 $("msgs").addEventListener("scroll",()=>{if(jmpRaf)return;jmpRaf=requestAnimationFrame(()=>{jmpRaf=0;jmpUpd();fdayUpd()})},{passive:true});
 $("jmp").onclick=()=>{const b=$("msgs");b.scrollTo({top:b.scrollHeight,behavior:"smooth"})};
-function rChat(){if(!S.me)return;const b=$("msgs"),keep=b.scrollTop,atEnd=b.scrollHeight-b.scrollTop-b.clientHeight<90||!b.scrollHeight;b.innerHTML="";const ppl=Object.values(D.dir);updPres(true);const lg=document.querySelector("#chhd .chlogo");if(lg){lg.innerHTML="";lg.classList.toggle("dm",!!dmc);if(dmc)lg.appendChild(av(peerName(),(D.dir[dmc.peer]||{}).photo,42));else lg.textContent=KINDS[KIND].ico}$("stk").style.display=dmc?"none":"";$("mt").placeholder=dmc?"Message "+peerName().split(" ")[0]+"…":"Message your "+(CHATW[KIND]||"society")+"…";$("mt").setAttribute("data-noskin","");$("chn").textContent=dmc?peerName():S.soc.name+" Community";
+function rChat(){if(!S.me)return;const b=$("msgs"),keep=b.scrollTop,atEnd=b.scrollHeight-b.scrollTop-b.clientHeight<90||!b.scrollHeight;b.innerHTML="";const ppl=Object.values(D.dir);updPres(true);const lg=document.querySelector("#chhd .chlogo");if(lg){lg.innerHTML="";lg.classList.toggle("dm",!!dmc);if(dmc)lg.appendChild(av(peerName(),(D.dir[dmc.peer]||{}).photo,42));else lg.textContent=KINDS[KIND].ico}$("stk").style.display=dmc?"none":"";$("mt").placeholder="Message";$("mt").setAttribute("data-noskin","");$("chn").textContent=dmc?peerName():S.soc.name+" Community";
  const st=$("stk");st.innerHTML="";ppl.slice(0,4).forEach(p=>st.appendChild(av(p.name,p.photo,30)));
  $("chhd").onclick=dmc?()=>profile(dmc.peer,{name:dmc.name}):()=>sheet(z=>{z.appendChild(mk("h2",null,"Members ("+ppl.length+")"));z.appendChild(mk("p","sub",S.soc.name));ppl.sort((x,y)=>(x.name||"").localeCompare(y.name||"")).forEach(p=>{const r=mk("div","mem");const pu=p.uid||p.id;r.style.cursor="pointer";r.onclick=()=>profile(pu,p);r.appendChild(avd(p.name,p.photo,44,pu));const d=mk("div");const bb=mk("b");bb.append(p.name);d.appendChild(bb);d.appendChild(mk("small",null,(p.flat||"")+" · "+(online(pu)?"Online":"Offline")));r.appendChild(d);if(ROLE[p.role])r.appendChild(mk("span","chip",ROLE[p.role]));z.appendChild(r)})});
  const hd=hid(),v=Object.values(dmc?D.dmm:D.msg).filter(x=>!hd.has(x.id)).sort((x,y)=>x.ts-y.ts);
@@ -1645,7 +1733,12 @@ $("a_doc").onclick=()=>{shut();$("mdoc").click()};$("a_loc").onclick=()=>{shut()
 $("mdoc").onchange=async e=>{const f=e.target.files[0];e.target.value="";if(!f)return;if(f.size>3*1048576){toast("ℹ️","File too large","Please choose a file under 3 MB.",true);return}try{await sendMsg({file:{name:f.name.slice(0,80),size:f.size,type:(f.type||"").slice(0,80),url:await UP(f,"docs",f.name)}})}catch(x){fail(x,"File not sent")}};
 const shareLoc=()=>askPerm("loc").then(ok=>{if(ok)shareLocGo()});
 function shareContact(){sheet(z=>{z.appendChild(mk("h2",null,"👤 Share contact"));z.appendChild(mk("p","sub","Send a name and phone number to the chat."));
-  if(navigator.contacts&&navigator.contacts.select){const k=mk("button","btn o","📱 Pick from my phone");k.style.marginBottom="12px";k.onclick=async()=>{try{const r=await navigator.contacts.select(["name","tel"],{multiple:false});if(!r||!r.length)return;const c=r[0],tl=cleanPh(c.tel&&c.tel[0]);if(!tl){toast("ℹ️","No number found","",true);return}await sendMsg({contact:{name:cleanName(c.name&&c.name[0])||tl,phone:tl}});closeSheet()}catch(x){if(!x||x.name!=="AbortError")fail(x,"Contact not sent")}};z.appendChild(k)}
+  {const N=natContacts(),web=!!(navigator.contacts&&navigator.contacts.select);if(N||web){const k=mk("button","btn o","📱 Pick from my phone");k.type="button";k.style.marginBottom="12px";
+   k.onclick=async()=>{let c=null;
+    try{if(N){const r=await N.pick({});if(!r||r.cancelled)return;c={name:r.name,tel:r.phone}}else{const r=await navigator.contacts.select(["name","tel"],{multiple:false});if(!r||!r.length)return;c={name:r[0].name&&r[0].name[0],tel:r[0].tel&&r[0].tel[0]}}}
+    catch(x){if(x&&x.name==="AbortError")return;console.warn("contact picker",x);k.remove();toast("ℹ️","Couldn't open your contacts","Type the name and number below.",true);try{n.focus()}catch(e){}return}
+    const tl=cleanPh(c.tel);if(!tl){toast("ℹ️","No number found","This contact has no phone number.",true);return}n.value=cleanName(c.name)||"";t.value=tl;[n,t].forEach(e=>e.dispatchEvent(new Event("input",{bubbles:true})));
+    try{await sendMsg({contact:{name:cleanName(c.name)||tl,phone:tl}});closeSheet()}catch(x){fail(x,"Contact not sent")}};z.appendChild(k)}}
   const n=mk("input"),t=mk("input"),b=mk("button","btn","Send contact");n.placeholder="Name";n.maxLength=40;t.placeholder="Mobile number";t.type="tel";t.inputMode="tel";t.maxLength=18;
   b.onclick=()=>{const nm=cleanName(n.value),ph=cleanPh(t.value);if(!nm||ph.replace(/\D/g,"").length<7){toast("ℹ️","Enter a name and valid number","",true);return}run(b,async()=>{await sendMsg({contact:{name:nm,phone:ph}});closeSheet()})};z.append(n,t,b)})}
 /* bubbles */
@@ -1771,7 +1864,7 @@ const KB=[
 {t:"Thanks",k:["thanks","thank you","thankyou","thx","shukriya","dhanyavad","great","awesome"],a:()=>"😊 Happy to help! Anything else?"},
 {t:"About the app",k:["what is this app","about app","what can you do","features","app kya hai","kya kar sakte","overview","sangam","sangam360","how does it work","kaise kaam"],a:c=>c.soc?"🏘️ "+BRAND+" runs your whole society: visitor passes & gate, parcels, complaints, notices, group & private chat, maintenance bills with UPI/bank payment and receipts, vehicles & parking, domestic help, classifieds, polls and SOS.":c.com?"🏢 "+BRAND+" runs your company: employees & approvals, attendance check-in/out, leave, meeting rooms, helpdesk, visitors & couriers, team chat, notices, billing with GST invoices and receipts.":"🎓 "+BRAND+" runs your school: students & staff, attendance, timetable, homework, leave, complaints, fee billing & receipts, notices and community chat."},
 {t:"Create my workspace",k:["create society","create company","create school","create my","new society","new company","new school","register society","register company","register school","set up","setup","start new","admin banna","naya society","create workspace","create account as admin"],a:c=>"🏗️ Choose “"+c.card+"” on the first screen → Sign up → Create my "+c.org+" → fill the details"+(c.com?" (GST number is mandatory – 15 characters)":"")+", add "+(c.soc?"towers & flats":c.com?"departments":"classes")+" and your admin account. You then get a join code to share with your "+c.per+"s."},
-{t:"Join with a code",k:["join","joining","join code","enter code","society code","company code","school code","code","request to join","kaise join","join kaise","invite code","code dalna","code daalna"],a:c=>c.sch?"🔑 Principal: Create my school → Create as Principal → you get the Principal's code (People tab) → give it only to teachers.\nTeacher: Create my school → Create as Teacher → enter the Principal's code → choose class and section → the Principal approves → your class code appears in the People tab.\nStudent: Join my school → enter your class teacher's code → the teacher approves.":"🔑 Choose “"+c.card+"” → Sign up (or log in) → Join my "+c.org+" → enter the code from your admin → pick your "+(c.soc?"flat":c.unit)+", add name, mobile, ID proof (photo/PDF) and your photo → Request to join. Your admin approves you and you’re in. An empty or wrong code shows “Not found”."},
+{t:"Join with a code",k:["join","joining","join code","enter code","society code","company code","school code","code","request to join","kaise join","join kaise","invite code","code dalna","code daalna"],a:c=>c.sch?"🔑 Principal: Create my school → Create as Principal → you get the Principal's code (People tab) → give it only to teachers.\nTeacher: Join as a teacher → enter the Principal's code → choose class and section → the Principal approves → your class code appears in the People tab.\nStudent: Join as a student → enter your class teacher's code → the teacher approves.":"🔑 Choose “"+c.card+"” → Sign up (or log in) → Join my "+c.org+" → enter the code from your admin → pick your "+(c.soc?"flat":c.unit)+", add name, mobile, ID proof (photo/PDF) and your photo → Request to join. Your admin approves you and you’re in. An empty or wrong code shows “Not found”."},
 {t:"Code says Not found",k:["not found","invalid code","wrong code","code not working","code nahi","code galat","code error","code not found"],a:c=>"❌ “Not found” means the code is empty, mistyped, or belongs to another type. Re-check it with your admin and make sure you picked “"+c.card+"” on the first screen."},
 {t:"Already a member",k:["already a member","already member","already joined","join again","same flat","again join","dobara join","already in"],a:c=>"ℹ️ “You are already a member” means you’re already in that "+c.org+" (or your request is still pending). Open it from Me → My "+c.org+"s → Switch, or ask your admin about the pending request."},
 {t:"Approval & waiting",k:["approval","approve","approved","pending","waiting","waiting for approval","request pending","not approved","rejected","request sent","check again","approve kaise"],a:c=>c.adm?"🙋 Pending requests show in your People tab. Open the card, check the ID proof & photo, then Approve or Reject. The role shown is what the person chose at sign-up (e.g. "+c.Per+") — change it later with the dropdown.":"⏳ After you request to join, your admin has to approve you. You get in automatically — tap Check again on the waiting screen. If it says not approved, contact your admin and send a new request."},
@@ -1891,8 +1984,8 @@ async function delOrg(){const w=KINDS[KIND].word,n=prompt("This permanently dele
   toast("🗑️","Deleted","Your "+w+" and its data are gone.",true);setTimeout(()=>location.href=location.pathname,1200)}catch(e){fail(e)}}
 function rMore(){const m=$("mr");m.innerHTML="";if(isAdm()){const ic=mk("div","card");ic.appendChild(mk("h2",null,"🪪 Resident records"));ic.appendChild(mk("div","meta",KIND==="school"?(isOwner()?"ID proof and photo of every student and teacher, class by class.":"ID proof and photo of the students, class by class."):"ID proof and photo of every resident, by building and flat."));const ib=mk("button","btn",SCH()&&isOwner()?"🪪 Teachers & students ID proof":"🪪 Residents ID proof");ib.style.marginTop="10px";ib.onclick=openIdPages;ic.appendChild(ib);m.appendChild(ic)}p4(m);p3(m);
  if(isAdm()){const c=mk("div","card"),T=isTeacher(),P=SCH()&&isOwner(),code=T?(S.me.code||""):S.soc.code;c.appendChild(mk("h2",null,P?"Invite teachers":T?"Invite your class · "+myCls():"Invite residents"));
-  if(P)c.appendChild(mk("p","sub","This is your Principal's code. Share it only with teachers: they choose Create my school → Create as Teacher and enter it. Students join with their class teacher's code."));
-  if(T)c.appendChild(mk("p","sub",code?"This is the class code for "+myCls()+". Your students choose Join my school and enter it.":"Your class code is being prepared. Open this tab again in a moment."));
+  if(P)c.appendChild(mk("p","sub","This is your Principal's code. Share it only with teachers: they choose Join as a teacher and enter it. Students join with their class teacher's code."));
+  if(T)c.appendChild(mk("p","sub",code?"This is the class code for "+myCls()+". Your students choose Join as a student and enter it.":"Your class code is being prepared. Open this tab again in a moment."));
   {const cd=mk("div","code",code||"· · ·");cd.setAttribute("data-noskin","");c.appendChild(cd)}
   const a=mk("button","btn s o","Copy invitation link");a.style.marginBottom="8px";a.onclick=()=>cp(link(code));const b=mk("a","btn s g","Share on WhatsApp");b.target="_blank";b.href="https://wa.me/?text="+encodeURIComponent(P?"Join "+S.soc.name+" on "+BRAND+" as a teacher: "+link(code)+" (Principal's code: "+code+")":T?"Join "+myCls()+" of "+S.soc.name+" on "+BRAND+": "+link(code)+" (class code: "+code+")":"Join our "+KINDS[KIND].word+" on "+BRAND+": "+link(code)+" (code: "+code+")");if(code)c.append(a,b);m.appendChild(c);
   const mem=Object.values(D.mem),pend=mem.filter(x=>x.status==="pending");const p=mk("div","card");p.appendChild(mk("h2",null,"Pending approvals ("+pend.length+")"));
@@ -2131,7 +2224,7 @@ function skinTree(root){if(!root)return;if(root.nodeType===3){skinNode(root);ret
  (root.querySelectorAll?root.querySelectorAll("[placeholder]"):[]).forEach(e=>{if(e.closest("[data-noskin]"))return;const cur=e.getAttribute("placeholder");if(e.dataset.ph1!==undefined&&cur!==e.dataset.ph1)e.dataset.ph0=cur;else if(e.dataset.ph0===undefined)e.dataset.ph0=cur;const v=skinStr(e.dataset.ph0);e.dataset.ph1=v;if(cur!==v)e.setAttribute("placeholder",v)})}
 new MutationObserver(ms=>{if(!SKR)return;ms.forEach(m=>{if(m.type==="characterData")skinNode(m.target);else m.addedNodes.forEach(skinTree)})}).observe(document.body,{childList:true,subtree:true,characterData:true});
 function setKind(k){if(!KINDS[k])k="society";KIND=k;try{localStorage.setItem("sh-kind",k)}catch(e){}const K=KINDS[k],r=document.documentElement.style;r.setProperty("--a",K.c1);r.setProperty("--a2",K.c2);const tm=document.querySelector('meta[name="theme-color"]');if(tm)tm.content=K.c1;
- skinSet();{const ab=$("aback");if(ab){const nm={society:"society",company:"corporate",school:"school"};ab.setAttribute("data-noskin","");ab.textContent="← Change ("+Object.keys(nm).filter(x=>x!==k).map(x=>nm[x]).join(" / ")+")"}}$("goC").innerHTML="<b>"+K.createT+"</b>"+K.createS;$("goJ").innerHTML="<b>"+K.joinT+"</b>"+K.joinS;$("atag").textContent=K.tag;
+ skinSet();{const ab=$("aback");if(ab){const nm={society:"society",company:"corporate",school:"school"};ab.setAttribute("data-noskin","");ab.textContent="← Change ("+Object.keys(nm).filter(x=>x!==k).map(x=>nm[x]).join(" / ")+")"}}$("goC").innerHTML="<b>"+K.createT+"</b>"+K.createS;$("goJ").innerHTML="<b>"+K.joinT+"</b>"+K.joinS;$("goT").classList.toggle("hide",k!=="school");$("atag").textContent=K.tag;
  document.title=BRAND+" — "+TAGLINE;["b0","b1","b2","b3"].forEach(i=>{const e=$(i);if(e)e.innerHTML=LOGO+BRANDH});skinTree(document.body);if(S.me&&!$("sMain").classList.contains("hide")){try{drawNav();setSub(sub)}catch(e){}}}
 ["society","company","school"].forEach(k=>{const K=KINDS[k],b=mk("button");b.innerHTML='<i class="ki" style="--k:'+K.c1+'">'+K.ico+"</i><span><b>"+K.card+"</b><small>"+K.cardS+"</small></span><em>›</em>";b.onclick=()=>{setKind(k);show("sAuth")};$("lcards").appendChild(b)});
 $("aback").onclick=()=>show("sLand");setKind(KIND);
@@ -2338,7 +2431,7 @@ async function shareQR(v,q,href){const txt=decodeURIComponent(href.split("text="
 /* free AI fallback for the support bot */
 async function freeAI(q){try{const c=spC(),role=c.adm?"an admin":c.grd?"a security guard":"a "+c.per,
  feats=c.soc?"visitor passes with QR/6-digit code, parcels, complaints, notices, group and private chat, vehicles, parking, domestic help, classifieds, polls, amenity booking, SOS, maintenance bills paid by UPI or bank transfer with receipts, finance, People tab with roles and approvals":c.com?"employee directory and approvals, attendance check-in/check-out, leave, meeting rooms, helpdesk, visitors, couriers, team chat, notices, billing with GST invoices and receipts, UPI or bank payment details":"students and staff, attendance check-in/check-out, timetable, homework, leave, complaints, parcels, visitors, fee billing with receipts, notices, community chat",
- sys="You are Sangam360 Support, the assistant inside the "+BRAND+" app for housing societies, companies and schools. This workspace is a "+c.org+" and the user is "+role+" ("+c.per+"s are the members). Features here: "+feats+". "+(c.sch?"School codes: the Principal creates the school and shares the Principal's code only with teachers (Create my school → Create as Teacher); each approved teacher gets a class code in the People tab and students join with it (Join my school). The Principal sees all teachers and students; a teacher sees their own class. Notices: the Principal publishes for all teachers or all students, a teacher for their class. ":"")+"Rules: one email works for one type only; admins approve join requests from the People tab; only the main admin sees the Plan tab; admins can permanently delete profiles; image ID proofs are saved as PDF. Answer ONLY about this app, in the user language (Hindi, Hinglish or English), plain text, max 70 words, step by step with tab names. If unsure, say so and suggest emailing support.";
+ sys="You are Sangam360 Support, the assistant inside the "+BRAND+" app for housing societies, companies and schools. This workspace is a "+c.org+" and the user is "+role+" ("+c.per+"s are the members). Features here: "+feats+". "+(c.sch?"School codes: the Principal creates the school and shares the Principal's code only with teachers (Join as a teacher); each approved teacher gets a class code in the People tab and students join with it (Join as a student). The Principal sees all teachers and students; a teacher sees their own class. Notices: the Principal publishes for all teachers or all students, a teacher for their class. ":"")+"Rules: one email works for one type only; admins approve join requests from the People tab; only the main admin sees the Plan tab; admins can permanently delete profiles; image ID proofs are saved as PDF. Answer ONLY about this app, in the user language (Hindi, Hinglish or English), plain text, max 70 words, step by step with tab names. If unsure, say so and suggest emailing support.";
  const ct=new AbortController(),t=setTimeout(()=>ct.abort(),12000);const r=await fetch("https://text.pollinations.ai/"+encodeURIComponent(q.slice(0,300))+"?model=openai&system="+encodeURIComponent(sys),{signal:ct.signal});clearTimeout(t);if(!r.ok)return null;const x=(await r.text()).trim();return x&&x.length<1500?x:null}catch(e){return null}}
 /* subscription plans */
 const PLANS_SOC=[{id:"free",name:"Starter",max:25,m:0,y:0,f:["1–25 flats","Visitors & parcels","Complaints & notices","Community & private chat","Shows ads"]},
@@ -2852,12 +2945,14 @@ const fxT12=t=>{const m=/^(\d{1,2}):(\d{2})/.exec(t||"");if(!m)return t||"";cons
 const fxPpl=()=>{const src=isAdm()?Object.values(D.mem||{}).filter(x=>x.status==="approved"):Object.values(D.dir||{});
  return src.map(x=>({uid:x.uid||x.id,name:x.name||"",flat:x.flat||"",role:x.role})).filter(x=>x.uid&&x.name).sort((a,b)=>a.name.localeCompare(b.name))};
 const fxOff=u=>{if(!u)return;try{u()}catch(e){}fxU=fxU.filter(f=>f!==u)};
-function fxW(q,cb){const u=onSnapshot(q,s=>cb(s.docs.map(d=>({id:d.id,...d.data()})),null),e=>{console.warn("add-on data",e);cb(null,e)});fxU.push(u);return u}
+let fxFresh=0;
+function fxW(q,cb){const u=onSnapshot(q,s=>{if(!fxFresh){fxFresh=1;const b=$("fxb");if(b){b.classList.add("fresh");setTimeout(()=>b.classList.remove("fresh"),650)}}cb(s.docs.map(d=>({id:d.id,...d.data()})),null)},e=>{console.warn("add-on data",e);cb(null,e)});fxU.push(u);return u}
 function fxStop(){fxU.forEach(f=>{try{f()}catch(e){}});fxU=[]}
 
 /* ---------- small UI helpers ---------- */
 const fxSel=(opts,val)=>{const s=mk("select");opts.forEach(o=>{const a=Array.isArray(o)?o:[o,o];s.appendChild(Object.assign(mk("option",null,a[1]),{value:a[0]}))});if(val!=null)s.value=val;return s};
-const fxLbl=(t,el)=>{const l=mk("label","fxl");l.appendChild(mk("span",null,t));l.appendChild(el);return l};
+/* text fields get a floating label (see "form fields" below): the name of the field floats, the example shows while typing */
+const fxLbl=(t,el)=>{if(el.tagName==="TEXTAREA"||(el.tagName==="INPUT"&&/^(text|email|password|tel|number|url)$/.test(el.type||"text"))){el.dataset.fll=t;const d=mk("div","fxl");d.appendChild(el);return d}const l=mk("label","fxl");l.appendChild(mk("span",null,t));l.appendChild(el);return l};
 const fxPill=(t,c)=>mk("span","fxp"+(c?" "+c:""),t);
 const fxMini=(t,fn,c)=>{const b=mk("button","btn s "+(c||"o"),t);b.type="button";b.onclick=e=>{e.stopPropagation();run(b,fn)};return b};
 const fxEmpty=(ic,t)=>{const e=mk("div","fxe");e.appendChild(mk("i",null,ic));e.appendChild(document.createTextNode(t));return e};
@@ -2866,7 +2961,7 @@ const fxHead=(b,t,s,bt,fn)=>{const c=mk("div","fxhd");c.appendChild(mk("b",null,
 const fxSec=(b,t)=>b.appendChild(mk("div","fxs",t));
 /* loading / error / empty. Returns true when it has drawn something and the caller should stop. */
 function fxState(b,L,err,ic,empty){if(err){b.appendChild(fxEmpty("⚠️",err.code==="permission-denied"?(isOwner()?"This feature is not switched on in the database yet. Publish the latest Firestore rules (firestore.rules) in the Firebase console, then open this page again.":"This feature is not available yet. Please ask your admin."):"Couldn't load. Check your internet and try again."));return true}
- if(L===null){b.appendChild(fxEmpty("⏳","Loading…"));return true}if(!L.length){b.appendChild(fxEmpty(ic,empty));return true}return false}
+ if(L===null){for(let i=0;i<3;i++){const k=mk("div","fxk skl");k.setAttribute("aria-hidden","true");k.innerHTML="<i class='w1'></i><i class='w2'></i><i class='w3'></i>";b.appendChild(k)}return true}if(!L.length){b.appendChild(fxEmpty(ic,empty));return true}return false}
 const fxSure=t=>{try{return window.confirm(t)}catch(e){return true}};
 /* a message for the person filling a form (shown as a hint, not as an error) */
 const fxBad=m=>Object.assign(new Error(m),{fxv:1});
@@ -2910,13 +3005,22 @@ function fxBuild(){if($("fx"))return;
  const p=mk("div");p.id="fx";p.setAttribute("data-noskin","");const h=mk("div","fxh"),bk=mk("button","btn s o","← Back"),t=mk("b");t.id="fxt";bk.type="button";bk.onclick=fxHide;h.append(bk,t);const b=mk("div");b.id="fxb";p.append(h,b);
  const sc=mk("div");sc.id="drs";sc.onclick=()=>drwShow(false);const d=mk("aside");d.id="drw";d.setAttribute("data-noskin","");d.setAttribute("aria-label","Menu");
  document.body.append(p,sc,d);
- const hb=document.querySelector("#sMain .hb");if(hb&&!$("hmb")){const m=mk("button");m.id="hmb";m.type="button";m.setAttribute("aria-label","Open menu");m.innerHTML='<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h11"/></svg>';m.onclick=()=>drwShow(true);hb.insertBefore(m,hb.firstChild)}
- /* swipe in from the left edge opens the side bar, swipe left on it closes it */
- let sx=0,sy=0,mode=0;
- document.addEventListener("touchstart",e=>{const t=e.touches[0];sx=t.clientX;sy=t.clientY;const open=d.classList.contains("on");
-  mode=open?2:(sx<18&&!$("sMain").classList.contains("hide")&&!$("fx").classList.contains("on")&&$("ov").classList.contains("hide")&&!$("permd")&&!$("pdfv")&&$("ied").classList.contains("hide")?1:0)},{passive:true});
- document.addEventListener("touchend",e=>{if(!mode)return;const t=e.changedTouches[0],dx=t.clientX-sx,dy=Math.abs(t.clientY-sy);if(mode===1&&dx>60&&dy<60)drwShow(true);if(mode===2&&dx<-60&&dy<70)drwShow(false);mode=0},{passive:true})}
-function fxOpen(key){const F=FX[key];if(!F||!S.me)return;fxBuild();drwShow(false);closeSheet();fxStop();fxKey=key;$("fxt").textContent=F.ic+" "+F.t;const b=$("fxb");b.innerHTML="";$("fx").classList.add("on");b.scrollTop=0;
+ const hb=document.querySelector("#sMain .hb");if(hb&&!$("hmb")){const m=mk("button");m.id="hmb";m.type="button";m.setAttribute("aria-label","Open menu");m.innerHTML=BGR;m.onclick=()=>drwShow(!$("drw").classList.contains("on"));hb.insertBefore(m,hb.firstChild)}
+ /* pull the side bar out with a finger: start in the left part of the screen and slide right; slide left to close it.
+    It follows the finger. (The very edge of the screen belongs to Android's own "back" swipe, so the zone is wider than that.) */
+ let sx=0,sy=0,mode=0,W=300,t0=0,pr=0,wasOpen=false;
+ const noSwipe=t=>!!(t&&t.closest&&t.closest("input,textarea,select,video,canvas,.seg,.fxch,.fxgw,.lch,.eb,.et,[data-noswipe],#dpop,#ov,#permd,#pdfv,#legal,#idp,#ied,#sp,#fx"));
+ const zone=()=>tab==="comm"&&!$("v_chat").classList.contains("hide")?26:Math.min(96,innerWidth*.26);
+ document.addEventListener("touchstart",e=>{mode=0;if(e.touches.length!==1||!S.me)return;const t=e.touches[0];sx=t.clientX;sy=t.clientY;t0=Date.now();wasOpen=d.classList.contains("on");
+  if(wasOpen)mode=1;else if(sx<zone()&&!$("sMain").classList.contains("hide")&&!noSwipe(e.target))mode=1},{passive:true});
+ document.addEventListener("touchmove",e=>{if(!mode)return;const t=e.touches[0],dx=t.clientX-sx,dy=t.clientY-sy;
+  if(mode===1){if(Math.abs(dx)<10&&Math.abs(dy)<10)return;if(Math.abs(dx)<Math.abs(dy)*1.2||(wasOpen?dx>0:dx<0)){mode=0;return}
+   mode=2;if(!wasOpen)drwDraw();W=d.offsetWidth||300;d.classList.add("drag");sc.classList.add("drag")}
+  pr=Math.max(0,Math.min(1,wasOpen?1+dx/W:dx/W));d.style.transform="translateX("+(-(1-pr)*105)+"%)";sc.style.opacity=String(pr)},{passive:true});
+ const end=e=>{if(mode===2){const t=(e.changedTouches&&e.changedTouches[0])||{clientX:sx},v=(t.clientX-sx)/Math.max(1,Date.now()-t0),open=wasOpen?!(pr<.6||v<-.45):(pr>.35||v>.45);
+   d.classList.remove("drag");sc.classList.remove("drag");d.style.transform="";sc.style.opacity="";if(open&&!wasOpen){d.classList.remove("on")}void d.offsetWidth;drwShow(open)}mode=0};
+ document.addEventListener("touchend",end,{passive:true});document.addEventListener("touchcancel",end,{passive:true})}
+function fxOpen(key){const F=FX[key];if(!F||!S.me)return;fxBuild();drwShow(false);closeSheet();fxStop();fxKey=key;fxFresh=0;$("fxt").textContent=F.ic+" "+F.t;const b=$("fxb");b.innerHTML="";$("fx").classList.add("on");b.scrollTop=0;
  try{F.open(b)}catch(e){console.error(e);b.appendChild(fxEmpty("⚠️","Couldn't open this page."))}}
 function fxHide(){fxStop();fxKey=null;const p=$("fx");if(p){p.classList.remove("on");$("fxb").innerHTML=""}}
 /* Android back button / gesture (called from window.__back) */
@@ -2926,13 +3030,23 @@ function fxOnBack(){const d=$("drw");if(d&&d.classList.contains("on")){drwShow(f
 const SUBI={comp:"🛠️",vis:"🚪",del:"📦",veh:"🚗",park:"🅿️",help:"🧹",mkt:"🛍️",att:"📝",leave:"🌴",room:"📅",tt:"🗓️",hol:"🎉",hw:"📚",gc:"⚖️"};
 const FXLIST={society:["lf","ven","meet","exr"],school:["res","gp","ptm","bus","bday"],company:["task","shift","pay","asset","claim","bday"]};
 const fxShown=k=>{const F=FX[k];return !!F&&(!F.show||F.show())};
-function drwShow(on){fxBuild();const d=$("drw");if(on){if(!S.me)return;drwDraw();$("drl")&&($("drl").scrollTop=0)}d.classList.toggle("on",!!on);$("drs").classList.toggle("on",!!on)}
-function drwDraw(){const d=$("drw");d.innerHTML="";const g=isGuard(),adm=isAdm(),nv=Object.fromEntries(navCfg().map(c=>[c[0],c]));
- const h=mk("div","drh");h.appendChild(av(S.me.name,photoOf(S.uid),46));h.appendChild(mk("b",null,S.me.name));
- {const rl=roleLbl(S.me.role),fl=String(S.me.flat||"");h.appendChild(mk("span",null,fl&&fl.toLowerCase()!==rl.toLowerCase()?rl+" · "+fl:rl))}
+const BGR='<span class="bgr" aria-hidden="true"><i></i><i></i><i></i></span>';
+const drwShut=()=>{try{return new Set(JSON.parse(localStorage.getItem("sh-drg")||"[]"))}catch(e){return new Set()}};
+function drwShow(on){fxBuild();const d=$("drw"),was=d.classList.contains("on");if(on)try{tipHide()}catch(e){}if(on){if(!S.me)return;if(!was)drwDraw()}d.classList.toggle("on",!!on);$("drs").classList.toggle("on",!!on);document.body.classList.toggle("drwon",!!on);
+ const x=$("drx");if(x){if(on&&!was){x.classList.remove("x");void x.offsetWidth;requestAnimationFrame(()=>x.classList.add("x"))}else if(!on)x.classList.remove("x")}}
+function drwDraw(){const d=$("drw");d.innerHTML="";const g=isGuard(),adm=isAdm(),nv=Object.fromEntries(navCfg().map(c=>[c[0],c])),shut=drwShut();
+ const h=mk("div","drh"),cx=mk("button","drx");cx.id="drx";cx.type="button";cx.setAttribute("aria-label","Close menu");cx.innerHTML=BGR;cx.onclick=()=>drwShow(false);h.appendChild(cx);
+ h.appendChild(av(S.me.name,photoOf(S.uid),46));h.appendChild(mk("b",null,S.me.name));
+ {const rl=roleLbl(S.me.role),fl=String(S.me.flat||""),r=mk("div","drr"),own=isOwner(),bd=mk("span","drb"+(own?" bown":adm?" badm":""));
+  bd.innerHTML=own||adm?'<svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.600-1.600 8-6 8-11V5l-8-3Zm-1.200 13.600-3.400-3.400 1.400-1.400 2 2 4.400-4.400 1.400 1.400-5.800 5.800Z"/></svg>':"";bd.appendChild(document.createTextNode(rl));r.appendChild(bd);
+  if(fl&&fl.toLowerCase()!==rl.toLowerCase())r.appendChild(mk("span","drfl",fl));h.appendChild(r)}
  const ws=mk("button","drws");ws.type="button";ws.append(mk("span",null,KINDS[KIND].ico+" "+S.soc.name),mk("span",null,"Switch ⇅"));ws.onclick=()=>{drwShow(false);$("wsw").onclick()};h.appendChild(ws);d.appendChild(h);
- const l=mk("div","drl");l.id="drl";d.appendChild(l);
- const grp=t=>l.appendChild(mk("div","drg",t)),it=(ic,t,fn,o)=>{o=o||{};const b=mk("button","dri"+(o.on?" on":"")+(o.cls?" "+o.cls:""));b.type="button";b.appendChild(mk("i",null,ic));b.appendChild(mk("span",null,t));if(o.n)b.appendChild(mk("em","c",String(o.n)));else if(o.nw)b.appendChild(mk("em","n","NEW"));b.onclick=()=>{drwShow(false);fn()};(o.to||l).appendChild(b);return b};
+ const l=mk("div","drl");l.id="drl";d.appendChild(l);let box=l;
+ /* a group of links that opens and closes; the choice is remembered on this phone */
+ const grp=t=>{const w=mk("div","drgw"+(shut.has(t)?" shut":"")),hb=mk("button","drg"),c=mk("div","drgc"),i=mk("div","drgi");hb.type="button";hb.appendChild(mk("span",null,t));hb.insertAdjacentHTML("beforeend",'<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>');
+  hb.setAttribute("aria-expanded",String(!shut.has(t)));hb.onclick=()=>{const s=!w.classList.contains("shut");w.classList.toggle("shut",s);hb.setAttribute("aria-expanded",String(!s));const cur=drwShut();if(s)cur.add(t);else cur.delete(t);try{localStorage.setItem("sh-drg",JSON.stringify([...cur]))}catch(e){}};
+  c.appendChild(i);w.append(hb,c);l.appendChild(w);box=i};
+ const it=(ic,t,fn,o)=>{o=o||{};const b=mk("button","dri"+(o.on?" on":"")+(o.cls?" "+o.cls:""));b.type="button";b.appendChild(mk("i",null,ic));b.appendChild(mk("span",null,t));if(o.n)b.appendChild(mk("em","c",String(o.n)));else if(o.nw)b.appendChild(mk("em","n","NEW"));b.onclick=()=>{drwShow(false);fn()};(o.to||box).appendChild(b);return b};
  const comm=v=>()=>{go("comm");$(v==="ann"?"sn1":"sn2").onclick()},onC=v=>tab==="comm"&&!$(v==="ann"?"v_ann":"v_chat").classList.contains("hide");
  grp("Daily");it("🏠","Home",()=>go("home"),{on:tab==="home"});
  if(!g){it("📢","Notices",comm("ann"),{on:onC("ann")});it("💬",KIND==="company"?"Team chat":"Chat",comm("chat"),{on:onC("chat")})}
@@ -3291,6 +3405,118 @@ FX.claim={ic:"🧾",t:"Expense claims",show:()=>!isGuard(),open(b){let L=null,er
    if(x.uid===S.uid&&x.status==="Pending")a.appendChild(fxMini("Delete",async()=>{if(!fxSure("Delete this claim?"))return;await deleteDoc(FXD("claims",x.id));rmFile(x.img)},"r"));
    if(a.children.length)c.appendChild(a);b.appendChild(c)})};
  fxW(adm?query(FXC("claims"),orderBy("ts","desc"),limit(500)):query(FXC("claims"),where("uid","==",S.uid),limit(200)),(d,e)=>{L=d||[];err=e;draw()});draw()}};
+
+/* =====================================================================================================
+   FORM FIELDS + MOTION
+   - every text field gets a floating label (the placeholder becomes the label), a password eye, a character counter
+     and a live "formatted" echo for phone numbers and amounts. Values themselves are never changed.
+   - a wrong / missing field shakes gently.
+   - home: cards arrive one after another, numbers count up, a ring shows how much has been collected.
+   - bottom bar pill, hints (tooltips), new profile photo animation.
+   ===================================================================================================== */
+const UXTXT=/^(text|email|password|tel|number|url)$/;let flN=0;
+/* the phone's own contact list (native plugin added by live_native.py when the app is built) */
+function natContacts(){try{const C=window.Capacitor;if(!C||!C.isNativePlatform||!C.isNativePlatform())return null;const P=(C.Plugins||{}).ContactPick;return P&&typeof P.pick==="function"?P:null}catch(e){return null}}
+const flSkip=el=>{if(el.tagName==="INPUT"&&!UXTXT.test((el.getAttribute("type")||"text").toLowerCase()))return true;
+ if(el.id==="mt"||el.id==="spt"||el.dataset.sgdp||el.readOnly||el.hasAttribute("data-nofl"))return true;
+ if(el.closest("#dpop,.fxsub,[data-nofl],#sp,#ied,.cdock,.qsb,#splash,#uxtip"))return true;
+ const ph=(el.dataset.fll||el.getAttribute("placeholder")||"").trim();return !ph||/^(e\.g\.|search)/i.test(ph)};
+const flSetPh=(el,v)=>{el._flBusy=true;el.setAttribute("placeholder",v);el._flBusy=false};
+const flPhone=d=>{d=d.replace(/\D/g,"");if(d.length>10&&d.startsWith("91"))return "+91 "+flPhone(d.slice(2));if(d.length>10&&d.startsWith("0"))d=d.slice(1);return d.length<=5?d:d.slice(0,5)+" "+d.slice(5,10)+(d.length>10?" "+d.slice(10):"")};
+function flWrap(el){if(el._fl||!el.parentNode||!el.isConnected||flSkip(el))return;
+ const cur=el.getAttribute("placeholder")||"",lab=(el.dataset.fll||((el.dataset.ph1!==undefined&&el.dataset.ph1===cur&&el.dataset.ph0)?el.dataset.ph0:cur)).trim(),hint=el.dataset.fll?cur.trim():"";
+ const ta=el.tagName==="TEXTAREA",ty=(el.getAttribute("type")||"text").toLowerCase(),w=mk("span","flw"+(ta?" ta":"")),l=mk("label",null,lab),had=document.activeElement===el;
+ if(el.style.margin){w.style.margin=el.style.margin;el.style.margin=""}if(el.style.width){w.style.width=el.style.width;el.style.width=""}
+ try{const ps=getComputedStyle(el.parentNode);if(/flex/.test(ps.display)&&!/column/.test(ps.flexDirection)){const cs=getComputedStyle(el);w.style.flex=cs.flexGrow+" "+cs.flexShrink+" "+(el.style.flexBasis||cs.flexBasis||"auto")}}catch(e){}
+ el.parentNode.insertBefore(w,el);w.appendChild(el);if(!el.id)el.id="flf"+(++flN);l.htmlFor=el.id;w.appendChild(l);el._fl={w,l,hint};flSetPh(el," ");if(had)try{el.focus()}catch(e){}
+ if(hint){el.addEventListener("focus",()=>flSetPh(el,el._fl.hint));el.addEventListener("blur",()=>flSetPh(el," "))}
+ /* password: eye that opens and closes */
+ if(ty==="password"){w.classList.add("pw");const b=mk("button","fle");b.type="button";b.setAttribute("aria-label","Show password");b.setAttribute("data-tip","Show / hide password");
+  b.innerHTML='<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="e1" d="M2 12s3.600-7 10-7 10 7 10 7-3.600 7-10 7S2 12 2 12Z"/><circle class="e2" cx="12" cy="12" r="3"/><path class="e3" d="M4 4l16 16"/></svg>';
+  b.onclick=()=>{const show=el.type==="password";el.type=show?"text":"password";b.classList.toggle("on",show);b.setAttribute("aria-label",show?"Hide password":"Show password");b.classList.remove("uxb");void b.offsetWidth;b.classList.add("uxb");const c=$("shp");if(c&&el.id==="ap")c.checked=show};w.appendChild(b)}
+ /* character counter (long fields) and a formatted echo for phone numbers / amounts */
+ const mx=el.maxLength>0?el.maxLength:0,txt=(lab+" "+hint).toLowerCase(),isTel=ty==="tel"||el.inputMode==="tel"||/mobile|phone/.test(txt),isAmt=ty==="number"&&/amount|₹|price|rent|salary|deposit|charge|fine/.test(txt);
+ let c=null,x=null;
+ if(mx&&(ta||mx>=60)&&ty!=="password"){c=mk("span","flc");c.setAttribute("aria-hidden","true");const n=mk("b",null,"0");c.append(n,document.createTextNode("/"+mx));w.appendChild(c);void 0}
+ if(isTel||isAmt){x=mk("span","flx");x.setAttribute("aria-hidden","true");w.appendChild(x);void 0}
+ if(c||x){let last=-1,lx="";const up=()=>{const v=el.value||"";
+   if(c){const n=c.firstChild,k=v.length;if(k!==last){last=k;n.textContent=String(k);n.classList.remove("uxk");void n.offsetWidth;n.classList.add("uxk");c.classList.toggle("uxw",k>=mx*.9&&k<mx);c.classList.toggle("uxf",k>=mx);c.classList.toggle("uxs",k>=mx*.8)}}
+   if(x){let t="";if(isTel){const d=v.replace(/\D/g,"");t=d.length>=6?"📞 "+flPhone(d):""}else{const a=Number(v);t=v!==""&&a>0?rs(a):""}
+    if(t!==lx){lx=t;x.textContent=t;x.classList.toggle("uxs",!!t);if(t){x.classList.remove("uxk");void x.offsetWidth;x.classList.add("uxk")}}}};
+  el.addEventListener("input",up);el.addEventListener("change",up);el.addEventListener("focus",up);up();el._fl.up=up}}
+function flScan(root){if(!root||root.nodeType!==1)return;if(root.matches&&root.matches("input,textarea"))flWrap(root);if(root.querySelectorAll)root.querySelectorAll("input,textarea").forEach(flWrap)}
+/* a gentle shake for the field that needs attention */
+function flShake(el){if(!el)return;const w=(el._fl&&el._fl.w)||el;w.classList.remove("flbad");void w.offsetWidth;w.classList.add("flbad");const clr=()=>{w.classList.remove("flbad");el.removeEventListener("input",clr);el.removeEventListener("change",clr)};el.addEventListener("input",clr);el.addEventListener("change",clr);setTimeout(()=>w.classList.remove("flbad"),2600)}
+const flVis=e=>!!(e.offsetWidth||e.offsetHeight||e.getClientRects().length);
+/* which field does this message talk about? (words of the message against the field's label; else the first empty one) */
+function flBlame(scope,msg){if(!scope||!msg)return null;const F=[...scope.querySelectorAll("input,textarea,select")].filter(e=>flVis(e)||(e._fl&&flVis(e._fl.w))).filter(e=>!/^(file|checkbox|radio|hidden|range)$/.test(e.type||""));if(!F.length)return null;
+ const words=String(msg).toLowerCase().replace(/[^a-z0-9₹ ]/g," ").split(/\s+/).filter(x=>x.length>3&&!/^(enter|your|please|valid|with|that|this|must|fill|both|required|first|choose|select|again|least|characters)$/.test(x));
+ const name=e=>((e._fl?e._fl.l.textContent+" "+e._fl.hint:"")+" "+(e.getAttribute("placeholder")||"")+" "+(e.getAttribute("aria-label")||"")+" "+(e.tagName==="SELECT"?(e.options[0]?e.options[0].textContent:"")+" "+e.id:e.type||"")+" "+(e.closest(".fxl")?e.closest(".fxl").textContent:"")).toLowerCase(),opt=e=>/optional/.test(name(e));
+ const hit=F.filter(e=>{const n=name(e);return words.some(x=>n.includes(x)||n.includes(x.replace(/s$/,"")))}),empty=e=>e.tagName==="SELECT"?e.selectedIndex<=0&&!e.value:!String(e.value||"").trim();
+ const sel=/^\s*(select|choose|pick)\b/i.test(msg)?F.filter(e=>e.tagName==="SELECT"&&empty(e)):[];
+ return hit.find(empty)||sel[0]||hit[0]||F.find(e=>empty(e)&&!opt(e))||null}
+function flOnMsg(msg,scope){const sh=$("ov"),pm=$("fx");scope=scope||(sh&&!sh.classList.contains("hide")?sh.querySelector(".sheet"):null)||(pm&&pm.classList.contains("on")?pm:null)||SCR.map(k=>$(k)).find(e=>e&&e.id!=="sMain"&&!e.classList.contains("hide"))||[...document.querySelectorAll("#sMain main>section")].find(e=>!e.classList.contains("hide"));
+ const f=flBlame(scope,msg);if(f){flShake(f);return true}return false}
+function uxFields(){flScan(document.body);
+ new MutationObserver(ms=>{for(const m of ms){if(m.type==="attributes"){const el=m.target;if(el._fl&&!el._flBusy){const v=el.getAttribute("placeholder");if(v!==null&&v!==" "&&v!==el._fl.hint){if(el.dataset.fll)el._fl.hint=v.trim();else el._fl.l.textContent=v.trim();flSetPh(el,el._fl.hint&&document.activeElement===el?el._fl.hint:" ")}}else if(!el._fl&&el.isConnected&&(el.tagName==="INPUT"||el.tagName==="TEXTAREA"))flWrap(el)}
+   else{m.addedNodes.forEach(flScan);
+    /* an error line just got its text -> shake the field it is about */
+    const t=m.target&&m.target.nodeType===1?m.target:m.target&&m.target.parentElement;const er=t&&t.closest&&t.closest(".err");if(er&&er.textContent.trim()&&er._flLast!==er.textContent){er._flLast=er.textContent;const sc=er.closest(".sheet,.box,.card,section")||er.parentElement;if(!flOnMsg(er.textContent,sc)){er.classList.remove("flbad");void er.offsetWidth;er.classList.add("flbad")}}else if(er&&!er.textContent.trim())er._flLast=""}}
+  }).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:["placeholder"],characterData:true});
+ /* "ℹ️ Enter a name and valid number" style pop-ups also point at the field */
+ const ts=$("toasts");if(ts)new MutationObserver(ms=>ms.forEach(m=>m.addedNodes.forEach(n=>{if(n.nodeType!==1)return;const ic=n.firstChild&&n.firstChild.textContent;if(ic==="ℹ️")flOnMsg(n.textContent.slice(2))}))).observe(ts,{childList:true})}
+
+/* ---------- hints (tooltips) ---------- */
+let tipT=0,tipEl=null,tipHold=0;
+function tipShow(el,text,ms){if(!el||!text||!el.isConnected)return;let t=$("uxtip");if(!t){t=mk("div");t.id="uxtip";t.setAttribute("role","tooltip");document.body.appendChild(t)}clearTimeout(tipT);t.classList.remove("on");t.textContent=text;t.appendChild(mk("i"));
+ const r=el.getBoundingClientRect();if(!r.width&&!r.height)return;t.style.left="0px";t.style.top="0px";const w=t.offsetWidth,h=t.offsetHeight,up=r.bottom+h+14>innerHeight,x=Math.max(10,Math.min(innerWidth-w-10,r.left+r.width/2-w/2));
+ t.classList.toggle("tup",up);t.style.left=x+"px";t.style.top=(up?r.top-h-10:r.bottom+10)+"px";t.style.setProperty("--ax",Math.max(14,Math.min(w-14,r.left+r.width/2-x))+"px");void t.offsetWidth;t.classList.add("on");tipEl=el;tipT=setTimeout(tipHide,ms||2600)}
+function tipHide(){clearTimeout(tipT);const t=$("uxtip");if(t)t.classList.remove("on");tipEl=null}
+const tipOnce=(key,el,text,ms)=>{try{if(localStorage.getItem("sh-tip-"+key))return false;localStorage.setItem("sh-tip-"+key,"1")}catch(e){return false}tipShow(el,text,ms||5200);tipHold=Date.now()+2800;return true};
+function uxTips(){const lab=e=>{const b=e&&e.closest&&e.closest("[data-tip],button[aria-label],a[aria-label]");if(!b||b.id==="mic"||b.id==="fab"||b.closest("#ied,#drw"))return null;if(b.dataset.tip)return[b,b.dataset.tip];const tx=(b.textContent||"").replace(/[\s\d]/g,"");return tx.length<=2||b.classList.contains("ib")||b.classList.contains("ic")?[b,b.getAttribute("aria-label")]:null};
+ let lp=0;document.addEventListener("touchstart",e=>{clearTimeout(lp);if(tipEl&&Date.now()>tipHold)tipHide();const x=lab(e.target);if(x)lp=setTimeout(()=>tipShow(x[0],x[1]),520)},{passive:true});
+ ["touchend","touchmove","touchcancel","scroll"].forEach(k=>document.addEventListener(k,()=>clearTimeout(lp),{passive:true,capture:true}));
+ if(matchMedia("(hover:hover)").matches){document.addEventListener("mouseover",e=>{const x=lab(e.target);if(x&&x[0]!==tipEl)tipShow(x[0],x[1],4000)});document.addEventListener("mouseout",e=>{const x=lab(e.target);if(x&&!x[0].contains(e.relatedTarget))tipHide()})}
+ bell.setAttribute("aria-label","Notifications");thb.setAttribute("aria-label","Dark / light mode")}
+
+/* ---------- bottom bar: sliding pill ---------- */
+let navT=0;function navInd(again){const n=$("nav");if(!n)return;if(!again){clearTimeout(navT);navT=setTimeout(()=>navInd(true),320)}let i=n.querySelector(".nind");if(!i){i=mk("i","nind");i.setAttribute("aria-hidden","true");n.insertBefore(i,n.firstChild);n.classList.add("hasind")}
+ const b=n.querySelector("button.on");if(!b||!b.offsetWidth){i.classList.remove("rdy");return}const first=!i.classList.contains("rdy");if(first)i.style.transition="none";
+ i.style.width=b.offsetWidth+"px";i.style.height=b.offsetHeight+"px";i.style.transform="translate("+b.offsetLeft+"px,"+b.offsetTop+"px)";if(first){void i.offsetWidth;i.style.transition="";i.classList.add("rdy")}}
+
+/* ---------- home: staggered entrance, count-up numbers, collection ring ---------- */
+let homeAt=0;const CU={};let cuRaf=0;
+const cuParse=s=>{const m=/^(.*?)(₹?)(-?[\d,]+(?:\.\d+)?)(.*)$/.exec(s);return m?{pre:m[1],cur:m[2],n:Number(m[3].replace(/,/g,"")),post:m[4]}:null};
+/* one number on its way from "from" to "to"; a re-drawn page simply picks the animation up where it was */
+function cuOne(el,a,now){const p=a.ms?Math.min(1,Math.max(0,(now-a.t0)/a.ms)):1,e=1-Math.pow(1-p,3),v=p>=1?a.to:a.from+(a.to-a.from)*e,sv=p>=1?a.to:Math.round(v);el.textContent=a.pre+(a.cur?rs(sv):String(sv))+a.post;if(el._ring)el._ring.setAttribute("stroke-dashoffset",(el._ringC*(1-Math.max(0,Math.min(100,v))/100)).toFixed(2));return p<1}
+function cuTick(){cuRaf=0;const now=performance.now();let live=false;document.querySelectorAll("[data-cu]").forEach(el=>{const a=CU[el.dataset.cu];if(a&&cuOne(el,a,now))live=true});if(live)cuRaf=requestAnimationFrame(cuTick)}
+function cuSet(el,key,fresh){const P=cuParse(el.textContent);if(!P||isNaN(P.n))return;const now=performance.now();let a=CU[key];
+ if(!a||a.to!==P.n||fresh){const from=fresh||!a?0:a.to;a=CU[key]={from,to:P.n,t0:now,ms:from===P.n?0:Math.min(1100,520+Math.abs(P.n-from)*10)}}
+ a.pre=P.pre;a.cur=P.cur;a.post=P.post;el.dataset.cu=key;if(cuOne(el,a,now)&&!cuRaf)cuRaf=requestAnimationFrame(cuTick)}
+/* how much of this month's bills is paid (admins: everyone's, others: their own) */
+function uxRing(h,fresh){if(isGuard()||!D.bills)return;const all=Object.values(D.bills);if(!all.length)return;const mon=all.map(b=>b.month||"").sort().pop(),B=all.filter(b=>(b.month||"")===mon&&(isAdm()||b.flat===S.me.flat));if(!B.length)return;
+ const tot=B.reduce((s,b)=>s+(+b.amount||0),0),paidB=B.filter(b=>b.status==="Paid"),paid=paidB.reduce((s,b)=>s+(+b.amount||0),0),pc=tot?Math.round(paid/tot*100):0,R=37,C=2*Math.PI*R,fee=KINDS[KIND].fee;
+ const c=mk("div","card uxr");c.setAttribute("data-noskin","");const rw=mk("div","rw");rw.innerHTML='<svg viewBox="0 0 86 86" aria-hidden="true"><defs><linearGradient id="uxrg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="var(--a)"/><stop offset="1" stop-color="var(--a2)"/></linearGradient></defs><circle class="uxt" cx="43" cy="43" r="'+R+'"/><circle class="uxp" cx="43" cy="43" r="'+R+'" stroke-dasharray="'+C.toFixed(2)+'" stroke-dashoffset="'+C.toFixed(2)+'"/></svg>';
+ const pb=mk("b",null,pc+"%");pb._ring=rw.querySelector(".uxp");pb._ringC=C;rw.appendChild(pb);const t=mk("div","t"),ml=/^\d{4}-\d{2}$/.test(mon)?new Date(mon+"-01T00:00:00").toLocaleDateString([],{month:"long",year:"numeric"}):mon;
+ t.appendChild(mk("b",null,isAdm()?(fee==="fees"?"Fees collected":fee==="billing"?"Bills paid":"Maintenance collected"):(fee==="fees"?"Your fees":fee==="billing"?"Your bills":"Your maintenance")));t.appendChild(mk("small",null,ml));
+ t.appendChild(mk("small",null,rs(paid)+" of "+rs(tot)+(isAdm()?" · "+paidB.length+" of "+B.length+" paid":pc>=100?" · all paid ✓":"")));c.append(rw,t);c.style.cursor="pointer";c.onclick=()=>go("fin");
+ const st=h.querySelector(".stats");if(st)st.after(c);else h.appendChild(c);cuSet(pb,"ring",fresh)}
+/* called at the end of every home render */
+function uxHome(h){const el=Date.now()-homeAt,fresh=el<80;h.classList.toggle("noan",el>1500);
+ try{uxRing(h,fresh)}catch(e){console.warn("ring",e)}
+ if(el<=1500){let i=0;[...h.children].forEach(c=>{(c.classList.contains("qa")||c.classList.contains("stats")?[...c.children]:[c]).forEach(k=>{k.style.animationDelay=(i*55-el)+"ms";i++})})}
+ h.querySelectorAll(".st").forEach(st=>{const b=st.querySelector("b"),s=st.querySelector("span");if(b&&s)cuSet(b,"st:"+s.textContent,fresh)})}
+
+/* ---------- start ---------- */
+function uxInit(){try{uxFields()}catch(e){console.warn("fields",e)}try{uxTips()}catch(e){console.warn("tips",e)}
+ addEventListener("resize",()=>{try{navInd()}catch(e){}});
+ /* a new profile photo settles into place */
+ const pf=$("pfile");if(pf)pf.addEventListener("change",()=>{if(pf.files&&pf.files[0]){document.body.classList.add("avnew");setTimeout(()=>document.body.classList.remove("avnew"),9000)}});
+ /* hints for the fields that people get wrong most often */
+ [["jm","Your 10-digit mobile number."],["cm","Your 10-digit mobile number."]].forEach(([id,t])=>{const e=$(id);if(e&&e._fl&&!e._fl.w.nextElementSibling?.classList.contains("flh")){const hh=mk("div","flh",t);e._fl.w.after(hh)}})}
+/* once per phone: show where the menu is */
+function uxCoach(){setTimeout(()=>{const m=$("hmb");if(m&&!$("sMain").classList.contains("hide")&&$("ov").classList.contains("hide")&&!$("permd")&&tab==="home")tipOnce("menu",m,"All features are in this menu. You can also slide from the left side of the screen.",6500)},2600)}
+uxInit();
 
 </script>
 <script>

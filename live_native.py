@@ -1,9 +1,11 @@
-"""Adds background live location to the Android app (run by the build after "npx cap add android").
+"""Adds the small native Android parts of the app (run by the build after "npx cap add android").
 
-It writes a small foreground service + plugin into the Android project so that "Share live location" keeps
-updating when the app is in the background, closed from recents, or the phone is locked.
+1. Background live location: a foreground service + plugin, so that "Share live location" keeps updating when the
+   app is in the background, closed from recents, or the phone is locked.
+2. Contact picker: opens the phone's own contact list for "Share contact" in chat (no contacts permission is needed,
+   the app only receives the one number the person picks).
 If anything here does not match the Android project, it prints a note and leaves the project unchanged:
-the app still builds, and live location then updates only while the app is open.
+the app still builds; live location then updates only while the app is open and contacts are typed by hand.
 """
 import os, re, sys
 
@@ -17,6 +19,8 @@ public class MainActivity extends BridgeActivity {
     public void onCreate(Bundle savedInstanceState) {
         // native part of "Share live location": keeps sending the position in the background
         registerPlugin(LiveLocationPlugin.class);
+        // "Pick from my phone" in chat -> Share contact
+        registerPlugin(ContactPickPlugin.class);
         super.onCreate(savedInstanceState);
     }
 }
@@ -131,6 +135,74 @@ public class LiveLocationPlugin extends Plugin {
             call.resolve();
         } catch (Exception e) {
             call.reject("Could not open settings");
+        }
+    }
+}
+'''
+
+CONTACT = r'''package com.sangam360.app;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
+import android.provider.ContactsContract;
+
+import androidx.activity.result.ActivityResult;
+
+import com.getcapacitor.JSObject;
+import com.getcapacitor.Plugin;
+import com.getcapacitor.PluginCall;
+import com.getcapacitor.PluginMethod;
+import com.getcapacitor.annotation.ActivityCallback;
+import com.getcapacitor.annotation.CapacitorPlugin;
+
+/**
+ * Called from the web app: ContactPick.pick() opens the phone's contact list and returns the one name + number
+ * the person taps: { name, phone } or { cancelled: true }. The app never reads the address book itself, so it does
+ * not need (or ask for) the contacts permission.
+ */
+@CapacitorPlugin(name = "ContactPick")
+public class ContactPickPlugin extends Plugin {
+
+    @PluginMethod
+    public void pick(PluginCall call) {
+        try {
+            Intent i = new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
+            startActivityForResult(call, i, "picked");
+        } catch (Exception e) {
+            call.reject("No contacts app found");
+        }
+    }
+
+    @ActivityCallback
+    private void picked(PluginCall call, ActivityResult result) {
+        if (call == null) return;
+        JSObject r = new JSObject();
+        Intent data = result == null ? null : result.getData();
+        Uri uri = data == null ? null : data.getData();
+        if (result == null || result.getResultCode() != Activity.RESULT_OK || uri == null) {
+            r.put("cancelled", true);
+            call.resolve(r);
+            return;
+        }
+        Cursor c = null;
+        try {
+            String[] cols = { ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.NUMBER };
+            c = getContext().getContentResolver().query(uri, cols, null, null, null);
+            String name = "", phone = "";
+            if (c != null && c.moveToFirst()) {
+                String n = c.getString(0), p = c.getString(1);
+                name = n == null ? "" : n;
+                phone = p == null ? "" : p;
+            }
+            r.put("name", name);
+            r.put("phone", phone);
+            call.resolve(r);
+        } catch (Exception e) {
+            call.reject("Could not read the contact");
+        } finally {
+            try { if (c != null) c.close(); } catch (Exception ignored) { }
         }
     }
 }
@@ -456,19 +528,21 @@ def main():
     pkg = m.group(1)
     fix = lambda s: s.replace("package com.sangam360.app;", "package " + pkg + ";")
 
-    # 1) register the plugin in MainActivity
-    if "LiveLocationPlugin" in cur:
+    # 1) register the plugins in MainActivity
+    if "LiveLocationPlugin" in cur and "ContactPickPlugin" in cur:
         pass
     elif re.search(r"extends\s+BridgeActivity\s*\{\s*\}", cur):
         open(act, "w", encoding="utf-8").write(fix(MAIN))
     elif "super.onCreate(" in cur:
-        open(act, "w", encoding="utf-8").write(cur.replace("super.onCreate(", "registerPlugin(LiveLocationPlugin.class);\n        super.onCreate(", 1))
+        add = "".join("registerPlugin(%s.class);\n        " % n for n in ("LiveLocationPlugin", "ContactPickPlugin") if n not in cur)
+        open(act, "w", encoding="utf-8").write(cur.replace("super.onCreate(", add + "super.onCreate(", 1))
     else:
         print("live location: MainActivity has an unexpected shape - skipped")
         return
     d = os.path.dirname(act)
     open(os.path.join(d, "LiveLocationPlugin.java"), "w", encoding="utf-8").write(fix(PLUGIN))
     open(os.path.join(d, "LiveLocationService.java"), "w", encoding="utf-8").write(fix(SERVICE))
+    open(os.path.join(d, "ContactPickPlugin.java"), "w", encoding="utf-8").write(fix(CONTACT))
 
     # 2) manifest: the service and the permissions a location foreground service needs
     x = open(man, encoding="utf-8").read()
@@ -480,6 +554,7 @@ def main():
     x = x.replace("</manifest>", add + "</manifest>", 1)
     open(man, "w", encoding="utf-8").write(x)
     print("live location: native service added for package", pkg)
+    print("contact picker: native plugin added")
 
 if __name__ == "__main__":
     try:

@@ -21,13 +21,7 @@ jobs:
           java-version: 17
 
       - name: Prepare app files
-        run: |
-          mkdir -p www
-          cp index.html www/index.html
-          cp native-bridge.js www/native-bridge.js
-          sed -i 's#<head>#<head><script src="native-bridge.js"></script>#' www/index.html
-          python3 patch_push.py
-
+        run: | mkdir -p www cp index.html www/index.html cp native-bridge.js www/native-bridge.js sed -i 's#<head>#<head><script src="native-bridge.js"></script>#' www/index.html python3 patch_push.py 
       - name: Install packages
         run: npm install
 
@@ -35,17 +29,12 @@ jobs:
         run: npx cap add android
 
       - name: Add app icon and fix screen fit
-        run: |
-          pip install pillow
-          python3 brand.py
-
+        run: | pip install pillow python3 brand.py 
       - name: Add Firebase config and permissions
-        run: |
-          if [ -f google-services.json ]; then cp google-services.json android/app/google-services.json; else echo "No google-services.json found - building without notifications"; fi
-          # A fresh install must start clean: do not restore old app data (saved payment details, login) from a Google backup after a reinstall.
-          sed -i 's#android:allowBackup="true"#android:allowBackup="false"#' android/app/src/main/AndroidManifest.xml
-          grep -q 'android:allowBackup' android/app/src/main/AndroidManifest.xml || sed -i '0,/<application/s#<application#<application android:allowBackup="false"#' android/app/src/main/AndroidManifest.xml
-          sed -i 's#</manifest>#    <uses-permission android:name="android.permission.CAMERA" />\n    <uses-permission android:name="android.permission.RECORD_AUDIO" />\n    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />\n    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />\n    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />\n    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />\n</manifest>#' android/app/src/main/AndroidManifest.xml
+        run: | if [ -f google-services.json ]; then cp google-services.json android/app/google-services.json; else echo "No google-services.json found - building without notifications"; fi # A fresh install must start clean: do not restore old app data (saved payment details, login) from a Google backup after a reinstall. sed -i 's#android:allowBackup="true"#android:allowBackup="false"#' android/app/src/main/AndroidManifest.xml grep -q 'android:allowBackup' android/app/src/main/AndroidManifest.xml || sed -i '0,/<application/s#<application#<application android:allowBackup="false"#' android/app/src/main/AndroidManifest.xml sed -i 's#</manifest># <uses-permission android:name="android.permission.CAMERA" />\n <uses-permission android:name="android.permission.RECORD_AUDIO" />\n <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />\n <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />\n <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />\n <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />\n</manifest>#' android/app/src/main/AndroidManifest.xml 
+      - name: Add background live location
+        # keeps "Share live location" updating in the background and when the phone is locked
+        run: python3 live_native.py
 
       - name: Copy app files
         run: npx cap sync android

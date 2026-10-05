@@ -652,10 +652,10 @@ const BRAND = "Sangam360", TAGLINE = "One Platform. Every Community.", LOGO_SRC 
 const KINDS={
  society:{ico:"🏘️",card:"For Societies",cardS:"Residents, visitors, bills & community",tag:"One Platform. Every Community.",c1:"#5b3df5",c2:"#8a4dff",rc:"#3b5bfd",word:"society",unit:"Flat",person:"Resident",fee:"maintenance",createT:"🏢 Create my society",createS:"Set up a new building or complex as its admin",joinT:"🔑 Join my society",joinS:"Use the code or link from your society"},
  company:{ico:"🏢",card:"For Corporates",cardS:"Employees, attendance, visitors & billing",tag:"One Platform. Every Community.",c1:"#0f766e",c2:"#2563eb",rc:"#2563eb",word:"company",unit:"Desk",person:"Employee",fee:"billing",createT:"🏢 Create my company",createS:"Set up your company as its admin",joinT:"🔑 Join my company",joinS:"Use the code from your company admin",grp:{t:"Departments",one:"department",s:"Add the departments or teams. Employees pick theirs when they join.",ph:"Department name",pre:["Engineering","HR","Sales"],jl:"Choose your department and tell us who you are.",idp:"Employee ID (e.g. EMP-104)"},x:[["Industry","sel",["IT / Software","Manufacturing","Finance / Banking","Retail","Healthcare","Other"]],["Employee strength","sel",["1-10","11-50","51-200","200+"]],["GST number","txt"]],
-  nav:{svc:["💼","Work"],comm:["💬","Team"],fin:["🧾","Billing"]},subList:["att","leave","room","hol","comp","vis","del","park"],subs:{comp:"Helpdesk",del:"Couriers"},
+  nav:{svc:["💼","Work"],comm:["💬","Team"],fin:["🧾","Billing"]},subList:["att","leave","room","hol","comp","gc","vis","del","park"],subs:{comp:"Helpdesk",del:"Couriers"},
   skin:[["Societies","Companies"],["societies","companies"],["Society","Company"],["society","company"],["Residents","Employees"],["residents","employees"],["Resident","Employee"],["resident","employee"],["Flats","Desks"],["flats","desks"],["Flat","Desk"],["flat","desk"],["Towers","Offices"],["towers","offices"],["Tower","Office"],["tower","office"],["Maintenance","Billing"],["maintenance","billing"],["Committee member","Manager"],["committee member","manager"],["Tenant","Contractor"],["tenant","contractor"]]},
  school:{ico:"🎓",card:"For Schools",cardS:"Students, staff attendance, fees & notices",tag:"One Platform. Every Community.",c1:"#c2410c",c2:"#d97706",rc:"#d97706",word:"school",unit:"Class",person:"Student",fee:"fees",createT:"🏫 Create my school",createS:"Set up your school as its admin",joinT:"🔑 Join my school",joinS:"Use the code from your school",grp:{t:"Classes",one:"class",s:"Add classes or sections, e.g. Class 5-A. Students pick theirs when they join.",ph:"Class / section",pre:["Class 1","Class 2","Class 3"],jl:"Choose your class and tell us who you are.",idp:"Roll / admission no."},x:[["Board","sel",["CBSE","ICSE","State board","IB / Cambridge","Other"]],["School level","sel",["Primary","Secondary","Senior secondary","K-12"]],["Affiliation no. (optional)","txt"]],
-  nav:{svc:["🏫","Campus"],comm:["💬","Community"],fin:["💳","Fees"]},subList:["att","tt","hw","leave","hol","comp","vis","del"],subs:{comp:"Complaints",del:"Parcels"},
+  nav:{svc:["🏫","Campus"],comm:["💬","Community"],fin:["💳","Fees"]},subList:["att","tt","hw","leave","hol","comp","gc","vis","del"],subs:{comp:"Complaints",del:"Parcels"},
   skin:[["Societies","Schools"],["societies","schools"],["Society","School"],["society","school"],["Residents","Students"],["residents","students"],["Resident","Student"],["resident","student"],["Flats","Classes"],["flats","classes"],["Flat","Class"],["flat","class"],["Towers","Blocks"],["towers","blocks"],["Tower","Block"],["tower","block"],["Maintenance","Fee"],["maintenance","fee"],["Committee member","Teacher"],["committee member","teacher"],["Tenant","Parent"],["tenant","parent"]]}
 };
 let KIND=(()=>{try{const k=localStorage.getItem("sh-kind");return KINDS[k]?k:"society"}catch(e){return"society"}})();
@@ -872,7 +872,7 @@ $("jsub").onclick=()=>run($("jsub"),async()=>{$("jerr").textContent="";const nm=
 /* ---------- navigation ---------- */
 const navCfg0=()=>isGuard()?[["home","🏠","Home"],["svc:vis","🚪","Visitors"],["svc:del","📦","Parcels"],["svc:veh","🚗","Vehicles"],["svc:help","🧹","Help"],["more","👤","Me"]]:[["home","🏠","Home"],["svc","🛠️","Services"],["comm","💬","Community"],["fin","💰","Finance"],["more","👤",isAdm()?"People":"Me"]].concat(isOwner()?[["sub","⭐","Plan"]]:[]);
 const SUBS={comp:"Complaints",vis:"Visitors",del:"Parcels",veh:"Vehicles",park:"Parking",help:"Domestic help",mkt:"Classifieds"};
-const SUBSK=()=>Object.assign({att:"Attendance",leave:"Leave",room:"Meetings",tt:"Timetable",hol:"Holidays",hw:"Homework"},SUBS,KINDS[KIND].subs||{});
+const SUBSK=()=>Object.assign({att:"Attendance",leave:"Leave",room:"Meetings",tt:"Timetable",hol:"Holidays",hw:"Homework",gc:KIND==="school"?"Conduct":"Grievances"},SUBS,KINDS[KIND].subs||{});
 const subList=()=>isGuard()?["vis","del","veh","help"]:(KIND!=="society"?KINDS[KIND].subList:["comp","vis","del","veh","park","help","mkt"]);
 const navCfg=()=>{if(isGuard()||KIND==="society")return navCfg0();const o=KINDS[KIND].nav;return navCfg0().map(c=>o[c[0]]?[c[0],o[c[0]][0],o[c[0]][1]]:c)};
 function drawNav(){const n=$("nav");n.innerHTML="";navCfg().forEach(c=>{const b=mk("button");b.id="n_"+c[0].replace(":","_");b.appendChild(mk("span",null,c[1]));b.appendChild(document.createTextNode(c[2]));b.onclick=()=>go(c[0]);n.appendChild(b)});n.classList.toggle("six",navCfg().length>5);markNav();subDot()}
@@ -881,7 +881,7 @@ function go(key){const k=key.split(":");if(k[1])sub=k[1];goTab(k[0])}
 function goTab(t){if(t==="sub"&&!isOwner())t="home";tab=t;["home","svc","comm","fin","more","sub"].forEach(x=>$("t_"+x).classList.toggle("hide",x!==t));markNav();
  if(t==="home")rHome();if(t==="more")rMore();if(t==="sub")rSub();if(t==="svc")setSub(sub);if(t==="comm"&&!$("v_chat").classList.contains("hide"))bottom()}
 function setSub(s){sub=s;if(!subList().includes(s))sub=subList()[0];const g=$("ssg"),key=subList().join();g.classList.toggle("hide",isGuard());if(g.dataset.k!==key){g.dataset.k=key;g.innerHTML="";g.appendChild(mk("i","sind"));subList().forEach(k=>{const b=mk("button",null,SUBSK()[k]);b.dataset.k=k;b.onclick=()=>{setSub(k);markNav()};g.appendChild(b)});g.dataset.init=""}
- const ind=g.querySelector(".sind");[...g.querySelectorAll("button")].forEach(b=>b.classList.toggle("on",b.dataset.k===sub));const mv=()=>{const b=g.querySelector("button.on");if(!b||!ind||!b.offsetWidth)return;if(!g.dataset.init){ind.style.transition="none"}ind.style.width=b.offsetWidth+"px";ind.style.transform="translateX("+b.offsetLeft+"px)";if(!g.dataset.init){void ind.offsetWidth;ind.style.transition="";g.dataset.init="1"}const l=b.offsetLeft-(g.clientWidth-b.offsetWidth)/2;g.scrollTo({left:Math.max(0,l),behavior:"smooth"})};mv();requestAnimationFrame(mv);["att","comp","vis","del","veh","park","help","mkt","leave","room","tt","hw","hol"].forEach(k=>{const e=$("p_"+k)||Object.assign($("p_att").parentNode.appendChild(mk("div","hide")),{id:"p_"+k});e.classList.toggle("hide",k!==sub)});if(MODS[sub])rMod(sub);if(sub==="att")rAtt();watchSub();if(sub==="help")rHelp();if(sub==="mkt")rMkt();markNav()}
+ const ind=g.querySelector(".sind");[...g.querySelectorAll("button")].forEach(b=>b.classList.toggle("on",b.dataset.k===sub));const mv=()=>{const b=g.querySelector("button.on");if(!b||!ind||!b.offsetWidth)return;if(!g.dataset.init){ind.style.transition="none"}ind.style.width=b.offsetWidth+"px";ind.style.transform="translateX("+b.offsetLeft+"px)";if(!g.dataset.init){void ind.offsetWidth;ind.style.transition="";g.dataset.init="1"}const l=b.offsetLeft-(g.clientWidth-b.offsetWidth)/2;g.scrollTo({left:Math.max(0,l),behavior:"smooth"})};mv();requestAnimationFrame(mv);["att","comp","vis","del","veh","park","help","mkt","leave","room","tt","hw","hol","gc"].forEach(k=>{const e=$("p_"+k)||Object.assign($("p_att").parentNode.appendChild(mk("div","hide")),{id:"p_"+k});e.classList.toggle("hide",k!==sub)});if(MODS[sub])rMod(sub);if(sub==="att")rAtt();if(sub==="gc")rGc();watchSub();if(sub==="help")rHelp();if(sub==="mkt")rMkt();markNav()}
 const bottom=()=>setTimeout(()=>{const b=$("msgs");if(b)b.scrollTop=b.scrollHeight},60);
 
 async function syncDirPhoto(){const ref=doc(db,"societies",S.sid,"directory",S.uid),o={uid:S.uid,name:S.me.name,flat:S.me.flat,role:S.me.role};
@@ -920,6 +920,9 @@ function listen(){unsubs.forEach(f=>f());unsubs=[];if(wsub){wsub();wsub=null}wsu
   w(isAdm()?query(C("leaves"),limit(300)):query(C("leaves"),where("uid","==",S.uid),limit(300)),"lv",()=>{if(tab==="svc"&&sub==="leave"&&!busyIn("leave"))rMod("leave")},(d,t)=>{
    if(isAdm()){if(t==="added"&&d.status==="Pending"&&d.uid!==S.uid)toast("🏖️","New leave request",d.name+" · "+d.from+" → "+d.to)}
    else if(t==="modified"&&d.uid===S.uid&&d.status&&d.status!=="Pending")toast(d.status==="Approved"?"✅":"⛔","Leave "+d.status.toLowerCase(),d.type+" · "+d.from+" → "+d.to)});
+  w(isOwner()?query(C("gcomplaints"),limit(300)):query(C("gcomplaints"),where("uid","==",S.uid),limit(100)),"gc",()=>{if(tab==="svc"&&sub==="gc"&&!busyIn("gc"))rGc()},(d,t)=>{
+   if(isOwner()){if(t==="added"&&d.uid!==S.uid)toast("📣","New complaint",d.name+" → "+d.againstName)}
+   else if(t==="modified"&&d.uid===S.uid&&d.status)toast("📣","Complaint "+String(d.status).toLowerCase(),d.title)});
   w(query(C("holidays"),limit(200)),"hol",()=>{if(tab==="svc"&&sub==="hol"&&!busyIn("hol"))rMod("hol")},(d,t)=>{if(t==="added"&&d.uid!==S.uid)toast("🎉","New holiday added",d.title+" · "+d.date)})}
  listen3(C,L);listen4(C)}
 
@@ -1589,6 +1592,38 @@ function setKind(k){if(!KINDS[k])k="society";KIND=k;try{localStorage.setItem("sh
 $("aback").onclick=()=>show("sLand");setKind(KIND);
 /* attendance (companies & schools) */
 const DAYS=["Mon","Tue","Wed","Thu","Fri","Sat"];
+const GCS=["Open","In review","Resolved","Dismissed"];
+function rGc(){const b=$("p_gc");if(!b)return;b.innerHTML="";
+ const sch=KIND==="school",TN=sch?"teacher":"manager",PN=sch?"student":"employee",me=S.me&&S.me.role,owner=isOwner();
+ const lab=r=>r==="SOCIETY_ADMIN"?(sch?"Principal":"Admin"):r==="COMMITTEE_MEMBER"?(sch?"Teacher":"Manager"):(sch?"Student":"Employee");
+ const L=Object.values(D.gc||{}).sort((a,c)=>c.ts-a.ts);
+ if(!owner){const aT=me==="COMMITTEE_MEMBER"?PN:TN;
+  const c=mk("div","card");c.appendChild(mk("h2",null,"📣 Raise a concern about a "+aT));
+  c.appendChild(mk("div","meta","Only the "+(sch?"principal":"admin")+" can see this. It is not shown to anyone else."));
+  const people=Object.values(D.dir||{}).filter(p=>{const u=p.uid||p.id;if(!u||u===S.uid)return false;if(p.role==="SOCIETY_ADMIN")return false;return me==="COMMITTEE_MEMBER"?p.role!=="COMMITTEE_MEMBER":p.role==="COMMITTEE_MEMBER"}).sort((x,y)=>(x.name||"").localeCompare(y.name||""));
+  const sel=mk("select");sel.style.marginTop="8px";const o0=mk("option",null,"Select a "+aT);o0.value="";sel.appendChild(o0);
+  people.forEach(p=>{const o=mk("option",null,(p.name||"Member")+(p.flat?" · "+p.flat:""));o.value=p.uid||p.id;sel.appendChild(o)});
+  const ti=mk("input");ti.placeholder="Short title";ti.maxLength=80;ti.style.marginTop="8px";
+  const tx=mk("textarea");tx.placeholder="What happened? Please be specific and factual.";tx.maxLength=600;tx.rows=4;tx.style.marginTop="8px";
+  const bt=mk("button","btn","Send to the "+(sch?"principal":"admin"));bt.style.marginTop="10px";
+  bt.onclick=()=>run(bt,async()=>{const u=sel.value,t=ti.value.trim(),x=tx.value.trim();if(!u){toast("⚠️","Choose a person","Select the "+aT+" this is about.",true);return}if(!t||x.length<10){toast("⚠️","Add details","Write a title and at least a few words about what happened.",true);return}
+   const pp=people.find(q=>(q.uid||q.id)===u)||{},ts=Date.now();
+   await addDoc(collection(db,"societies",S.sid,"gcomplaints"),{uid:S.uid,name:S.me.name,role:me,flat:S.me.flat||"",againstUid:u,againstName:pp.name||"Member",againstRole:pp.role||"",againstFlat:pp.flat||"",title:t,text:x,status:"Open",ts,history:[{s:"Open",ts}]});
+   ti.value="";tx.value="";sel.value="";toast("✅","Sent","The "+(sch?"principal":"admin")+" will review it.",true)});
+  c.append(sel,ti,tx,bt);b.appendChild(c)}
+ const lc=mk("div","card");lc.appendChild(mk("h2",null,owner?"📋 All complaints ("+L.length+")":"🗂️ Your complaints ("+L.length+")"));
+ if(owner){const f=mk("select");f.style.marginTop="8px";[["all","All"],["T","About "+TN+"s"],["P","About "+PN+"s"],["open","Still open"]].forEach(q=>{const o=mk("option",null,q[1]);o.value=q[0];f.appendChild(o)});f.value=window.__gcf||"all";f.onchange=()=>{window.__gcf=f.value;rGc()};lc.appendChild(f)}
+ const fv=owner?(window.__gcf||"all"):"all";
+ const V=L.filter(x=>fv==="all"||(fv==="T"&&x.againstRole==="COMMITTEE_MEMBER")||(fv==="P"&&x.againstRole!=="COMMITTEE_MEMBER")||(fv==="open"&&x.status!=="Resolved"&&x.status!=="Dismissed"));
+ if(!V.length)lc.appendChild(mk("div","empty",owner?"Nothing here":"You have not raised any complaints"));
+ V.forEach(x=>{const d=mk("div","item"),h=mk("div","ih");h.appendChild(mk("b",null,x.title));const st=x.status||"Open";h.appendChild(mk("span","badge"+(st==="Resolved"?" g":st==="Open"?" r":" y"),st));d.appendChild(h);
+  d.appendChild(mk("div","meta",(owner?x.name+" ("+lab(x.role)+(x.flat?" · "+x.flat:"")+") → ":"About ")+x.againstName+" ("+lab(x.againstRole)+(x.againstFlat?" · "+x.againstFlat:"")+") · "+dt(x.ts)));
+  d.appendChild(mk("p","desc",x.text));if(x.note)d.appendChild(mk("div","note","💬 "+(sch?"Principal":"Admin")+": "+x.note));
+  if(owner){const g=mk("div","mg"),sl=mk("select");GCS.forEach(q=>{const o=mk("option",null,q);o.value=q;sl.appendChild(o)});sl.value=st;const ni=mk("input");ni.placeholder="Note for the record…";ni.value=x.note||"";const ub=mk("button","btn s","Update");
+   ub.onclick=()=>run(ub,()=>updateDoc(doc(db,"societies",S.sid,"gcomplaints",x.id),{status:sl.value,note:ni.value.trim(),history:arrayUnion({s:sl.value,ts:Date.now()})}));
+   const db2=mk("button","btn s o","Delete");db2.onclick=()=>{if(confirm("Delete this complaint?"))run(db2,()=>deleteDoc(doc(db,"societies",S.sid,"gcomplaints",x.id)))};g.append(sl,ni,ub,db2);d.appendChild(g)}
+  lc.appendChild(d)});
+ b.appendChild(lc)}
 let wsub=null,wsubK="";
 const busyIn=k=>{const ae=document.activeElement,p=$("p_"+k);return !!(ae&&p&&p.contains(ae)&&/INPUT|SELECT|TEXTAREA/.test(ae.tagName))};
 function watchSub(){const k=sub;if(wsubK===k)return;if(wsub){wsub();wsub=null}wsubK=k;if(!S.sid||k==="leave")return;
@@ -1862,9 +1897,9 @@ async function receiptPdf(b,o){const IV=!!(o&&o.inv);try{await document.fonts.re
  const logo=(x,y,sz,inv)=>{if(LGI){g.drawImage(LGI,x,y,sz,sz);return}const k=sz/100;g.save();g.translate(x,y);g.scale(k,k);rr(0,0,100,100,26);if(inv){g.fillStyle="#fff"}else{const gr=g.createLinearGradient(0,0,100,100);gr.addColorStop(0,"#14b8a6");gr.addColorStop(1,"#6366f1");g.fillStyle=gr}g.fill();const fc=inv?PUR:"#fff";g.strokeStyle=fc;g.fillStyle=fc;g.lineWidth=5;g.lineJoin="round";g.beginPath();g.moveTo(50,30);g.lineTo(30,66);g.lineTo(70,66);g.closePath();g.stroke();[[50,30],[30,66],[70,66]].forEach(q=>{g.beginPath();g.arc(q[0],q[1],10,0,7);g.fill()});g.restore()};
  g.fillStyle="#fff";g.fillRect(0,0,W,H);
  g.strokeStyle=PUR;g.lineWidth=6;g.strokeRect(30,30,W-60,H-60);g.strokeStyle="#cfc8f7";g.lineWidth=2;g.strokeRect(46,46,W-92,H-92);
- g.save();g.translate(W/2,H/2+30);g.rotate(-Math.PI/5.2);g.globalAlpha=.07;g.fillStyle=PUR;g.font="800 165px "+F;g.textAlign="center";g.textBaseline="middle";g.fillText(BRAND.toUpperCase(),0,0);g.font="600 64px "+F;g.fillText(IV?"TAX INVOICE":"OFFICIAL PAYMENT RECEIPT",0,140);g.restore();g.save();g.globalAlpha=.05;logo(W/2-230,H/2-760,460,false);g.restore();
+ g.save();g.translate(W/2,H/2+30);g.rotate(-Math.PI/5.2);g.globalAlpha=.07;g.fillStyle=PUR;const ORG=isOrg(),HB=ORG?String(S.soc.name||BRAND):BRAND,HT=ORG?[S.soc.city,S.soc.state].filter(Boolean).join(", "):KK.tag;let wfs=165;g.font="800 "+wfs+"px "+F;g.textAlign="center";g.textBaseline="middle";while(g.measureText(HB.toUpperCase()).width>W*.78&&wfs>40){wfs-=6;g.font="800 "+wfs+"px "+F}g.fillText(HB.toUpperCase(),0,0);g.font="600 64px "+F;g.fillText(IV?"TAX INVOICE":"OFFICIAL PAYMENT RECEIPT",0,140);g.restore();if(!ORG){g.save();g.globalAlpha=.05;logo(W/2-230,H/2-760,460,false);g.restore()}
  const hg=g.createLinearGradient(46,46,W-46,260);hg.addColorStop(0,PUR);hg.addColorStop(1,BLU);g.fillStyle=hg;g.fillRect(46,46,W-92,214);
- logo(90,90,120,true);g.textBaseline="alphabetic";g.textAlign="left";g.fillStyle="#fff";g.font="800 58px "+F;g.fillText(BRAND,235,150);g.font="500 26px "+F;g.globalAlpha=.9;g.fillText(KK.tag,237,196);g.globalAlpha=1;
+ if(ORG){rr(90,90,120,120,26);g.fillStyle="#fff";g.fill();g.fillStyle=PUR;g.font="800 72px "+F;g.textAlign="center";g.textBaseline="middle";g.fillText(HB.trim().charAt(0).toUpperCase()||"•",150,152)}else logo(90,90,120,true);g.textBaseline="alphabetic";g.textAlign="left";g.fillStyle="#fff";g.font="800 58px "+F;if(ORG)g.fillText(HB,235,150,W-775);else g.fillText(HB,235,150);g.font="500 26px "+F;g.globalAlpha=.9;g.fillText(HT,237,196,ORG?W-775:undefined);g.globalAlpha=1;
  g.textAlign="right";g.font="700 40px "+F;g.fillText(IV?"INVOICE":"PAYMENT RECEIPT",W-90,132);g.font="500 26px "+F;g.fillText((IV?"Invoice no. "+(o.no||"—"):"No. "+(b.receiptNo||"—")),W-90,184);
  g.textAlign="left";g.fillStyle="#1b1740";g.font="700 46px "+F;g.fillText(String(S.soc.name||"").slice(0,38),90,340);g.fillStyle="#6b6890";g.font="500 26px "+F;g.fillText([S.soc.address,S.soc.city,S.soc.state,S.soc.pin].filter(Boolean).join(", ").slice(0,80),90,384);if(socGst()){g.fillStyle="#1b1740";g.font="700 26px "+F;g.fillText("GSTIN: "+socGst(),90,420)}
  rr(90,430,W-180,170,24);g.fillStyle="#f3f1ff";g.fill();g.strokeStyle="#d9d5f5";g.lineWidth=2;g.stroke();
@@ -1876,7 +1911,7 @@ async function receiptPdf(b,o){const IV=!!(o&&o.inv);try{await document.fonts.re
  rows.forEach((r,i)=>{const y=Y+i*RH;g.fillStyle="#f7f6fd";g.fillRect(X,y,LW,RH);g.fillStyle="rgba(255,255,255,.55)";g.fillRect(X+LW,y,TW-LW,RH);g.strokeRect(X,y,LW,RH);g.strokeRect(X+LW,y,TW-LW,RH);g.fillStyle="#6b6890";g.font="600 27px "+F;g.fillText(r[0],X+24,y+RH/2,LW-40);g.fillStyle="#1b1740";g.font="700 30px "+F;g.fillText(String(r[1]||"—"),X+LW+24,y+RH/2,TW-LW-48)});
  const BY=Y+rows.length*RH+44,BH=250,BW=(TW-40)/2;
  [["Remarks / Notes",X],["Authorised signatory & "+KK.word+" stamp",X+BW+40]].forEach(([t,x],i)=>{g.strokeStyle="#9d93ee";g.lineWidth=2.5;rr(x,BY,BW,BH,16);g.stroke();g.fillStyle="#6b6890";g.font="600 24px "+F;g.textBaseline="alphabetic";g.fillText(t,x+22,BY+BH-20,BW-44);if(i===0){g.strokeStyle="#e4e0fa";g.lineWidth=1.5;for(let k=1;k<=4;k++){g.beginPath();g.moveTo(x+22,BY+k*44);g.lineTo(x+BW-22,BY+k*44);g.stroke()}}g.textBaseline="middle"});
- g.textAlign="center";g.textBaseline="alphabetic";g.fillStyle="#6b6890";g.font="500 23px "+F;g.fillText("This is a computer-generated "+(IV?"invoice":"receipt")+" and is valid without a physical signature.",W/2,H-96);g.fillStyle=PUR;g.font="700 23px "+F;g.fillText("Generated with "+BRAND,W/2,H-62);
+ g.textAlign="center";g.textBaseline="alphabetic";g.fillStyle="#6b6890";g.font="500 23px "+F;g.fillText("This is a computer-generated "+(IV?"invoice":"receipt")+" and is valid without a physical signature.",W/2,H-96);g.fillStyle=PUR;g.font="700 23px "+F;g.fillText(ORG?HB:"Generated with "+BRAND,W/2,H-62);
  const blob=await new Promise(ok=>c.toBlob(ok,"image/jpeg",.92));const jpg=new Uint8Array(await blob.arrayBuffer());
  return new File([jpegToPdf(jpg,W,H)],(IV?"Invoice-"+String(o.no||"bill").replace(/[^\w-]/g,""):"Receipt-"+String(b.receiptNo||"payment").replace(/[^\w-]/g,""))+".pdf",{type:"application/pdf"})}
 const dlBlob=f=>{const u=URL.createObjectURL(f),a=mk("a");a.href=u;a.download=f.name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),8000)};

@@ -42,6 +42,9 @@ jobs:
       - name: Add Firebase config and permissions
         run: |
           if [ -f google-services.json ]; then cp google-services.json android/app/google-services.json; else echo "No google-services.json found - building without notifications"; fi
+          # A fresh install must start clean: do not restore old app data (saved payment details, login) from a Google backup after a reinstall.
+          sed -i 's#android:allowBackup="true"#android:allowBackup="false"#' android/app/src/main/AndroidManifest.xml
+          grep -q 'android:allowBackup' android/app/src/main/AndroidManifest.xml || sed -i '0,/<application/s#<application#<application android:allowBackup="false"#' android/app/src/main/AndroidManifest.xml
           sed -i 's#</manifest>#    <uses-permission android:name="android.permission.CAMERA" />\n    <uses-permission android:name="android.permission.RECORD_AUDIO" />\n    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />\n    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />\n    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />\n    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />\n</manifest>#' android/app/src/main/AndroidManifest.xml
 
       - name: Copy app files

@@ -628,6 +628,60 @@ nav button{font-weight:550;font-size:10.5px;border-radius:10px;color:var(--muted
 .g2{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.g2>*,.g3>*{min-width:0}select{min-width:0;max-width:100%}
 /* the entry screens have decorative blobs that stick out; never let the screen slide sideways because of them */
 .scr{overflow:clip}
+
+/* ===== side bar (drawer) + add-on feature pages ===== */
+#hmb{flex:none;width:40px;height:40px;border:0;border-radius:13px;background:rgba(255,255,255,.2);color:#fff;display:grid;place-items:center;cursor:pointer;padding:0;-webkit-tap-highlight-color:transparent;transition:transform .15s}#hmb:active{transform:scale(.92)}
+.hb>#hmb+div{flex:1;min-width:0}.hb>#hmb+div h1,.hb>#hmb+div p{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#drs{position:fixed;inset:0;z-index:51;background:rgba(10,12,30,.5);opacity:0;pointer-events:none;transition:opacity .25s}#drs.on{opacity:1;pointer-events:auto}
+#drw{position:fixed;top:0;bottom:0;left:0;z-index:52;width:min(84vw,320px);background:var(--card);color:var(--text);border-radius:0 26px 26px 0;box-shadow:12px 0 40px rgba(10,12,30,.28);display:flex;flex-direction:column;overflow:hidden;transform:translateX(-105%);transition:transform .28s cubic-bezier(.3,.9,.3,1),visibility 0s .28s;visibility:hidden}
+#drw.on{transform:none;visibility:visible;transition:transform .28s cubic-bezier(.3,.9,.3,1)}
+.drh{background:linear-gradient(135deg,var(--a),var(--a2));color:#fff;padding:calc(22px + env(safe-area-inset-top,0px)) 18px 14px}
+.drh .ava{border:2px solid rgba(255,255,255,.85);margin-bottom:9px;box-sizing:content-box}
+.drh b{display:block;font-size:16.5px;line-height:1.25;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.drh>span{font-size:12.5px;opacity:.92;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.drws{margin-top:11px;width:100%;border:0;background:rgba(255,255,255,.2);color:#fff;border-radius:12px;padding:9px 12px;font:600 12.5px Poppins,sans-serif;display:flex;justify-content:space-between;gap:8px;cursor:pointer;text-align:left}
+.drws span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.drws span:last-child{flex:none}
+.drl{flex:1;overflow-y:auto;padding:4px 10px 8px;-webkit-overflow-scrolling:touch}
+.drg{font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:700;padding:11px 12px 4px}
+.dri{width:100%;border:0;background:transparent;color:var(--text);display:flex;align-items:center;gap:13px;padding:6px 12px;border-radius:13px;font:600 14px Poppins,sans-serif;cursor:pointer;text-align:left;-webkit-tap-highlight-color:transparent}
+.dri i{font-style:normal;flex:none;width:31px;height:31px;border-radius:10px;background:var(--bg);display:grid;place-items:center;font-size:15.5px}
+.dri span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dri.on{background:var(--bg);color:var(--a)}.dri.on i{background:var(--card)}.dri:active{background:var(--bg)}
+.dri em{font-style:normal;flex:none;font-size:10.5px;font-weight:700;border-radius:20px;padding:2px 8px}.dri em.n{background:rgba(16,185,129,.16);color:#0d8a4f}.dri em.c{background:rgba(239,68,68,.14);color:var(--red)}
+.drf{border-top:1px solid var(--line);padding:5px 10px calc(8px + env(safe-area-inset-bottom,0px))}.drf .dri{font-weight:500;padding:4px 12px}.drf .dri.out{color:var(--red)}
+#fx{position:fixed;inset:0;z-index:50;background:var(--bg);color:var(--text);display:none;flex-direction:column}#fx.on{display:flex}
+.fxh{display:flex;align-items:center;gap:12px;padding:calc(10px + env(safe-area-inset-top,0px)) 14px 10px;background:var(--card);border-bottom:1px solid var(--line)}
+.fxh .btn{width:auto;padding:8px 14px;margin:0;flex:none}.fxh b{font-size:16px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#fxb{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;box-sizing:border-box;width:100%;max-width:720px;margin:0 auto;padding:14px 14px calc(44px + env(safe-area-inset-bottom,0px))}
+.fxhd{background:var(--card);border-radius:18px;padding:16px;margin-bottom:12px;box-shadow:0 2px 12px rgba(60,40,140,.07)}.fxhd b{display:block;font-size:15.5px;margin-bottom:3px}.fxhd p{font-size:13px;color:var(--muted);line-height:1.5;margin:0}.fxhd .btn{margin-top:12px}
+.fxk{background:var(--card);border-radius:18px;padding:14px;box-shadow:0 2px 12px rgba(60,40,140,.07);margin-bottom:10px}.fxk .desc{white-space:pre-wrap;word-break:break-word}
+.fxt{display:block;font-size:15px;margin:2px 0;word-break:break-word}
+.fxr{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:4px}.fxr .sp1{margin-left:auto}
+.fxp{font-size:10.5px;font-weight:700;border-radius:20px;padding:2px 9px;background:var(--bg);color:var(--muted);white-space:nowrap}.fxp.g{background:rgba(16,185,129,.16);color:#0d8a4f}.fxp.r{background:rgba(239,68,68,.14);color:var(--red)}.fxp.a{background:rgba(245,158,11,.18);color:#b45309}.fxp.b{background:rgba(91,61,245,.12);color:var(--a)}
+.fxa{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.fxa .btn{width:auto;padding:7px 14px;margin:0;flex:none;text-decoration:none}
+.fxi{display:block;width:100%;max-height:220px;object-fit:cover;border-radius:12px;margin:8px 0;cursor:pointer;background:var(--bg)}
+.fxch{display:flex;gap:8px;overflow-x:auto;margin:0 0 12px;padding-bottom:2px;scrollbar-width:none}.fxch::-webkit-scrollbar{display:none}
+.fxch button{flex:none;border:1px solid var(--line);background:var(--card);color:var(--muted);border-radius:99px;padding:7px 14px;font:600 12.5px Poppins,sans-serif;cursor:pointer}.fxch button.on{background:var(--a);border-color:var(--a);color:#fff}
+.fxe{text-align:center;color:var(--muted);padding:34px 10px;font-size:13.5px;line-height:1.5}.fxe i{display:block;font-style:normal;font-size:40px;margin-bottom:8px}
+.fxl{display:block}.fxl>span{display:block;font-size:12px;font-weight:600;color:var(--muted);margin:0 2px 4px}
+.fxs{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:16px 4px 8px}
+.fxst{display:flex;gap:4px;justify-content:center;margin:6px 0 12px}.fxst button{border:0;background:transparent;font-size:34px;line-height:1;cursor:pointer;color:var(--line);padding:2px}.fxst button.on{color:#f59e0b}
+.fxsr{color:#f59e0b;font-weight:700;font-size:13px}
+.fxdn{display:flex;gap:16px;align-items:center;flex-wrap:wrap;justify-content:center}.fxdn svg{flex:none;width:170px;height:170px}.fxlg{flex:1;min-width:180px}.fxlg div{display:flex;align-items:center;gap:8px;font-size:13px;padding:4px 0}.fxlg i{width:11px;height:11px;border-radius:3px;flex:none}.fxlg span{flex:1;min-width:0}.fxlg b{font-weight:600;white-space:nowrap}
+.fxtb{width:100%;border-collapse:collapse;font-size:13px;margin:8px 0}.fxtb th,.fxtb td{border-bottom:1px solid var(--line);padding:7px 6px;text-align:left}.fxtb th{font-size:11.5px;color:var(--muted);font-weight:600}.fxtb td.n,.fxtb th.n{text-align:right;white-space:nowrap}
+.fxsub{display:grid;grid-template-columns:minmax(0,1fr) 62px 62px 30px;gap:6px;align-items:center}.fxsub input{margin-bottom:6px;padding:10px 9px}.fxsub button{border:0;background:transparent;color:var(--red);font-size:18px;cursor:pointer;margin-bottom:6px;padding:0}
+.fxgw{overflow-x:auto;background:var(--card);border-radius:16px;box-shadow:0 2px 12px rgba(60,40,140,.07);margin-bottom:12px}
+.fxg{border-collapse:separate;border-spacing:0;font-size:12.5px;min-width:100%}.fxg th,.fxg td{padding:8px 6px;text-align:center;border-bottom:1px solid var(--line);white-space:nowrap}
+.fxg th{font-size:11px;color:var(--muted);font-weight:600}.fxg th small{display:block;font-weight:500;font-size:10px}
+.fxg td:first-child,.fxg th:first-child{position:sticky;left:0;background:var(--card);text-align:left;padding-left:12px;max-width:128px;overflow:hidden;text-overflow:ellipsis;z-index:1;font-weight:600}
+.fxg tr.me td{background:rgba(91,61,245,.06)}.fxg tr.me td:first-child{color:var(--a)}
+.fxg td button{min-width:34px;border:0;border-radius:9px;padding:6px 4px;font:700 12px Poppins,sans-serif;background:var(--bg);color:var(--muted);cursor:pointer}.fxg td button[disabled]{cursor:default;opacity:1}
+.fxg .sM{background:rgba(245,158,11,.2);color:#b45309}.fxg .sE{background:rgba(91,61,245,.14);color:var(--a)}.fxg .sN{background:#1f2440;color:#fff}.fxg .sG{background:rgba(16,185,129,.18);color:#0d8a4f}.fxg .sO{background:rgba(239,68,68,.12);color:var(--red)}
+.fxwk{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}.fxwk b{font-size:14px;text-align:center;flex:1}.fxwk .btn{width:auto;padding:7px 14px;margin:0}
+.fxqr{width:190px;margin:8px auto}.fxqr svg{width:100%;height:auto;background:#fff;border-radius:10px}
+.fxbig{font-size:26px;font-weight:700;letter-spacing:.01em}
+.fxkv{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:13.5px;margin:8px 0}.fxkv span{color:var(--muted)}
+.fxmap{position:relative;border-radius:12px;overflow:hidden;height:96px;margin:8px 0}.fxmap svg{width:100%;height:100%;display:block}
+.fxbd{display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--line)}.fxbd:last-child{border-bottom:0}.fxbd div.t{flex:1;min-width:0}.fxbd b{display:block;font-size:14px}.fxbd small{color:var(--muted);font-size:12px}.fxbd .btn{width:auto;padding:6px 12px;margin:0}
 </style>
 <style>
 #splash{position:fixed;inset:0;z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(900px 500px at 50% 35%,rgba(99,102,241,.45),transparent 70%),radial-gradient(700px 400px at 80% 90%,rgba(20,184,166,.3),transparent 70%),#080d1a;color:#fff;transition:opacity .55s,transform .55s}
@@ -1156,7 +1210,7 @@ const photoOf=u=>(D.dir[u]||{}).photo||(u===S.uid&&S.me&&S.me.photoUrl)||(D.mem[
 function shrink(file,max,q,sq){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>{const i=new Image();i.onload=()=>{let sw=i.width,sh=i.height,sx=0,sy=0;if(sq){const m=Math.min(sw,sh);sx=(sw-m)/2;sy=(sh-m)/2;sw=sh=m}const s=Math.min(1,max/Math.max(sw,sh)),w=Math.round(sw*s),h=Math.round(sh*s),c=document.createElement("canvas");c.width=w;c.height=h;c.getContext("2d").drawImage(i,sx,sy,sw,sh,0,0,w,h);res(c.toDataURL("image/jpeg",q))};i.onerror=rej;i.src=r.result};r.onerror=rej;r.readAsDataURL(file)})}
 let actx;const beep=()=>{try{actx=actx||new(window.AudioContext||window.webkitAudioContext)();const o=actx.createOscillator(),g=actx.createGain();o.connect(g);g.connect(actx.destination);o.frequency.value=880;g.gain.setValueAtTime(.15,actx.currentTime);g.gain.exponentialRampToValueAtTime(.001,actx.currentTime+.3);o.start();o.stop(actx.currentTime+.3)}catch(e){}};
 function toast(ic,t,x,quiet){if(!quiet&&muted)return;const e=mk("div","toast");e.appendChild(mk("div",null,ic));const d=mk("div");d.appendChild(mk("b",null,t));d.appendChild(mk("small",null,x||""));e.appendChild(d);$("toasts").appendChild(e);setTimeout(()=>e.remove(),4500);if(!quiet)beep()}
-const fail=(e,m)=>{console.error(e);toast("⚠️",m||"Something went wrong",fr(e)+(e&&e.code?" ["+e.code+"]":""),true)};
+const fail=(e,m)=>{if(e&&e.fxv){toast("ℹ️",e.message,"",true);return}console.error(e);toast("⚠️",m||"Something went wrong",fr(e)+(e&&e.code?" ["+e.code+"]":""),true)};
 async function run(btn,fn){const t=btn.textContent;btn.disabled=true;btn.classList.add("ld");btn.innerHTML="<span class='dots'><i></i><i></i><i></i></span>";let ok=true;try{await fn()}catch(e){ok=false;fail(e)}btn.classList.remove("ld");if(ok&&document.body.contains(btn)){btn.classList.add("okb");btn.textContent="✓ Done";setTimeout(()=>{btn.classList.remove("okb");btn.disabled=false;btn.textContent=t},900)}else{btn.disabled=false;btn.textContent=t}}
 function sheet(fn){const o=$("ov");o.innerHTML="";o.classList.remove("hide");o.classList.remove("mmc");const s=mk("div","sheet");fn(s);const c=mk("a","lnk","Close");c.onclick=closeSheet;s.appendChild(c);o.appendChild(s);o.onclick=e=>{if(e.target===o)closeSheet()}}
 const closeSheet=()=>{$("ov").classList.add("hide");$("ov").classList.remove("mmc");stopScan()};
@@ -1207,7 +1261,7 @@ async function switchTo(id){
  const [m,s]=await Promise.all([getDoc(doc(db,"societies",id,"members",S.uid)),getDoc(doc(db,"societies",id))]);
  if(!m.exists()||!s.exists()){wr.catch(()=>{});throw new Error("That workspace isn't available any more.")}
  const me=m.data(),soc=s.data();
- closeSheet();try{leaveDM()}catch(e){}try{liveStop()}catch(e){}unsubs.forEach(f=>f());unsubs=[];Object.keys(D).forEach(k=>{D[k]={}});
+ closeSheet();try{leaveDM()}catch(e){}try{liveStop()}catch(e){}try{fxHide();drwShow(false)}catch(e){}unsubs.forEach(f=>f());unsubs=[];Object.keys(D).forEach(k=>{D[k]={}});
  if(me.status!=="approved"||soc.active===false){await wr.catch(()=>{});S.sid=null;S.me=null;S.soc=null;boot();return}
  wr.catch(console.error);
  S.sid=id;S.me=me;S.soc=soc;tab="home";sub="comp";socCache=null;loginKind=null;
@@ -1349,7 +1403,7 @@ function startApp(){
  $("annf").classList.toggle("hide",!isAdm());annSetup();ensureTCode();document.querySelector("#t_fin .bal").classList.toggle("hide",!canFin());$("finf").classList.toggle("hide",!canFin());$("pk_adm").classList.toggle("hide",!isAdm());
  $("vf_res").classList.toggle("hide",isGuard());$("vf_grd").classList.toggle("hide",!staff());$("df_grd").classList.toggle("hide",!staff());$("vh_res").classList.toggle("hide",isGuard());$("vsr").classList.toggle("hide",!staff());
  setFin("inc");setHero();drawNav();syncDirPhoto();if(KIND==="company"&&isAdm()&&!socGst())setTimeout(()=>toast("🧾","Add your GST number","Finance → Payment details. It is printed on every invoice.",true),2500);
- listen();show("sMain");go("home");liveResume();setTimeout(firstRunPerms,900);
+ listen();show("sMain");go("home");fxStart();liveResume();setTimeout(firstRunPerms,900);
 }
 const flats=()=>{const one=S.soc.towers.length===1,r=[];S.soc.towers.forEach(t=>gF(t,one).forEach(l=>r.push((one?"":t.name+" · ")+"Flat "+l)));return r};
 function setHero(){const h=$("hav");h.innerHTML="";h.appendChild(av(S.me.name,photoOf(S.uid),42));h.onclick=()=>go("more")}
@@ -2221,6 +2275,7 @@ window.__back=function(){try{
  const pm=$("permd");if(pm){pm.remove();return true}
  if($("pdfv")){closePdf();return true}
  const ov=$("ov");if(ov&&!ov.classList.contains("hide")){closeSheet();return true}
+ if(fxOnBack())return true;
  const ip=$("idp");if(ip&&!ip.classList.contains("hide")){const b=ip.querySelector("button");if(b){b.click();return true}}
  if(!$("sMain").classList.contains("hide")){
   if(dmc){dmBack();return true}
@@ -2780,6 +2835,463 @@ $("iesend").onclick=async()=>{if(IE.busy||!IE.items.length)return;ieTool(null);i
  try{for(const it of list){const b=await ieBlob(it.c,hd);if(!b)throw new Error("Couldn't prepare the photo");const url=await UP(b,hd?"docs":"chat","p.jpg",true);const o={img:url,text:(it.cap||"").trim().slice(0,300)};if(hd)o.hd=1;await sendMsg(o);sent++}
   IE.busy=false;ieClose()}catch(x){IE.busy=false;IE.items=list.slice(sent);IE.i=0;if(IE.items.length)ieShow();else ieClose();fail(x,sent?"Some photos were not sent":"Photo not sent")}
  btn.disabled=false;$("ied").classList.remove("busy")};
+
+/* =====================================================================================================
+   SIDE BAR + ADD-ON FEATURES
+   - ☰ in the header opens the side bar (also: swipe in from the left edge). Old screens are reached from it too.
+   - Every add-on opens as its own page (#fx). A page listens to its data only while it is open.
+   - New collections used here need the matching Firestore rules (see firestore.rules, "side-bar features").
+   ===================================================================================================== */
+const FX={},FXC=n=>collection(db,"societies",S.sid,n),FXD=(n,id)=>doc(db,"societies",S.sid,n,id);
+let fxU=[],fxKey=null;
+const fxMe=()=>({uid:S.uid,name:S.me.name||"",flat:S.me.flat||""}),fxAdd=(n,o)=>addDoc(FXC(n),{...o,ts:Date.now()});
+const fxYmd=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+const fxDate=s=>{if(!s)return"";const d=new Date(s+"T00:00:00");return isNaN(d)?s:d.toLocaleDateString([],{weekday:"short",day:"numeric",month:"short",year:"numeric"})};
+const fxT12=t=>{const m=/^(\d{1,2}):(\d{2})/.exec(t||"");if(!m)return t||"";const h=+m[1];return((h+11)%12+1)+":"+m[2]+(h<12?" AM":" PM")};
+/* people that can be picked in a form: admins see the member list, everyone else the directory */
+const fxPpl=()=>{const src=isAdm()?Object.values(D.mem||{}).filter(x=>x.status==="approved"):Object.values(D.dir||{});
+ return src.map(x=>({uid:x.uid||x.id,name:x.name||"",flat:x.flat||"",role:x.role})).filter(x=>x.uid&&x.name).sort((a,b)=>a.name.localeCompare(b.name))};
+const fxOff=u=>{if(!u)return;try{u()}catch(e){}fxU=fxU.filter(f=>f!==u)};
+function fxW(q,cb){const u=onSnapshot(q,s=>cb(s.docs.map(d=>({id:d.id,...d.data()})),null),e=>{console.warn("add-on data",e);cb(null,e)});fxU.push(u);return u}
+function fxStop(){fxU.forEach(f=>{try{f()}catch(e){}});fxU=[]}
+
+/* ---------- small UI helpers ---------- */
+const fxSel=(opts,val)=>{const s=mk("select");opts.forEach(o=>{const a=Array.isArray(o)?o:[o,o];s.appendChild(Object.assign(mk("option",null,a[1]),{value:a[0]}))});if(val!=null)s.value=val;return s};
+const fxLbl=(t,el)=>{const l=mk("label","fxl");l.appendChild(mk("span",null,t));l.appendChild(el);return l};
+const fxPill=(t,c)=>mk("span","fxp"+(c?" "+c:""),t);
+const fxMini=(t,fn,c)=>{const b=mk("button","btn s "+(c||"o"),t);b.type="button";b.onclick=e=>{e.stopPropagation();run(b,fn)};return b};
+const fxEmpty=(ic,t)=>{const e=mk("div","fxe");e.appendChild(mk("i",null,ic));e.appendChild(document.createTextNode(t));return e};
+const fxChips=(opts,cur,fn)=>{const w=mk("div","fxch");opts.forEach(([v,t])=>{const b=mk("button",v===cur?"on":"",t);b.type="button";b.onclick=()=>fn(v);w.appendChild(b)});return w};
+const fxHead=(b,t,s,bt,fn)=>{const c=mk("div","fxhd");c.appendChild(mk("b",null,t));if(s)c.appendChild(mk("p",null,s));if(bt){const x=mk("button","btn",bt);x.type="button";x.onclick=fn;c.appendChild(x)}b.appendChild(c);return c};
+const fxSec=(b,t)=>b.appendChild(mk("div","fxs",t));
+/* loading / error / empty. Returns true when it has drawn something and the caller should stop. */
+function fxState(b,L,err,ic,empty){if(err){b.appendChild(fxEmpty("⚠️",err.code==="permission-denied"?(isOwner()?"This feature is not switched on in the database yet. Publish the latest Firestore rules (firestore.rules) in the Firebase console, then open this page again.":"This feature is not available yet. Please ask your admin."):"Couldn't load. Check your internet and try again."));return true}
+ if(L===null){b.appendChild(fxEmpty("⏳","Loading…"));return true}if(!L.length){b.appendChild(fxEmpty(ic,empty));return true}return false}
+const fxSure=t=>{try{return window.confirm(t)}catch(e){return true}};
+/* a message for the person filling a form (shown as a hint, not as an error) */
+const fxBad=m=>Object.assign(new Error(m),{fxv:1});
+/* one form in a bottom sheet. F = [{k,l,type,ph,val,opts,req,accept,min,max}] ; fn gets the values */
+function fxForm(title,sub,F,btn,fn){sheet(z=>{m3(z);z.appendChild(mk("h2",null,title));if(sub)z.appendChild(mk("p","sub",sub));const E={};
+ F.forEach(f=>{let el;if(f.type==="select")el=fxSel(f.opts,f.val);
+  else if(f.type==="area"){el=mk("textarea");el.placeholder=f.ph||"";el.value=f.val||"";el.maxLength=f.max||600}
+  else if(f.type==="file"){el=mk("input");el.type="file";el.accept=f.accept||"image/*";gateInput(el,"media")}
+  else{el=mk("input");el.type=f.type||"text";el.placeholder=f.ph||"";if(f.val!=null)el.value=f.val;if(f.type==="number"){el.inputMode="decimal";el.min="0";el.step="any"}else if(!f.type||f.type==="text"||f.type==="tel")el.maxLength=f.max||120;if(f.min)el.min=f.min}
+  E[f.k]=el;z.appendChild(fxLbl(f.l+(f.req?"":" (optional)"),el))});
+ const er=mk("div","err"),go=mk("button","btn",btn);go.type="button";z.addEventListener("input",()=>{er.textContent=""});z.addEventListener("change",()=>{er.textContent=""});
+ go.onclick=()=>{er.textContent="";const v={};for(const f of F){const el=E[f.k];v[f.k]=f.type==="file"?(el.files[0]||null):f.type==="number"?(el.value===""?null:+el.value):el.value.trim();
+   if(f.req&&(v[f.k]===""||v[f.k]==null||(f.type==="number"&&!(v[f.k]>0)))){er.textContent="Please fill in: "+f.l;return}}
+  run(go,async()=>{await fn(v);closeSheet()})};z.append(er,go)})}
+/* camera scanner for a 6-digit pass code (same reader as the visitor pass) */
+function fxScan(title,onCode){sheet(s=>{s.appendChild(mk("h2",null,title));s.appendChild(mk("p","sub","Hold the pass steady inside the frame"));
+ const w=mk("div","qsw"),v=mk("video");v.setAttribute("playsinline","");v.muted=true;const f=mk("div","qsf");["tl","tr","bl","br"].forEach(k=>f.appendChild(mk("i",k)));f.appendChild(mk("b","qsl"));
+ const st=mk("div","qst"),stx=mk("span",null,"Starting camera…");st.append(mk("i"),stx);w.append(v,f,st);s.appendChild(w);
+ (async()=>{let rd,stm;if(!(await askPerm("cam"))){closeSheet();return}
+  try{stm=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:"environment"}}})}catch(e){toast("⚠️","Camera not available","Type the code instead.",true);closeSheet();return}
+  if($("ov").classList.contains("hide")||!s.isConnected){stm.getTracks().forEach(t=>t.stop());return}
+  scanStream=stm;v.srcObject=stm;try{await v.play()}catch(e){}
+  try{rd=await qrReader()}catch(e){toast("⚠️","Scanner not available","Type the 6-digit code instead.",true);closeSheet();return}
+  stx.textContent="Looking for a QR code…";w.classList.add("on");scanOn=true;let last=0;
+  const tick=async t=>{if(!scanOn)return;if(t-last>140){last=t;try{const raw=await rd(v),m=/(\d{6})/.exec(raw||"");if(m){scanOn=false;w.classList.add("ok");stx.textContent="Pass found ✓";if(navigator.vibrate)navigator.vibrate(70);setTimeout(()=>{closeSheet();onCode(m[1])},600);return}}catch(e){}}requestAnimationFrame(tick)};
+  requestAnimationFrame(tick)})()})}
+const fxQR=(box,text)=>loadQR().then(ok=>{if(!ok)return;try{const x=window.qrcode(0,"M");x.addData(text);x.make();box.innerHTML=x.createSvgTag({cellSize:6,margin:2,scalable:true})}catch(e){}});
+/* a one-page PDF made from a picture of the page (so any language prints correctly) */
+function fxPdf(canvas){const d=canvas.toDataURL("image/jpeg",.9),bin=atob(d.split(",")[1]),n=bin.length,img=new Uint8Array(n);for(let i=0;i<n;i++)img[i]=bin.charCodeAt(i);
+ const te=new TextEncoder(),parts=[],offs=[];let pos=0;const put=x=>{const u=typeof x==="string"?te.encode(x):x;parts.push(u);pos+=u.length},obj=(i,f)=>{offs[i]=pos;put(i+" 0 obj\n");f();put("\nendobj\n")};
+ const PW=595.28,PH=841.89,c="q "+PW+" 0 0 "+PH+" 0 0 cm /Im0 Do Q";put("%PDF-1.4\n");
+ obj(1,()=>put("<< /Type /Catalog /Pages 2 0 R >>"));obj(2,()=>put("<< /Type /Pages /Kids [3 0 R] /Count 1 >>"));
+ obj(3,()=>put("<< /Type /Page /Parent 2 0 R /MediaBox [0 0 "+PW+" "+PH+"] /Resources << /XObject << /Im0 4 0 R >> >> /Contents 5 0 R >>"));
+ obj(4,()=>{put("<< /Type /XObject /Subtype /Image /Width "+canvas.width+" /Height "+canvas.height+" /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length "+n+" >>\nstream\n");put(img);put("\nendstream")});
+ obj(5,()=>put("<< /Length "+c.length+" >>\nstream\n"+c+"\nendstream"));
+ const xr=pos;put("xref\n0 6\n0000000000 65535 f \n");for(let i=1;i<=5;i++)put(String(offs[i]).padStart(10,"0")+" 00000 n \n");put("trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n"+xr+"\n%%EOF");
+ return new Blob(parts,{type:"application/pdf"})}
+
+/* ---------- the page that add-ons open in ---------- */
+function fxBuild(){if($("fx"))return;
+ const p=mk("div");p.id="fx";p.setAttribute("data-noskin","");const h=mk("div","fxh"),bk=mk("button","btn s o","← Back"),t=mk("b");t.id="fxt";bk.type="button";bk.onclick=fxHide;h.append(bk,t);const b=mk("div");b.id="fxb";p.append(h,b);
+ const sc=mk("div");sc.id="drs";sc.onclick=()=>drwShow(false);const d=mk("aside");d.id="drw";d.setAttribute("data-noskin","");d.setAttribute("aria-label","Menu");
+ document.body.append(p,sc,d);
+ const hb=document.querySelector("#sMain .hb");if(hb&&!$("hmb")){const m=mk("button");m.id="hmb";m.type="button";m.setAttribute("aria-label","Open menu");m.innerHTML='<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h11"/></svg>';m.onclick=()=>drwShow(true);hb.insertBefore(m,hb.firstChild)}
+ /* swipe in from the left edge opens the side bar, swipe left on it closes it */
+ let sx=0,sy=0,mode=0;
+ document.addEventListener("touchstart",e=>{const t=e.touches[0];sx=t.clientX;sy=t.clientY;const open=d.classList.contains("on");
+  mode=open?2:(sx<18&&!$("sMain").classList.contains("hide")&&!$("fx").classList.contains("on")&&$("ov").classList.contains("hide")&&!$("permd")&&!$("pdfv")&&$("ied").classList.contains("hide")?1:0)},{passive:true});
+ document.addEventListener("touchend",e=>{if(!mode)return;const t=e.changedTouches[0],dx=t.clientX-sx,dy=Math.abs(t.clientY-sy);if(mode===1&&dx>60&&dy<60)drwShow(true);if(mode===2&&dx<-60&&dy<70)drwShow(false);mode=0},{passive:true})}
+function fxOpen(key){const F=FX[key];if(!F||!S.me)return;fxBuild();drwShow(false);closeSheet();fxStop();fxKey=key;$("fxt").textContent=F.ic+" "+F.t;const b=$("fxb");b.innerHTML="";$("fx").classList.add("on");b.scrollTop=0;
+ try{F.open(b)}catch(e){console.error(e);b.appendChild(fxEmpty("⚠️","Couldn't open this page."))}}
+function fxHide(){fxStop();fxKey=null;const p=$("fx");if(p){p.classList.remove("on");$("fxb").innerHTML=""}}
+/* Android back button / gesture (called from window.__back) */
+function fxOnBack(){const d=$("drw");if(d&&d.classList.contains("on")){drwShow(false);return true}const p=$("fx");if(p&&p.classList.contains("on")){fxHide();return true}return false}
+
+/* ---------- the side bar ---------- */
+const SUBI={comp:"🛠️",vis:"🚪",del:"📦",veh:"🚗",park:"🅿️",help:"🧹",mkt:"🛍️",att:"📝",leave:"🌴",room:"📅",tt:"🗓️",hol:"🎉",hw:"📚",gc:"⚖️"};
+const FXLIST={society:["lf","ven","meet","exr"],school:["res","gp","ptm","bus","bday"],company:["task","shift","pay","asset","claim","bday"]};
+const fxShown=k=>{const F=FX[k];return !!F&&(!F.show||F.show())};
+function drwShow(on){fxBuild();const d=$("drw");if(on){if(!S.me)return;drwDraw();$("drl")&&($("drl").scrollTop=0)}d.classList.toggle("on",!!on);$("drs").classList.toggle("on",!!on)}
+function drwDraw(){const d=$("drw");d.innerHTML="";const g=isGuard(),adm=isAdm(),nv=Object.fromEntries(navCfg().map(c=>[c[0],c]));
+ const h=mk("div","drh");h.appendChild(av(S.me.name,photoOf(S.uid),46));h.appendChild(mk("b",null,S.me.name));
+ {const rl=roleLbl(S.me.role),fl=String(S.me.flat||"");h.appendChild(mk("span",null,fl&&fl.toLowerCase()!==rl.toLowerCase()?rl+" · "+fl:rl))}
+ const ws=mk("button","drws");ws.type="button";ws.append(mk("span",null,KINDS[KIND].ico+" "+S.soc.name),mk("span",null,"Switch ⇅"));ws.onclick=()=>{drwShow(false);$("wsw").onclick()};h.appendChild(ws);d.appendChild(h);
+ const l=mk("div","drl");l.id="drl";d.appendChild(l);
+ const grp=t=>l.appendChild(mk("div","drg",t)),it=(ic,t,fn,o)=>{o=o||{};const b=mk("button","dri"+(o.on?" on":"")+(o.cls?" "+o.cls:""));b.type="button";b.appendChild(mk("i",null,ic));b.appendChild(mk("span",null,t));if(o.n)b.appendChild(mk("em","c",String(o.n)));else if(o.nw)b.appendChild(mk("em","n","NEW"));b.onclick=()=>{drwShow(false);fn()};(o.to||l).appendChild(b);return b};
+ const comm=v=>()=>{go("comm");$(v==="ann"?"sn1":"sn2").onclick()},onC=v=>tab==="comm"&&!$(v==="ann"?"v_ann":"v_chat").classList.contains("hide");
+ grp("Daily");it("🏠","Home",()=>go("home"),{on:tab==="home"});
+ if(!g){it("📢","Notices",comm("ann"),{on:onC("ann")});it("💬",KIND==="company"?"Team chat":"Chat",comm("chat"),{on:onC("chat")})}
+ grp(g?"Gate":(nv.svc?nv.svc[2]:"Services"));
+ const open=Object.values(D.comp||{}).filter(c=>adm&&c.status==="Open").length;
+ subList().forEach(k=>it(SUBI[k]||"•",SUBSK()[k]||k,()=>go("svc:"+k),{on:tab==="svc"&&sub===k,n:k==="comp"?open:0}));
+ if(!g&&nv.fin){grp("Money");it(nv.fin[1],nv.fin[2],()=>go("fin"),{on:tab==="fin"})}
+ const X=(FXLIST[KIND]||[]).filter(fxShown);if(X.length){grp("More tools");X.forEach(k=>it(FX[k].ic,FX[k].t,()=>fxOpen(k),{nw:1}))}
+ if(adm){grp("Manage");const pend=Object.values(D.mem||{}).filter(x=>x.status==="pending").length;it("👥","People & approvals",()=>go("more"),{on:tab==="more",n:pend});it("🪪","ID proof & photos",openIdPages);if(isMgr())it("⭐","Plan",()=>go("sub"),{on:tab==="sub"})}
+ const f=mk("div","drf");d.appendChild(f);
+ it("👤","My profile",()=>{go("more");setTimeout(()=>{const c=$("mr").lastElementChild;if(c&&c.scrollIntoView)c.scrollIntoView({block:"start"})},80)},{to:f});
+ it("💜",BRAND+" Support",()=>spOpen(true),{to:f});it("📄","Privacy Policy",()=>openLegal("privacy"),{to:f});it("📃","Terms & Conditions",()=>openLegal("terms"),{to:f});
+ it("↩️","Log out",logout,{to:f,cls:"out"})}
+/* called when the main screen starts (login, workspace switch) */
+function fxStart(){fxBuild();fxHide();drwShow(false)}
+
+/* =============================== SOCIETY =============================== */
+/* ---------- Lost & Found ---------- */
+FX.lf={ic:"🔎",t:"Lost & Found",open(b){let L=null,err=null,f="all";
+ const post=()=>fxForm("Post an item","Lost something, or found something that is not yours?",[{k:"kind",l:"Type",type:"select",opts:[["lost","I lost something"],["found","I found something"]],req:1},{k:"title",l:"What is it?",ph:"e.g. Black wallet, car keys",req:1,max:80},{k:"where",l:"Where?",ph:"e.g. Near Tower B lift",max:80},{k:"desc",l:"Details",type:"area",ph:"Colour, brand, when…",max:400},{k:"img",l:"Photo",type:"file"}],"Post",
+  async v=>{const img=v.img?await UP(v.img,"classifieds","p.jpg"):"";await fxAdd("lostfound",{kind:v.kind,title:v.title,where:v.where,desc:v.desc,img,status:"open",...fxMe()});toast("✅","Posted","",true)});
+ const draw=()=>{b.innerHTML="";fxHead(b,"Lost something? Found something?","Post it here so that it reaches everyone.","＋ Post an item",post);
+  b.appendChild(fxChips([["all","All"],["lost","Lost"],["found","Found"],["mine","My posts"]],f,x=>{f=x;draw()}));
+  if(fxState(b,L,err,"🔎","Nothing has been posted yet."))return;
+  const R=L.filter(x=>f==="all"||(f==="mine"?x.uid===S.uid:x.kind===f));if(!R.length){b.appendChild(fxEmpty("🔎","Nothing here."));return}
+  R.forEach(x=>{const c=mk("div","fxk"),top=mk("div","fxr"),lost=x.kind==="lost";top.appendChild(fxPill(lost?"Lost":"Found",lost?"r":"g"));if(x.status==="closed")top.appendChild(fxPill(lost?"Got it back ✓":"Returned ✓"));c.appendChild(top);
+   c.appendChild(mk("b","fxt",x.title));if(x.where)c.appendChild(mk("div","meta","📍 "+x.where));if(x.desc)c.appendChild(mk("p","desc",x.desc));
+   if(okImg(x.img)){const i=mk("img","fxi");i.src=x.img;i.alt="";i.onclick=()=>viewImg(x.img);c.appendChild(i)}
+   c.appendChild(mk("div","meta",x.name+(x.flat?" · "+x.flat:"")+" · "+dt(x.ts)));
+   const a=mk("div","fxa");if(x.uid!==S.uid&&x.status!=="closed"){const m=mk("button","btn s","💬 Message");m.type="button";m.onclick=()=>{fxHide();go("comm");openDM(x.uid)};a.appendChild(m)}
+   if(x.uid===S.uid||isAdm()){if(x.status!=="closed")a.appendChild(fxMini(lost?"✓ I got it back":"✓ Returned to owner",()=>updateDoc(FXD("lostfound",x.id),{status:"closed"}),"g"));
+    a.appendChild(fxMini("Delete",async()=>{if(!fxSure("Delete this post?"))return;await deleteDoc(FXD("lostfound",x.id));rmFile(x.img)},"r"))}
+   if(a.children.length)c.appendChild(a);b.appendChild(c)})};
+ fxW(query(FXC("lostfound"),orderBy("ts","desc"),limit(150)),(d,e)=>{L=d||[];err=e;draw()});draw()}};
+
+/* ---------- Vendor / service directory with ratings ---------- */
+const VCATS=["Plumber","Electrician","Carpenter","Painter","AC / Appliance repair","Pest control","Cleaning","Laundry","Milk / Newspaper","Cab / Driver","Internet / Cable","Other"];
+FX.ven={ic:"🧰",t:"Service directory",open(b){let L=null,R=[],err=null,cat="All";
+ const edit=x=>fxForm(x?"Edit contact":"Add a service contact","A plumber, electrician or any service you trust. Everyone can see and rate it.",[{k:"name",l:"Name",ph:"e.g. Ramesh Plumbing",req:1,val:x&&x.name,max:60},{k:"cat",l:"Service",type:"select",opts:VCATS,val:x?x.cat:VCATS[0],req:1},{k:"phone",l:"Phone number",type:"tel",ph:"10-digit mobile",req:1,val:x&&x.phone,max:15},{k:"note",l:"Note",ph:"Timings, charges, area…",val:x&&x.note,max:160}],"Save",
+  async v=>{if(v.phone.replace(/\D/g,"").length<8)throw fxBad("Enter a valid phone number.");if(x)await updateDoc(FXD("vendors",x.id),v);else await fxAdd("vendors",{...v,uid:S.uid,byName:S.me.name});toast("✅","Saved","",true)});
+ const rate=x=>sheet(z=>{m3(z);const my=R.find(r=>r.pid===x.id&&r.uid===S.uid);let n=my?my.v:0;z.appendChild(mk("h2",null,"Rate "+x.name));z.appendChild(mk("p","sub",x.cat));
+  const st=mk("div","fxst"),paint=()=>[...st.children].forEach((s,i)=>s.classList.toggle("on",i<n));for(let i=1;i<=5;i++){const s=mk("button",null,"★");s.type="button";s.setAttribute("aria-label",i+" star"+(i>1?"s":""));s.onclick=()=>{n=i;paint()};st.appendChild(s)}paint();z.appendChild(st);
+  const tx=mk("textarea");tx.placeholder="How was the work? (optional)";tx.maxLength=300;tx.value=my?my.text||"":"";z.appendChild(tx);
+  const go=mk("button","btn","Save rating");go.type="button";go.onclick=()=>{if(!n){toast("ℹ️","Tap a star first","",true);return}run(go,async()=>{await setDoc(FXD("responses",x.id+"_"+S.uid),{pid:x.id,k:"rate",uid:S.uid,name:S.me.name,v:n,text:tx.value.trim(),ts:Date.now()});closeSheet()})};z.appendChild(go)});
+ const reviews=x=>sheet(z=>{m3(z);z.appendChild(mk("h2",null,x.name));const rs=R.filter(r=>r.pid===x.id).sort((p,q)=>q.ts-p.ts);z.appendChild(mk("p","sub",rs.length+" rating"+(rs.length===1?"":"s")));
+  rs.forEach(r=>{const d=mk("div","fxbd"),t=mk("div","t");t.appendChild(mk("b",null,r.name));if(r.text)t.appendChild(mk("small",null,r.text));d.append(t,mk("span","fxsr","★ "+r.v));z.appendChild(d)})});
+ const draw=()=>{b.innerHTML="";fxHead(b,"Trusted services near you","Numbers shared and rated by people here.","＋ Add a contact",()=>edit());
+  if(fxState(b,L,err,"🧰","No contacts yet. Add the first one."))return;
+  const cats=["All"].concat(VCATS.filter(c=>L.some(x=>x.cat===c)));if(!cats.includes(cat))cat="All";b.appendChild(fxChips(cats.map(c=>[c,c]),cat,x=>{cat=x;draw()}));
+  const avg=id=>{const rs=R.filter(r=>r.pid===id);return{n:rs.length,a:rs.length?rs.reduce((s,r)=>s+(+r.v||0),0)/rs.length:0}};
+  L.filter(x=>cat==="All"||x.cat===cat).map(x=>({x,r:avg(x.id)})).sort((p,q)=>q.r.a-p.r.a||q.r.n-p.r.n||q.x.ts-p.x.ts).forEach(({x,r})=>{const c=mk("div","fxk"),top=mk("div","fxr");top.appendChild(fxPill(x.cat,"b"));
+   if(r.n){const s=mk("span","fxsr sp1","★ "+r.a.toFixed(1)+" ("+r.n+")");s.style.cursor="pointer";s.onclick=()=>reviews(x);top.appendChild(s)}else top.appendChild(mk("span","meta sp1","No ratings yet"));c.appendChild(top);
+   c.appendChild(mk("b","fxt",x.name));c.appendChild(mk("div","meta","📞 "+x.phone+(x.note?" · "+x.note:"")));if(x.byName)c.appendChild(mk("div","meta","Added by "+x.byName));
+   const a=mk("div","fxa"),call=mk("a","btn s","📞 Call");call.href="tel:"+String(x.phone).replace(/[^\d+]/g,"");a.appendChild(call);
+   const rb=mk("button","btn s o",R.some(q=>q.pid===x.id&&q.uid===S.uid)?"★ Change my rating":"★ Rate");rb.type="button";rb.onclick=()=>rate(x);a.appendChild(rb);
+   if(x.uid===S.uid||isAdm()){const eb=mk("button","btn s o","Edit");eb.type="button";eb.onclick=()=>edit(x);a.appendChild(eb);a.appendChild(fxMini("Delete",async()=>{if(fxSure("Remove "+x.name+"?"))await deleteDoc(FXD("vendors",x.id))},"r"))}
+   c.appendChild(a);b.appendChild(c)})};
+ fxW(query(FXC("vendors"),orderBy("ts","desc"),limit(300)),(d,e)=>{L=d||[];err=e;draw()});
+ fxW(query(FXC("responses"),where("k","==","rate"),limit(2000)),d=>{R=d||[];if(L)draw()});draw()}};
+
+/* ---------- Meetings: agenda, RSVP, minutes ---------- */
+FX.meet={ic:"🗓️",t:"Meetings & minutes",open(b){let L=null,R=[],err=null;const adm=isAdm();
+ const edit=x=>fxForm(x?"Edit meeting":"Schedule a meeting","Everyone gets to see the agenda and can say if they are coming.",[{k:"title",l:"Title",ph:"e.g. Annual General Meeting",req:1,val:x&&x.title,max:80},{k:"date",l:"Date",type:"date",req:1,val:x?x.date:td()},{k:"time",l:"Time",type:"time",req:1,val:x?x.time:"18:00"},{k:"place",l:"Place",ph:"e.g. Clubhouse",val:x&&x.place,max:80},{k:"agenda",l:"Agenda",type:"area",ph:"1. Accounts for the year\n2. Lift repair\n3. Any other matter",val:x&&x.agenda,max:1500}],x?"Save":"Schedule",
+  async v=>{if(x)await updateDoc(FXD("meetings",x.id),v);else await fxAdd("meetings",{...v,minutes:null,uid:S.uid,byName:S.me.name});toast("✅",x?"Saved":"Meeting scheduled","",true)});
+ const addMin=x=>{const i=mk("input");i.type="file";i.accept="application/pdf,image/*";i.onchange=async()=>{const f=i.files[0];if(!f)return;try{const url=await UP(f,"docs",f.name);if(x.minutes&&x.minutes.url)rmFile(x.minutes.url);await updateDoc(FXD("meetings",x.id),{minutes:{url,name:f.name,type:f.type||"",ts:Date.now()}});toast("✅","Minutes uploaded","",true)}catch(e){fail(e,"Couldn't upload")}};i.click()};
+ const who=x=>sheet(z=>{m3(z);z.appendChild(mk("h2",null,"Responses"));z.appendChild(mk("p","sub",x.title));[["yes","Coming"],["maybe","Maybe"],["no","Not coming"]].forEach(([k,t])=>{const rs=R.filter(r=>r.pid===x.id&&r.v===k);z.appendChild(mk("div","fxs",t+" ("+rs.length+")"));if(!rs.length)z.appendChild(mk("div","meta","—"));rs.forEach(r=>z.appendChild(mk("div","meta",r.name+(r.flat?" · "+r.flat:""))))})});
+ const card=x=>{const c=mk("div","fxk"),past=x.date<td();c.appendChild(mk("b","fxt",x.title));c.appendChild(mk("div","meta","📅 "+fxDate(x.date)+" · "+fxT12(x.time)+(x.place?" · 📍 "+x.place:"")));
+  if(x.agenda){c.appendChild(mk("div","fxs","Agenda"));c.appendChild(mk("p","desc",x.agenda))}
+  const rs=R.filter(r=>r.pid===x.id),my=rs.find(r=>r.uid===S.uid),cnt=k=>rs.filter(r=>r.v===k).length;
+  if(!past){c.appendChild(mk("div","fxs","Are you coming?"));const g=mk("div","fxch");g.style.margin="0";[["yes","👍 Yes"],["maybe","🤔 Maybe"],["no","👎 No"]].forEach(([k,t])=>{const o=mk("button",my&&my.v===k?"on":"",t+" · "+cnt(k));o.type="button";o.onclick=()=>setDoc(FXD("responses",x.id+"_"+S.uid),{pid:x.id,k:"rsvp",uid:S.uid,name:S.me.name,flat:S.me.flat||"",v:k,ts:Date.now()}).catch(fail);g.appendChild(o)});c.appendChild(g)}
+  else c.appendChild(mk("div","meta",cnt("yes")+" said they would come"));
+  const a=mk("div","fxa");if(x.minutes&&x.minutes.url){const m=mk("button","btn s","📄 Minutes");m.type="button";m.onclick=()=>openRef(x.minutes.url,x.minutes.name||"minutes.pdf",x.minutes.type);a.appendChild(m)}
+  if(adm){const w=mk("button","btn s o","👥 Responses");w.type="button";w.onclick=()=>who(x);a.appendChild(w);const u=mk("button","btn s o",x.minutes?"Replace minutes":"⬆ Upload minutes");u.type="button";u.onclick=()=>addMin(x);a.appendChild(u);
+   const e=mk("button","btn s o","Edit");e.type="button";e.onclick=()=>edit(x);a.appendChild(e);a.appendChild(fxMini("Delete",async()=>{if(!fxSure("Delete this meeting?"))return;await deleteDoc(FXD("meetings",x.id));if(x.minutes)rmFile(x.minutes.url)},"r"))}
+  if(a.children.length)c.appendChild(a);return c};
+ const draw=()=>{b.innerHTML="";fxHead(b,"Meetings",adm?"Schedule a meeting, see who is coming, and upload the minutes afterwards.":"See the agenda, tell the committee if you are coming, and read the minutes afterwards.",adm?"＋ Schedule a meeting":"",()=>edit());
+  if(fxState(b,L,err,"🗓️","No meetings yet."))return;const up=L.filter(x=>x.date>=td()).sort((p,q)=>(p.date+p.time).localeCompare(q.date+q.time)),old=L.filter(x=>x.date<td()).sort((p,q)=>q.date.localeCompare(p.date));
+  if(up.length){fxSec(b,"Upcoming");up.forEach(x=>b.appendChild(card(x)))}if(old.length){fxSec(b,"Earlier meetings");old.forEach(x=>b.appendChild(card(x)))}};
+ fxW(query(FXC("meetings"),orderBy("ts","desc"),limit(100)),(d,e)=>{L=d||[];err=e;draw()});
+ fxW(query(FXC("responses"),where("k","==","rsvp"),limit(2000)),d=>{R=d||[];if(L)draw()});draw()}};
+
+/* ---------- Expense report with a pie chart ---------- */
+const FXCOL=["#6d5dfc","#f59e0b","#10b981","#ef4444","#0ea5e9","#ff6b9d","#8b5cf6","#14b8a6","#f97316","#64748b","#84cc16","#e11d48"];
+function fxDonut(parts,total){const NS="http://www.w3.org/2000/svg",s=document.createElementNS(NS,"svg");s.setAttribute("viewBox","0 0 42 42");s.setAttribute("role","img");s.setAttribute("aria-label","Share of each category");
+ const ring=(col,dash,off)=>{const c=document.createElementNS(NS,"circle");c.setAttribute("cx","21");c.setAttribute("cy","21");c.setAttribute("r","15.9155");c.setAttribute("fill","none");c.setAttribute("stroke",col);c.setAttribute("stroke-width","6.5");if(dash){c.setAttribute("stroke-dasharray",dash);c.setAttribute("stroke-dashoffset",off);c.setAttribute("transform","rotate(-90 21 21)")}s.appendChild(c)};
+ ring("var(--line)");let acc=0;parts.forEach((p,i)=>{const pc=total?p[1]/total*100:0;if(pc>0)ring(FXCOL[i%FXCOL.length],pc.toFixed(3)+" "+(100-pc).toFixed(3),(-acc).toFixed(3));acc+=pc});return s}
+FX.exr={ic:"📊",t:"Expense report",show:()=>!isGuard(),open(b){let L=null,err=null,mon=td().slice(0,7);
+ const draw=()=>{b.innerHTML="";const hd=fxHead(b,"Where the money went","Every expense recorded by the committee, month by month."+(canFin()?" Add expenses in Finance → Expenses.":"")),mi=mk("input");mi.type="month";mi.value=mon;mi.max=td().slice(0,7);mi.style.cssText="margin:12px 0 0";mi.onchange=()=>{if(mi.value){mon=mi.value;draw()}};hd.appendChild(mi);
+  if(fxState(b,L,err,"📊","No expenses have been recorded yet."))return;
+  const ym=t=>{const d=new Date(t);return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")},R=L.filter(x=>ym(x.ts)===mon),tot=R.reduce((s,x)=>s+(+x.amount||0),0);
+  const lbl=new Date(mon+"-01T00:00:00").toLocaleDateString([],{month:"long",year:"numeric"});
+  if(!R.length){b.appendChild(fxEmpty("📊","No expenses recorded for "+lbl+"."));return}
+  const by={};R.forEach(x=>{const k=x.category||"Other";by[k]=(by[k]||0)+(+x.amount||0)});const parts=Object.entries(by).sort((p,q)=>q[1]-p[1]);
+  const c=mk("div","fxk");c.appendChild(mk("div","meta","Total spent in "+lbl));c.appendChild(mk("div","fxbig",rs(tot)));const dn=mk("div","fxdn");dn.style.marginTop="10px";dn.appendChild(fxDonut(parts,tot));
+  const lg=mk("div","fxlg");parts.forEach((p,i)=>{const r=mk("div"),sw=mk("i");sw.style.background=FXCOL[i%FXCOL.length];r.append(sw,mk("span",null,p[0]),mk("b",null,rs(p[1])+" · "+Math.round(p[1]/tot*100)+"%"));lg.appendChild(r)});dn.appendChild(lg);c.appendChild(dn);b.appendChild(c);
+  fxSec(b,"All expenses · "+R.length);const li=mk("div","fxk");R.sort((p,q)=>q.ts-p.ts).forEach(x=>{const r=mk("div","ex"),l=mk("div",null,x.reason||x.category||"Expense");l.appendChild(mk("span",null,(x.category||"Other")+" · "+dt(x.ts)));r.append(l,mk("b","neg",rs(x.amount)));li.appendChild(r)});b.appendChild(li)};
+ fxW(query(FXC("expenses"),orderBy("ts","desc"),limit(600)),(d,e)=>{L=d||[];err=e;draw()});draw()}};
+
+/* =============================== SCHOOL =============================== */
+const fxRoll=f=>{const p=String(f||"").split(" · ");return p.length>1?p.slice(1).join(" · "):""};
+const fxStuds=cls=>Object.values(D.mem||{}).filter(x=>x.status==="approved"&&isStu(x)&&!x.want&&clsOf(x)===cls).map(x=>({uid:x.uid||x.id,name:x.name||"",flat:x.flat||""})).sort((a,b)=>a.name.localeCompare(b.name));
+const fxClasses=()=>isTeacher()?[myCls()]:schClasses();
+const fxGrade=p=>p>=90?"A+":p>=80?"A":p>=70?"B":p>=60?"C":p>=50?"D":p>=33?"E":"F";
+const fxTot=x=>{const s=x.subjects||[],got=s.reduce((a,q)=>a+(+q.got||0),0),max=s.reduce((a,q)=>a+(+q.max||0),0),pct=max?got/max*100:0;return{got,max,pct,grade:fxGrade(pct)}};
+
+/* ---------- Exam results / report card ---------- */
+function fxReportCanvas(x){const W=1240,H=1754,c=document.createElement("canvas");c.width=W;c.height=H;const g=c.getContext("2d"),T=fxTot(x),K=KINDS.school,F=(w,s)=>{g.font=w+" "+s+"px Poppins, 'Noto Sans', Arial, sans-serif"};
+ const fit=(t,max)=>{t=String(t==null?"":t);if(g.measureText(t).width<=max)return t;while(t.length>1&&g.measureText(t+"…").width>max)t=t.slice(0,-1);return t+"…"};
+ g.fillStyle="#fff";g.fillRect(0,0,W,H);const gr=g.createLinearGradient(0,0,W,0);gr.addColorStop(0,K.c1);gr.addColorStop(1,K.c2);g.fillStyle=gr;g.fillRect(0,0,W,230);
+ g.fillStyle="#fff";g.textAlign="center";F(700,52);g.fillText(fit(S.soc.name,W-160),W/2,110);F(500,30);g.fillText("REPORT CARD",W/2,170);
+ g.textAlign="left";let y=310;const kv=(k,v,xx)=>{g.fillStyle="#6b7280";F(400,24);g.fillText(k,xx,y);g.fillStyle="#111827";F(600,30);g.fillText(fit(v,480),xx,y+40)};
+ kv("Student",x.studentName,90);kv("Exam",x.exam,680);y+=110;kv("Class",x.cls,90);kv("Roll / admission no.",x.roll||"—",680);y+=110;
+ const X=[90,700,880,1040],R=1150;g.fillStyle="#f3f4f6";g.fillRect(70,y,R-70+20,64);g.fillStyle="#374151";F(600,24);g.fillText("Subject",X[0],y+42);g.textAlign="right";g.fillText("Max",X[1]+90,y+42);g.fillText("Marks",X[2]+100,y+42);g.fillText("Grade",R,y+42);y+=64;
+ (x.subjects||[]).forEach(s=>{g.textAlign="left";g.fillStyle="#111827";F(500,28);g.fillText(fit(s.n,560),X[0],y+44);g.textAlign="right";F(400,28);g.fillText(String(s.max),X[1]+90,y+44);F(600,28);g.fillText(String(s.got),X[2]+100,y+44);F(500,28);g.fillText(fxGrade(s.max?s.got/s.max*100:0),R,y+44);g.strokeStyle="#e5e7eb";g.lineWidth=2;g.beginPath();g.moveTo(70,y+66);g.lineTo(R+20,y+66);g.stroke();y+=66});
+ g.fillStyle="#f9fafb";g.fillRect(70,y,R-70+20,70);g.textAlign="left";g.fillStyle="#111827";F(700,28);g.fillText("Total",X[0],y+46);g.textAlign="right";g.fillText(String(T.max),X[1]+90,y+46);g.fillText(String(T.got),X[2]+100,y+46);g.fillText(T.grade,R,y+46);y+=120;
+ const box=(xx,t,v,col)=>{g.fillStyle="#f3f4f6";g.fillRect(xx,y,330,130);g.textAlign="center";g.fillStyle="#6b7280";F(400,24);g.fillText(t,xx+165,y+44);g.fillStyle=col||"#111827";F(700,44);g.fillText(v,xx+165,y+100)};
+ box(90,"Percentage",T.pct.toFixed(1)+"%");box(455,"Overall grade",T.grade,K.c1);box(820,"Result",T.pct>=33?"PASS":"NEEDS SUPPORT",T.pct>=33?"#059669":"#dc2626");y+=190;
+ g.textAlign="left";if(x.remarks){g.fillStyle="#6b7280";F(400,24);g.fillText("Teacher's remarks",90,y);y+=42;g.fillStyle="#111827";F(400,28);let line="";String(x.remarks).split(/\s+/).forEach(w=>{const t=line?line+" "+w:w;if(g.measureText(t).width>W-180&&line){g.fillText(line,90,y);y+=40;line=w}else line=t});if(line){g.fillText(line,90,y);y+=40}}
+ const sy=H-190;g.strokeStyle="#9ca3af";g.lineWidth=2;[[90,"Class teacher"+(x.byName?": "+x.byName:"")],[760,"Principal"]].forEach(([xx,t])=>{g.beginPath();g.moveTo(xx,sy);g.lineTo(xx+390,sy);g.stroke();g.fillStyle="#374151";F(400,24);g.fillText(fit(t,390),xx,sy+36)});
+ g.textAlign="center";g.fillStyle="#9ca3af";F(400,20);g.fillText("Generated with "+BRAND+" on "+new Date().toLocaleDateString([],{day:"numeric",month:"long",year:"numeric"}),W/2,H-60);return c}
+FX.res={ic:"🏅",t:"Exam results",show:()=>isAdm()||isStu(S.me),open(b){let L=null,err=null,fc="All",fe="All";const adm=isAdm(),lk="sh-res-last-"+S.sid;
+ const last=()=>{try{return JSON.parse(localStorage.getItem(lk)||"{}")}catch(e){return{}}};
+ const pdf=x=>{try{const u=URL.createObjectURL(fxPdf(fxReportCanvas(x)));openPdf(u,("Report card - "+x.studentName+" - "+x.exam).replace(/[\\\/:*?"<>|]+/g," ")+".pdf")}catch(e){fail(e,"Couldn't make the PDF")}};
+ const view=x=>sheet(z=>{m3(z);const T=fxTot(x);z.appendChild(mk("h2",null,x.exam));z.appendChild(mk("p","sub",x.studentName+" · "+x.cls+(x.roll?" · "+x.roll:"")));
+  const t=mk("table","fxtb"),hr=mk("tr");[["Subject",""],["Max","n"],["Marks","n"],["Grade","n"]].forEach(([h,c])=>hr.appendChild(mk("th",c,h)));t.appendChild(hr);
+  (x.subjects||[]).forEach(s=>{const r=mk("tr");r.append(mk("td",null,s.n),mk("td","n",String(s.max)),mk("td","n",String(s.got)),mk("td","n",fxGrade(s.max?s.got/s.max*100:0)));t.appendChild(r)});
+  const tr=mk("tr");[["Total",""],[String(T.max),"n"],[String(T.got),"n"],[T.grade,"n"]].forEach(([h,c])=>{const d=mk("td",c);d.appendChild(mk("b",null,h));tr.appendChild(d)});t.appendChild(tr);z.appendChild(t);
+  const r=mk("div","fxr");r.style.justifyContent="center";r.append(fxPill(T.pct.toFixed(1)+"%","b"),fxPill("Grade "+T.grade,T.pct>=33?"g":"r"));z.appendChild(r);
+  if(x.remarks){z.appendChild(mk("div","fxs","Teacher's remarks"));z.appendChild(mk("p","desc",x.remarks))}z.appendChild(mk("div","meta",(x.byName?"By "+x.byName+" · ":"")+dt(x.ts)));
+  const d=mk("button","btn","⬇ Report card (PDF)");d.type="button";d.style.marginTop="12px";d.onclick=()=>{closeSheet();pdf(x)};z.appendChild(d)});
+ const edit=x=>{const cl=fxClasses();if(!cl.length){toast("ℹ️","Add a class first","",true);return}sheet(z=>{m3(z);const P=last();z.appendChild(mk("h2",null,x?"Edit result":"Add a result"));z.appendChild(mk("p","sub","The student sees it as soon as you save."));
+  const cs=fxSel(cl,x?x.cls:(cl.includes(P.cls)?P.cls:(cl.find(c=>fxStuds(c).length)||cl[0]))),ss=mk("select"),fillS=()=>{ss.innerHTML="";const st=fxStuds(cs.value);if(!st.length)ss.appendChild(Object.assign(mk("option",null,"No students in this class yet"),{value:""}));st.forEach(p=>ss.appendChild(Object.assign(mk("option",null,p.name+(fxRoll(p.flat)?" · "+fxRoll(p.flat):"")),{value:p.uid})))};
+  cs.onchange=fillS;fillS();if(x){ss.value=x.studentUid;cs.disabled=ss.disabled=true}
+  const ex=mk("input");ex.placeholder="e.g. Unit Test 1, Half Yearly, Annual";ex.maxLength=50;ex.value=x?x.exam:(P.exam||"");
+  z.append(fxLbl("Class",cs),fxLbl("Student",ss),fxLbl("Exam",ex));z.appendChild(mk("div","fxs","Subjects · max marks · marks obtained"));
+  const rows=mk("div"),row=s=>{if(rows.children.length>=12){toast("ℹ️","Up to 12 subjects","",true);return}const r=mk("div","fxsub"),n=mk("input"),m=mk("input"),g=mk("input"),d=mk("button",null,"✕");n.placeholder="Subject";n.maxLength=30;n.value=s.n||"";m.type=g.type="number";m.placeholder="Max";g.placeholder="Marks";m.min=g.min="0";m.inputMode=g.inputMode="decimal";m.value=s.max!=null?s.max:"";g.value=s.got!=null?s.got:"";d.type="button";d.setAttribute("aria-label","Remove subject");d.onclick=()=>r.remove();r.append(n,m,g,d);rows.appendChild(r)};
+  (x?x.subjects:(P.subs&&P.subs.length?P.subs:["English","Hindi","Mathematics","Science","Social Science"].map(n=>({n,max:100})))).forEach(row);z.appendChild(rows);
+  const ad=mk("a","lnk","＋ Add a subject");ad.style.cssText="text-align:left;margin:0 2px 12px";ad.onclick=()=>row({max:100});z.appendChild(ad);
+  const rm=mk("textarea");rm.placeholder="Remarks (optional)";rm.maxLength=300;rm.value=x?x.remarks||"":"";z.appendChild(rm);
+  const er=mk("div","err"),go=mk("button","btn","Save result");go.type="button";go.onclick=()=>{er.textContent="";const subs=[];
+   for(const r of rows.children){const [n,m,g]=r.querySelectorAll("input"),nm=n.value.trim();if(!nm&&m.value===""&&g.value==="")continue;const mx=+m.value,gt=+g.value;if(!nm||!(mx>0)||g.value===""||gt<0||gt>mx){er.textContent="Check the marks for "+(nm||"each subject")+" (0 to max).";return}subs.push({n:nm,max:mx,got:gt})}
+   const st=fxStuds(cs.value).find(p=>p.uid===ss.value),exam=ex.value.trim();if(!x&&!st){er.textContent="Choose a student.";return}if(!exam){er.textContent="Enter the exam name.";return}if(!subs.length){er.textContent="Add at least one subject.";return}
+   run(go,async()=>{try{localStorage.setItem(lk,JSON.stringify({cls:cs.value,exam,subs:subs.map(s=>({n:s.n,max:s.max}))}))}catch(e){}
+    const dup=x||(L||[]).find(r=>r.studentUid===st.uid&&r.exam.toLowerCase()===exam.toLowerCase());
+    if(dup)await updateDoc(FXD("results",dup.id),{exam,subjects:subs,remarks:rm.value.trim(),byName:S.me.name,ts:Date.now()});
+    else await fxAdd("results",{exam,cls:cs.value,studentUid:st.uid,studentName:st.name,roll:fxRoll(st.flat),subjects:subs,remarks:rm.value.trim(),uid:S.uid,byName:S.me.name});
+    closeSheet();toast("✅","Result saved",(x?x.studentName:st.name)+" · "+exam,true)})};z.append(er,go)})};
+ const draw=()=>{b.innerHTML="";fxHead(b,adm?"Exam results":"My results",adm?"Enter marks subject by subject. Each student sees only their own result and can download the report card.":"Your marks for every exam, with a report card you can download.",adm?"＋ Add a result":"",()=>edit());
+  if(fxState(b,L,err,"🏅",adm?"No results yet.":"No results have been shared with you yet."))return;
+  let R=L.filter(x=>!isTeacher()||x.cls===myCls());
+  if(adm){const cls=["All"].concat([...new Set(R.map(x=>x.cls))].sort((p,q)=>p.localeCompare(q,undefined,{numeric:true}))),exs=["All"].concat([...new Set(R.map(x=>x.exam))]);if(!cls.includes(fc))fc="All";if(!exs.includes(fe))fe="All";
+   if(cls.length>2)b.appendChild(fxChips(cls.map(c=>[c,c==="All"?"All classes":c]),fc,v=>{fc=v;draw()}));if(exs.length>2)b.appendChild(fxChips(exs.map(c=>[c,c==="All"?"All exams":c]),fe,v=>{fe=v;draw()}));R=R.filter(x=>(fc==="All"||x.cls===fc)&&(fe==="All"||x.exam===fe))}
+  R.sort((p,q)=>q.ts-p.ts).forEach(x=>{const T=fxTot(x),c=mk("div","fxk"),top=mk("div","fxr");c.style.cursor="pointer";c.onclick=()=>view(x);top.append(fxPill(x.exam,"b"),fxPill(T.pct.toFixed(0)+"% · "+T.grade,T.pct>=33?"g":"r"));c.appendChild(top);
+   c.appendChild(mk("b","fxt",adm?x.studentName:x.exam));c.appendChild(mk("div","meta",(adm?x.cls+(x.roll?" · "+x.roll:"")+" · ":"")+T.got+" / "+T.max+" marks · "+dt(x.ts)));
+   const a=mk("div","fxa"),v=mk("button","btn s","View");v.type="button";v.onclick=e=>{e.stopPropagation();view(x)};a.appendChild(v);const p=mk("button","btn s o","⬇ PDF");p.type="button";p.onclick=e=>{e.stopPropagation();pdf(x)};a.appendChild(p);
+   if(adm){const e=mk("button","btn s o","Edit");e.type="button";e.onclick=ev=>{ev.stopPropagation();edit(x)};a.appendChild(e);a.appendChild(fxMini("Delete",async()=>{if(fxSure("Delete this result?"))await deleteDoc(FXD("results",x.id))},"r"))}
+   c.appendChild(a);b.appendChild(c)})};
+ fxW(adm?query(FXC("results"),orderBy("ts","desc"),limit(400)):query(FXC("results"),where("studentUid","==",S.uid),limit(100)),(d,e)=>{L=d||[];err=e;draw()});draw()}};
+
+/* ---------- Gate pass ---------- */
+const GPC={Pending:"a",Approved:"g",Rejected:"r",Left:""};
+FX.gp={ic:"🚪",t:"Gate pass",show:()=>isAdm()||isGuard()||isStu(S.me),open(b){let L=null,err=null,f="Pending";const adm=isAdm(),grd=isGuard(),stu=!adm&&!grd;
+ const info=(z,x)=>{const k=mk("div","fxkv");[["Student",x.name],["Class",x.cls+(fxRoll(x.flat)?" · "+fxRoll(x.flat):"")],["Leaving on",fxDate(x.date)+(x.time?" · "+fxT12(x.time):"")],["Picked up by",x.with||"—"],["Reason",x.reason]].forEach(([a,v])=>k.append(mk("span",null,a),mk("b",null,v)));z.appendChild(k)};
+ const pass=x=>sheet(z=>{m3(z);z.appendChild(mk("h2",null,"🎟️ Gate pass"));z.appendChild(mk("p","sub","Show this at the gate"));const q=mk("div","fxqr");z.appendChild(q);fxQR(q,"GP-"+x.code);z.appendChild(mk("div","code",x.code));info(z,x);z.appendChild(mk("div","meta","Approved by "+(x.byName||"teacher")))});
+ const left=x=>updateDoc(FXD("gatepasses",x.id),{status:"Left",leftTs:Date.now(),leftBy:S.me.name}).then(()=>toast("✅",x.name+" has left","Gate pass used",true));
+ const verify=async code=>{code=String(code||"").trim();if(!/^\d{6}$/.test(code)){toast("ℹ️","Enter the 6-digit code","",true);return}
+  let x=(L||[]).find(p=>p.code===code);if(!x){try{const s=await getDocs(query(FXC("gatepasses"),where("code","==",code),limit(1)));if(s.docs.length)x={id:s.docs[0].id,...s.docs[0].data()}}catch(e){fail(e);return}}
+  sheet(z=>{m3(z);if(!x){z.appendChild(mk("h2",null,"⛔ No pass found"));z.appendChild(mk("p","sub","No gate pass has the code "+code+"."));return}
+   const ok=x.status==="Approved"&&x.date===td();z.appendChild(mk("h2",null,ok?"✅ Valid gate pass":x.status==="Left"?"ℹ️ Already used":x.status==="Approved"?"⚠️ Not for today":"⛔ Not approved"));
+   z.appendChild(mk("p","sub",ok?"Approved by "+(x.byName||"teacher"):x.status==="Left"?"Left at "+tm(x.leftTs)+" on "+dt(x.leftTs):x.status==="Approved"?"This pass is for "+fxDate(x.date)+".":"Status: "+x.status));info(z,x);
+   if(ok){const g=mk("button","btn","✓ Mark as left");g.type="button";g.onclick=()=>run(g,async()=>{await left(x);closeSheet()});z.appendChild(g)}})};
+ const vbox=()=>{const c=mk("div","fxhd");c.appendChild(mk("b",null,"Check a pass at the gate"));c.appendChild(mk("p",null,"Scan the QR on the parent's phone, or type the 6-digit code."));const i=mk("input");i.placeholder="6-digit code";i.inputMode="numeric";i.maxLength=6;i.style.marginTop="12px";const g=mk("div","g2"),s=mk("button","btn s","📷 Scan QR"),v=mk("button","btn s o","Check code");s.type=v.type="button";s.onclick=()=>fxScan("Scan gate pass",verify);v.onclick=()=>verify(i.value);i.onkeydown=e=>{if(e.key==="Enter")verify(i.value)};g.append(s,v);c.append(i,g);return c};
+ const ask=()=>fxForm("Request a gate pass","Your class teacher approves it. Show the pass at the gate when you leave.",[{k:"date",l:"Date",type:"date",req:1,val:td(),min:td()},{k:"time",l:"Leaving at",type:"time",req:1},{k:"with",l:"Who will pick up the child?",ph:"e.g. Father – Rajesh Gupta",req:1,max:60},{k:"reason",l:"Reason",type:"area",ph:"e.g. Doctor's appointment",req:1,max:200}],"Send request",
+  async v=>{if(v.date<td())throw fxBad("Choose today or a later date.");await fxAdd("gatepasses",{...v,...fxMe(),cls:myCls(),status:"Pending",code:String(Math.floor(100000+Math.random()*900000))});toast("✅","Request sent","Your teacher will approve it.",true)});
+ const draw=()=>{b.innerHTML="";if(stu)fxHead(b,"Leaving school early?","Ask for a gate pass. Once your teacher approves, show the pass at the gate.","＋ Request a gate pass",ask);else b.appendChild(vbox());
+  if(fxState(b,L,err,"🚪",stu?"No gate passes yet.":"No gate pass requests yet."))return;
+  let R=L.filter(x=>!isTeacher()||x.cls===myCls());
+  if(!stu){const fs=grd?[["Approved","Approved"],["Left","Left"]]:[["Pending","Pending"],["Approved","Approved"],["Left","Left"],["Rejected","Rejected"],["All","All"]];if(!fs.some(q=>q[0]===f))f=fs[0][0];
+   b.appendChild(fxChips(fs.map(([k,t])=>[k,t+(k!=="All"?" · "+R.filter(x=>x.status===k).length:"")]),f,v=>{f=v;draw()}));R=R.filter(x=>f==="All"||x.status===f);if(!R.length){b.appendChild(fxEmpty("🚪","Nothing here."));return}}
+  R.sort((p,q)=>q.ts-p.ts).forEach(x=>{const c=mk("div","fxk"),top=mk("div","fxr");top.append(fxPill(x.status,GPC[x.status]),mk("span","meta sp1",fxDate(x.date)+(x.time?" · "+fxT12(x.time):"")));c.appendChild(top);
+   c.appendChild(mk("b","fxt",stu?x.reason:x.name));c.appendChild(mk("div","meta",(stu?"":x.cls+" · "+x.reason+" · ")+"Pick-up: "+(x.with||"—")));
+   if(x.status==="Left")c.appendChild(mk("div","meta","Left at "+tm(x.leftTs)+(x.leftBy?" · checked by "+x.leftBy:"")));else if(x.byName&&x.status!=="Pending")c.appendChild(mk("div","meta",x.status+" by "+x.byName));
+   const a=mk("div","fxa");
+   if(stu&&x.status==="Approved"){const s=mk("button","btn s","🎟️ Show pass");s.type="button";s.onclick=()=>pass(x);a.appendChild(s)}
+   if(stu&&x.status==="Pending")a.appendChild(fxMini("Cancel request",async()=>{if(fxSure("Cancel this request?"))await deleteDoc(FXD("gatepasses",x.id))},"r"));
+   if(adm&&x.status==="Pending"){a.appendChild(fxMini("Approve",()=>updateDoc(FXD("gatepasses",x.id),{status:"Approved",by:S.uid,byName:S.me.name,decTs:Date.now()}),"g"));a.appendChild(fxMini("Reject",()=>updateDoc(FXD("gatepasses",x.id),{status:"Rejected",by:S.uid,byName:S.me.name,decTs:Date.now()}),"r"))}
+   if(!stu&&x.status==="Approved"&&x.date===td())a.appendChild(fxMini("✓ Mark as left",()=>left(x)));
+   if(adm&&x.status!=="Pending")a.appendChild(fxMini("Delete",async()=>{if(fxSure("Delete this gate pass?"))await deleteDoc(FXD("gatepasses",x.id))},"r"));
+   if(a.children.length)c.appendChild(a);b.appendChild(c)})};
+ fxW(stu?query(FXC("gatepasses"),where("uid","==",S.uid),limit(60)):query(FXC("gatepasses"),orderBy("ts","desc"),limit(300)),(d,e)=>{L=d||[];err=e;draw()});draw()}};
+
+/* ---------- Parent–teacher meeting slots ---------- */
+FX.ptm={ic:"🤝",t:"Parent–teacher meeting",show:()=>isAdm()||isStu(S.me),open(b){let L=null,err=null;const adm=isAdm();
+ const mine=x=>x.by===S.uid,add=()=>{const cl=isTeacher()?[[myCls(),myCls()]]:[["*","All classes"]].concat(schClasses().map(c=>[c,c]));
+  fxForm("Open meeting slots","Parents pick one free slot each.",[{k:"cls",l:"For",type:"select",opts:cl,val:cl[0][0],req:1},{k:"date",l:"Date",type:"date",req:1,val:td(),min:td()},{k:"time",l:"First slot starts at",type:"time",req:1,val:"09:00"},{k:"n",l:"Number of slots",type:"select",opts:["4","6","8","10","12","16","20"],val:"8",req:1},{k:"mins",l:"Minutes per slot",type:"select",opts:["10","15","20","30"],val:"15",req:1}],"Open slots",
+   async v=>{if(v.date<td())throw fxBad("Choose today or a later date.");const m=/^(\d{1,2}):(\d{2})/.exec(v.time);if(!m)throw fxBad("Choose a start time.");const bt=writeBatch(db),st=+m[1]*60+ +m[2],mins=+v.mins,now=Date.now();
+    for(let i=0;i<+v.n;i++){const t=st+i*mins;if(t>=1440)break;bt.set(doc(FXC("ptm")),{teacherUid:S.uid,teacherName:S.me.name,cls:v.cls==="*"?"":v.cls,date:v.date,time:String(Math.floor(t/60)).padStart(2,"0")+":"+String(t%60).padStart(2,"0"),mins,by:"",byName:"",byFlat:"",uid:S.uid,ts:now+i})}
+    await bt.commit();toast("✅","Slots opened","",true)})};
+ const book=async x=>{if((L||[]).some(s=>mine(s)&&s.teacherUid===x.teacherUid&&s.date===x.date))throw fxBad("You already have a slot that day. Cancel it first to choose another time.");return updateDoc(FXD("ptm",x.id),{by:S.uid,byName:S.me.name,byFlat:S.me.flat||"",byTs:Date.now()}).then(()=>toast("✅","Slot booked",fxDate(x.date)+" · "+fxT12(x.time),true))};
+ const draw=()=>{b.innerHTML="";fxHead(b,"Parent–teacher meeting",adm?"Open time slots for a day. Parents book one slot each, and you see who is coming when.":"Pick a free time to meet the teacher.",adm?"＋ Open slots":"",add);
+  if(fxState(b,L,err,"🤝",adm?"No slots are open.":"No meeting slots are open right now."))return;
+  const R=L.filter(x=>adm?(isOwner()||x.teacherUid===S.uid):(!x.cls||x.cls===myCls())).sort((p,q)=>(p.date+p.time).localeCompare(q.date+q.time));if(!R.length){b.appendChild(fxEmpty("🤝",adm?"No slots are open.":"No meeting slots are open right now."));return}
+  const G={};R.forEach(x=>{const k=x.date+"|"+x.teacherUid;(G[k]=G[k]||[]).push(x)});
+  Object.values(G).forEach(sl=>{const f=sl[0],c=mk("div","fxk"),top=mk("div","fxr");top.append(fxPill(fxDate(f.date),"b"),mk("span","meta sp1",sl.filter(s=>s.by).length+" of "+sl.length+" booked"));c.appendChild(top);c.appendChild(mk("b","fxt",f.teacherName+(f.cls?" · "+f.cls:" · All classes")));
+   sl.forEach(x=>{const r=mk("div","fxbd"),t=mk("div","t");t.appendChild(mk("b",null,fxT12(x.time)+" · "+x.mins+" min"));t.appendChild(mk("small",null,x.by?(adm||mine(x)?"Booked by "+(mine(x)?"you":x.byName+(x.byFlat?" · "+x.byFlat:"")):"Booked"):"Free"));r.appendChild(t);
+    if(adm)r.appendChild(fxMini(x.by?"Remove":"Delete",async()=>{if(!x.by||fxSure("Delete this booked slot?"))await deleteDoc(FXD("ptm",x.id))},"r"));
+    else if(mine(x))r.appendChild(fxMini("Cancel",()=>updateDoc(FXD("ptm",x.id),{by:"",byName:"",byFlat:"",byTs:Date.now()}),"r"));
+    else if(!x.by)r.appendChild(fxMini("Book",()=>book(x),"g"));c.appendChild(r)});b.appendChild(c)})};
+ fxW(query(FXC("ptm"),where("date",">=",td()),limit(800)),(d,e)=>{L=d||[];err=e;draw()});draw()}};
+
+/* ---------- School bus live tracking ---------- */
+FX.bus={ic:"🚌",t:"Bus tracking",open(b){let L=null,err=null;const adm=isAdm();
+ const lv=x=>{const l=(D.pres[x.driverUid]||{}).live;return x.on&&x.until>Date.now()&&l&&l.lid===x.lid&&!l.end&&l.lat?l:null};
+ const edit=x=>{let P=fxPpl();{const st=P.filter(p=>!isStu(p));if(st.length)P=st}fxForm(x?"Edit bus":"Add a bus","The driver starts the trip from this page on their own phone. They need the app and an approved account in this school.",[{k:"name",l:"Bus name / number",ph:"e.g. Bus 3 · RJ14 PA 1234",req:1,val:x&&x.name,max:50},{k:"route",l:"Route",ph:"e.g. Malviya Nagar → Jagatpura → School",val:x&&x.route,max:120},{k:"driverUid",l:"Driver (person who carries the phone)",type:"select",opts:P.map(p=>[p.uid,p.name+" · "+roleLbl(p.role)]),val:x?x.driverUid:(P[0]||{}).uid,req:1},{k:"phone",l:"Driver's phone",type:"tel",val:x&&x.phone,max:15}],"Save",
+  async v=>{const p=P.find(q=>q.uid===v.driverUid);if(!p)throw fxBad("Choose the driver.");const o={name:v.name,route:v.route,driverUid:p.uid,driverName:p.name,phone:v.phone};if(x)await updateDoc(FXD("buses",x.id),o);else await fxAdd("buses",{...o,on:false,lid:"",until:0,uid:S.uid});toast("✅","Saved","",true)})};
+ const start=(x,mins)=>run(document.createElement("button"),async()=>{if(!navigator.geolocation)throw new Error("Location is not supported on this phone.");if(!(await askPerm("loc")))return;
+  const c=await new Promise((ok,no)=>navigator.geolocation.getCurrentPosition(g=>ok(g.coords),()=>no(new Error("Couldn't get your location. Turn on GPS and try again.")),{enableHighAccuracy:true,timeout:20000,maximumAge:30000}));
+  const lid=rid(),until=Date.now()+mins*60000;liveStart({lid,until,cid:null},c);await updateDoc(FXD("buses",x.id),{on:true,lid,until,startTs:Date.now()});toast("🚌","Trip started","Parents can now see the bus.",true)});
+ const stop=async x=>{if(!(liveS&&liveS.lid===x.lid))liveS={lid:x.lid,until:x.until,cid:null};liveStop();await updateDoc(FXD("buses",x.id),{on:false});toast("🚌","Trip ended","",true)};
+ const draw=()=>{b.innerHTML="";fxHead(b,"Where is the bus?",adm?"Add each bus and choose its driver. When the driver starts a trip, everyone can follow the bus – also when the driver's phone is locked.":"Follow the school bus while it is on a trip.",adm?"＋ Add a bus":"",()=>edit());
+  if(fxState(b,L,err,"🚌","No buses have been added yet."))return;
+  L.slice().sort((p,q)=>String(p.name).localeCompare(String(q.name),undefined,{numeric:true})).forEach(x=>{const l=lv(x),c=mk("div","fxk"),top=mk("div","fxr"),me=x.driverUid===S.uid;top.append(fxPill(l?"● On the way":"Not running",l?"g":""));if(l)top.appendChild(mk("span","meta sp1","updated "+ago(l.ts)));c.appendChild(top);
+   c.appendChild(mk("b","fxt",x.name));if(x.route)c.appendChild(mk("div","meta","🛣️ "+x.route));c.appendChild(mk("div","meta","Driver: "+x.driverName+(x.phone?" · "+x.phone:"")));
+   if(l){const m=mk("div","fxmap lmp on");m.innerHTML=MAPSVG+'<i class="lpin"></i>';c.appendChild(m)}
+   const a=mk("div","fxa");if(l){const v=mk("a","btn s","🗺️ View on map");v.href="https://www.google.com/maps?q="+l.lat+","+l.lng;v.target="_blank";v.rel="noopener";a.appendChild(v)}
+   if(x.phone){const p=mk("a","btn s o","📞 Call driver");p.href="tel:"+String(x.phone).replace(/[^\d+]/g,"");a.appendChild(p)}
+   if(me){if(x.on&&x.until>Date.now())a.appendChild(fxMini("■ End trip",()=>stop(x),"r"));else{const s=mk("button","btn s g","▶ Start trip");s.type="button";s.onclick=()=>sheet(z=>{m3(z);z.appendChild(mk("h2",null,"Start trip · "+x.name));z.appendChild(mk("p","sub","Your location is shared with the school until the trip ends. It keeps updating when this phone is locked."));let mins=120;const ch=mk("div","lch");[[60,"1 hour"],[120,"2 hours"],[180,"3 hours"]].forEach(([m,t])=>{const o=mk("button",m===mins?"on":"",t);o.type="button";o.onclick=()=>{mins=m;[...ch.children].forEach(q=>q.classList.toggle("on",q===o))};ch.appendChild(o)});z.appendChild(mk("div","meta","Stop automatically after"));z.appendChild(ch);const go=mk("button","btn","▶ Start trip");go.type="button";go.style.marginTop="12px";go.onclick=()=>{closeSheet();start(x,mins)};z.appendChild(go)});a.appendChild(s)}}
+   if(adm){const e=mk("button","btn s o","Edit");e.type="button";e.onclick=()=>edit(x);a.appendChild(e);a.appendChild(fxMini("Delete",async()=>{if(fxSure("Remove "+x.name+"?"))await deleteDoc(FXD("buses",x.id))},"r"))}
+   if(a.children.length)c.appendChild(a);b.appendChild(c)})};
+ fxW(query(FXC("buses"),limit(60)),(d,e)=>{L=d||[];err=e;draw()});const iv=setInterval(()=>{if(L&&L.some(x=>x.on)&&$("ov").classList.contains("hide"))draw()},12000);fxU.push(()=>clearInterval(iv));draw()}};
+
+/* ---------- Birthday & achievement wall (school + company) ---------- */
+const FXMON=["January","February","March","April","May","June","July","August","September","October","November","December"];
+FX.bday={ic:"🎂",t:"Birthdays & achievements",open(b){let L=null,err=null;const adm=isAdm();
+ const myBd=()=>(D.pres[S.uid]||{}).bd||"";
+ const setBd=()=>sheet(z=>{m3(z);const cur=myBd().split("-");z.appendChild(mk("h2",null,"My birthday"));z.appendChild(mk("p","sub","Only the day and month are shown to others here. The year is never asked."));
+  const ms=fxSel(FXMON.map((m,i)=>[String(i+1).padStart(2,"0"),m]),cur[0]||String(new Date().getMonth()+1).padStart(2,"0")),ds=fxSel(Array.from({length:31},(_,i)=>String(i+1).padStart(2,"0")),cur[1]||"01"),g=mk("div","g2");g.append(fxLbl("Month",ms),fxLbl("Day",ds));z.appendChild(g);
+  const go=mk("button","btn","Save");go.type="button";go.onclick=()=>{const bd=ms.value+"-"+ds.value;if(+ds.value>[31,29,31,30,31,30,31,31,30,31,30,31][+ms.value-1]){toast("ℹ️","That date does not exist","",true);return}pset({bd});D.pres[S.uid]={...(D.pres[S.uid]||{}),bd};closeSheet();toast("🎂","Birthday saved","",true);draw()};z.appendChild(go);
+  if(myBd()){const rm=mk("a","lnk","Remove my birthday");rm.onclick=()=>{pset({bd:""});D.pres[S.uid]={...(D.pres[S.uid]||{}),bd:""};closeSheet();draw()};z.appendChild(rm)}});
+ const post=()=>fxForm("Share an achievement","A prize, a good result, a milestone – something worth cheering.",[{k:"who",l:"Who?",ph:"e.g. Aarav Gupta, Class 5-A",req:1,max:60},{k:"title",l:"Achievement",ph:"e.g. 1st prize in the science fair",req:1,max:90},{k:"text",l:"A few words",type:"area",max:400},{k:"img",l:"Photo",type:"file"}],"Share",
+  async v=>{const img=v.img?await UP(v.img,"classifieds","p.jpg"):"";await fxAdd("wall",{who:v.who,title:v.title,text:v.text,img,uid:S.uid,byName:S.me.name});toast("🏆","Shared","",true)});
+ const draw=()=>{b.innerHTML="";const now=new Date(),t0=new Date(now.getFullYear(),now.getMonth(),now.getDate()).getTime();
+  const P=Object.values(D.pres||{}).filter(p=>/^\d{2}-\d{2}$/.test(p.bd||"")).map(p=>{const [m,d]=p.bd.split("-").map(Number);let n=new Date(now.getFullYear(),m-1,d).getTime();if(n<t0)n=new Date(now.getFullYear()+1,m-1,d).getTime();const u=p.uid||p.id,di=D.dir[u]||{};return{uid:u,name:di.name||p.name||"",flat:di.flat||"",days:Math.round((n-t0)/864e5),lbl:d+" "+FXMON[m-1]}}).filter(p=>p.name).sort((p,q)=>p.days-q.days);
+  const row=(c,p,today)=>{const r=mk("div","fxbd");r.appendChild(av(p.name,photoOf(p.uid),38));const t=mk("div","t");t.appendChild(mk("b",null,p.name+(p.uid===S.uid?" (you)":"")));t.appendChild(mk("small",null,(p.flat?p.flat+" · ":"")+(today?"Today 🎉":p.lbl+(p.days===1?" · tomorrow":" · in "+p.days+" days"))));r.appendChild(t);
+   if(today&&p.uid!==S.uid){const w=mk("button","btn s","🎉 Wish");w.type="button";w.onclick=()=>{fxHide();go("comm");openDM(p.uid)};r.appendChild(w)}c.appendChild(r)};
+  const td0=P.filter(p=>p.days===0),up=P.filter(p=>p.days>0&&p.days<=30);
+  const c1=mk("div","fxk");c1.appendChild(mk("b","fxt","🎂 Today"));if(!td0.length)c1.appendChild(mk("div","meta","No birthdays today."));td0.forEach(p=>row(c1,p,true));b.appendChild(c1);
+  if(up.length){const c2=mk("div","fxk");c2.appendChild(mk("b","fxt","Coming up"));up.slice(0,15).forEach(p=>row(c2,p,false));b.appendChild(c2)}
+  const mb=mk("div","fxhd");mb.appendChild(mk("b",null,myBd()?"Your birthday: "+(+myBd().split("-")[1])+" "+FXMON[+myBd().split("-")[0]-1]:"Add your birthday"));mb.appendChild(mk("p",null,myBd()?"People here see it on this page.":"So that people here can wish you. Only the day and month are shown."));const sb=mk("button","btn s o",myBd()?"Change":"Add my birthday");sb.type="button";sb.style.marginTop="10px";sb.onclick=setBd;mb.appendChild(sb);b.appendChild(mb);
+  fxSec(b,"🏆 Achievements");if(adm){const pb=mk("button","btn","＋ Share an achievement");pb.type="button";pb.style.marginBottom="12px";pb.onclick=post;b.appendChild(pb)}
+  if(fxState(b,L,err,"🏆","Nothing shared yet."))return;
+  L.forEach(x=>{const c=mk("div","fxk");c.appendChild(mk("b","fxt","🏆 "+x.title));c.appendChild(mk("div","meta",x.who));if(x.text)c.appendChild(mk("p","desc",x.text));if(okImg(x.img)){const i=mk("img","fxi");i.src=x.img;i.alt="";i.onclick=()=>viewImg(x.img);c.appendChild(i)}
+   c.appendChild(mk("div","meta","Shared by "+(x.byName||"admin")+" · "+dt(x.ts)));if(adm){const a=mk("div","fxa");a.appendChild(fxMini("Delete",async()=>{if(!fxSure("Delete this post?"))return;await deleteDoc(FXD("wall",x.id));rmFile(x.img)},"r"));c.appendChild(a)}b.appendChild(c)})};
+ fxW(query(FXC("wall"),orderBy("ts","desc"),limit(60)),(d,e)=>{L=d||[];err=e;draw()});draw()}};
+
+/* =============================== COMPANY =============================== */
+const fxPOpts=P=>P.map(p=>[p.uid,p.name+(p.flat?" · "+p.flat:"")]);
+/* ---------- Task assignment ---------- */
+FX.task={ic:"✅",t:"Tasks",show:()=>!isGuard(),open(b){let L=null,err=null,f="Open";const adm=isAdm();
+ const edit=x=>{const P=fxPpl();if(!P.length){toast("ℹ️","No employees yet","",true);return}fxForm(x?"Edit task":"Assign a task","The person sees it under Tasks and marks it done.",[{k:"to",l:"Assign to",type:"select",opts:fxPOpts(P),val:x?x.to:P[0].uid,req:1},{k:"title",l:"Task",ph:"e.g. Send the March sales report",req:1,val:x&&x.title,max:100},{k:"desc",l:"Details",type:"area",val:x&&x.desc,max:600},{k:"due",l:"Due date",type:"date",req:1,val:x?x.due:td()},{k:"pri",l:"Priority",type:"select",opts:["Normal","High"],val:x?x.pri:"Normal",req:1}],x?"Save":"Assign",
+  async v=>{const p=P.find(q=>q.uid===v.to);if(!p)throw fxBad("Choose a person.");const o={to:p.uid,toName:p.name,title:v.title,desc:v.desc,due:v.due,pri:v.pri};if(x)await updateDoc(FXD("tasks",x.id),o);else await fxAdd("tasks",{...o,status:"Open",uid:S.uid,byName:S.me.name});toast("✅",x?"Saved":"Task assigned",p.name,true)})};
+ const done=x=>sheet(z=>{m3(z);z.appendChild(mk("h2",null,"Mark as done"));z.appendChild(mk("p","sub",x.title));const n=mk("textarea");n.placeholder="Add a note for your manager (optional)";n.maxLength=300;z.appendChild(n);const g=mk("button","btn","✓ Done");g.type="button";g.onclick=()=>run(g,async()=>{await updateDoc(FXD("tasks",x.id),{status:"Done",doneTs:Date.now(),doneNote:n.value.trim()});closeSheet()});z.appendChild(g)});
+ const draw=()=>{b.innerHTML="";fxHead(b,adm?"Team tasks":"My tasks",adm?"Give a task with a due date. The person marks it done, and you see it here.":"Tasks your manager has given you.",adm?"＋ Assign a task":"",()=>edit());
+  if(fxState(b,L,err,"✅",adm?"No tasks yet.":"You have no tasks. 🎉"))return;
+  const fs=[["Open","Open"],["Done","Done"],["All","All"]].concat(adm?[["Mine","Assigned to me"]]:[]);b.appendChild(fxChips(fs.map(([k,t])=>[k,t+(k==="Open"||k==="Done"?" · "+L.filter(x=>x.status===k).length:"")]),f,v=>{f=v;draw()}));
+  const R=L.filter(x=>f==="All"||(f==="Mine"?x.to===S.uid:x.status===f)).sort((p,q)=>p.status===q.status?String(p.due).localeCompare(String(q.due)):p.status==="Open"?-1:1);if(!R.length){b.appendChild(fxEmpty("✅","Nothing here."));return}
+  R.forEach(x=>{const c=mk("div","fxk"),top=mk("div","fxr"),open=x.status==="Open",late=open&&x.due<td();top.appendChild(fxPill(open?(late?"Overdue":"Open"):"Done ✓",open?(late?"r":"a"):"g"));if(x.pri==="High")top.appendChild(fxPill("High priority","r"));top.appendChild(mk("span","meta sp1","Due "+fxDate(x.due)));c.appendChild(top);
+   c.appendChild(mk("b","fxt",x.title));if(x.desc)c.appendChild(mk("p","desc",x.desc));c.appendChild(mk("div","meta",(adm?"To "+x.toName+" · ":"")+"From "+(x.byName||"manager")+" · "+dt(x.ts)));
+   if(!open)c.appendChild(mk("div","note","Done on "+dt(x.doneTs||x.ts)+(x.doneNote?" — "+x.doneNote:"")));
+   const a=mk("div","fxa");if(open&&x.to===S.uid){const d=mk("button","btn s g","✓ Mark as done");d.type="button";d.onclick=()=>done(x);a.appendChild(d)}
+   if(adm){if(open&&x.to!==S.uid)a.appendChild(fxMini("✓ Done",()=>updateDoc(FXD("tasks",x.id),{status:"Done",doneTs:Date.now(),doneNote:"Closed by "+S.me.name}),"g"));if(!open)a.appendChild(fxMini("Reopen",()=>updateDoc(FXD("tasks",x.id),{status:"Open"})));
+    const e=mk("button","btn s o","Edit");e.type="button";e.onclick=()=>edit(x);a.appendChild(e);a.appendChild(fxMini("Delete",async()=>{if(fxSure("Delete this task?"))await deleteDoc(FXD("tasks",x.id))},"r"))}
+   if(a.children.length)c.appendChild(a);b.appendChild(c)})};
+ fxW(adm?query(FXC("tasks"),orderBy("ts","desc"),limit(400)):query(FXC("tasks"),where("to","==",S.uid),limit(200)),(d,e)=>{L=d||[];err=e;draw()});draw()}};
+
+/* ---------- Shift roster + swap requests ---------- */
+const SHF={M:"Morning",E:"Evening",N:"Night",G:"General",O:"Off"},fxMon=d=>{const x=new Date(d);x.setHours(0,0,0,0);x.setDate(x.getDate()-((x.getDay()+6)%7));return x};
+FX.shift={ic:"🕒",t:"Shift roster",open(b){let wk=fxYmd(fxMon(new Date())),L=null,SW=[],err=null,u1=null,u2=null;const adm=isAdm();
+ const days=()=>Array.from({length:7},(_,i)=>{const d=new Date(wk+"T00:00:00");d.setDate(d.getDate()+i);return d}),dl=d=>d.toLocaleDateString([],{weekday:"short",day:"numeric",month:"short"});
+ const cell=(uid,i)=>{const r=(L||[]).find(x=>x.uid===uid);return(r&&r.d&&r.d[i])||""},ref=uid=>FXD("shifts",wk+"_"+uid);
+ const put=(p,i,v)=>setDoc(ref(p.uid),{uid:p.uid,name:p.name,week:wk,d:{[i]:v},ts:Date.now()},{merge:true});
+ const pick=(p,i,d)=>sheet(z=>{m3(z);z.appendChild(mk("h2",null,p.name));z.appendChild(mk("p","sub",dl(d)));Object.entries(SHF).concat([["","Clear"]]).forEach(([k,t])=>{const o=mk("button","btn s "+(cell(p.uid,i)===k?"":"o"),t);o.type="button";o.style.marginBottom="8px";o.onclick=()=>run(o,async()=>{await put(p,i,k);closeSheet()});z.appendChild(o)})});
+ const copy=async()=>{const pd=new Date(wk+"T00:00:00");pd.setDate(pd.getDate()-7);const s=await getDocs(query(FXC("shifts"),where("week","==",fxYmd(pd)),limit(500)));if(!s.docs.length){toast("ℹ️","Last week's roster is empty","",true);return}
+  const bt=writeBatch(db);s.docs.forEach(x=>{const o=x.data();bt.set(ref(o.uid),{uid:o.uid,name:o.name,week:wk,d:o.d||{},ts:Date.now()})});await bt.commit();toast("✅","Copied from last week","",true)};
+ const swap=()=>{const P=fxPpl().filter(p=>p.uid!==S.uid),D7=days();if(!P.length){toast("ℹ️","No colleagues to swap with","",true);return}
+  fxForm("Request a shift swap","Your manager approves it. The roster changes only after approval.",[{k:"day",l:"Which day?",type:"select",opts:D7.map((d,i)=>[String(i),dl(d)+" · "+(SHF[cell(S.uid,i)]||"not set")]),val:"0",req:1},{k:"withUid",l:"Swap with",type:"select",opts:fxPOpts(P),val:P[0].uid,req:1},{k:"note",l:"Reason",ph:"e.g. Family function",max:160}],"Send request",
+   async v=>{const p=P.find(q=>q.uid===v.withUid);await fxAdd("swaps",{uid:S.uid,name:S.me.name,week:wk,day:+v.day,withUid:p.uid,withName:p.name,note:v.note,status:"Pending"});toast("✅","Request sent","",true)})};
+ const approve=async q=>{const a=cell(q.uid,q.day),c=cell(q.withUid,q.day),bt=writeBatch(db);bt.set(ref(q.uid),{uid:q.uid,name:q.name,week:wk,d:{[q.day]:c},ts:Date.now()},{merge:true});bt.set(ref(q.withUid),{uid:q.withUid,name:q.withName,week:wk,d:{[q.day]:a},ts:Date.now()},{merge:true});bt.update(FXD("swaps",q.id),{status:"Approved",by:S.uid,byName:S.me.name});await bt.commit();toast("✅","Shifts swapped","",true)};
+ const draw=()=>{b.innerHTML="";const D7=days(),nav=mk("div","fxwk"),pv=mk("button","btn s o","←"),nx=mk("button","btn s o","→");pv.type=nx.type="button";pv.setAttribute("aria-label","Previous week");nx.setAttribute("aria-label","Next week");
+  const mv=n=>{const d=new Date(wk+"T00:00:00");d.setDate(d.getDate()+n);wk=fxYmd(d);resub()};pv.onclick=()=>mv(-7);nx.onclick=()=>mv(7);nav.append(pv,mk("b",null,dl(D7[0])+" – "+dl(D7[6])),nx);b.appendChild(nav);
+  if(err||L===null){fxState(b,L,err,"🕒","");return}
+  const P=fxPpl();if(!P.length){b.appendChild(fxEmpty("🕒","No employees yet."));return}
+  const gw=mk("div","fxgw"),t=mk("table","fxg"),hr=mk("tr");hr.appendChild(mk("th",null,"Name"));D7.forEach(d=>{const th=mk("th",null,d.toLocaleDateString([],{weekday:"short"}));th.appendChild(mk("small",null,d.getDate()+"/"+(d.getMonth()+1)));hr.appendChild(th)});t.appendChild(hr);
+  P.slice().sort((p,q)=>(q.uid===S.uid)-(p.uid===S.uid)).forEach(p=>{const r=mk("tr",p.uid===S.uid?"me":"");r.appendChild(mk("td",null,p.name));D7.forEach((d,i)=>{const v=cell(p.uid,i),td1=mk("td"),bn=mk("button",v?"s"+v:"",v||"·");bn.type="button";bn.title=SHF[v]||"Not set";if(adm)bn.onclick=()=>pick(p,i,d);else bn.disabled=true;td1.appendChild(bn);r.appendChild(td1)});t.appendChild(r)});gw.appendChild(t);b.appendChild(gw);
+  b.appendChild(mk("div","meta","M Morning · E Evening · N Night · G General · O Off"+(adm?" — tap a box to set the shift.":"")));
+  const a=mk("div","fxa");if(adm)a.appendChild(fxMini("Copy last week's roster",async()=>{if(!L.length||fxSure("Replace this week's roster with last week's?"))await copy()}));const sb=mk("button","btn s","⇄ Request a swap");sb.type="button";sb.onclick=swap;a.appendChild(sb);b.appendChild(a);
+  const Q=SW.filter(q=>adm||q.uid===S.uid||q.withUid===S.uid).sort((p,q)=>q.ts-p.ts);if(Q.length){fxSec(b,"Swap requests");Q.forEach(q=>{const c=mk("div","fxk"),top=mk("div","fxr");top.append(fxPill(q.status,q.status==="Pending"?"a":q.status==="Approved"?"g":"r"),mk("span","meta sp1",dl(D7[q.day]||D7[0])));c.appendChild(top);
+   c.appendChild(mk("b","fxt",q.name+" ⇄ "+q.withName));c.appendChild(mk("div","meta",(SHF[cell(q.uid,q.day)]||"not set")+" ⇄ "+(SHF[cell(q.withUid,q.day)]||"not set")+(q.note?" · "+q.note:"")));
+   const x=mk("div","fxa");if(adm&&q.status==="Pending"){x.appendChild(fxMini("Approve",()=>approve(q),"g"));x.appendChild(fxMini("Reject",()=>updateDoc(FXD("swaps",q.id),{status:"Rejected",by:S.uid,byName:S.me.name}),"r"))}
+   if(q.uid===S.uid&&q.status==="Pending")x.appendChild(fxMini("Cancel",()=>deleteDoc(FXD("swaps",q.id)),"r"));if(adm&&q.status!=="Pending")x.appendChild(fxMini("Remove",()=>deleteDoc(FXD("swaps",q.id)),"r"));if(x.children.length)c.appendChild(x);b.appendChild(c)})}};
+ const resub=()=>{fxOff(u1);fxOff(u2);L=null;SW=[];err=null;u1=fxW(query(FXC("shifts"),where("week","==",wk),limit(500)),(d,e)=>{L=d||[];err=e;draw()});u2=fxW(query(FXC("swaps"),where("week","==",wk),limit(200)),d=>{SW=d||[];if(L)draw()});draw()};resub()}};
+
+/* ---------- Payslips & letters (private to each employee) ---------- */
+const PAYK=["Payslip","Offer letter","Appointment letter","Appraisal letter","Form 16","Experience letter","Other"];
+FX.pay={ic:"📄",t:"Payslips & letters",show:()=>!isGuard(),open(b){let L=null,err=null,who="All";const hr=isOwner();
+ const up=()=>{const P=fxPpl();if(!P.length){toast("ℹ️","No employees yet","",true);return}fxForm("Upload a document","Only this employee and you (the admin) can open it.",[{k:"to",l:"Employee",type:"select",opts:fxPOpts(P),val:who!=="All"&&P.some(p=>p.uid===who)?who:P[0].uid,req:1},{k:"kind",l:"Type",type:"select",opts:PAYK,val:"Payslip",req:1},{k:"month",l:"Month",type:"month",val:td().slice(0,7)},{k:"title",l:"Title",ph:"e.g. Salary slip",max:60},{k:"file",l:"File (PDF or photo, up to 3 MB)",type:"file",accept:"application/pdf,image/*",req:1}],"Upload",
+  async v=>{const p=P.find(q=>q.uid===v.to),f=v.file;if(f.size>3*1048576&&!/^image\//.test(f.type))throw fxBad("File is too large (max 3 MB).");const url=await UP(f,"docs",f.name);
+   await fxAdd("payslips",{to:p.uid,toName:p.name,kind:v.kind,month:v.month,title:v.title,file:{url,name:f.name,type:f.type||"",size:f.size},uid:S.uid,byName:S.me.name});toast("✅","Uploaded",p.name,true)})};
+ const mlbl=m=>/^\d{4}-\d{2}$/.test(m||"")?new Date(m+"-01T00:00:00").toLocaleDateString([],{month:"long",year:"numeric"}):"";
+ const draw=()=>{b.innerHTML="";fxHead(b,hr?"Payslips & letters":"My documents",hr?"Upload a payslip or letter for one employee. Nobody else can open it.":"Payslips and letters from your company. Only you can open them.",hr?"⬆ Upload a document":"",up);
+  if(fxState(b,L,err,"📄",hr?"Nothing uploaded yet.":"No documents for you yet."))return;
+  let R=L;if(hr){const ids=[...new Set(L.map(x=>x.to))];if(ids.length>1){const s=fxSel([["All","All employees"]].concat(ids.map(i=>[i,(L.find(x=>x.to===i)||{}).toName||i])),who);s.onchange=()=>{who=s.value;draw()};b.appendChild(s)}if(who!=="All")R=L.filter(x=>x.to===who)}
+  R.slice().sort((p,q)=>q.ts-p.ts).forEach(x=>{const c=mk("div","fxk"),top=mk("div","fxr");top.appendChild(fxPill(x.kind,"b"));if(mlbl(x.month))top.appendChild(mk("span","meta sp1",mlbl(x.month)));c.appendChild(top);
+   c.appendChild(mk("b","fxt",x.title||x.kind+(mlbl(x.month)?" · "+mlbl(x.month):"")));c.appendChild(mk("div","meta",(hr?"For "+x.toName+" · ":"")+"Uploaded "+dt(x.ts)));
+   const a=mk("div","fxa"),o=mk("button","btn s","📄 Open");o.type="button";o.onclick=()=>openRef(x.file.url,x.file.name,x.file.type);a.appendChild(o);
+   if(hr)a.appendChild(fxMini("Delete",async()=>{if(!fxSure("Delete this document?"))return;await deleteDoc(FXD("payslips",x.id));rmFile(x.file&&x.file.url)},"r"));c.appendChild(a);b.appendChild(c)})};
+ fxW(hr?query(FXC("payslips"),orderBy("ts","desc"),limit(500)):query(FXC("payslips"),where("to","==",S.uid),limit(200)),(d,e)=>{L=d||[];err=e;draw()});draw()}};
+
+/* ---------- Asset tracking ---------- */
+const ASTK=["Laptop","Phone","SIM card","ID / access card","Vehicle","Furniture","Other"];
+FX.asset={ic:"💻",t:"Assets",show:()=>!isGuard(),open(b){let L=null,err=null,f="All";const adm=isAdm();
+ const edit=x=>fxForm(x?"Edit asset":"Add an asset","",[{k:"name",l:"Item",ph:"e.g. Dell Latitude 5440",req:1,val:x&&x.name,max:60},{k:"type",l:"Type",type:"select",opts:ASTK,val:x?x.type:"Laptop",req:1},{k:"tag",l:"Serial / asset no.",ph:"e.g. LAP-0042",val:x&&x.tag,max:40},{k:"note",l:"Note",val:x&&x.note,max:160}],"Save",
+  async v=>{if(x)await updateDoc(FXD("assets",x.id),v);else await fxAdd("assets",{...v,to:"",toName:"",log:[],uid:S.uid});toast("✅","Saved","",true)});
+ const give=x=>{const P=fxPpl();if(!P.length)return;fxForm("Give to an employee",x.name+(x.tag?" · "+x.tag:""),[{k:"to",l:"Employee",type:"select",opts:fxPOpts(P),val:P[0].uid,req:1},{k:"date",l:"Given on",type:"date",val:td(),req:1}],"Save",
+  async v=>{const p=P.find(q=>q.uid===v.to),ts=new Date(v.date+"T12:00:00").getTime();await updateDoc(FXD("assets",x.id),{to:p.uid,toName:p.name,givenTs:ts,log:arrayUnion({a:"Given to",name:p.name,ts})});toast("✅","Given to "+p.name,"",true)})};
+ const hist=x=>sheet(z=>{m3(z);z.appendChild(mk("h2",null,x.name));z.appendChild(mk("p","sub","History"));const H=(x.log||[]).slice().sort((p,q)=>q.ts-p.ts);if(!H.length)z.appendChild(mk("div","meta","Not given to anyone yet."));H.forEach(h=>{const r=mk("div","fxbd"),t=mk("div","t");t.appendChild(mk("b",null,h.a+" "+h.name));t.appendChild(mk("small",null,dt(h.ts)+" "+new Date(h.ts).getFullYear()));r.appendChild(t);z.appendChild(r)})});
+ const draw=()=>{b.innerHTML="";fxHead(b,adm?"Company assets":"My assets",adm?"Record what was given to whom, and when it came back.":"Things the company has given you.",adm?"＋ Add an asset":"",()=>edit());
+  if(fxState(b,L,err,"💻",adm?"No assets yet.":"Nothing is recorded in your name."))return;
+  let R=L;if(adm){b.appendChild(fxChips([["All","All · "+L.length],["Out","Given · "+L.filter(x=>x.to).length],["In","In stock · "+L.filter(x=>!x.to).length]],f,v=>{f=v;draw()}));R=L.filter(x=>f==="All"||(f==="Out"?!!x.to:!x.to));if(!R.length){b.appendChild(fxEmpty("💻","Nothing here."));return}}
+  R.slice().sort((p,q)=>String(p.name).localeCompare(String(q.name))).forEach(x=>{const c=mk("div","fxk"),top=mk("div","fxr");top.append(fxPill(x.type,"b"),fxPill(x.to?"Given":"In stock",x.to?"a":"g"));c.appendChild(top);
+   c.appendChild(mk("b","fxt",x.name));c.appendChild(mk("div","meta",(x.tag?"No. "+x.tag+" · ":"")+(x.to?(adm?"With "+x.toName+" since ":"With you since ")+dt(x.givenTs||x.ts):"Not given to anyone")));if(x.note)c.appendChild(mk("div","meta",x.note));
+   if(adm){const a=mk("div","fxa");if(x.to)a.appendChild(fxMini("↩ Mark returned",()=>updateDoc(FXD("assets",x.id),{to:"",toName:"",returnedTs:Date.now(),log:arrayUnion({a:"Returned by",name:x.toName,ts:Date.now()})}),"g"));else{const g=mk("button","btn s","Give to employee");g.type="button";g.onclick=()=>give(x);a.appendChild(g)}
+    const h=mk("button","btn s o","History");h.type="button";h.onclick=()=>hist(x);a.appendChild(h);const e=mk("button","btn s o","Edit");e.type="button";e.onclick=()=>edit(x);a.appendChild(e);a.appendChild(fxMini("Delete",async()=>{if(fxSure("Delete "+x.name+"?"))await deleteDoc(FXD("assets",x.id))},"r"));c.appendChild(a)}
+   b.appendChild(c)})};
+ fxW(adm?query(FXC("assets"),limit(600)):query(FXC("assets"),where("to","==",S.uid),limit(100)),(d,e)=>{L=d||[];err=e;draw()});draw()}};
+
+/* ---------- Expense claims ---------- */
+const CLMK=["Travel","Food","Stay","Fuel","Office supplies","Internet / Phone","Client meeting","Other"],CLMC={Pending:"a",Approved:"b",Paid:"g",Rejected:"r"};
+FX.claim={ic:"🧾",t:"Expense claims",show:()=>!isGuard(),open(b){let L=null,err=null,f="Pending";const adm=isAdm();
+ const add=()=>fxForm("New expense claim","Attach a photo of the bill so that it can be approved quickly.",[{k:"title",l:"What was it for?",ph:"e.g. Cab to client office",req:1,max:80},{k:"amount",l:"Amount (₹)",type:"number",req:1},{k:"date",l:"Date of expense",type:"date",req:1,val:td()},{k:"cat",l:"Category",type:"select",opts:CLMK,val:"Travel",req:1},{k:"img",l:"Photo of the bill",type:"file"},{k:"note",l:"Note",max:200}],"Submit claim",
+  async v=>{if(v.date>td())throw fxBad("The date cannot be in the future.");const img=v.img?await UP(v.img,"chat","bill.jpg"):"";await fxAdd("claims",{...fxMe(),title:v.title,amount:Math.round(v.amount*100)/100,date:v.date,cat:v.cat,note:v.note,img,status:"Pending"});toast("✅","Claim submitted","",true)});
+ const set=(x,status,why)=>updateDoc(FXD("claims",x.id),{status,by:S.uid,byName:S.me.name,decTs:Date.now(),...(why!=null?{why}:{})});
+ const reject=x=>sheet(z=>{m3(z);z.appendChild(mk("h2",null,"Reject claim"));z.appendChild(mk("p","sub",x.name+" · "+rs(x.amount)));const n=mk("textarea");n.placeholder="Reason (the employee sees this)";n.maxLength=200;z.appendChild(n);const g=mk("button","btn r","Reject");g.type="button";g.onclick=()=>run(g,async()=>{await set(x,"Rejected",n.value.trim());closeSheet()});z.appendChild(g)});
+ const draw=()=>{b.innerHTML="";fxHead(b,adm?"Expense claims":"My expense claims",adm?"Approve or reject claims, then mark them paid.":"Paid for something for work? Claim it here with the bill.","＋ New claim",add);
+  if(fxState(b,L,err,"🧾","No claims yet."))return;
+  const fs=(adm?[["Pending","Pending"],["Approved","To pay"],["Paid","Paid"],["Rejected","Rejected"],["Mine","My claims"],["All","All"]]:[["Pending","Pending"],["Approved","Approved"],["Paid","Paid"],["Rejected","Rejected"],["All","All"]]);
+  const pick=k=>L.filter(x=>k==="All"||(k==="Mine"?x.uid===S.uid:x.status===k)),sum=a=>a.reduce((s,x)=>s+(+x.amount||0),0);
+  b.appendChild(fxChips(fs.map(([k,t])=>[k,t+(k==="All"||k==="Mine"?"":" · "+pick(k).length)]),f,v=>{f=v;draw()}));const R=pick(f).sort((p,q)=>q.ts-p.ts);
+  if(!R.length){b.appendChild(fxEmpty("🧾","Nothing here."));return}b.appendChild(mk("div","meta",R.length+" claim"+(R.length===1?"":"s")+" · total "+rs(sum(R))));
+  R.forEach(x=>{const c=mk("div","fxk"),top=mk("div","fxr");top.append(fxPill(x.status,CLMC[x.status]),fxPill(x.cat),mk("b","sp1",rs(x.amount)));c.appendChild(top);
+   c.appendChild(mk("b","fxt",x.title));c.appendChild(mk("div","meta",(adm?x.name+(x.flat?" · "+x.flat:"")+" · ":"")+"Spent on "+fxDate(x.date)));if(x.note)c.appendChild(mk("div","meta",x.note));
+   if(x.status==="Rejected"&&x.why)c.appendChild(mk("div","note","Reason: "+x.why));else if(x.byName&&x.status!=="Pending")c.appendChild(mk("div","meta",x.status+" by "+x.byName));
+   const a=mk("div","fxa");if(okImg(x.img)){const v=mk("button","btn s o","🧾 View bill");v.type="button";v.onclick=()=>viewImg(x.img);a.appendChild(v)}
+   if(adm&&x.status==="Pending"){a.appendChild(fxMini("Approve",()=>set(x,"Approved"),"g"));const r=mk("button","btn s r","Reject");r.type="button";r.onclick=()=>reject(x);a.appendChild(r)}
+   if(adm&&x.status==="Approved")a.appendChild(fxMini("₹ Mark as paid",()=>set(x,"Paid"),"g"));
+   if(x.uid===S.uid&&x.status==="Pending")a.appendChild(fxMini("Delete",async()=>{if(!fxSure("Delete this claim?"))return;await deleteDoc(FXD("claims",x.id));rmFile(x.img)},"r"));
+   if(a.children.length)c.appendChild(a);b.appendChild(c)})};
+ fxW(adm?query(FXC("claims"),orderBy("ts","desc"),limit(500)):query(FXC("claims"),where("uid","==",S.uid),limit(200)),(d,e)=>{L=d||[];err=e;draw()});draw()}};
+
 </script>
 <script>
 /* Sangam360 pickers – date, time and dropdown in one modern style.

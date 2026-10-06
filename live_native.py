@@ -121,6 +121,7 @@ public class LiveLocationPlugin extends Plugin {
         } catch (Exception ignored) { }
         r.put("lid", lid == null ? "" : lid);
         r.put("unrestricted", free);
+        r.put("v", 2);   // 2 = can also follow a school bus trip (position on the bus document, stops marked on arrival)
         call.resolve(r);
     }
 
@@ -248,11 +249,16 @@ import java.util.concurrent.Executors;
  * Firestore with the signed-in user's own token, into the same place the web app writes:
  *   community chat -> societies/{sid}/presence/{uid}   field live
  *   private chat   -> societies/{sid}/dmchats/{cid}    field live.{uid}
+ *   school bus trip -> societies/{sid}/buses/{bus}     field live, and arr.{key} the first time the bus is within
+ *                      120 m of a student's pickup point (or the school gate) and is not just driving past.
+ *                      "geo" = "k1abc,lat,lng;k9xyz,lat,lng;sch,lat,lng", "gn" = {"k1abc":"Aarav",...} for the
+ *                      notification, which then reads "Next pickup: Aarav · 650 m".
  * It stops by itself when the chosen time is over, or when the person taps Stop.
  */
 public class LiveLocationService extends Service implements LocationListener {
     static final String PREF = "live_location";
-    static final String[] KEYS = { "project", "apiKey", "sid", "uid", "cid", "lid", "idToken", "refreshToken" };
+    static final String[] KEYS = { "project", "apiKey", "sid", "uid", "cid", "bus", "geo", "gn", "gl", "lid", "idToken", "refreshToken" };
+    private static final float NEAR_M = 120f, MAX_ACC_M = 150f, SLOW_MS = 4.2f;
     private static final String CH = "live_location";
     private static final int NID = 7301;
     private static final long MIN_GAP = 12000, KEEP_ALIVE = 60000, TICK = 15000, TOKEN_LIFE = 45L * 60 * 1000;
@@ -265,6 +271,9 @@ public class LiveLocationService extends Service implements LocationListener {
     private Location sent;
     private long lastSent = 0;
     private boolean running = false, finishing = false;
+    private int ended = 0;
+    private String lastNote = "";
+    private volatile long lastAt = 0;   // when the newest position came in; none for 20 s = the bus is standing
 
     private final Runnable tick = new Runnable() {
         @Override
@@ -273,7 +282,7 @@ public class LiveLocationService extends Service implements LocationListener {
             long now = System.currentTimeMillis();
             if (now >= prefs().getLong("until", 0)) { finish(true); return; }
             Location l = last;
-            if (l != null && now - lastSent >= MIN_GAP && (l != sent || now - lastSent >= KEEP_ALIVE)) push(l, 0);
+            if (l != null && now - lastSent >= MIN_GAP && (l != sent || now - lastSent >= KEEP_ALIVE || reached(l).size() > 0)) push(l, 0);
             h.postDelayed(this, TICK);
         }
     };
@@ -299,8 +308,9 @@ public class LiveLocationService extends Service implements LocationListener {
             for (String k : KEYS) { String v = in.getStringExtra(k); e.putString(k, v == null ? "" : v); }
             e.putLong("until", in.getLongExtra("until", 0));
             e.putLong("tokenAt", System.currentTimeMillis());
+            e.putString("arr", "");
             e.apply();
-            last = null; sent = null; lastSent = 0; finishing = false;
+            last = null; sent = null; lastSent = 0; finishing = false; ended = 0; lastAt = 0;
         }
         long until = sp.getLong("until", 0);
         // a service started with startForegroundService must show its notification straight away
@@ -319,24 +329,65 @@ public class LiveLocationService extends Service implements LocationListener {
                 ch.setDescription("Shown while you are sharing your live location");
                 nm.createNotificationChannel(ch);
             }
-            int pf = Build.VERSION.SDK_INT >= 23 ? (PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE) : PendingIntent.FLAG_UPDATE_CURRENT;
-            Intent stop = new Intent(this, LiveLocationService.class);
-            stop.setAction("stop");
-            PendingIntent pStop = PendingIntent.getService(this, 1, stop, pf);
-            Intent open = getPackageManager().getLaunchIntentForPackage(getPackageName());
-            PendingIntent pOpen = open == null ? null : PendingIntent.getActivity(this, 2, open, pf);
-            String text = until > 0 ? "Sharing until " + DateFormat.getTimeInstance(DateFormat.SHORT).format(new Date(until)) + ". Tap Stop to end it now." : "Sharing your live location";
-            Notification.Builder b = Build.VERSION.SDK_INT >= 26 ? new Notification.Builder(this, CH) : new Notification.Builder(this);
-            b.setContentTitle("Live location is on").setContentText(text).setSmallIcon(android.R.drawable.ic_menu_mylocation).setOngoing(true).setOnlyAlertOnce(true);
-            if (pOpen != null) b.setContentIntent(pOpen);
-            b.addAction(android.R.drawable.ic_menu_close_clear_cancel, "Stop", pStop);
-            Notification n = b.build();
+            lastNote = "";
+            Notification n = note(until, null);
             if (Build.VERSION.SDK_INT >= 29) startForeground(NID, n, ServiceInfo.FOREGROUND_SERVICE_TYPE_LOCATION);
             else startForeground(NID, n);
             return true;
         } catch (Exception e) {
             return false;
         }
+    }
+
+    /** The ongoing notification; "line" replaces the usual text (bus trip: the next pickup). */
+    private Notification note(long until, String line) {
+        int pf = Build.VERSION.SDK_INT >= 23 ? (PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE) : PendingIntent.FLAG_UPDATE_CURRENT;
+        Intent stop = new Intent(this, LiveLocationService.class);
+        stop.setAction("stop");
+        PendingIntent pStop = PendingIntent.getService(this, 1, stop, pf);
+        Intent open = getPackageManager().getLaunchIntentForPackage(getPackageName());
+        PendingIntent pOpen = open == null ? null : PendingIntent.getActivity(this, 2, open, pf);
+        String text = line != null ? line : until > 0 ? "Sharing until " + DateFormat.getTimeInstance(DateFormat.SHORT).format(new Date(until)) + ". Tap Stop to end it now." : "Sharing your live location";
+        Notification.Builder b = Build.VERSION.SDK_INT >= 26 ? new Notification.Builder(this, CH) : new Notification.Builder(this);
+        b.setContentTitle(line != null ? "Bus trip is on" : "Live location is on").setContentText(text).setSmallIcon(android.R.drawable.ic_menu_mylocation).setOngoing(true).setOnlyAlertOnce(true);
+        if (pOpen != null) b.setContentIntent(pOpen);
+        b.addAction(android.R.drawable.ic_menu_close_clear_cancel, "Stop", pStop);
+        return b.build();
+    }
+
+    /** Bus trip: show the nearest pickup point that has not been reached yet in the notification. */
+    private void nextPickup(Location l) {
+        try {
+            SharedPreferences sp = prefs();
+            String geo = sp.getString("geo", "");
+            if (l == null || geo.length() == 0 || sp.getString("bus", "").length() == 0) return;
+            String done = ";" + sp.getString("arr", "") + ";", best = null;
+            float bd = Float.MAX_VALUE;
+            int all = 0;
+            float[] d = new float[1];
+            for (String g : geo.split(";")) {
+                String[] p = g.split(",");
+                if (p.length != 3 || "sch".equals(p[0])) continue;
+                all++;
+                if (done.contains(";" + p[0] + ";")) continue;
+                Location.distanceBetween(l.getLatitude(), l.getLongitude(), Double.parseDouble(p[1]), Double.parseDouble(p[2]), d);
+                if (d[0] < bd) { bd = d[0]; best = p[0]; }
+            }
+            if (all == 0) return;
+            String label = sp.getString("gl", ""), line;
+            if (label.length() == 0) label = "Next pickup";
+            if (best == null) line = "All " + all + " points reached. End the trip in the app when you are done.";
+            else {
+                String name = "";
+                try { name = new JSONObject(sp.getString("gn", "{}")).optString(best, ""); } catch (Exception ignored) { }
+                String far = bd < 1000 ? (Math.max(10, Math.round(bd / 10f) * 10)) + " m" : (Math.round(bd / 100f) / 10f) + " km";
+                line = label + ": " + (name.length() > 0 ? name : "student") + " · " + far;
+            }
+            if (line.equals(lastNote)) return;
+            lastNote = line;
+            NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            if (nm != null) nm.notify(NID, note(sp.getLong("until", 0), line));
+        } catch (Exception ignored) { }
     }
 
     private void begin(long until) {
@@ -369,7 +420,33 @@ public class LiveLocationService extends Service implements LocationListener {
         Location p = last;
         if (p != null && l.getTime() - p.getTime() < 8000 && l.hasAccuracy() && p.hasAccuracy() && l.getAccuracy() > p.getAccuracy() * 2) return;
         last = l;
-        if (System.currentTimeMillis() - lastSent >= MIN_GAP) push(l, 0);
+        lastAt = System.currentTimeMillis();
+        nextPickup(l);
+        // a pickup point has just been reached: say so straight away
+        if (System.currentTimeMillis() - lastSent >= MIN_GAP || reached(l).size() > 0) push(l, 0);
+    }
+
+    private boolean standing() { return lastAt > 0 && System.currentTimeMillis() - lastAt >= 20000; }
+
+    /** Bus trip only: the pickup points (keys) this position is at and that have not been reported yet. */
+    private java.util.ArrayList<String> reached(Location l) {
+        java.util.ArrayList<String> out = new java.util.ArrayList<String>();
+        try {
+            SharedPreferences sp = prefs();
+            String geo = sp.getString("geo", "");
+            if (l == null || geo.length() == 0 || sp.getString("bus", "").length() == 0) return out;
+            if (l.hasAccuracy() && l.getAccuracy() > MAX_ACC_M) return out;
+            if (l.hasSpeed() && l.getSpeed() > SLOW_MS && !standing()) return out;   // only passing by
+            String done = ";" + sp.getString("arr", "") + ";";
+            float[] d = new float[1];
+            for (String g : geo.split(";")) {
+                String[] p = g.split(",");
+                if (p.length != 3 || !p[0].matches("[a-z0-9]{1,8}") || done.contains(";" + p[0] + ";")) continue;
+                Location.distanceBetween(l.getLatitude(), l.getLongitude(), Double.parseDouble(p[1]), Double.parseDouble(p[2]), d);
+                if (d[0] <= NEAR_M) out.add(p[0]);
+            }
+        } catch (Exception ignored) { }
+        return out;
     }
 
     @Override public void onStatusChanged(String provider, int status, Bundle extras) { }
@@ -418,6 +495,25 @@ public class LiveLocationService extends Service implements LocationListener {
 
     /* ------------------------------------------------------------------ network ------------------------------------------------------------------ */
 
+    /** The school (or the driver on another phone) ended this trip, or started a new one: stop sharing here too. */
+    private void watchTrip(HttpURLConnection c, String lid) {
+        try {
+            java.io.ByteArrayOutputStream bo = new java.io.ByteArrayOutputStream();
+            java.io.InputStream in = c.getInputStream();
+            byte[] buf = new byte[2048];
+            int n;
+            while ((n = in.read(buf)) > 0 && bo.size() < 65536) bo.write(buf, 0, n);
+            in.close();
+            JSONObject fl = new JSONObject(bo.toString("UTF-8")).optJSONObject("fields");
+            if (fl == null) return;
+            JSONObject on = fl.optJSONObject("on"), li = fl.optJSONObject("lid");
+            String cur = li == null ? "" : li.optString("stringValue", "");
+            boolean off = (on != null && !on.optBoolean("booleanValue", true) && cur.equals(lid)) || (cur.length() > 0 && !cur.equals(lid));
+            ended = off ? ended + 1 : 0;
+            if (ended >= 2) h.post(new Runnable() { @Override public void run() { finish(false); } });
+        } catch (Exception ignored) { }
+    }
+
     private static String enc(String s) throws Exception { return URLEncoder.encode(s, "UTF-8").replace("+", "%20"); }
     private static JSONObject iv(long v) throws Exception { return new JSONObject().put("integerValue", String.valueOf(v)); }
     private static JSONObject dv(double v) throws Exception { return new JSONObject().put("doubleValue", v); }
@@ -430,8 +526,9 @@ public class LiveLocationService extends Service implements LocationListener {
         if (lid.length() == 0 || sid.length() == 0 || uid.length() == 0 || project.length() == 0) return;
         String tok = token(sp);
         if (tok == null || tok.length() == 0) return;
-        boolean dm = cid.length() > 0;
-        String doc = "https://firestore.googleapis.com/v1/projects/" + enc(project) + "/databases/(default)/documents/societies/" + enc(sid) + (dm ? "/dmchats/" + enc(cid) : "/presence/" + enc(uid));
+        String bus = sp.getString("bus", "");
+        boolean bb = bus.length() > 0, dm = !bb && cid.length() > 0;
+        String doc = "https://firestore.googleapis.com/v1/projects/" + enc(project) + "/databases/(default)/documents/societies/" + enc(sid) + (bb ? "/buses/" + enc(bus) : dm ? "/dmchats/" + enc(cid) : "/presence/" + enc(uid));
         String base = dm ? "live.`" + uid + "`." : "live.";
         long now = System.currentTimeMillis();
         JSONObject f = new JSONObject();
@@ -439,6 +536,7 @@ public class LiveLocationService extends Service implements LocationListener {
         f.put("until", iv(sp.getLong("until", 0)));
         f.put("end", iv(end));
         f.put("ts", iv(now));
+        if (bb) f.put("spd", dv(l == null ? -1 : standing() ? 0 : l.hasSpeed() ? Math.round(l.getSpeed() * 10) / 10.0 : -1));
         if (l != null) {
             f.put("lat", dv(Math.round(l.getLatitude() * 1e6) / 1e6));
             f.put("lng", dv(Math.round(l.getLongitude() * 1e6) / 1e6));
@@ -448,6 +546,14 @@ public class LiveLocationService extends Service implements LocationListener {
         java.util.Iterator<String> it = f.keys();
         while (it.hasNext()) q.append(q.length() == 0 ? "?" : "&").append("updateMask.fieldPaths=").append(enc(base + it.next()));
         JSONObject fields = new JSONObject().put("live", dm ? map(new JSONObject().put(uid, map(f))) : map(f));
+        java.util.ArrayList<String> hit = bb && end == 0 ? reached(l) : new java.util.ArrayList<String>();
+        if (hit.size() > 0) {
+            JSONObject a = new JSONObject();
+            for (String k : hit) { a.put(k, iv(now)); q.append("&updateMask.fieldPaths=").append(enc("arr." + k)); }
+            fields.put("arr", map(a));
+        }
+        // the answer then carries just these two fields: enough to notice that the trip was ended from another phone
+        if (bb) q.append("&mask.fieldPaths=on&mask.fieldPaths=lid");
         byte[] body = new JSONObject().put("fields", fields).toString().getBytes("UTF-8");
 
         HttpURLConnection c = (HttpURLConnection) new URL(doc + q).openConnection();
@@ -464,6 +570,14 @@ public class LiveLocationService extends Service implements LocationListener {
             os.close();
             int code = c.getResponseCode();
             if (code == 401) sp.edit().putLong("tokenAt", 0).apply();   // token expired early: get a new one next time
+            if (code == 200 && bb) {
+                if (hit.size() > 0) {
+                    StringBuilder d = new StringBuilder(sp.getString("arr", ""));
+                    for (String k : hit) d.append(d.length() == 0 ? "" : ";").append(k);
+                    sp.edit().putString("arr", d.toString()).apply();
+                }
+                if (end == 0) watchTrip(c, lid);
+            }
         } finally {
             c.disconnect();
         }

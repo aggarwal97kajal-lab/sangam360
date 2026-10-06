@@ -764,6 +764,52 @@ body.avnew #hav .ava img,body.avnew #mr .ava img,body.avnew .drh .ava img{animat
 [data-theme="dark"] #uxtip,[data-theme="dark"] #uxtip i{background:#eef0ff;color:#12152b}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #uxtip,:root:not([data-theme="light"]) #uxtip i{background:#eef0ff;color:#12152b}}
 @media (prefers-reduced-motion:reduce){.flw>label,.bgr i,.drgc,nav .nind,#uxtip{transition-duration:.01s!important}}
+
+/* ===== people cards, students of one login, @mention, bus ===== */
+.prw{display:flex;gap:10px;align-items:center;min-width:0}.prw>div{min-width:0}
+.ppg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:2px 0 12px}
+.ppg button{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:16px;padding:12px 6px 10px;cursor:pointer;font-family:inherit;display:flex;flex-direction:column;align-items:center;gap:2px;transition:transform .2s,border-color .2s,background-color .2s;-webkit-tap-highlight-color:transparent}
+.ppg button i{font-style:normal;font-size:22px;line-height:1.2}.ppg button b{font-size:20px;line-height:1.15}.ppg button span{font-size:11.5px;font-weight:600;color:var(--muted)}
+.ppg button.on{border-color:var(--a);background:var(--tint,rgba(91,61,245,.1))}.ppg button.on span{color:var(--a)}.ppg button:disabled{opacity:.45;cursor:default}.ppg button:active{transform:scale(.97)}
+.pplr{flex-wrap:wrap}.pplr>div:first-child{flex:1;min-width:0}.pplx{display:flex;align-items:center;gap:2px;flex:none}
+.pplc{font-size:22px;color:var(--muted);padding:0 6px;cursor:pointer;line-height:1}.pplm{border:0;background:transparent;color:var(--muted);font-size:20px;width:36px;height:36px;border-radius:50%;cursor:pointer;line-height:1}.pplm:active{background:var(--bg)}
+.pplt{display:flex;gap:8px;align-items:center;width:100%;margin-top:10px}.pplt select{flex:1;min-width:0;margin:0;padding:10px 12px}.pplt .btn{width:auto;flex:none;white-space:nowrap;padding:10px 16px;margin:0}
+.pplb{text-align:left;margin:0 2px 8px}
+.kch{margin-bottom:14px}
+.mnp{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:0 10px 30px rgba(10,12,30,.18);margin:0 8px 6px;max-height:232px;overflow-y:auto;padding:4px;animation:uxmd .16s ease both;transform-origin:50% 100%}
+.mnp button{width:100%;border:0;background:transparent;color:var(--text);display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:12px;cursor:pointer;text-align:left;font-family:inherit}.mnp button:active{background:var(--bg)}
+.mnp button span{min-width:0}.mnp b{display:block;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.mnp small{display:block;font-size:11.5px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+b.mtn{color:var(--a);font-weight:600;background:var(--tint,rgba(91,61,245,.1));border-radius:6px;padding:0 3px}b.mtn.me{background:var(--a);color:#fff}.mr.me b.mtn{color:inherit;background:rgba(255,255,255,.22)}
+.busrow{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid var(--line)}.busrow .t{flex:1;min-width:0}.busrow b{display:block;font-size:14px}.busrow small{color:var(--muted);font-size:12px}.busrow .btn{width:auto;flex:none;padding:7px 12px;margin:0}
+.busrow.kid{padding-left:22px;border-top:0;padding-top:2px}.busrow.kid b{font-weight:500}
+.buseta{font-size:15px;font-weight:700;color:var(--a);margin:8px 0 2px}
+.busl{border-left:5px solid var(--grn)}.busl b{display:block;font-size:15px}
+.restl .prw{gap:12px}.restl .t{flex:1;min-width:0}.resi{font-style:normal;flex:none;width:40px;height:40px;border-radius:12px;background:var(--bg);display:grid;place-items:center;font-size:20px}
+#jbusw input{margin-bottom:10px}#jbusw .btn{margin:0}
+#lpk{position:fixed;inset:0;z-index:65;background:var(--bg);color:var(--text);display:flex;flex-direction:column;animation:uxfd .2s ease both;padding-top:env(safe-area-inset-top,0px)}
+.lph{display:flex;align-items:center;gap:10px;padding:10px 12px 6px}.lph b{font-size:16px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lph button{border:0;background:var(--card);color:var(--text);width:38px;height:38px;border-radius:50%;font-size:16px;cursor:pointer;flex:none}
+.lps{display:flex;gap:8px;padding:4px 12px 8px}.lps input{flex:1;min-width:0;margin:0}.lps .btn{width:auto;flex:none;margin:0;padding:0 16px}
+.lpr{margin:0 12px 8px;background:var(--card);border:1px solid var(--line);border-radius:14px;max-height:38vh;overflow-y:auto;padding:4px}.lpr .meta{padding:10px}
+.lpr button{display:block;width:100%;text-align:left;border:0;background:transparent;color:var(--text);padding:9px 10px;border-radius:10px;cursor:pointer;font-family:inherit}.lpr button:active{background:var(--bg)}
+.lpr b{display:block;font-size:14px}.lpr small{display:block;font-size:12px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lpm{position:relative;flex:1;min-height:160px;background:#e3ebf6;overflow:hidden}.lpmap{position:absolute;inset:0;z-index:0}
+.lpp{position:absolute;left:50%;top:50%;z-index:500;font-style:normal;font-size:34px;line-height:1;transform:translate(-50%,-92%);pointer-events:none;transition:transform .15s;filter:drop-shadow(0 3px 3px rgba(0,0,0,.35))}.lpp.up{transform:translate(-50%,-118%)}
+.lpmap{touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none}.mml{position:absolute;inset:0;overflow:hidden}.mmt{position:absolute;left:0;top:0;width:256px;height:256px;max-width:none;pointer-events:none;user-select:none}
+.mmz{position:absolute;right:10px;top:10px;z-index:3;display:grid;gap:6px}.mmz button{width:38px;height:38px;border-radius:12px;border:0;background:#fff;color:#111827;font-size:22px;line-height:1;box-shadow:0 2px 8px rgba(0,0,0,.25);cursor:pointer}
+.mma{position:absolute;right:4px;bottom:2px;z-index:3;font-size:10px;color:#334155;background:rgba(255,255,255,.75);padding:1px 5px;border-radius:6px}
+.lpf{padding:10px 12px calc(12px + env(safe-area-inset-bottom,0px));background:var(--card);border-top:1px solid var(--line)}.lpf .meta{margin-bottom:8px;min-height:18px}.lpf .fxa{margin:0}.lpf .fxa .btn{margin:0}.lpf .fxa .btn:last-child{flex:1}.lpf .fxa .btn:first-child{width:auto;flex:none}
+.lpmap.mmoff::before{content:"The map could not load. Check the internet. You can still search a place by name or use My location.";position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:70px 30px;color:#475569;font-size:14px}
+.buspk{border:1px solid var(--line);border-radius:14px;padding:12px;margin:10px 0}.fxk.buspk{margin:0 0 12px}.buspk>b{display:block;font-size:15px}.buspk small{display:block;color:var(--muted);font-size:12.5px;margin-top:2px}
+.buspk .fxr{gap:10px;flex-wrap:nowrap;align-items:center}.buspk .t{flex:1;min-width:0}.buspk .t b{display:block;font-size:14.5px}.buspk .fxr .btn{width:auto;flex:none;margin:0;padding:8px 14px}.buspk .lnk{display:block;margin-top:8px;text-align:center}
+.buspo{display:grid;gap:8px;margin-top:10px}.buspo .btn{margin:0}
+.buszn{font-size:15px;font-weight:700;margin:10px 0 4px;padding:9px 12px;border-radius:12px;background:var(--bg);color:var(--text)}.buszn.g{background:rgba(22,163,74,.14);color:#15803d}.buszn.y{background:rgba(234,179,8,.2);color:#92600a}.buszn.r{background:rgba(220,38,38,.13);color:#b91c1c}.buszn.d{background:rgba(22,163,74,.1);color:var(--text);font-weight:600}
+:root[data-theme=dark] .buszn.g{color:#4ade80}:root[data-theme=dark] .buszn.y{color:#facc15}:root[data-theme=dark] .buszn.r{color:#f87171}
+.busnx{border-radius:16px;padding:14px;margin:8px 0 6px;background:var(--tint,rgba(91,61,245,.1));display:grid;gap:2px}.busnx small{font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}.busnx b{font-size:22px;line-height:1.2}.busnx span{font-size:15px;font-weight:600}.busnx .btn{margin:10px 0 0}
+.busd{flex:none;font-weight:700;font-size:13.5px;color:var(--muted)}
+.busckl{border:1px solid var(--line);border-radius:14px;padding:6px 10px;margin:0 0 12px;max-height:38vh;overflow-y:auto}.busckl .lnk{display:block;text-align:right;margin:4px 2px 2px}
+.busck{display:flex;align-items:center;gap:12px;padding:9px 2px;border-top:1px solid var(--line);cursor:pointer}.busck:first-of-type{border-top:0}.busck input{width:20px;height:20px;flex:none;margin:0;accent-color:var(--a)}.busck span{min-width:0}.busck b{display:block;font-size:14px;font-weight:600}.busck small{display:block;font-size:12px;color:var(--muted)}
+.busl.need{border-left-color:var(--a)}
 </style>
 <style>
 #splash{position:fixed;inset:0;z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(900px 500px at 50% 35%,rgba(99,102,241,.45),transparent 70%),radial-gradient(700px 400px at 80% 90%,rgba(20,184,166,.3),transparent 70%),#080d1a;color:#fff;transition:opacity .55s,transform .55s}
@@ -867,7 +913,7 @@ body.avnew #hav .ava img,body.avnew #mr .ava img,body.avnew .drh .ava img{animat
   <div id="cap" class="cap hide"><div class="cbx" id="cbx"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><i class="spn"></i></div><span id="capt">I'm not a robot</span><small>🛡️<br>Secure</small></div><label class="agr hide" id="agr" data-noskin><input type="checkbox" id="agc"><span>By selecting "Create account", you are confirming that you have read and agree to Sangam360 <a id="lkT" role="link" tabindex="0">Terms of Use</a> and <a id="lkP" role="link" tabindex="0">Privacy Policy</a>.</span></label><button class="btn" id="asub">Login</button><a class="lnk" id="afg">Forgot password?</a><p class="err" id="aerr"></p><a class="lnk" id="aback">← Change (corporate / school / society)</a><p class="lgl" data-noskin><a id="lkP2" role="link" tabindex="0">Privacy Policy</a> · <a id="lkT2" role="link" tabindex="0">Terms &amp; Conditions</a></p></div></section>
 
 <section id="sChoice" class="scr hide"><div class="brand"><h1 id="b2"></h1><p>What would you like to do?</p></div>
- <div class="box big"><button id="goC"><b>🏢 Create my society</b>Set up a new building or complex as its admin</button><button id="goT" class="hide" data-noskin><b>🧑‍🏫 Join as a teacher</b>Use the school code from your Principal</button><button id="goJ"><b>🔑 Join my society</b>Use the code or link from your society</button><a class="lnk hide" id="bk">← Back to my society</a><a class="lnk" id="lo1">Log out</a></div></section>
+ <div class="box big"><button id="goC"><b>🏢 Create my society</b>Set up a new building or complex as its admin</button><button id="goT" class="hide" data-noskin><b>🧑‍🏫 Join as a teacher</b>Use the school code from your Principal</button><button id="goS" class="hide" data-noskin><b>🧹 Join as staff</b>Drivers, office and support staff: use the school code from your Principal</button><button id="goJ"><b>🔑 Join my society</b>Use the code or link from your society</button><a class="lnk hide" id="bk">← Back to my society</a><a class="lnk" id="lo1">Log out</a></div></section>
 
 <section id="sCreate" class="scr hide"><div class="brand"><h1>Create your society</h1></div>
  <div class="box"><div class="steps"><i id="p1" class="on"></i><i id="p2"></i><i id="p3"></i><i id="p4"></i></div>
@@ -1216,7 +1262,7 @@ const tm=t=>new Date(t).toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"})
 const td=()=>{const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};
 document.title=BRAND+" — "+TAGLINE;
 const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app),rtdb=getDatabase(app,"https://my-building-326a9-default-rtdb.firebaseio.com");
-const SCR=["sLand","sAuth","sChoice","sCreate","sJoin","sWait","sMain"];const show=id=>{SCR.forEach(k=>$(k).classList.toggle("hide",k!==id));if(id!=="sWait"||$("wt").textContent!=="Loading…"){if(window.splashReady)window.splashReady()}if(id==="sChoice"){const g=$("goC");if(g)g.classList.toggle("hide",!!(S.me&&S.me.role&&!["SOCIETY_ADMIN","COMMITTEE_MEMBER"].includes(S.me.role)))}window.scrollTo(0,0)};
+const SCR=["sLand","sAuth","sChoice","sCreate","sJoin","sWait","sMain"];const show=id=>{SCR.forEach(k=>$(k).classList.toggle("hide",k!==id));if(id!=="sWait"||$("wt").textContent!=="Loading…"){if(window.splashReady)window.splashReady()}if(id==="sChoice"){const g=$("goC");if(g)g.classList.toggle("hide",!!(S.me&&S.me.role&&(!["SOCIETY_ADMIN","COMMITTEE_MEMBER"].includes(S.me.role)||(KIND==="school"&&S.me.role!=="SOCIETY_ADMIN"))))}window.scrollTo(0,0)};
 const fr=e=>({"auth/invalid-credential":"Wrong email or password.","auth/email-already-in-use":"This email is already registered. Log in with it under the same type (society / corporate / school) you signed up with, or use a different email.","auth/weak-password":"Password must be at least 6 characters.","auth/invalid-email":"Please enter a valid email.","auth/too-many-requests":"Too many tries. Wait a bit.","permission-denied":"Not allowed. Check the code or your permissions.","storage/unauthorized":"Upload blocked — the Storage rules are not published yet.","storage/retry-limit-exceeded":"Upload timed out. Check your internet."}[e.code]||(e&&e.message&&!e.code&&e.message.length<90?e.message:"Something went wrong. Please try again."));
 const S={uid:null,user:null,sid:null,soc:null,me:null};const D={comp:{},ann:{},msg:{},inc:{},exp:{},mem:{},dir:{},vis:{},del:{},veh:{},park:{},rep:{}};let unsubs=[],tab="home",sub="comp",join=null,muted=localStorage.getItem("sh-mute")==="1";
 const isOwner=()=>!!(S.me&&S.me.role==="SOCIETY_ADMIN"),isGuard=()=>S.me&&S.me.role==="SECURITY_GUARD",isAdm=()=>S.me&&["SOCIETY_ADMIN","COMMITTEE_MEMBER"].includes(S.me.role),canFin=()=>isAdm()||(S.me&&S.me.role==="ACCOUNTANT"),staff=()=>isGuard()||isAdm();
@@ -1331,7 +1377,7 @@ async function boot(){$("bk").classList.add("hide");$("wsw").classList.add("hide
   if(S.me.status!=="approved"){$("wt").textContent=S.me.status==="rejected"?"Request not approved":"Waiting for approval";$("wtxt").textContent=S.me.status==="rejected"?"Please contact your society admin.":"Your society admin has been notified. You'll get access as soon as you're approved.";$("wre").classList.remove("hide");show("sWait");return}
   const s=await getDoc(doc(db,"societies",S.sid));S.soc=s.data();if(await kindGuard(S.soc.type)){S.me=null;S.soc=null;S.sid=null;return}loginKind=null;setKind(S.soc.type||"society");checkSuper();
   if(S.soc.active===false){$("wt").textContent="Society inactive";$("wtxt").textContent="This society is currently suspended. Please contact support.";show("sWait");return}
-  startApp();
+  await kidsLoad();startApp();
  }catch(e){if(window.splashReady)window.splashReady();$("wt").textContent="Couldn't load";$("wtxt").textContent="Check your internet and tap Check again.";$("wre").classList.remove("hide");console.error(e)}
 }
 $("wre").onclick=boot;
@@ -1347,7 +1393,7 @@ async function switchTo(id){
  if(me.status!=="approved"||soc.active===false){await wr.catch(()=>{});S.sid=null;S.me=null;S.soc=null;boot();return}
  wr.catch(console.error);
  S.sid=id;S.me=me;S.soc=soc;tab="home";sub="comp";socCache=null;loginKind=null;
- setKind(soc.type||"society");checkSuper();startApp();
+ setKind(soc.type||"society");checkSuper();S.prim=null;await kidsLoad();startApp();
  const mn=$("sMain");mn.classList.remove("swfx");void mn.offsetWidth;mn.classList.add("swfx");
  toast("✅","Switched to "+soc.name,"",true)}
 async function socRows(box){box.innerHTML="";
@@ -1357,8 +1403,8 @@ async function socRows(box){box.innerHTML="";
    if(r.id===S.sid)e.appendChild(mk("b","pos","Active"));else{const b=mk("button","btn s o","Switch");b.style.cssText="width:auto;padding:6px 14px;margin:0";b.onclick=()=>run(b,()=>switchTo(r.id));e.appendChild(b)}box.appendChild(e)});
   if(!v.length)box.appendChild(mk("div","meta","No societies yet."))}catch(x){box.innerHTML="";box.appendChild(mk("div","meta","Couldn't load your societies."))}}
 const addMode=()=>{$("bk").classList.remove("hide");$("bk").onclick=()=>show("sMain")};
-function mySocCard(){const c=mk("div","card");c.appendChild(mk("h2",null,"🏘️ My societies"));c.appendChild(mk("p","sub","You can be an admin or resident in more than one society and switch anytime."));const l=mk("div");c.appendChild(l);socRows(l);
- const g=mk("div","g2");g.style.marginTop="10px";const a=mk("button","btn s","➕ Create another society"),j=mk("button","btn s o","🔑 Join another society");a.onclick=()=>{if(!isAdm())return;addMode();$("goC").onclick()};j.onclick=()=>{addMode();gotoJoin()};if(isAdm()){g.append(a,j)}else{g.style.gridTemplateColumns="1fr";g.append(j)}c.appendChild(g);return c}
+function mySocCard(){const c=mk("div","card");try{pxKids(c)}catch(e){console.warn(e)}c.appendChild(mk("h2",null,"🏘️ My societies"));c.appendChild(mk("p","sub","You can be an admin or resident in more than one society and switch anytime."));const l=mk("div");c.appendChild(l);socRows(l);
+ const g=mk("div","g2");g.style.marginTop="10px";const a=mk("button","btn s","➕ Create another society"),j=mk("button","btn s o","🔑 Join another society");a.onclick=()=>{if(!isAdm())return;addMode();$("goC").onclick()};j.onclick=()=>{addMode();gotoJoin()};if(isAdm()&&(KIND!=="school"||isOwner())){g.append(a,j)}else{g.style.gridTemplateColumns="1fr";if(!(SCH()&&S.prim&&isStu(S.prim)))g.append(j)}c.appendChild(g);return c}
 $("wsw").onclick=()=>sheet(z=>{z.appendChild(mk("h2",null,"Switch society"));const l=mk("div");z.appendChild(l);socCache=null;socRows(l)});
 
 /* ---------- create society ---------- */
@@ -1416,12 +1462,13 @@ $("cpc").onclick=()=>cp(newCode);$("cpl").onclick=()=>cp(link(newCode));$("open"
 
 /* ---------- join society ---------- */
 let joinWant=null;
-const gotoJoin=w=>{joinWant=KIND==="school"&&(w==="teacher"||w==="student")?w:null;{const h=$("j1").querySelector("h2"),p=$("j1").querySelector("p.sub");
+const gotoJoin=w=>{try{joinKid=false}catch(e){}joinWant=KIND==="school"&&(w==="teacher"||w==="student"||w==="staff")?w:null;{const h=$("j1").querySelector("h2"),p=$("j1").querySelector("p.sub");
   if(joinWant==="teacher"){h.textContent="Enter the Principal's code";p.textContent="Your Principal gets this code after creating the school. Ask your Principal for it.";$("jf").textContent="Verify code"}
+  else if(joinWant==="staff"){h.textContent="Enter the school code";p.textContent="Staff join with the same code that the Principal gives to teachers. Ask your Principal for it.";$("jf").textContent="Verify code"}
   else if(joinWant==="student"){h.textContent="Enter your class code";p.textContent="Ask your class teacher for the class code or invitation link.";$("jf").textContent="Find my class"}
   else{h.textContent="Enter society code";p.textContent="Ask your society admin for the code or invitation link.";$("jf").textContent="Find society"}}
  $("jc").value="";$("j1").classList.remove("hide");$("j2").classList.add("hide");$("jerr").textContent="";$("jnm").value=S.user.displayName||"";show("sJoin")};
-$("goJ").onclick=()=>gotoJoin(KIND==="school"?"student":null);$("goT").onclick=()=>gotoJoin("teacher");$("jb").onclick=()=>show("sChoice");
+$("goJ").onclick=()=>gotoJoin(KIND==="school"?"student":null);$("goT").onclick=()=>gotoJoin("teacher");$("goS").onclick=()=>gotoJoin("staff");$("jb").onclick=()=>show("sChoice");
 let joinAs="student";
 /* A school has two kinds of code: the Principal's code (for teachers) and each teacher's class code (for students). */
 async function findJoin(c,er,needP,needC){c=String(c||"").trim().toUpperCase();if(c.length<4){er.textContent="Not found";return false}const s=await getDoc(doc(db,"joinCodes",c));
@@ -1430,8 +1477,8 @@ async function findJoin(c,er,needP,needC){c=String(c||"").trim().toUpperCase();i
  {const jt=join.type||"society";if(jt!==KIND){if(qp&&!needP){setKind(jt)}else{er.textContent="This code is for a "+KINDS[jt].word+". Go back and choose \""+KINDS[jt].card+"\".";join=null;return false}}}
  if(needP&&join.teacherUid){er.textContent="This is a class code for students. Ask your Principal for the Principal's code.";join=null;return false}
  if(needC&&KIND==="school"&&!join.teacherUid){er.textContent="This is the Principal's code, which is only for teachers. Ask your class teacher for your class code.";join=null;return false}
- {const ex=await memCheck(join.societyId,join.name);if(ex){er.textContent=ex;join=null;return false}}
- joinAs=KIND==="school"&&!join.teacherUid?"teacher":"student";joinForm();return true}
+ if(!(joinKid&&S.me&&S.me.status==="approved"&&S.sid===join.societyId&&join.teacherUid)){const ex=await memCheck(join.societyId,join.name);if(ex){er.textContent=ex;join=null;return false}}
+ joinAs=KIND==="school"&&!join.teacherUid?(joinWant==="staff"?"staff":"teacher"):"student";joinForm();return true}
 function joinForm(){const T=KIND==="school"&&joinAs==="teacher",fixed=KIND==="school"&&!!join.teacherUid,K=KINDS[KIND];
  fill($("jt"),join.towers.map(t=>t.name));const fl=()=>{const t=join.towers.find(x=>x.name===$("jt").value);fill($("jfl"),gF(t,join.towers.length===1))};$("jt").onchange=fl;fl();
  $("jt").classList.toggle("hide",(!isOrg()&&join.towers.length===1)||fixed);$("jfl").classList.toggle("hide",isOrg());$("jx").classList.toggle("hide",!isOrg());$("jsec").classList.toggle("hide",!T);$("jsec").value="";
@@ -1441,17 +1488,19 @@ function joinForm(){const T=KIND==="school"&&joinAs==="teacher",fixed=KIND==="sc
  else if(fixed){$("jx").placeholder=K.grp.idp;jsb.textContent="Tell us who you are.";ji.textContent="🎓 "+(join.cls||join.towers[0].name)+" · Class teacher: "+(join.teacherName||"—")+". Your class teacher approves your request."}
  else if(isOrg()){$("jx").placeholder=K.grp.idp;jsb.textContent=K.grp.jl}else jsb.textContent="Choose your flat and tell us who you are.";
  $("jsub").textContent=T?"Request to join as Teacher":"Request to join";if(!$("jnm").value)$("jnm").value=(S.user&&S.user.displayName)||"";
- $("j1").classList.add("hide");$("j2").classList.remove("hide")}
-$("jf").onclick=()=>run($("jf"),()=>findJoin($("jc").value,$("jerr"),joinWant==="teacher",joinWant==="student"));
-$("jsub").onclick=()=>run($("jsub"),async()=>{$("jerr").textContent="";const nm=$("jnm").value.trim(),mo=$("jm").value.trim();const xv=$("jx").value.trim();if(!nm||mo.length<8){$("jerr").textContent="Enter your name and mobile number.";return}const T=KIND==="school"&&joinAs==="teacher";if(isOrg()&&!xv&&!T){$("jerr").textContent="Enter your "+KINDS[KIND].grp.idp.split(" (")[0]+".";return}
+ try{pxJoinForm()}catch(e){console.warn("join form",e)}$("j1").classList.add("hide");$("j2").classList.remove("hide")}
+$("jf").onclick=()=>run($("jf"),()=>findJoin($("jc").value,$("jerr"),joinWant==="teacher"||joinWant==="staff",joinWant==="student"));
+$("jsub").onclick=()=>run($("jsub"),async()=>{$("jerr").textContent="";const nm=$("jnm").value.trim(),mo=$("jm").value.trim();const xv=$("jx").value.trim();if(!nm||mo.length<8){$("jerr").textContent="Enter your name and mobile number.";return}const T=KIND==="school"&&joinAs==="teacher",ST=KIND==="school"&&joinAs==="staff";if(isOrg()&&!xv&&!T&&!ST){$("jerr").textContent="Enter your "+KINDS[KIND].grp.idp.split(" (")[0]+".";return}
+ if(kidMode()){await kidSubmit(nm,mo,xv);return}
+ let BUSJ=null;if(ST&&$("jjob").value==="Bus driver"){BUSJ=pxBusReg();if(!BUSJ)return}
  const fId=$("jid").files[0],fPh=$("jph").files[0];if(!fId||!fPh){$("jerr").textContent="ID proof and your photo are both required to sign up.";return}
  {const ex=await memCheck(join.societyId,join.name);if(ex){$("jerr").textContent=ex;return}}
  const [idUrl,photoUrl]=await Promise.all([upID(join.societyId,fId,"idproofs"),upID(join.societyId,fPh,"idphotos",true)]);
- const sec=$("jsec").value.trim().toUpperCase().replace(/[^A-Z0-9]/g,""),fl=isOrg()?(T?$("jt").value+(sec?"-"+sec:"")+(xv?" · "+xv:""):(join.cls||$("jt").value)+" · "+xv):(join.towers.length===1?"":$("jt").value+" · ")+"Flat "+$("jfl").value;
+ const sec=$("jsec").value.trim().toUpperCase().replace(/[^A-Z0-9]/g,""),fl=isOrg()?(ST?$("jjob").value+(xv?" · "+xv:""):T?$("jt").value+(sec?"-"+sec:"")+(xv?" · "+xv:""):(join.cls||$("jt").value)+" · "+xv):(join.towers.length===1?"":$("jt").value+" · ")+"Flat "+$("jfl").value;
  const keep=!!(S.me&&S.me.status==="approved"&&S.sid&&S.sid!==join.societyId);
  const step=async(label,fn)=>{try{await fn()}catch(e){console.error("JOIN step failed:",label,e);if(e&&e.code==="permission-denied"){const mm=await memCheck(join.societyId,join.name);throw new Error(mm||"Couldn't send your request. Please try again in a moment.")}throw e}};
  /* 1) the join request itself */
- await step("members",()=>setDoc(doc(db,"societies",join.societyId,"members",S.uid),{uid:S.uid,name:nm,mobile:mo,flat:fl,role:"RESIDENT",status:"pending",ts:Date.now(),idUrl,photoUrl,...(T?{want:"COMMITTEE_MEMBER"}:{}),...(join.teacherUid?{tUid:join.teacherUid}:{})}));
+ await step("members",()=>setDoc(doc(db,"societies",join.societyId,"members",S.uid),{uid:S.uid,name:nm,mobile:mo,flat:fl,role:"RESIDENT",status:"pending",ts:Date.now(),idUrl,photoUrl,...(T?{want:"COMMITTEE_MEMBER"}:ST?{want:staffWant($("jjob").value),job:$("jjob").value,...(BUSJ?{bus:BUSJ}:{})}:{}),...(join.teacherUid?{tUid:join.teacherUid}:{})}));
  /* 2) remember the society in My societies; never block the request if this fails */
  try{const ids=S.sid&&S.sid!==join.societyId?[S.sid,join.societyId]:[join.societyId];
   await setDoc(doc(db,"userSociety",S.uid),keep?{list:arrayUnion(...ids)}:{societyId:join.societyId,list:arrayUnion(...ids)},{merge:true})}catch(e){console.warn("userSociety update skipped",e);if(!keep)throw e}
@@ -1472,7 +1521,7 @@ function setSub(s){sub=s;if(!subList().includes(s))sub=subList()[0];const g=$("s
  const ind=g.querySelector(".sind");[...g.querySelectorAll("button")].forEach(b=>b.classList.toggle("on",b.dataset.k===sub));const mv=()=>{const b=g.querySelector("button.on");if(!b||!ind||!b.offsetWidth)return;if(!g.dataset.init){ind.style.transition="none"}ind.style.width=b.offsetWidth+"px";ind.style.transform="translateX("+b.offsetLeft+"px)";if(!g.dataset.init){void ind.offsetWidth;ind.style.transition="";g.dataset.init="1"}const l=b.offsetLeft-(g.clientWidth-b.offsetWidth)/2;g.scrollTo({left:Math.max(0,l),behavior:"smooth"})};mv();requestAnimationFrame(mv);["att","comp","vis","del","veh","park","help","mkt","leave","room","tt","hw","hol","gc"].forEach(k=>{const e=$("p_"+k)||Object.assign($("p_att").parentNode.appendChild(mk("div","hide")),{id:"p_"+k});e.classList.toggle("hide",k!==sub)});if(MODS[sub])rMod(sub);if(sub==="att")rAtt();if(sub==="gc")rGc();watchSub();if(sub==="help")rHelp();if(sub==="mkt")rMkt();markNav()}
 const bottom=()=>setTimeout(()=>{const b=$("msgs");if(!b)return;const u=b.querySelector(".unr");b.scrollTop=u&&Date.now()-chatOpenAt<900?Math.max(0,u.offsetTop-b.offsetTop-64):b.scrollHeight;jmpUpd()},60);
 
-async function syncDirPhoto(){const ref=doc(db,"societies",S.sid,"directory",S.uid),o={uid:S.uid,name:S.me.name,flat:S.me.flat,role:S.me.role};
+async function syncDirPhoto(){if(S.pid&&S.pid!==S.uid)return;const ref=doc(db,"societies",S.sid,"directory",S.uid),o={uid:S.uid,name:S.me.name,flat:S.me.flat,role:S.me.role};
  try{let has=false;try{const d0=await getDoc(ref);has=d0.exists()&&okImg(d0.data().photo)}catch(e){}
   if(!has&&isR(S.me.photoUrl)){try{const u=await rsv(S.me.photoUrl),bl=await(await fetch(u)).blob();o.photo=await UP(bl,"avatars","a.jpg")}catch(e){console.warn("avatar copy",e)}}
   else if(!has&&okImg(S.me.photoUrl))o.photo=S.me.photoUrl;
@@ -1491,7 +1540,7 @@ function startApp(){
  $("annf").classList.toggle("hide",!isAdm());annSetup();ensureTCode();document.querySelector("#t_fin .bal").classList.toggle("hide",!canFin());$("finf").classList.toggle("hide",!canFin());$("pk_adm").classList.toggle("hide",!isAdm());
  $("vf_res").classList.toggle("hide",isGuard());$("vf_grd").classList.toggle("hide",!staff());$("df_grd").classList.toggle("hide",!staff());$("vh_res").classList.toggle("hide",isGuard());$("vsr").classList.toggle("hide",!staff());
  setFin("inc");setHero();drawNav();syncDirPhoto();if(KIND==="company"&&isAdm()&&!socGst())setTimeout(()=>toast("🧾","Add your GST number","Finance → Payment details. It is printed on every invoice.",true),2500);
- listen();show("sMain");go("home");fxStart();uxCoach();liveResume();setTimeout(firstRunPerms,900);
+ listen();show("sMain");go("home");fxStart();uxCoach();try{busWatch()}catch(e){console.warn("bus alerts",e)}try{busDrive()}catch(e){console.warn("my bus",e)}liveResume();setTimeout(firstRunPerms,900);
 }
 const flats=()=>{const one=S.soc.towers.length===1,r=[];S.soc.towers.forEach(t=>gF(t,one).forEach(l=>r.push((one?"":t.name+" · ")+"Flat "+l)));return r};
 function setHero(){const h=$("hav");h.innerHTML="";h.appendChild(av(S.me.name,photoOf(S.uid),42));h.onclick=()=>go("more")}
@@ -1500,11 +1549,11 @@ function w(qr,key,after,onNew){let first=true;unsubs.push(onSnapshot(qr,s=>{cons
 function listen(){unsubs.forEach(f=>f());unsubs=[];if(wsub){wsub();wsub=null}wsubK="";const C=n=>collection(db,"societies",S.sid,n),L=(n,k)=>query(C(n),orderBy("ts","desc"),limit(k)),F=n=>query(C(n),where("flat","==",S.me.flat),limit(60));
  w(isAdm()?L("complaints",isTeacher()?150:50):query(C("complaints"),where("uid","==",S.uid),limit(50)),"comp",()=>{if(isTeacher()){const o={};Object.values(D.comp).forEach(c=>{if(c.uid===S.uid||clsOf(c)===myCls())o[c.id]=c});D.comp=o}rComp()},(d,t)=>{if(t==="added"&&isAdm()&&d.uid!==S.uid&&(!isTeacher()||clsOf(d)===myCls()))toast("🛠️","New complaint",d.title)});
  w(L("announcements",SCH()?120:30),"ann",()=>{if(SCH()){const o={};Object.values(D.ann).forEach(a=>{if(annVis(a))o[a.id]=a});D.ann=o}rAnn()},(d,t)=>{if(t==="added"&&d.uid!==S.uid&&annVis(d))toast(d.type==="Emergency"?"🚨":"📢",d.title,d.type)});
- w(L("messages",80),"msg",rChat,(d,t)=>{if(t==="added"&&d.uid!==S.uid&&!(tab==="comm"&&!$("v_chat").classList.contains("hide")&&!dmc))toast("💬",d.name,lbl(d))});
+ w(L("messages",80),"msg",()=>{rChat();try{mnCatch()}catch(e){}},(d,t)=>{if(t==="added"&&d.uid!==S.uid&&mnHit(d))return;if(t==="added"&&d.uid!==S.uid&&!(tab==="comm"&&!$("v_chat").classList.contains("hide")&&!dmc))toast("💬",d.name,lbl(d))});
  w(query(C("dmchats"),where("users","array-contains",S.uid),limit(100)),"dmc",()=>{Object.values(D.dmc).forEach(c=>{if(!(c.id in dmT))dmT[c.id]=c.lastTs});rInbox();chatTick()},(d,t)=>{if(d.lastFrom&&d.lastFrom!==S.uid&&isUn(d)&&dmT[d.id]!==d.lastTs&&!(dmc&&dmc.cid===d.id&&!document.hidden)){dmT[d.id]=d.lastTs;const pu=(d.users||[]).find(u=>u!==S.uid);toast("✉️",(D.dir[pu]||{}).name||(d.names&&d.names[pu])||"New message",d.last||"")}});
  w(query(C("directory"),limit(300)),"dir",()=>{setHero();rChat();rVis();rDel();rVeh()});
  if(canFin()){w(L("contributions",100),"inc",rFin);w(L("expenses",100),"exp",rFin)}else if(!isGuard()&&S.me.flat){w(query(C("contributions"),where("flat","==",S.me.flat),limit(100)),"inc",rFin)}
- if(isAdm()){w(query(C("members"),limit(SCH()?1000:300)),"mem",()=>{if(isTeacher()){const o={};Object.values(D.mem).forEach(x=>{if(memVis(x))o[x.id]=x});D.mem=o}if(tab==="more")rMore()},(d,t)=>{if(t==="added"&&d.status==="pending"&&memVis(d))toast("🙋",d.want?"New teacher request":"New resident request",d.name+" · "+d.flat)});w(L("reports",50),"rep",()=>{if(tab==="more")rMore()})}
+ if(isAdm()){w(query(C("members"),limit(SCH()?1000:300)),"mem",()=>{if(isTeacher()){const o={};Object.values(D.mem).forEach(x=>{if(memVis(x))o[x.id]=x});D.mem=o}if(tab==="more")rMore()},(d,t)=>{if(t==="added"&&d.status==="pending"&&memVis(d))toast("🙋",d.want==="COMMITTEE_MEMBER"?"New teacher request":d.want?"New staff request":"New resident request",d.name+" · "+d.flat)});w(L("reports",50),"rep",()=>{if(tab==="more")rMore()})}
  w(staff()?L("visitors",100):F("visitors"),"vis",rVis,(d,t)=>{
   if(isGuard()){if(t==="modified"&&["Approved","Denied"].includes(d.status))toast(d.status==="Approved"?"✅":"⛔",d.flat+" "+d.status.toLowerCase()+" "+d.name,"Visitor decision")}
   else{if(t==="added"&&d.status==="Waiting")toast("🚪","Visitor at the gate",d.name+" wants to visit — please approve or deny");if(t==="modified"&&d.status==="Inside")toast("🚪","Visitor arrived",d.name+" has entered")}});
@@ -1530,7 +1579,7 @@ function rHome(){const h=$("hm");h.innerHTML="";const hr=new Date().getHours();h
  Q.forEach((q,i)=>{const b=mk("button");b.style.animationDelay=i*50+"ms";b.appendChild(mk("span",null,q[0]));b.appendChild(document.createTextNode(q[1]));b.onclick=()=>go(q[2]);qa.appendChild(b)});h.appendChild(qa);
  const g=mk("div","stats");(isGuard()?[["🚪",exp,"Expected today"],["🟢",inside,"Inside now"],["⏳",wait,"Waiting approval"],["📦",parc,"Parcels at desk"]]:[["🛠️",open,"Open complaints"],["🎟️",exp,"Visitors expected today"],["📦",parc,"Parcels waiting"]].concat(isAdm()?[["💰",rs(bal),"Society fund"],["🙋",pend,"Pending approvals"],["🟢",inside,"Visitors inside"]]:[])).forEach((s,i)=>{const d=mk("div","st");d.style.animationDelay=i*70+"ms";d.appendChild(mk("b",null,s[0]+" "+s[1]));d.appendChild(mk("span",null,s[2]));g.appendChild(d)});h.appendChild(g);
  const a=Object.values(D.ann).sort((x,y)=>y.ts-x.ts)[0];if(a){const c=mk("div","card");c.appendChild(mk("h2",null,"Latest notice"));c.appendChild(mk("b",null,a.title));c.appendChild(mk("p","desc",a.text));h.appendChild(c)}
- if(KIND!=="society"){const H=Object.values(D.hol||{}).filter(x=>x.date>=td()).sort((p,q)=>String(p.date).localeCompare(String(q.date))).slice(0,3);if(H.length){const c=mk("div","card");c.appendChild(mk("h2",null,"🎉 Upcoming holidays"));H.forEach(x=>c.appendChild(mk("div","meta",x.date+" · "+x.title)));h.appendChild(c)}}try{uxHome(h)}catch(e){}}
+ if(KIND!=="society"){const H=Object.values(D.hol||{}).filter(x=>x.date>=td()).sort((p,q)=>String(p.date).localeCompare(String(q.date))).slice(0,3);if(H.length){const c=mk("div","card");c.appendChild(mk("h2",null,"🎉 Upcoming holidays"));H.forEach(x=>c.appendChild(mk("div","meta",x.date+" · "+x.title)));h.appendChild(c)}}try{pxHome(h);busHome(h)}catch(e){}try{uxHome(h)}catch(e){}}
 
 /* ---------- complaints (with photo) ---------- */
 let cphoto="";$("cph").onchange=async e=>{const f=e.target.files[0];if(!f)return;try{cphoto=await shrink(f,900,.6);$("cpv").src=cphoto;$("cpv").classList.remove("hide");$("cphn").textContent="Photo added ✔"}catch(x){fail(x,"Could not read photo")}};
@@ -1700,7 +1749,7 @@ function rChat(){if(!S.me)return;const b=$("msgs"),keep=b.scrollTop,atEnd=b.scro
   if(m.loc&&locOk(m.loc)){bub.classList.add("wd");bub.appendChild(locEl(m.loc,m))}
   if(m.poll&&m.poll.q&&Array.isArray(m.poll.opts)){bub.classList.add("wd");bub.appendChild(pollEl(m))}
   if(m.contact&&m.contact.name&&m.contact.phone){bub.classList.add("wd");bub.appendChild(conEl(m.contact))}
-  if(m.stk){bub.classList.add("stk");bub.appendChild(mk("div","sk",m.stk))}if(m.lp&&typeof m.lp.u==="string"&&/^https?:\/\//i.test(m.lp.u)){bub.classList.add("wd");bub.appendChild(lpEl(m.lp))}if(m.text)bub.appendChild(txtEl(m.text));{const tt=mk("div","tm");if(m.edited)tt.appendChild(mk("span","ed","edited "));tt.appendChild(document.createTextNode(tm(m.ts)));if(dmc&&mine){const c=D.dmc[dmc.cid],sn=c&&c.reads&&c.reads[dmc.peer]>=m.ts,k=mk("span","tk"+(sn?"":" s"),sn?"✓✓":"✓");tt.appendChild(k)}bub.appendChild(tt)}
+  if(m.stk){bub.classList.add("stk");bub.appendChild(mk("div","sk",m.stk))}if(m.lp&&typeof m.lp.u==="string"&&/^https?:\/\//i.test(m.lp.u)){bub.classList.add("wd");bub.appendChild(lpEl(m.lp))}if(m.text)bub.appendChild(mnEl(txtEl(m.text),m));{const tt=mk("div","tm");if(m.edited)tt.appendChild(mk("span","ed","edited "));tt.appendChild(document.createTextNode(tm(m.ts)));if(dmc&&mine){const c=D.dmc[dmc.cid],sn=c&&c.reads&&c.reads[dmc.peer]>=m.ts,k=mk("span","tk"+(sn?"":" s"),sn?"✓✓":"✓");tt.appendChild(k)}bub.appendChild(tt)}
   bub.onclick=e=>{if(e.target.closest("button,a,audio,input"))return;msgMenu(m,mine)};swipeReply(r,m,mine);
   r.appendChild(bub);b.appendChild(r)});
  lastN=v.length;const mineNew=!!(newest&&!fresh&&newest.uid===S.uid&&newest.ts>chatTop);
@@ -1709,7 +1758,7 @@ function rChat(){if(!S.me)return;const b=$("msgs"),keep=b.scrollTop,atEnd=b.scro
 $("mimg").onchange=async e=>{const f=e.target.files[0];e.target.value="";if(!f)return;try{const img=await cropImage(f,[1,4/3,3/4],false,1080,.75);if(!img)return;const url=await UP(await dataBlob(img),"chat","p.jpg");const o={uid:S.uid,name:S.me.name,flat:S.me.flat,text:"",img:url,ts:Date.now()};if(replyTo){o.replyTo=replyTo;replyTo=null;showReply()}await pushMsg(o)}catch(x){fail(x,"Photo not sent")}};
 const showReply=()=>{$("rb").classList.toggle("hide",!replyTo);if(replyTo)$("rbt").textContent="↩ "+replyTo.name+": "+replyTo.text};$("rbx").onclick=()=>{replyTo=null;showReply()};
 $("emb").onclick=()=>{$("eb").classList.toggle("hide");if(!$("eb").children.length)buildEmoji()};
-const send=()=>{const t=$("mt").value.trim();if(!t)return;$("mt").value="";tog();pset({typing:0});const o={uid:S.uid,name:S.me.name,flat:S.me.flat,text:t,ts:Date.now()};{const lp0=lpFor(t);if(lp0)o.lp=lp0}if(replyTo)o.replyTo=replyTo;const rt=replyTo;replyTo=null;showReply();pushMsg(o).catch(e=>{$("mt").value=t;tog();replyTo=rt;showReply();fail(e,"Message not sent")})};
+const send=()=>{const t=$("mt").value.trim();if(!t)return;$("mt").value="";tog();pset({typing:0});const o={uid:S.uid,name:S.me.name,flat:S.me.flat,text:t,ts:Date.now()};if(!dmc){const mn=mnOf(t);if(mn.length)o.mentions=mn}{const lp0=lpFor(t);if(lp0)o.lp=lp0}if(replyTo)o.replyTo=replyTo;const rt=replyTo;replyTo=null;showReply();pushMsg(o).catch(e=>{$("mt").value=t;tog();replyTo=rt;showReply();fail(e,"Message not sent")})};
 $("ms").onclick=send;$("mt").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey&&!matchMedia("(pointer:coarse)").matches){e.preventDefault();send()}});
 /* ---------- attachments, voice notes ---------- */
 const MAXDOC=2*1048576,MAXREC=120;
@@ -1786,7 +1835,7 @@ function markRead(){if(!dmc||document.hidden)return;const last=Object.values(D.d
  setDoc(doc(db,"societies",S.sid,"dmchats",dmc.cid),{reads:{[S.uid]:Math.max(Date.now(),last)}},{merge:true}).catch(()=>{})}
 function leaveDM(){if(!dmc)return;dmc=null;if(dmUnsub){dmUnsub();dmUnsub=null}D.dmm={};replyTo=null;showReply();$("mt").value="";tog();pset({typing:0,typingTo:""});$("eb").classList.add("hide")}
 function dmBack(){const f=dmFrom;leaveDM();if(f==="chat"){cview("chat");rChat();bottom()}else{cview("inbox");rInbox()}}
-function openDM(uid,from){closeSheet();if(!S.me||!uid||uid===S.uid)return;const cid=[S.uid,uid].sort().join("_");if(dmc&&dmc.cid===cid)return;
+function openDM(uid,from){uid=AUID(uid);closeSheet();if(!S.me||!uid||uid===S.uid)return;const cid=[S.uid,uid].sort().join("_");if(dmc&&dmc.cid===cid)return;
  const onChat=tab==="comm"&&!$("v_chat").classList.contains("hide")&&!dmc;leaveDM();
  dmc={cid,peer:uid,name:(D.dir[uid]||{}).name||"Member"};dmFrom=from||(onChat?"chat":"inbox");D.dmm={};
  if(tab!=="comm")goTab("comm");cview("chat");rChat();bottom();
@@ -1965,7 +2014,9 @@ const bfix=new Set();function rFin(){if(!S.soc)return;{const uc=$("upicard"),ad=
 /* ---------- people / me ---------- */
 $("pfile").onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const p0=await cropImage(f,[1],true,640,.9);if(!p0)return;const old=(D.dir[S.uid]||{}).photo,p=await UP(await dataBlob(p0),"avatars","a.jpg");await setDoc(doc(db,"societies",S.sid,"directory",S.uid),{uid:S.uid,name:S.me.name,flat:S.me.flat,role:S.me.role,photo:p},{merge:true});if(old&&old!==p)rmFile(old);toast("✅","Profile photo updated","",true)}catch(x){fail(x,"Could not update photo")}e.target.value=""};
 const rmRt=u=>{if(typeof u==="string"&&u.startsWith("rtdb:"))rRemove(rRef(rtdb,u.slice(5))).catch(()=>{})};
-async function delMember(r){if(!confirm("Delete "+r.name+"'s profile permanently?\nAll their data is erased. They can no longer log in and must sign up again."))return;
+async function delMember(r){if(/_k\d+$/.test(r.id)){if(!confirm("Remove "+r.name+" from the school?\nThe parent's login and their other children stay."))return;
+ try{await deleteDoc(doc(db,"societies",S.sid,"members",r.id));getDocs(query(collection(db,"societies",S.sid,"attendance"),where("uid","==",r.id))).then(q=>q.docs.forEach(d=>deleteDoc(d.ref))).catch(()=>{});deleteDoc(doc(db,"societies",S.sid,"busmap",r.id)).catch(()=>{});rmRt(r.photoUrl);toast("🗑️","Removed",r.name,true)}catch(e){fail(e)}return}
+ if(!confirm("Delete "+r.name+"'s profile permanently?\nAll their data is erased. They can no longer log in and must sign up again."))return;
  try{const sid=S.sid,uid=r.id;
   try{await setDoc(doc(db,"deletedUsers",uid),{sid,by:S.uid,ts:Date.now()})}catch(e){if(e&&e.code==="permission-denied"){toast("🔒","Couldn't delete","You don't have permission to delete this profile.",true);return}throw e}
   [r.idUrl,r.photoUrl,(D.dir[uid]||{}).photo].forEach(rmRt);if(r.code)deleteDoc(doc(db,"joinCodes",r.code)).catch(()=>{});
@@ -1991,11 +2042,10 @@ function rMore(){const m=$("mr");m.innerHTML="";if(isAdm()){const ic=mk("div","c
   const mem=Object.values(D.mem),pend=mem.filter(x=>x.status==="pending");const p=mk("div","card");p.appendChild(mk("h2",null,"Pending approvals ("+pend.length+")"));
   if(!pend.length)p.appendChild(mk("div","meta","No pending requests."));
   pend.forEach(r=>{const d=mk("div","item ann");d.appendChild(mk("b",null,r.name));d.appendChild(mk("div","meta","Joining as "+roleLbl(r.want||r.role)+" · "+r.flat+" · "+r.mobile));d.appendChild(idThumbs(r));const g=mk("div","g2");g.style.marginTop="8px";const ok=mk("button","btn s g","Approve"),no=mk("button","btn s r","Reject");
-   ok.onclick=()=>run(ok,async()=>{await updateDoc(doc(db,"societies",S.sid,"members",r.id),r.want==="COMMITTEE_MEMBER"&&isOwner()?{status:"approved",role:"COMMITTEE_MEMBER"}:{status:"approved"});rSet(rRef(rtdb,"soc/"+S.sid+"/members/"+r.id),true).catch(()=>{})});no.onclick=()=>run(no,()=>updateDoc(doc(db,"societies",S.sid,"members",r.id),{status:"rejected"}));g.append(ok,no);d.appendChild(g);p.appendChild(d)});m.appendChild(p);
+   ok.onclick=()=>run(ok,async()=>{await updateDoc(doc(db,"societies",S.sid,"members",r.id),isOwner()&&["COMMITTEE_MEMBER","STAFF","SECURITY_GUARD","ACCOUNTANT"].includes(r.want)?{status:"approved",role:r.want}:{status:"approved"});rSet(rRef(rtdb,"soc/"+S.sid+"/members/"+r.id),true).catch(()=>{});if(r.bus&&isOwner())busFromMember({...r,status:"approved"}).catch(e=>console.warn("bus of driver",e))});no.onclick=()=>run(no,()=>updateDoc(doc(db,"societies",S.sid,"members",r.id),{status:"rejected"}));g.append(ok,no);d.appendChild(g);p.appendChild(d)});m.appendChild(p);
   const reps=Object.values(D.rep).sort((a,b)=>b.ts-a.ts);if(reps.length){const rc=mk("div","card");rc.appendChild(mk("h2",null,"🚩 Reported messages ("+reps.length+")"));reps.forEach(r=>{const d=mk("div","item");d.appendChild(mk("b",null,r.name));d.appendChild(mk("p","desc",r.text));d.appendChild(mk("div","meta","Reported by "+r.by+" · "+dt(r.ts)));const g=mk("div","g2");g.style.marginTop="8px";
    const del=mk("button","btn s r","Delete message"),dis=mk("button","btn s o","Dismiss");del.onclick=()=>run(del,async()=>{try{const ms=await getDoc(doc(db,"societies",S.sid,"messages",r.msgId));if(ms.exists()){const m0=ms.data();[m0.img,m0.voice,m0.file&&m0.file.url].forEach(rmFile)}}catch(e){}await deleteDoc(doc(db,"societies",S.sid,"messages",r.msgId)).catch(()=>{});await deleteDoc(doc(db,"societies",S.sid,"reports",r.id))});dis.onclick=()=>run(dis,()=>deleteDoc(doc(db,"societies",S.sid,"reports",r.id)));g.append(del,dis);d.appendChild(g);rc.appendChild(d)});m.appendChild(rc)}
-  const rs2=mem.filter(x=>x.status==="approved"),q=mk("div","card");q.appendChild(mk("h2",null,"👥 People ("+rs2.length+")"));if(isMgr())q.appendChild(mk("p","sub",KIND==="school"?"Choose a role next to a person (Student, Teacher, Principal, Staff…). A Principal gets full rights.":"Choose a role next to a person (Staff, Security guard, Accountant, Committee). Staff can then be assigned to complaints."));rs2.sort((a,b)=>a.flat.localeCompare(b.flat,undefined,{numeric:true})).forEach(r=>{const e=mk("div","ex"),l=mk("div"),lw=mk("div","fl");const t=mk("div");t.appendChild(mk("b",null,r.name));t.appendChild(mk("span",null,r.flat+" · "+roleLbl(r.role)+(SCH()&&isOwner()&&r.code?" · class code "+r.code:"")));lw.append(av(r.name,photoOf(r.id),38),t);l.appendChild(lw);e.appendChild(l);
-   if(isMgr()&&r.id!==S.uid&&r.id!==S.soc.adminUid){const s=mk("select");s.style.cssText="width:auto;margin:0;padding:6px";["RESIDENT","TENANT","COMMITTEE_MEMBER","ACCOUNTANT","SECURITY_GUARD","STAFF"].concat(KIND==="school"?["SOCIETY_ADMIN"]:[]).forEach(x=>s.appendChild(Object.assign(mk("option",null,roleLbl(x)),{value:x})));s.value=r.role;s.onchange=()=>{if(s.value==="SOCIETY_ADMIN"&&!confirm("Make "+r.name+" the Principal? They will get full rights in this school.")){s.value=r.role;return}updateDoc(doc(db,"societies",S.sid,"members",r.id),{role:s.value}).then(()=>toast("✅","Role updated","",true)).catch(x=>{s.value=r.role;fail(x)})};const ct=mk("div");ct.style.cssText="display:flex;gap:8px;align-items:center;width:100%;margin-top:10px";s.style.cssText="flex:1;min-width:0;margin:0;padding:10px 12px";const rm=mk("button","btn s r","🗑 Delete");rm.style.cssText="width:auto;flex:none;white-space:nowrap;padding:10px 16px;margin:0";rm.onclick=()=>delMember(r);ct.append(s,rm);e.style.flexWrap="wrap";e.appendChild(ct)}q.appendChild(e)});m.appendChild(q);
+  m.appendChild(pplCard(mem.filter(x=>x.status==="approved")));
   }
  const p=mk("div","card");p.style.textAlign="center";const a=av(S.me.name,photoOf(S.uid),92);a.style.margin="4px auto 10px";a.style.cursor="pointer";a.onclick=()=>$("pfile").click();p.appendChild(a);
  const cb=mk("button","btn s o","📷 Change profile photo");cb.style.cssText="width:auto;margin:0 auto 12px;padding:7px 16px";cb.onclick=()=>$("pfile").click();p.appendChild(cb);
@@ -2224,7 +2274,7 @@ function skinTree(root){if(!root)return;if(root.nodeType===3){skinNode(root);ret
  (root.querySelectorAll?root.querySelectorAll("[placeholder]"):[]).forEach(e=>{if(e.closest("[data-noskin]"))return;const cur=e.getAttribute("placeholder");if(e.dataset.ph1!==undefined&&cur!==e.dataset.ph1)e.dataset.ph0=cur;else if(e.dataset.ph0===undefined)e.dataset.ph0=cur;const v=skinStr(e.dataset.ph0);e.dataset.ph1=v;if(cur!==v)e.setAttribute("placeholder",v)})}
 new MutationObserver(ms=>{if(!SKR)return;ms.forEach(m=>{if(m.type==="characterData")skinNode(m.target);else m.addedNodes.forEach(skinTree)})}).observe(document.body,{childList:true,subtree:true,characterData:true});
 function setKind(k){if(!KINDS[k])k="society";KIND=k;try{localStorage.setItem("sh-kind",k)}catch(e){}const K=KINDS[k],r=document.documentElement.style;r.setProperty("--a",K.c1);r.setProperty("--a2",K.c2);const tm=document.querySelector('meta[name="theme-color"]');if(tm)tm.content=K.c1;
- skinSet();{const ab=$("aback");if(ab){const nm={society:"society",company:"corporate",school:"school"};ab.setAttribute("data-noskin","");ab.textContent="← Change ("+Object.keys(nm).filter(x=>x!==k).map(x=>nm[x]).join(" / ")+")"}}$("goC").innerHTML="<b>"+K.createT+"</b>"+K.createS;$("goJ").innerHTML="<b>"+K.joinT+"</b>"+K.joinS;$("goT").classList.toggle("hide",k!=="school");$("atag").textContent=K.tag;
+ skinSet();{const ab=$("aback");if(ab){const nm={society:"society",company:"corporate",school:"school"};ab.setAttribute("data-noskin","");ab.textContent="← Change ("+Object.keys(nm).filter(x=>x!==k).map(x=>nm[x]).join(" / ")+")"}}$("goC").innerHTML="<b>"+K.createT+"</b>"+K.createS;$("goJ").innerHTML="<b>"+K.joinT+"</b>"+K.joinS;$("goT").classList.toggle("hide",k!=="school");$("goS").classList.toggle("hide",k!=="school");$("atag").textContent=K.tag;
  document.title=BRAND+" — "+TAGLINE;["b0","b1","b2","b3"].forEach(i=>{const e=$(i);if(e)e.innerHTML=LOGO+BRANDH});skinTree(document.body);if(S.me&&!$("sMain").classList.contains("hide")){try{drawNav();setSub(sub)}catch(e){}}}
 ["society","company","school"].forEach(k=>{const K=KINDS[k],b=mk("button");b.innerHTML='<i class="ki" style="--k:'+K.c1+'">'+K.ico+"</i><span><b>"+K.card+"</b><small>"+K.cardS+"</small></span><em>›</em>";b.onclick=()=>{setKind(k);show("sAuth")};$("lcards").appendChild(b)});
 $("aback").onclick=()=>show("sLand");setKind(KIND);
@@ -2266,7 +2316,7 @@ let wsub=null,wsubK="";
 const busyIn=k=>{const ae=document.activeElement,p=$("p_"+k);return !!(ae&&p&&p.contains(ae)&&/INPUT|SELECT|TEXTAREA/.test(ae.tagName))};
 function watchSub(){const k=sub;if(wsubK===k)return;if(wsub){wsub();wsub=null}wsubK=k;if(!S.sid||k==="leave")return;
  const C=n=>collection(db,"societies",S.sid,n);let q=null;
- if(k==="att")q=isAdm()?query(C("attendance"),where("date","==",td())):query(C("attendance"),where("uid","==",S.uid),limit(62));else if(MODS[k])q=query(C(MODS[k].col),limit(300));
+ if(k==="att")q=isAdm()?query(C("attendance"),where("date","==",td())):query(C("attendance"),where("uid","==",PID()),limit(62));else if(MODS[k])q=query(C(MODS[k].col),limit(300));
  if(!q)return;let first=true;
  let tm=0;wsub=onSnapshot(q,()=>{if(first){first=false;return}clearTimeout(tm);tm=setTimeout(()=>{if(sub!==k||tab!=="svc"||busyIn(k))return;if(k==="att")rAtt();else rMod(k)},350)},e=>{console.warn("watch",e)})}
 const MODS={
@@ -2321,7 +2371,7 @@ function attExport(g,d0){const col=collection(db,"societies",S.sid,"attendance")
     exportCSV("attendance-"+g.t.replace(/[^\w]+/g,"-")+"-"+(a===b?a:a+"_to_"+b),["Date","Name",gl,"ID","Role","Check-in","Check-out","Hours"],rows.map(x=>{const m=D.mem[x.uid]||x,fl=String(m.flat||x.flat||""),i=fl.indexOf(" · ");return[x.date,x.name,i>0?fl.slice(0,i):fl,i>0?fl.slice(i+3):"",roleLbl(m.role||x.role),atf(x.in),x.out?atf(x.out):"",ahr(x)]}),true);
     toast("⬇️","Attendance exported",rows.length+" row"+(rows.length===1?"":"s")+" · "+(a===b?a:a+" → "+b),true);closeSheet()
    }catch(e){fail(e,"Couldn't export")}finally{bt.disabled=false;bt.textContent=lbl}};z.appendChild(bt)})}
-async function rAtt(){const my=++attSeq,b=$("p_att"),box=document.createDocumentFragment(),day=td(),col=collection(db,"societies",S.sid,"attendance"),ref=doc(col,S.uid+"_"+day),K=KINDS[KIND],sch=KIND==="school",tf=atf,hrs=ahr;
+async function rAtt(){const my=++attSeq,b=$("p_att"),box=document.createDocumentFragment(),day=td(),col=collection(db,"societies",S.sid,"attendance"),ref=doc(col,PID()+"_"+day),K=KINDS[KIND],sch=KIND==="school",tf=atf,hrs=ahr;
  if(!b.children.length)b.appendChild(mk("div","meta","Loading…"));
  let cur=null,perm=false;
  try{const x=await getDoc(ref);cur=x.exists()?x.data():null}catch(e){perm=!!(e&&e.code==="permission-denied")}
@@ -2330,10 +2380,10 @@ async function rAtt(){const my=++attSeq,b=$("p_att"),box=document.createDocument
  c.appendChild(mk("p","sub","Today · "+day+" · In: "+tf(cur&&cur.in)+" · Out: "+tf(cur&&cur.out)+(hrs(cur)?" · "+hrs(cur):"")));
  const bt=mk("button","btn",cur&&cur.in?(cur.out?"Done for today ✅":"Check out"):"Check in");bt.disabled=!!(cur&&cur.out);
  bt.onclick=()=>run(bt,async()=>{const n=Date.now(),out=!!(cur&&cur.in);try{if(out)await updateDoc(ref,{out:n});else await setDoc(ref,{uid:S.uid,name:S.me.name,flat:S.me.flat||"",role:S.me.role||"",date:day,in:n})}catch(e){if(e&&e.code==="permission-denied")throw new Error("Attendance is not allowed right now. Please contact your admin.");throw e}toast("✅",out?"Checked out":"Checked in",tf(n),true);rAtt()});
- if(sch&&!isAdm()){c.appendChild(mk("div","meta","Your attendance is marked by your school. It appears here once your teacher or principal checks you in or out."))}else c.appendChild(bt);
+ if(sch&&!isAdm()&&isStu(S.me)){c.appendChild(mk("div","meta","Your attendance is marked by your school. It appears here once your teacher or principal checks you in or out."))}else c.appendChild(bt);
  if(perm){const w=mk("div","meta","⚠️ Attendance isn't available for your account right now. Please contact your admin.");w.style.marginTop="8px";c.appendChild(w)}
  box.appendChild(c);
- try{const q=await getDocs(query(col,where("uid","==",S.uid),limit(62)));if(my!==attSeq)return;const H=q.docs.map(d=>d.data()).sort((x,y)=>String(y.date).localeCompare(String(x.date))).slice(0,14),h=mk("div","card");h.appendChild(mk("h2",null,"📅 My recent attendance"));if(!H.length)h.appendChild(mk("div","meta","Nothing yet."));
+ try{const q=await getDocs(query(col,where("uid","==",PID()),limit(62)));if(my!==attSeq)return;const H=q.docs.map(d=>d.data()).sort((x,y)=>String(y.date).localeCompare(String(x.date))).slice(0,14),h=mk("div","card");h.appendChild(mk("h2",null,"📅 My recent attendance"));if(!H.length)h.appendChild(mk("div","meta","Nothing yet."));
   H.forEach(x=>{const r=mk("div","ex"),l=mk("div",null,x.date);l.appendChild(mk("span",null,"In "+tf(x.in)+(x.out?" · Out "+tf(x.out)+(hrs(x)?" · "+hrs(x):""):" · not checked out")));r.appendChild(l);h.appendChild(r)});box.appendChild(h)}catch(e){}
  if(my!==attSeq)return;
  if(isAdm()){const G=attGroups(),a=mk("div","card");a.appendChild(mk("h2",null,sch?"📋 Attendance register":"👥 "+K.person+" attendance"));
@@ -2366,6 +2416,7 @@ window.__back=function(){try{
  if(!$("atm").classList.contains("hide")){shut();return true}
  {const lgv=$("legal");if(lgv&&!lgv.classList.contains("hide")){lgv.classList.add("hide");return true}}
  const pm=$("permd");if(pm){pm.remove();return true}
+ if($("lpk")){lpkClose();return true}
  if($("pdfv")){closePdf();return true}
  const ov=$("ov");if(ov&&!ov.classList.contains("hide")){closeSheet();return true}
  if(fxOnBack())return true;
@@ -2496,11 +2547,11 @@ $("shp").onchange=()=>{$("ap").type=$("shp").checked?"text":"password"};
 
 /* signup uploads: preview + upload to Firebase Storage */
 [["jid","jidv"],["jph","jphv"],["cid","cidv"],["cph2","cphv"]].forEach(([a,b])=>{const lb=document.querySelector('label[for="'+a+'"]'),t0=lb.textContent;$(a).onchange=()=>{const f=$(a).files[0],i=$(b);if(f){if(f.type==="application/pdf")i.classList.add("hide");else{i.src=URL.createObjectURL(f);i.classList.remove("hide")}lb.textContent="✅ "+f.name.slice(0,20)}else{i.classList.add("hide");lb.textContent=t0}}});
-const upID=async(sid,f,kind,sq)=>{const pdf=f.type==="application/pdf";let d;
+const upID=async(sid,f,kind,sq,sfx)=>{const pdf=f.type==="application/pdf";let d;
  if(pdf){if(f.size>3*1048576)throw new Error("PDF is too large (max 3 MB). Please upload a photo of the ID instead.");d=await toDataUrl(f)}
  else{try{d=kind==="idproofs"?await imgToPdfUrl(f,1100,.65):await shrink(f,sq?400:1100,sq?.7:.65,!!sq)}catch(e){throw new Error("Couldn't read this image. Please use a JPG/PNG photo or a PDF.")}}
  if(d.length>(sq?390000:4200000))throw new Error("File is too large. Please choose a smaller one.");
- const path="idfiles/"+sid+"/"+S.uid+"/"+(kind==="idphotos"?"photo":"proof");await rPut(path,d,sq?"Uploading photo":"Uploading ID");return "rtdb:"+path};
+ const path="idfiles/"+sid+"/"+S.uid+"/"+(kind==="idphotos"?"photo":"proof")+(sfx||"");await rPut(path,d,sq?"Uploading photo":"Uploading ID");return "rtdb:"+path};
 function jpegToPdfFit(jpg,w,h){const pw=595.28,ph=Math.round(pw*h/w*100)/100,enc=new TextEncoder(),parts=[];let off=0;const offs=[],push=u=>{parts.push(u);off+=u.length},s=t=>push(enc.encode(t));
  s("%PDF-1.4\n");offs[1]=off;s("1 0 obj\n<</Type/Catalog/Pages 2 0 R>>\nendobj\n");offs[2]=off;s("2 0 obj\n<</Type/Pages/Kids[3 0 R]/Count 1>>\nendobj\n");
  offs[3]=off;s("3 0 obj\n<</Type/Page/Parent 2 0 R/MediaBox[0 0 "+pw+" "+ph+"]/Resources<</XObject<</Im0 4 0 R>>>>/Contents 5 0 R>>\nendobj\n");
@@ -2733,7 +2784,8 @@ const liveTO=(p,ms)=>Promise.race([Promise.resolve(p),new Promise((_,no)=>setTim
 const liveNatStop=()=>{const N=liveNat();if(N)try{Promise.resolve(N.stop({})).catch(()=>{})}catch(e){}};
 async function liveNatStart(s){const N=liveNat(),u=auth.currentUser;if(!N||!u)return false;
  try{const idToken=await u.getIdToken(true).catch(()=>u.getIdToken());
-  await liveTO(N.start({project:firebaseConfig.projectId||"",apiKey:firebaseConfig.apiKey||"",sid:S.sid,uid:S.uid,cid:s.cid||"",lid:s.lid,until:String(s.until),idToken,refreshToken:u.refreshToken||""}),6000);return true}
+  if(s.bus){const st=await liveTO(N.status({}),4000).catch(()=>null);if(!st||!(st.v>=2))return false}
+  await liveTO(N.start({project:firebaseConfig.projectId||"",apiKey:firebaseConfig.apiKey||"",sid:S.sid,uid:S.uid,cid:s.cid||"",bus:s.bus||"",geo:s.geo||"",gn:s.gn||"",gl:s.gl||"",lid:s.lid,until:String(s.until),idToken,refreshToken:u.refreshToken||""}),6000);return true}
  catch(e){console.warn("live location service",e);return false}}
 /* shown once: many phones pause background apps unless battery use is set to unrestricted */
 function liveBattery(){const N=liveNat();if(!N||typeof N.status!=="function")return;try{if(localStorage.getItem("sh-live-bat"))return}catch(e){}
@@ -2742,17 +2794,18 @@ function liveBattery(){const N=liveNat();if(!N||typeof N.status!=="function")ret
    c.appendChild(mk("p",null,"Some phones pause apps in the background to save battery. So your live location keeps updating when the phone is locked, open Battery in the app settings and choose \"Unrestricted\" (on some phones: \"No restrictions\" or \"Allow background activity\")."));
    const g=mk("div","pstk"),a=mk("button",null,"Open settings"),b=mk("button",null,"Not now");a.type=b.type="button";a.onclick=()=>{close();try{Promise.resolve(N.openSettings({})).catch(()=>{})}catch(e){}};b.onclick=()=>close();g.append(a,b);c.appendChild(g)})},700)}).catch(()=>{})}
 function liveWrite(o){const s=liveS;if(!s||!S.sid)return;const d={lid:s.lid,until:s.until,end:0,...o};
- if(s.cid)setDoc(doc(db,"societies",S.sid,"dmchats",s.cid),{live:{[S.uid]:d}},{merge:true}).catch(()=>{});else pset({live:d})}
+ if(s.bus)setDoc(doc(db,"societies",S.sid,"buses",s.bus),{live:d},{merge:true}).catch(()=>{});else if(s.cid)setDoc(doc(db,"societies",S.sid,"dmchats",s.cid),{live:{[S.uid]:d}},{merge:true}).catch(()=>{});else pset({live:d})}
 /* the newest position is kept and sent at most every 12 seconds, also when the phone reports nothing new in between */
 function liveFlush(){const s=liveS;if(!s)return;if(Date.now()>=s.until){liveStop();return}
- const src=s.cid?(((D.dmc||{})[s.cid]||{}).live||{})[S.uid]:((D.pres||{})[S.uid]||{}).live;if(src&&src.lid===s.lid&&src.end){liveStop();return}   // ended from the notification or from another phone
- if(s.nat||!livePos||livePos===liveSent||Date.now()-liveLast<12000)return;liveLast=Date.now();liveSent=livePos;liveWrite({lat:fix6(livePos.latitude),lng:fix6(livePos.longitude),acc:Math.round(livePos.accuracy||0),ts:Date.now()})}
+ if(s.bus){const bx=busSelf(s.bus);if(bx&&((bx.lid===s.lid&&!bx.on)||(bx.lid!==s.lid&&(bx.startTs||0)>(s.t0||0)))){liveStop(true);liveNatStop();return}}
+ const src=s.bus?(busSelf(s.bus)||{}).live:s.cid?(((D.dmc||{})[s.cid]||{}).live||{})[S.uid]:((D.pres||{})[S.uid]||{}).live;if(src&&src.lid===s.lid&&src.end){liveStop();return}   // ended from the notification or from another phone
+ if(s.nat||!livePos||livePos===liveSent||Date.now()-liveLast<12000)return;liveLast=Date.now();liveSent=livePos;liveWrite({lat:fix6(livePos.latitude),lng:fix6(livePos.longitude),acc:Math.round(livePos.accuracy||0),ts:Date.now(),...(s.bus?{spd:typeof livePos.speed==="number"&&livePos.speed>=0?+livePos.speed.toFixed(1):-1}:{})})}
 function liveWatch(){if(!navigator.geolocation||!liveS)return;if(liveW!=null)navigator.geolocation.clearWatch(liveW);
  liveW=navigator.geolocation.watchPosition(g=>{livePos=g.coords;liveFlush()},()=>{},{enableHighAccuracy:true,maximumAge:5000,timeout:30000})}
 function liveGo(first){const s=liveS;if(!s)return;clearInterval(liveT);liveT=setInterval(liveFlush,4000);
  if(!liveNat()){s.nat=false;liveWatch();return}
  liveNatStart(s).then(ok=>{if(liveS!==s)return;s.nat=ok;liveSave();if(ok){if(liveW!=null&&navigator.geolocation)navigator.geolocation.clearWatch(liveW);liveW=null;if(first)liveBattery()}else{liveNatStop();liveWatch()}})}
-function liveStart(s,c){if(liveS&&(liveS.cid||"")!==(s.cid||""))liveWrite({end:Date.now(),ts:Date.now()});   // the earlier sharing was in another chat: close it there
+function liveStart(s,c){if(liveS&&((liveS.cid||"")+"|"+(liveS.bus||""))!==((s.cid||"")+"|"+(s.bus||"")))liveWrite({end:Date.now(),ts:Date.now()});   // the earlier sharing was in another chat: close it there
  liveStop(true);liveS=s;liveSave();liveLast=Date.now();livePos=liveSent=c;
  liveWrite({lat:fix6(c.latitude),lng:fix6(c.longitude),acc:Math.round(c.accuracy||0),ts:Date.now()});liveGo(true)}
 function liveStop(silent){if(liveW!=null&&navigator.geolocation){navigator.geolocation.clearWatch(liveW)}liveW=null;clearInterval(liveT);if(liveS&&!silent){liveWrite({end:Date.now(),ts:Date.now()});liveNatStop()}liveS=null;livePos=liveSent=null;liveDrop()}
@@ -3167,45 +3220,6 @@ function fxReportCanvas(x){const W=1240,H=1754,c=document.createElement("canvas"
  g.textAlign="left";if(x.remarks){g.fillStyle="#6b7280";F(400,24);g.fillText("Teacher's remarks",90,y);y+=42;g.fillStyle="#111827";F(400,28);let line="";String(x.remarks).split(/\s+/).forEach(w=>{const t=line?line+" "+w:w;if(g.measureText(t).width>W-180&&line){g.fillText(line,90,y);y+=40;line=w}else line=t});if(line){g.fillText(line,90,y);y+=40}}
  const sy=H-190;g.strokeStyle="#9ca3af";g.lineWidth=2;[[90,"Class teacher"+(x.byName?": "+x.byName:"")],[760,"Principal"]].forEach(([xx,t])=>{g.beginPath();g.moveTo(xx,sy);g.lineTo(xx+390,sy);g.stroke();g.fillStyle="#374151";F(400,24);g.fillText(fit(t,390),xx,sy+36)});
  g.textAlign="center";g.fillStyle="#9ca3af";F(400,20);g.fillText("Generated with "+BRAND+" on "+new Date().toLocaleDateString([],{day:"numeric",month:"long",year:"numeric"}),W/2,H-60);return c}
-FX.res={ic:"🏅",t:"Exam results",show:()=>isAdm()||isStu(S.me),open(b){let L=null,err=null,fc="All",fe="All";const adm=isAdm(),lk="sh-res-last-"+S.sid;
- const last=()=>{try{return JSON.parse(localStorage.getItem(lk)||"{}")}catch(e){return{}}};
- const pdf=x=>{try{const u=URL.createObjectURL(fxPdf(fxReportCanvas(x)));openPdf(u,("Report card - "+x.studentName+" - "+x.exam).replace(/[\\\/:*?"<>|]+/g," ")+".pdf")}catch(e){fail(e,"Couldn't make the PDF")}};
- const view=x=>sheet(z=>{m3(z);const T=fxTot(x);z.appendChild(mk("h2",null,x.exam));z.appendChild(mk("p","sub",x.studentName+" · "+x.cls+(x.roll?" · "+x.roll:"")));
-  const t=mk("table","fxtb"),hr=mk("tr");[["Subject",""],["Max","n"],["Marks","n"],["Grade","n"]].forEach(([h,c])=>hr.appendChild(mk("th",c,h)));t.appendChild(hr);
-  (x.subjects||[]).forEach(s=>{const r=mk("tr");r.append(mk("td",null,s.n),mk("td","n",String(s.max)),mk("td","n",String(s.got)),mk("td","n",fxGrade(s.max?s.got/s.max*100:0)));t.appendChild(r)});
-  const tr=mk("tr");[["Total",""],[String(T.max),"n"],[String(T.got),"n"],[T.grade,"n"]].forEach(([h,c])=>{const d=mk("td",c);d.appendChild(mk("b",null,h));tr.appendChild(d)});t.appendChild(tr);z.appendChild(t);
-  const r=mk("div","fxr");r.style.justifyContent="center";r.append(fxPill(T.pct.toFixed(1)+"%","b"),fxPill("Grade "+T.grade,T.pct>=33?"g":"r"));z.appendChild(r);
-  if(x.remarks){z.appendChild(mk("div","fxs","Teacher's remarks"));z.appendChild(mk("p","desc",x.remarks))}z.appendChild(mk("div","meta",(x.byName?"By "+x.byName+" · ":"")+dt(x.ts)));
-  const d=mk("button","btn","⬇ Report card (PDF)");d.type="button";d.style.marginTop="12px";d.onclick=()=>{closeSheet();pdf(x)};z.appendChild(d)});
- const edit=x=>{const cl=fxClasses();if(!cl.length){toast("ℹ️","Add a class first","",true);return}sheet(z=>{m3(z);const P=last();z.appendChild(mk("h2",null,x?"Edit result":"Add a result"));z.appendChild(mk("p","sub","The student sees it as soon as you save."));
-  const cs=fxSel(cl,x?x.cls:(cl.includes(P.cls)?P.cls:(cl.find(c=>fxStuds(c).length)||cl[0]))),ss=mk("select"),fillS=()=>{ss.innerHTML="";const st=fxStuds(cs.value);if(!st.length)ss.appendChild(Object.assign(mk("option",null,"No students in this class yet"),{value:""}));st.forEach(p=>ss.appendChild(Object.assign(mk("option",null,p.name+(fxRoll(p.flat)?" · "+fxRoll(p.flat):"")),{value:p.uid})))};
-  cs.onchange=fillS;fillS();if(x){ss.value=x.studentUid;cs.disabled=ss.disabled=true}
-  const ex=mk("input");ex.placeholder="e.g. Unit Test 1, Half Yearly, Annual";ex.maxLength=50;ex.value=x?x.exam:(P.exam||"");
-  z.append(fxLbl("Class",cs),fxLbl("Student",ss),fxLbl("Exam",ex));z.appendChild(mk("div","fxs","Subjects · max marks · marks obtained"));
-  const rows=mk("div"),row=s=>{if(rows.children.length>=12){toast("ℹ️","Up to 12 subjects","",true);return}const r=mk("div","fxsub"),n=mk("input"),m=mk("input"),g=mk("input"),d=mk("button",null,"✕");n.placeholder="Subject";n.maxLength=30;n.value=s.n||"";m.type=g.type="number";m.placeholder="Max";g.placeholder="Marks";m.min=g.min="0";m.inputMode=g.inputMode="decimal";m.value=s.max!=null?s.max:"";g.value=s.got!=null?s.got:"";d.type="button";d.setAttribute("aria-label","Remove subject");d.onclick=()=>r.remove();r.append(n,m,g,d);rows.appendChild(r)};
-  (x?x.subjects:(P.subs&&P.subs.length?P.subs:["English","Hindi","Mathematics","Science","Social Science"].map(n=>({n,max:100})))).forEach(row);z.appendChild(rows);
-  const ad=mk("a","lnk","＋ Add a subject");ad.style.cssText="text-align:left;margin:0 2px 12px";ad.onclick=()=>row({max:100});z.appendChild(ad);
-  const rm=mk("textarea");rm.placeholder="Remarks (optional)";rm.maxLength=300;rm.value=x?x.remarks||"":"";z.appendChild(rm);
-  const er=mk("div","err"),go=mk("button","btn","Save result");go.type="button";go.onclick=()=>{er.textContent="";const subs=[];
-   for(const r of rows.children){const [n,m,g]=r.querySelectorAll("input"),nm=n.value.trim();if(!nm&&m.value===""&&g.value==="")continue;const mx=+m.value,gt=+g.value;if(!nm||!(mx>0)||g.value===""||gt<0||gt>mx){er.textContent="Check the marks for "+(nm||"each subject")+" (0 to max).";return}subs.push({n:nm,max:mx,got:gt})}
-   const st=fxStuds(cs.value).find(p=>p.uid===ss.value),exam=ex.value.trim();if(!x&&!st){er.textContent="Choose a student.";return}if(!exam){er.textContent="Enter the exam name.";return}if(!subs.length){er.textContent="Add at least one subject.";return}
-   run(go,async()=>{try{localStorage.setItem(lk,JSON.stringify({cls:cs.value,exam,subs:subs.map(s=>({n:s.n,max:s.max}))}))}catch(e){}
-    const dup=x||(L||[]).find(r=>r.studentUid===st.uid&&r.exam.toLowerCase()===exam.toLowerCase());
-    if(dup)await updateDoc(FXD("results",dup.id),{exam,subjects:subs,remarks:rm.value.trim(),byName:S.me.name,ts:Date.now()});
-    else await fxAdd("results",{exam,cls:cs.value,studentUid:st.uid,studentName:st.name,roll:fxRoll(st.flat),subjects:subs,remarks:rm.value.trim(),uid:S.uid,byName:S.me.name});
-    closeSheet();toast("✅","Result saved",(x?x.studentName:st.name)+" · "+exam,true)})};z.append(er,go)})};
- const draw=()=>{b.innerHTML="";fxHead(b,adm?"Exam results":"My results",adm?"Enter marks subject by subject. Each student sees only their own result and can download the report card.":"Your marks for every exam, with a report card you can download.",adm?"＋ Add a result":"",()=>edit());
-  if(fxState(b,L,err,"🏅",adm?"No results yet.":"No results have been shared with you yet."))return;
-  let R=L.filter(x=>!isTeacher()||x.cls===myCls());
-  if(adm){const cls=["All"].concat([...new Set(R.map(x=>x.cls))].sort((p,q)=>p.localeCompare(q,undefined,{numeric:true}))),exs=["All"].concat([...new Set(R.map(x=>x.exam))]);if(!cls.includes(fc))fc="All";if(!exs.includes(fe))fe="All";
-   if(cls.length>2)b.appendChild(fxChips(cls.map(c=>[c,c==="All"?"All classes":c]),fc,v=>{fc=v;draw()}));if(exs.length>2)b.appendChild(fxChips(exs.map(c=>[c,c==="All"?"All exams":c]),fe,v=>{fe=v;draw()}));R=R.filter(x=>(fc==="All"||x.cls===fc)&&(fe==="All"||x.exam===fe))}
-  R.sort((p,q)=>q.ts-p.ts).forEach(x=>{const T=fxTot(x),c=mk("div","fxk"),top=mk("div","fxr");c.style.cursor="pointer";c.onclick=()=>view(x);top.append(fxPill(x.exam,"b"),fxPill(T.pct.toFixed(0)+"% · "+T.grade,T.pct>=33?"g":"r"));c.appendChild(top);
-   c.appendChild(mk("b","fxt",adm?x.studentName:x.exam));c.appendChild(mk("div","meta",(adm?x.cls+(x.roll?" · "+x.roll:"")+" · ":"")+T.got+" / "+T.max+" marks · "+dt(x.ts)));
-   const a=mk("div","fxa"),v=mk("button","btn s","View");v.type="button";v.onclick=e=>{e.stopPropagation();view(x)};a.appendChild(v);const p=mk("button","btn s o","⬇ PDF");p.type="button";p.onclick=e=>{e.stopPropagation();pdf(x)};a.appendChild(p);
-   if(adm){const e=mk("button","btn s o","Edit");e.type="button";e.onclick=ev=>{ev.stopPropagation();edit(x)};a.appendChild(e);a.appendChild(fxMini("Delete",async()=>{if(fxSure("Delete this result?"))await deleteDoc(FXD("results",x.id))},"r"))}
-   c.appendChild(a);b.appendChild(c)})};
- fxW(adm?query(FXC("results"),orderBy("ts","desc"),limit(400)):query(FXC("results"),where("studentUid","==",S.uid),limit(100)),(d,e)=>{L=d||[];err=e;draw()});draw()}};
-
 /* ---------- Gate pass ---------- */
 const GPC={Pending:"a",Approved:"g",Rejected:"r",Left:""};
 FX.gp={ic:"🚪",t:"Gate pass",show:()=>isAdm()||isGuard()||isStu(S.me),open(b){let L=null,err=null,f="Pending";const adm=isAdm(),grd=isGuard(),stu=!adm&&!grd;
@@ -3220,7 +3234,7 @@ FX.gp={ic:"🚪",t:"Gate pass",show:()=>isAdm()||isGuard()||isStu(S.me),open(b){
    if(ok){const g=mk("button","btn","✓ Mark as left");g.type="button";g.onclick=()=>run(g,async()=>{await left(x);closeSheet()});z.appendChild(g)}})};
  const vbox=()=>{const c=mk("div","fxhd");c.appendChild(mk("b",null,"Check a pass at the gate"));c.appendChild(mk("p",null,"Scan the QR on the parent's phone, or type the 6-digit code."));const i=mk("input");i.placeholder="6-digit code";i.inputMode="numeric";i.maxLength=6;i.style.marginTop="12px";const g=mk("div","g2"),s=mk("button","btn s","📷 Scan QR"),v=mk("button","btn s o","Check code");s.type=v.type="button";s.onclick=()=>fxScan("Scan gate pass",verify);v.onclick=()=>verify(i.value);i.onkeydown=e=>{if(e.key==="Enter")verify(i.value)};g.append(s,v);c.append(i,g);return c};
  const ask=()=>fxForm("Request a gate pass","Your class teacher approves it. Show the pass at the gate when you leave.",[{k:"date",l:"Date",type:"date",req:1,val:td(),min:td()},{k:"time",l:"Leaving at",type:"time",req:1},{k:"with",l:"Who will pick up the child?",ph:"e.g. Father – Rajesh Gupta",req:1,max:60},{k:"reason",l:"Reason",type:"area",ph:"e.g. Doctor's appointment",req:1,max:200}],"Send request",
-  async v=>{if(v.date<td())throw fxBad("Choose today or a later date.");await fxAdd("gatepasses",{...v,...fxMe(),cls:myCls(),status:"Pending",code:String(Math.floor(100000+Math.random()*900000))});toast("✅","Request sent","Your teacher will approve it.",true)});
+  async v=>{if(v.date<td())throw fxBad("Choose today or a later date.");await fxAdd("gatepasses",{...v,...fxMe(),pid:PID(),cls:myCls(),status:"Pending",code:String(Math.floor(100000+Math.random()*900000))});toast("✅","Request sent","Your teacher will approve it.",true)});
  const draw=()=>{b.innerHTML="";if(stu)fxHead(b,"Leaving school early?","Ask for a gate pass. Once your teacher approves, show the pass at the gate.","＋ Request a gate pass",ask);else b.appendChild(vbox());
   if(fxState(b,L,err,"🚪",stu?"No gate passes yet.":"No gate pass requests yet."))return;
   let R=L.filter(x=>!isTeacher()||x.cls===myCls());
@@ -3256,27 +3270,6 @@ FX.ptm={ic:"🤝",t:"Parent–teacher meeting",show:()=>isAdm()||isStu(S.me),ope
     else if(mine(x))r.appendChild(fxMini("Cancel",()=>updateDoc(FXD("ptm",x.id),{by:"",byName:"",byFlat:"",byTs:Date.now()}),"r"));
     else if(!x.by)r.appendChild(fxMini("Book",()=>book(x),"g"));c.appendChild(r)});b.appendChild(c)})};
  fxW(query(FXC("ptm"),where("date",">=",td()),limit(800)),(d,e)=>{L=d||[];err=e;draw()});draw()}};
-
-/* ---------- School bus live tracking ---------- */
-FX.bus={ic:"🚌",t:"Bus tracking",open(b){let L=null,err=null;const adm=isAdm();
- const lv=x=>{const l=(D.pres[x.driverUid]||{}).live;return x.on&&x.until>Date.now()&&l&&l.lid===x.lid&&!l.end&&l.lat?l:null};
- const edit=x=>{let P=fxPpl();{const st=P.filter(p=>!isStu(p));if(st.length)P=st}fxForm(x?"Edit bus":"Add a bus","The driver starts the trip from this page on their own phone. They need the app and an approved account in this school.",[{k:"name",l:"Bus name / number",ph:"e.g. Bus 3 · RJ14 PA 1234",req:1,val:x&&x.name,max:50},{k:"route",l:"Route",ph:"e.g. Malviya Nagar → Jagatpura → School",val:x&&x.route,max:120},{k:"driverUid",l:"Driver (person who carries the phone)",type:"select",opts:P.map(p=>[p.uid,p.name+" · "+roleLbl(p.role)]),val:x?x.driverUid:(P[0]||{}).uid,req:1},{k:"phone",l:"Driver's phone",type:"tel",val:x&&x.phone,max:15}],"Save",
-  async v=>{const p=P.find(q=>q.uid===v.driverUid);if(!p)throw fxBad("Choose the driver.");const o={name:v.name,route:v.route,driverUid:p.uid,driverName:p.name,phone:v.phone};if(x)await updateDoc(FXD("buses",x.id),o);else await fxAdd("buses",{...o,on:false,lid:"",until:0,uid:S.uid});toast("✅","Saved","",true)})};
- const start=(x,mins)=>run(document.createElement("button"),async()=>{if(!navigator.geolocation)throw new Error("Location is not supported on this phone.");if(!(await askPerm("loc")))return;
-  const c=await new Promise((ok,no)=>navigator.geolocation.getCurrentPosition(g=>ok(g.coords),()=>no(new Error("Couldn't get your location. Turn on GPS and try again.")),{enableHighAccuracy:true,timeout:20000,maximumAge:30000}));
-  const lid=rid(),until=Date.now()+mins*60000;liveStart({lid,until,cid:null},c);await updateDoc(FXD("buses",x.id),{on:true,lid,until,startTs:Date.now()});toast("🚌","Trip started","Parents can now see the bus.",true)});
- const stop=async x=>{if(!(liveS&&liveS.lid===x.lid))liveS={lid:x.lid,until:x.until,cid:null};liveStop();await updateDoc(FXD("buses",x.id),{on:false});toast("🚌","Trip ended","",true)};
- const draw=()=>{b.innerHTML="";fxHead(b,"Where is the bus?",adm?"Add each bus and choose its driver. When the driver starts a trip, everyone can follow the bus – also when the driver's phone is locked.":"Follow the school bus while it is on a trip.",adm?"＋ Add a bus":"",()=>edit());
-  if(fxState(b,L,err,"🚌","No buses have been added yet."))return;
-  L.slice().sort((p,q)=>String(p.name).localeCompare(String(q.name),undefined,{numeric:true})).forEach(x=>{const l=lv(x),c=mk("div","fxk"),top=mk("div","fxr"),me=x.driverUid===S.uid;top.append(fxPill(l?"● On the way":"Not running",l?"g":""));if(l)top.appendChild(mk("span","meta sp1","updated "+ago(l.ts)));c.appendChild(top);
-   c.appendChild(mk("b","fxt",x.name));if(x.route)c.appendChild(mk("div","meta","🛣️ "+x.route));c.appendChild(mk("div","meta","Driver: "+x.driverName+(x.phone?" · "+x.phone:"")));
-   if(l){const m=mk("div","fxmap lmp on");m.innerHTML=MAPSVG+'<i class="lpin"></i>';c.appendChild(m)}
-   const a=mk("div","fxa");if(l){const v=mk("a","btn s","🗺️ View on map");v.href="https://www.google.com/maps?q="+l.lat+","+l.lng;v.target="_blank";v.rel="noopener";a.appendChild(v)}
-   if(x.phone){const p=mk("a","btn s o","📞 Call driver");p.href="tel:"+String(x.phone).replace(/[^\d+]/g,"");a.appendChild(p)}
-   if(me){if(x.on&&x.until>Date.now())a.appendChild(fxMini("■ End trip",()=>stop(x),"r"));else{const s=mk("button","btn s g","▶ Start trip");s.type="button";s.onclick=()=>sheet(z=>{m3(z);z.appendChild(mk("h2",null,"Start trip · "+x.name));z.appendChild(mk("p","sub","Your location is shared with the school until the trip ends. It keeps updating when this phone is locked."));let mins=120;const ch=mk("div","lch");[[60,"1 hour"],[120,"2 hours"],[180,"3 hours"]].forEach(([m,t])=>{const o=mk("button",m===mins?"on":"",t);o.type="button";o.onclick=()=>{mins=m;[...ch.children].forEach(q=>q.classList.toggle("on",q===o))};ch.appendChild(o)});z.appendChild(mk("div","meta","Stop automatically after"));z.appendChild(ch);const go=mk("button","btn","▶ Start trip");go.type="button";go.style.marginTop="12px";go.onclick=()=>{closeSheet();start(x,mins)};z.appendChild(go)});a.appendChild(s)}}
-   if(adm){const e=mk("button","btn s o","Edit");e.type="button";e.onclick=()=>edit(x);a.appendChild(e);a.appendChild(fxMini("Delete",async()=>{if(fxSure("Remove "+x.name+"?"))await deleteDoc(FXD("buses",x.id))},"r"))}
-   if(a.children.length)c.appendChild(a);b.appendChild(c)})};
- fxW(query(FXC("buses"),limit(60)),(d,e)=>{L=d||[];err=e;draw()});const iv=setInterval(()=>{if(L&&L.some(x=>x.on)&&$("ov").classList.contains("hide"))draw()},12000);fxU.push(()=>clearInterval(iv));draw()}};
 
 /* ---------- Birthday & achievement wall (school + company) ---------- */
 const FXMON=["January","February","March","April","May","June","July","August","September","October","November","December"];
@@ -3517,6 +3510,456 @@ function uxInit(){try{uxFields()}catch(e){console.warn("fields",e)}try{uxTips()}
 /* once per phone: show where the menu is */
 function uxCoach(){setTimeout(()=>{const m=$("hmb");if(m&&!$("sMain").classList.contains("hide")&&$("ov").classList.contains("hide")&&!$("permd")&&tab==="home")tipOnce("menu",m,"All features are in this menu. You can also slide from the left side of the screen.",6500)},2600)}
 uxInit();
+
+/* =====================================================================================================
+   STAFF, FAMILIES (several students on one login), PEOPLE CARDS, @MENTIONS
+   ===================================================================================================== */
+/* ---------- school staff: join with the Principal's code and say what your job is ---------- */
+const STAFF_JOBS=["Bus driver","Bus conductor / attendant","Security guard","Peon / office attendant","Sweeper / housekeeping","Gardener","Ayah / caretaker","Cook / canteen staff","Lab assistant","Librarian","Receptionist / front office","Clerk / office staff","Accountant / fee clerk","Nurse / medical room","Electrician / maintenance","IT / computer support","Sports coach","Store keeper","Hostel warden","Other"];
+const staffWant=j=>/security/i.test(j)?"SECURITY_GUARD":/accountant/i.test(j)?"ACCOUNTANT":"STAFF";
+const isBusJob=x=>/bus (driver|conductor)/i.test(String((x&&(x.job||x.flat))||""));
+/* ---------- families: the login's own profile id, and helpers ---------- */
+const PID=()=>S.pid||S.uid,AUID=id=>String(id||"").replace(/_k\d+$/,"");
+let joinKid=false;
+const kidMode=()=>!!(joinKid&&S.me&&S.sid&&join&&join.societyId===S.sid&&KIND==="school"&&join.teacherUid&&S.me.status==="approved");
+const myProfiles=()=>[{id:S.uid,...(S.prim||S.me||{})}].concat(S.kids||[]);
+/* loads the other students of this login in this school and applies the one that was last chosen */
+async function kidsLoad(keep){S.prim=S.prim&&keep?S.prim:S.me;if(!keep){S.pid=S.uid;S.kids=[]}
+ try{if(!(S.soc&&(S.soc.type||"society")==="school"&&isStu(S.prim)))return;const us=await getDoc(doc(db,"userSociety",S.uid)),ids=((us.exists()&&us.data().kids)||{})[S.sid]||[];
+  S.kids=(await Promise.all(ids.map(id=>getDoc(doc(db,"societies",S.sid,"members",id)).catch(()=>null)))).filter(d=>d&&d.exists()).map(d=>({id:d.id,...d.data()}));
+  if(!keep){let want="";try{want=localStorage.getItem("sh-pid-"+S.sid+"-"+S.uid)||""}catch(e){}const k=S.kids.find(x=>x.id===want&&x.status==="approved");if(k){S.me={...k};S.pid=k.id}}}catch(e){console.warn("students of this login",e)}}
+function switchKid(id){const k=id===S.uid?S.prim:(S.kids||[]).find(x=>x.id===id);if(!k||k.status!=="approved"||id===PID())return;try{localStorage.setItem("sh-pid-"+S.sid+"-"+S.uid,id)}catch(e){}
+ closeSheet();try{leaveDM()}catch(e){}try{fxHide();drwShow(false)}catch(e){}unsubs.forEach(f=>f());unsubs=[];Object.keys(D).forEach(q=>{D[q]={}});const me={...k};delete me.id;S.me=me;S.pid=id;tab="home";startApp();toast("✅","Switched to "+k.name,k.flat||"",true)}
+function addKid(){addMode();gotoJoin("student");joinKid=true;$("j1").querySelector("h2").textContent="Add another student";$("j1").querySelector("p.sub").textContent="Enter the class code of this child's class teacher. Both children stay on this login and you can switch between them."}
+async function kidSubmit(nm,mo,xv){const fId=$("jid").files[0],fPh=$("jph").files[0],er=$("jerr");if(!fId||!fPh){er.textContent="This child's own ID proof and photo are both required.";return}
+ const us=await getDoc(doc(db,"userSociety",S.uid)),cur=((us.exists()&&us.data().kids)||{})[S.sid]||[];let n=2;while(cur.includes(S.uid+"_k"+n))n++;const id=S.uid+"_k"+n,fl=(join.cls||join.towers[0].name)+" · "+xv;
+ if(myProfiles().some(k=>k.flat===fl)){er.textContent="This student is already on your login.";return}
+ /* every child has their own ID: it is kept next to the parent's, as proof_k2, proof_k3 ... */
+ let idUrl;try{idUrl=await upID(S.sid,fId,"idproofs",false,"_k"+n)}catch(e){if(/permission|not allowed/i.test(String((e&&e.code)||"")+String((e&&e.message)||""))){console.warn("child ID",e);er.textContent="This child's ID could not be saved: the school's file rules need an update. Please tell the Principal.";return}throw e}
+ const photoUrl=await UP(fPh,"avatars","kid.jpg");
+ await setDoc(doc(db,"societies",S.sid,"members",id),{uid:id,puid:S.uid,kid:true,name:nm,mobile:mo,flat:fl,role:"RESIDENT",status:"pending",ts:Date.now(),idUrl,photoUrl,tUid:join.teacherUid});
+ await setDoc(doc(db,"userSociety",S.uid),{kids:{[S.sid]:arrayUnion(id)}},{merge:true});
+ updateDoc(doc(db,"societies",S.sid,"members",S.uid),{flats:arrayUnion(fl)}).catch(()=>{});
+ joinKid=false;try{history.replaceState(null,"",location.pathname)}catch(e){}await kidsLoad(true);show("sMain");go("more");toast("✅","Request sent",nm+" appears under My students once the class teacher approves.",true)}
+/* a bus driver gives the bus number while registering; the bus is added when the Principal approves */
+function pxBusUi(){const j=$("jjob"),w=$("jbusw");if(!j||!w)return;w.classList.toggle("hide",!(KIND==="school"&&joinAs==="staff"&&j.value==="Bus driver"&&!kidMode()))}
+function pxBusReg(){const er=$("jerr"),name=$("jbus").value.trim();if(name.length<2){er.textContent="Enter your bus number.";return null}return{name:name.slice(0,40),route:$("jroute").value.trim().slice(0,120)}}
+/* extra bits of the join form: the job picker for staff, and "add another student" */
+function pxJoinForm(){const ST=KIND==="school"&&joinAs==="staff",kid=kidMode(),ji=$("jinfo");let s=$("jjob");
+ if(!s){s=mk("select");s.id="jjob";s.setAttribute("aria-label","Your job");STAFF_JOBS.forEach(j=>s.appendChild(Object.assign(mk("option",null,j),{value:j})));const a=$("jx")._fl?$("jx")._fl.w:$("jx");a.parentNode.insertBefore(s,a);
+  const w=mk("div","hide"),bn=mk("input"),br=mk("input"),bh=mk("p","sub","You only start and end the trip. Parents set their child's pickup point themselves, and the app tells you the next pickup.");w.id="jbusw";w.setAttribute("data-noskin","");bn.id="jbus";bn.placeholder="Bus number";bn.maxLength=40;br.id="jroute";br.placeholder="Route (optional)";br.maxLength=120;bh.style.margin="2px 0 12px";
+  w.append(bn,br,bh);a.parentNode.insertBefore(w,a);s.addEventListener("change",pxBusUi)}
+ s.classList.toggle("hide",!ST);
+ if(ST){$("jt").parentNode.classList.add("hide");$("jsec").classList.add("hide");$("jx").classList.remove("hide");$("jx").placeholder="Staff / employee ID (optional)";$("j2").querySelector(".sub").textContent="Choose your job and tell us who you are.";ji.classList.remove("hide");ji.textContent="🧹 You are joining as Staff with the Principal's code. The Principal approves your request.";$("jsub").textContent="Request to join as Staff"}
+ const up=$("jid").closest(".upl"),note=up&&up.previousElementSibling;if(up)up.classList.remove("hide");if(note&&note.tagName==="P")note.textContent=kid?"Upload this child's own ID proof (photo or PDF) and a photo of the child — both are required.":"Upload your ID proof (photo or PDF) and a photo of yourself — both are required.";pxBusUi();
+ if(kid){["jid","jph"].forEach(i=>{try{$(i).value=""}catch(e){}});["jidv","jphv"].forEach(i=>{const v=$(i);if(v)v.classList.add("hide")})}
+ if(kid){$("jnm").value="";$("jm").value=(S.prim||S.me).mobile||"";[$("jnm"),$("jm")].forEach(e=>e.dispatchEvent(new Event("input",{bubbles:true})));ji.classList.remove("hide");ji.textContent="➕ Adding another student to your login · "+(join.cls||"")+" · Class teacher: "+(join.teacherName||"—")+". The class teacher approves the request.";$("jsub").textContent="Add this student"}}
+/* "My students" on the Me page + the switcher */
+function kidRows(box){box.innerHTML="";myProfiles().forEach(k=>{const e=mk("div","ex"),l=mk("div"),lw=mk("div","prw"),t=mk("div");t.appendChild(mk("b",null,k.name||""));const meta=mk("span",null,(k.flat||"")+(k.status&&k.status!=="approved"?" · "+(k.status==="pending"?"waiting for the class teacher":k.status):""));t.appendChild(meta);lw.append(av(k.name,k.id===S.uid?photoOf(S.uid):k.photoUrl,38),t);l.appendChild(lw);e.appendChild(l);
+  if(k.id===PID())e.appendChild(mk("b","pos","Active"));else if(k.status==="approved"){const b=mk("button","btn s o","Switch");b.type="button";b.style.cssText="width:auto;padding:6px 14px;margin:0";b.onclick=()=>switchKid(k.id);e.appendChild(b)}box.appendChild(e);
+  if(k.status==="approved")busLine(k.id).then(tx=>{if(tx&&meta.isConnected)meta.appendChild(mk("span",null,tx))}).catch(()=>{})})}
+function pxKids(c){if(!(SCH()&&S.prim&&isStu(S.prim)))return;c.appendChild(mk("h2",null,"👨‍👩‍👧 My students"));c.appendChild(mk("p","sub","More than one child in this school? Add them here and switch between them — no second login needed."));const l=mk("div");c.appendChild(l);kidRows(l);
+ const a=mk("button","btn s","➕ Add another student");a.type="button";a.style.margin="10px 0 16px";a.onclick=addKid;c.appendChild(a)}
+function pxHome(h){const P=myProfiles().filter(k=>k.status==="approved"||k.id===S.uid);if(!(SCH()&&S.prim&&isStu(S.prim))||P.length<2)return;const w=mk("div","fxch kch");w.setAttribute("data-noskin","");
+ P.forEach(k=>{const b=mk("button",k.id===PID()?"on":"",(k.name||"").split(" ")[0]+" · "+clsOf(k));b.type="button";b.onclick=()=>switchKid(k.id);w.appendChild(b)});h.insertBefore(w,h.children[1]||null)}
+
+/* ---------- People: three small cards, tap to open a list, tap a teacher to see the class ---------- */
+let pplV={g:null,of:null};
+const PPLG=()=>KIND==="school"?[["T","🧑‍🏫","Teachers"],["S","🧹","Staff"],["M","🎓","Students"]]:KIND==="company"?[["T","👔","Managers"],["S","🧰","Staff"],["M","💼","Employees"]]:[["T","🏛️","Committee"],["S","🛡️","Staff"],["M","🏠","Residents"]];
+const pplGrp=x=>["SOCIETY_ADMIN","COMMITTEE_MEMBER"].includes(x.role)?"T":["ACCOUNTANT","SECURITY_GUARD","STAFF"].includes(x.role)?"S":"M";
+function pplRow(r,onTap){const e=mk("div","ex pplr"),l=mk("div"),lw=mk("div","prw"),t=mk("div");t.appendChild(mk("b",null,r.name));t.appendChild(mk("span",null,r.flat+" · "+roleLbl(r.role)+(SCH()&&isOwner()&&r.code?" · class code "+r.code:"")));lw.append(av(r.name,photoOf(r.id),38),t);l.appendChild(lw);e.appendChild(l);
+ const rt=mk("div","pplx");e.appendChild(rt);if(onTap){l.style.cursor="pointer";l.onclick=onTap;const go=mk("span","pplc","›");go.onclick=onTap;rt.appendChild(go)}
+ if(isMgr()&&r.id!==S.uid&&r.id!==S.soc.adminUid){const mb=mk("button","pplm","⋮");mb.type="button";mb.setAttribute("aria-label","Manage "+r.name);rt.appendChild(mb);
+  const ct=mk("div","pplt hide"),s=mk("select");["RESIDENT","TENANT","COMMITTEE_MEMBER","ACCOUNTANT","SECURITY_GUARD","STAFF"].concat(KIND==="school"?["SOCIETY_ADMIN"]:[]).forEach(x=>s.appendChild(Object.assign(mk("option",null,roleLbl(x)),{value:x})));s.value=r.role;s.setAttribute("aria-label","Role of "+r.name);
+  s.onchange=()=>{if(s.value==="SOCIETY_ADMIN"&&!confirm("Make "+r.name+" the Principal? They will get full rights in this school.")){s.value=r.role;return}updateDoc(doc(db,"societies",S.sid,"members",r.id),{role:s.value}).then(()=>toast("✅","Role updated","",true)).catch(x=>{s.value=r.role;fail(x)})};
+  const rm=mk("button","btn s r","🗑 Delete");rm.type="button";rm.onclick=()=>delMember(r);if(r.kid)s.disabled=true;ct.append(s,rm);e.appendChild(ct);mb.onclick=ev=>{ev.stopPropagation();ct.classList.toggle("hide")}}
+ return e}
+function pplCard(list){const q=mk("div","card"),G=PPLG(),by={T:[],S:[],M:[]};list.forEach(x=>by[pplGrp(x)].push(x));const srt=a=>a.slice().sort((x,y)=>String(x.flat).localeCompare(String(y.flat),undefined,{numeric:true})||String(x.name).localeCompare(String(y.name)));
+ const shown=G.filter(g=>by[g[0]].length||g[0]===pplV.g);if(pplV.g&&!by[pplV.g].length&&!pplV.of)pplV={g:null,of:null};if(!pplV.g&&(shown.length===1||(isTeacher()&&by.M.length)))pplV.g=shown.length===1?shown[0][0]:"M";
+ const draw=()=>{q.innerHTML="";q.appendChild(mk("h2",null,"👥 People ("+list.length+")"));const tl=mk("div","ppg");
+  G.forEach(([k,ic,t])=>{const b=mk("button",pplV.g===k?"on":"");b.type="button";b.append(mk("i",null,ic),mk("b",null,String(by[k].length)),mk("span",null,t));b.disabled=!by[k].length;b.onclick=()=>{pplV=pplV.g===k&&!pplV.of?{g:null,of:null}:{g:k,of:null};draw()};tl.appendChild(b)});q.appendChild(tl);
+  if(!pplV.g){q.appendChild(mk("div","meta","Tap a card to see the list."+(isMgr()?" Use ⋮ next to a person to change their role or delete them.":"")));return}
+  const lbl=G.find(g=>g[0]===pplV.g)[2],drill=KIND!=="society"&&pplV.g==="T";
+  if(pplV.of){const tch=list.find(x=>x.id===pplV.of),c=tch?clsOf(tch):"",L=srt(by.M.filter(x=>clsOf(x)===c)),bk=mk("a","lnk pplb","← "+lbl);bk.onclick=()=>{pplV.of=null;draw()};q.appendChild(bk);
+   q.appendChild(mk("div","sec",(tch?tch.name:"")+" · "+c+" · "+L.length+" "+G[2][2].toLowerCase()));if(!L.length)q.appendChild(mk("div","meta","Nobody in this "+(KIND==="school"?"class":"department")+" yet."));L.forEach(r=>q.appendChild(pplRow(r)));return}
+  const L=srt(by[pplV.g]);if(pplV.g==="M"&&KIND!=="society"){let last=null;L.forEach(r=>{const c=clsOf(r);if(c!==last){last=c;q.appendChild(mk("div","sec",c+(SCH()&&tOf(c)?" · "+tOf(c):"")+" · "+L.filter(x=>clsOf(x)===c).length))}q.appendChild(pplRow(r))})}
+  else L.forEach(r=>q.appendChild(pplRow(r,drill&&r.role==="COMMITTEE_MEMBER"?()=>{pplV.of=r.id;draw()}:null)));
+  if(drill)q.appendChild(mk("div","meta","Tap a "+(KIND==="school"?"teacher to see the students of their class.":"manager to see their department.")))};
+ draw();return q}
+
+/* an important pop-up: stays for 9 seconds (ordinary ones leave after 4.5) and can be tapped */
+function pxSticky(fn){const el=$("toasts").lastElementChild;if(!el)return;const cp=el.cloneNode(true);el.replaceWith(cp);cp.style.cursor="pointer";cp.onclick=()=>{cp.remove();fn()};setTimeout(()=>cp.remove(),9000)}
+/* ---------- @mention in the community chat ---------- */
+const mnMap={};
+const mnKey=()=>"sh-mn-"+S.sid+"-"+S.uid;
+function mnHide(){const b=$("mnp");if(b)b.classList.add("hide")}
+function mnUpd(){const t=$("mt");if(!t||dmc||!S.me){mnHide();return}const c=t.selectionStart||0,m=/(^|\s)@([^\s@]{0,24})$/.exec(t.value.slice(0,c));if(!m){mnHide();return}
+ const q=m[2].toLowerCase(),L=Object.values(D.dir||{}).filter(p=>(p.uid||p.id)!==S.uid&&p.name&&(!q||p.name.toLowerCase().split(/\s+/).some(w=>w.startsWith(q))||p.name.toLowerCase().startsWith(q))).sort((a,b)=>a.name.localeCompare(b.name)).slice(0,8);if(!L.length){mnHide();return}
+ let b=$("mnp");if(!b){b=mk("div","mnp");b.id="mnp";b.setAttribute("data-noskin","");const dk=document.querySelector(".cdock");if(!dk)return;dk.insertBefore(b,dk.firstChild)}b.innerHTML="";b.classList.remove("hide");
+ L.forEach(p=>{const r=mk("button");r.type="button";const d=mk("span");d.append(mk("b",null,p.name),mk("small",null,p.flat||""));r.append(av(p.name,p.photo,30),d);
+  r.onmousedown=e=>e.preventDefault();r.onclick=()=>{const v=t.value,st=c-m[2].length-1;t.value=v.slice(0,st)+"@"+p.name+" "+v.slice(c);mnMap[p.name]=p.uid||p.id;const pos=st+p.name.length+2;try{t.focus();t.setSelectionRange(pos,pos)}catch(e){}mnHide();t.dispatchEvent(new Event("input",{bubbles:true}))};b.appendChild(r)})}
+const mnOf=t=>[...new Set(Object.keys(mnMap).filter(n=>t.includes("@"+n)).map(n=>mnMap[n]))].slice(0,20);
+/* @Name inside a message becomes a highlighted chip */
+function mnEl(el,m){const ids=m&&m.mentions;if(!Array.isArray(ids)||!ids.length)return el;const N=ids.map(u=>[u,(D.dir[u]||{}).name]).filter(x=>x[1]).sort((a,b)=>b[1].length-a[1].length);if(!N.length)return el;
+ const w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT),T=[];while(w.nextNode())T.push(w.currentNode);
+ T.forEach(n=>{if(n.parentNode&&n.parentNode.classList&&n.parentNode.classList.contains("mtn"))return;let s=n.data,out=[],hit=false;while(s){let bi=-1,bn=null;N.forEach(x=>{const i=s.indexOf("@"+x[1]);if(i>=0&&(bi<0||i<bi)){bi=i;bn=x}});if(bi<0){out.push(document.createTextNode(s));break}hit=true;if(bi)out.push(document.createTextNode(s.slice(0,bi)));out.push(mk("b","mtn"+(bn[0]===S.uid?" me":""),"@"+bn[1]));s=s.slice(bi+bn[1].length+1)}if(hit)n.replaceWith(...out)});return el}
+/* a message that names me: always announced, also when alerts are muted */
+function mnAnnounce(d){toast("📣",d.name+" mentioned you",String(d.text||"").slice(0,90),true);try{beep()}catch(e){}try{navigator.vibrate&&navigator.vibrate([120,60,120])}catch(e){}try{notif("📣",d.name+" mentioned you",String(d.text||"").slice(0,90))}catch(e){}
+ pxSticky(()=>{go("comm");$("sn2").onclick()});try{localStorage.setItem(mnKey(),String(Math.max(d.ts||0,+localStorage.getItem(mnKey())||0)))}catch(e){}}
+function mnHit(d){if(!d||!Array.isArray(d.mentions)||!d.mentions.includes(S.uid))return false;mnAnnounce(d);return true}
+let mnCaught="";
+function mnCatch(){if(!S.me||mnCaught===S.sid+S.uid)return;const L=Object.values(D.msg||{});if(!L.length)return;mnCaught=S.sid+S.uid;let last=0;try{last=+localStorage.getItem(mnKey())||0}catch(e){}
+ if(!last){try{localStorage.setItem(mnKey(),String(Date.now()))}catch(e){}return}
+ const M=L.filter(m=>m.uid!==S.uid&&!m.deleted&&Array.isArray(m.mentions)&&m.mentions.includes(S.uid)&&m.ts>last).sort((a,b)=>a.ts-b.ts);if(M.length)setTimeout(()=>mnAnnounce(M[M.length-1]),1800)}
+function pxInit(){const t=$("mt");if(t){["input","click","keyup"].forEach(k=>t.addEventListener(k,()=>{try{mnUpd()}catch(e){}}));t.addEventListener("blur",()=>setTimeout(mnHide,180))}
+ /* switching: students first, then workspaces */
+ $("wsw").onclick=()=>sheet(z=>{if(SCH()&&S.prim&&isStu(S.prim)&&(S.kids||[]).length){z.appendChild(mk("h2",null,"Switch student"));const k=mk("div");z.appendChild(k);kidRows(k);z.appendChild(mk("div","sec","Schools"))}else z.appendChild(mk("h2",null,"Switch society"));const l=mk("div");z.appendChild(l);socCache=null;socRows(l)})}
+pxInit();
+
+/* =====================================================================================================
+   SCHOOL BUS
+   - the school gives each student a morning / evening bus (busmap/{student id})
+   - the parent sets the child's pickup point once (busmap/{student id}.pk = {lat,lng,a,ts}); nobody types stops
+   - the driver only starts and ends the trip; the phone shares the position (buses/{id}.live) and marks each
+     pickup point when the bus stops within 120 m of it (buses/{id}.arr.{key of the student})
+   - every parent's app compares the bus with its own child's pickup point: nearby (1 km), approaching (400 m), arrived
+   Collections: buses, busmap, bustrips. A bus also keeps riders = logins of its students' parents: the database
+   rules show a bus only to them, its driver and the school.
+   ===================================================================================================== */
+const BUSKMH=22;   /* average city speed used for "minutes away" */
+const BUSZ={near:1,appr:.4,arr:.12},BUSSLOW=4.2;   /* zones in km; "arrived" needs the bus to be slow (m/s) or to stay */
+const busKm=(a,b,c,d)=>{const R=6371,r=x=>x*Math.PI/180,x=Math.sin(r(c-a)/2)**2+Math.cos(r(a))*Math.cos(r(c))*Math.sin(r(d-b)/2)**2;return 2*R*Math.asin(Math.sqrt(x))};
+/* "28.7041, 77.1025" or a Google Maps link -> {lat,lng} */
+const busParse=s=>{s=String(s||"");const m=/!3d(-?\d+\.\d+)!4d(-?\d+\.\d+)/.exec(s)||/[?&](?:q|ll|query|destination)=(-?\d+\.\d+)(?:,|%2C)\s*(-?\d+\.\d+)/i.exec(s)||/@(-?\d+\.\d+),(-?\d+\.\d+)/.exec(s)||/^\s*(-?\d+(?:\.\d+)?)\s*[, ]\s*(-?\d+(?:\.\d+)?)\s*$/.exec(s);if(!m)return null;const lat=+m[1],lng=+m[2];return Math.abs(lat)<=90&&Math.abs(lng)<=180&&(lat||lng)?{lat:+lat.toFixed(6),lng:+lng.toFixed(6)}:null};
+const busLive=x=>{const l=x&&x.live;return x&&x.on&&x.until>Date.now()&&l&&l.lid===x.lid&&!l.end&&l.lat?l:null};
+const busOn=x=>!!(x&&x.on&&x.until>Date.now());
+const busDirL=d=>d==="pm"?"Evening · from school":"Morning · to school";
+const busFmt=km=>km<1?Math.max(10,Math.round(km*100)*10)+" m":km.toFixed(1)+" km",busEta=km=>Math.max(1,Math.round(km/BUSKMH*60));
+const busHere=()=>new Promise((ok,no)=>{if(!navigator.geolocation)return no(new Error("Location is not supported on this phone."));navigator.geolocation.getCurrentPosition(g=>ok(g.coords),()=>no(new Error("Couldn't get your location. Turn on GPS and try again.")),{enableHighAccuracy:true,timeout:20000,maximumAge:15000})});
+async function busLine(pid){try{const d=await getDoc(FXD("busmap",pid));if(!d.exists())return"";const a=d.data(),n=a.amName||a.pmName;return n?"🚌 "+n+(a.pk&&a.pk.lat?"":" · pickup point not set"):""}catch(e){return""}}
+const busDur=t=>{const e=t.end||(t.until&&t.until<Date.now()?t.until:0);return e?Math.max(0,e-t.start):0},busHrs=ms=>{const m=Math.round(ms/60000);return Math.floor(m/60)+" h "+String(m%60).padStart(2,"0")+" min"};
+function busMapEl(){const m=mk("div","fxmap lmp on");m.innerHTML=MAPSVG+'<i class="lpin"></i>';return m}
+/* the key of a student inside buses/{id}.arr: short, and does not show who the student is */
+const busK=pid=>{let h=2166136261;for(const c of String(pid)){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}return"k"+(h>>>0).toString(36)};
+const busArr=(x,k)=>{const t=(x&&x.arr||{})[k]||0;return t>=((x&&x.startTs)||0)?t:0};
+const busPkTxt=p=>p&&p.lat?(p.a?p.a+" · ":"")+(+p.lat).toFixed(4)+", "+(+p.lng).toFixed(4):"";
+/* ---------- choose a place: search by name, move the map under the pin, or use the phone's GPS ---------- */
+let lpkLast=null;
+/* a small map of its own (OpenStreetMap tiles): drag to move, pinch / buttons / wheel to zoom. The chosen point is the middle. */
+function miniMap(el,lat,lng,z,onMove){const T=256,ly=mk("div","mml"),tiles={},P=new Map();let zoom=z,cx=0,cy=0,pd=0,dead=false,moved=false;
+ const px=(la,ln,zz)=>{const n=T*2**zz,s=Math.sin(Math.max(-85,Math.min(85,la))*Math.PI/180);return[(ln+180)/360*n,(.5-Math.log((1+s)/(1-s))/(4*Math.PI))*n]};
+ const ll=()=>{const n=T*2**zoom;return{lng:((cx/n*360-180+540)%360)-180,lat:Math.atan(Math.sinh(Math.PI*(1-2*cy/n)))*180/Math.PI}};
+ const draw=()=>{if(dead)return;const w=el.clientWidth||320,h=el.clientHeight||320,n=2**zoom,keep={};cy=Math.max(0,Math.min(n*T,cy));
+  for(let X=Math.floor((cx-w/2)/T);X<=Math.floor((cx+w/2)/T);X++)for(let Y=Math.floor((cy-h/2)/T);Y<=Math.floor((cy+h/2)/T);Y++){if(Y<0||Y>=n)continue;const xx=((X%n)+n)%n,k=zoom+"/"+xx+"/"+Y+"@"+X;keep[k]=1;let im=tiles[k];
+   if(!im){im=new Image();im.alt="";im.draggable=false;im.className="mmt";im.onerror=()=>{im.style.visibility="hidden";el.classList.add("mmoff")};im.onload=()=>el.classList.remove("mmoff");im.src="https://tile.openstreetmap.org/"+zoom+"/"+xx+"/"+Y+".png";ly.appendChild(im);tiles[k]=im}
+   im.style.transform="translate("+Math.round(X*T-cx+w/2)+"px,"+Math.round(Y*T-cy+h/2)+"px)"}
+  Object.keys(tiles).forEach(k=>{if(!keep[k]){tiles[k].remove();delete tiles[k]}})};
+ const set=(la,ln,zz)=>{if(zz!=null)zoom=Math.max(3,Math.min(19,Math.round(zz)));[cx,cy]=px(la,ln,zoom);draw()};
+ const zoomBy=d=>{const c=ll(),nz=Math.max(3,Math.min(19,zoom+d));if(nz===zoom)return;set(c.lat,c.lng,nz);onMove&&onMove(false)};
+ const dist=()=>{const a=[...P.values()];return Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y)};
+ el.addEventListener("pointerdown",e=>{if(e.target.closest(".mmz"))return;P.set(e.pointerId,{x:e.clientX,y:e.clientY});try{el.setPointerCapture(e.pointerId)}catch(q){}if(P.size===2)pd=dist()});
+ el.addEventListener("pointermove",e=>{const p=P.get(e.pointerId);if(!p)return;const dx=e.clientX-p.x,dy=e.clientY-p.y;p.x=e.clientX;p.y=e.clientY;
+  if(P.size===1){if(dx||dy){cx-=dx;cy-=dy;moved=true;draw();onMove&&onMove(true)}}else if(P.size===2&&pd){const r=dist()/pd;if(r>1.55){pd=dist();zoomBy(1)}else if(r<.64){pd=dist();zoomBy(-1)}}});
+ const up=e=>{if(!P.has(e.pointerId))return;P.delete(e.pointerId);pd=0;if(!P.size&&moved){moved=false;onMove&&onMove(false)}};el.addEventListener("pointerup",up);el.addEventListener("pointercancel",up);
+ el.addEventListener("wheel",e=>{e.preventDefault();zoomBy(e.deltaY<0?1:-1)},{passive:false});el.addEventListener("dblclick",()=>zoomBy(1));
+ const zc=mk("div","mmz"),zi=mk("button",null,"+"),zo=mk("button",null,"−");zi.type=zo.type="button";zi.setAttribute("aria-label","Zoom in");zo.setAttribute("aria-label","Zoom out");zi.onclick=()=>zoomBy(1);zo.onclick=()=>zoomBy(-1);zc.append(zi,zo);
+ el.append(ly,zc,mk("span","mma","© OpenStreetMap"));set(lat,lng,z);const ro=()=>draw();window.addEventListener("resize",ro);setTimeout(draw,200);
+ return{center:()=>ll(),zoom:()=>zoom,set,remove(){dead=true;window.removeEventListener("resize",ro)}}}
+const lpkGet=async(u)=>{const c=new AbortController(),t=setTimeout(()=>c.abort(),9000);try{const r=await fetch(u,{signal:c.signal,headers:{Accept:"application/json"}});if(!r.ok)throw new Error("search "+r.status);return await r.json()}finally{clearTimeout(t)}};
+/* place search: Photon first, Nominatim when it fails or finds nothing (both are OpenStreetMap search services) */
+async function lpkFind(q,near){let out=[];
+ try{const j=await lpkGet("https://photon.komoot.io/api/?limit=7&lang=en&q="+encodeURIComponent(q)+(near?"&lat="+near.lat+"&lon="+near.lng:""));
+  out=((j&&j.features)||[]).map(f=>{const p=f.properties||{},g=(f.geometry||{}).coordinates||[],n=p.name||[p.housenumber,p.street].filter(Boolean).join(" ")||p.city||"";return{name:n,sub:[p.street&&p.street!==n?p.street:"",p.district||p.locality||"",p.city&&p.city!==n?p.city:"",p.state||"",p.country||""].filter((x,i,a)=>x&&a.indexOf(x)===i).join(", "),lat:+g[1],lng:+g[0]}}).filter(r=>r.name&&isFinite(r.lat)&&isFinite(r.lng))}catch(e){console.warn("place search",e)}
+ if(out.length)return out;
+ const j=await lpkGet("https://nominatim.openstreetmap.org/search?format=jsonv2&limit=7&q="+encodeURIComponent(q));
+ return(Array.isArray(j)?j:[]).map(r=>{const d=String(r.display_name||""),n=r.name||d.split(",")[0];return{name:n,sub:d.split(",").slice(1,5).join(",").trim(),lat:+r.lat,lng:+r.lon}}).filter(r=>r.name&&isFinite(r.lat)&&isFinite(r.lng))}
+function lpkClose(v){const el=$("lpk");if(!el)return;const f=el._done;try{el._map&&el._map.remove()}catch(e){}el.remove();if(f)f(v||null)}
+/* o: {title, at:{lat,lng}, near:{lat,lng}, focus:true = start in the search box} -> {lat,lng,name} or null */
+function locPick(o){o=o||{};lpkClose();return new Promise(done=>{const el=mk("div");el.id="lpk";el.setAttribute("data-noskin","");el.setAttribute("data-noswipe","");el._done=done;
+ const hd=mk("div","lph"),x=mk("button",null,"✕"),q=mk("input"),sb=mk("button","btn s","Search"),rs=mk("div","lpr hide"),mp=mk("div","lpm"),mapEl=mk("div","lpmap"),pin=mk("i","lpp","📍"),msg=mk("div","lpmsg",""),ft=mk("div","lpf"),cd=mk("div","meta"),g=mk("div","fxa"),me=mk("button","btn s o","📍 My location"),ok=mk("button","btn","Use this location");
+ x.type=sb.type=me.type=ok.type="button";x.setAttribute("aria-label","Close");q.type="search";q.placeholder="Search a place, area or address";q.setAttribute("data-nofl","");q.setAttribute("enterkeyhint","search");q.maxLength=120;q.id="lpq";ok.id="lpok";
+ const sr=mk("div","lps");sr.append(q,sb);hd.append(x,mk("b",null,o.title||"Choose the location"));mp.append(mapEl,pin,msg);g.append(me,ok);ft.append(cd,g);el.append(hd,sr,rs,mp,ft);document.body.appendChild(el);
+ let cur=o.at&&o.at.lat?{lat:+o.at.lat,lng:+o.at.lng}:null,name="",hit=null,map=null,seq=0,tmr=0;const near=cur||o.near||lpkLast||null;
+ const show=()=>{cd.textContent=cur?(name?name+" · ":"")+cur.lat.toFixed(5)+", "+cur.lng.toFixed(5):"Search a place or move the map so the pin is on the exact spot.";ok.disabled=!cur};
+ const setAt=(p,nm,zoom)=>{cur={lat:+(+p.lat).toFixed(6),lng:+(+p.lng).toFixed(6)};name=nm||"";hit=nm?{...cur}:null;if(map)map.set(cur.lat,cur.lng,zoom||17);show()};
+ const list=L=>{rs.innerHTML="";rs.classList.remove("hide");if(!L.length){rs.appendChild(mk("div","meta","No place found. Try the area name, or move the map yourself."));return}
+  L.forEach(r=>{const b=mk("button");b.type="button";b.append(mk("b",null,r.name),mk("small",null,r.sub||""));b.onclick=()=>{rs.classList.add("hide");q.value=r.name;setAt(r,r.name);try{q.blur()}catch(e){}};rs.appendChild(b)})};
+ const find=async()=>{const t=q.value.trim();if(t.length<3){rs.classList.add("hide");return}const p=busParse(t);if(p){rs.classList.add("hide");setAt(p,"");return}
+  const n=++seq;rs.innerHTML="";rs.classList.remove("hide");rs.appendChild(mk("div","meta","Searching…"));
+  try{const L=await lpkFind(t,map&&map.zoom()>=9?map.center():near);if(n===seq&&$("lpk")===el)list(L)}catch(e){if(n===seq&&$("lpk")===el){rs.innerHTML="";rs.appendChild(mk("div","meta","Couldn't search right now. Check the internet, or use My location."))}}};
+ q.oninput=()=>{clearTimeout(tmr);tmr=setTimeout(find,600)};q.onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();clearTimeout(tmr);find()}};sb.onclick=()=>{clearTimeout(tmr);find()};
+ x.onclick=()=>lpkClose();
+ me.onclick=()=>run(me,async()=>{if(!(await askPerm("loc")))return;const c=await busHere();setAt({lat:c.latitude,lng:c.longitude},"")});
+ ok.onclick=()=>{if(!cur)return;if(map&&map.zoom()<14){toast("ℹ️","Zoom in closer","Bring the pin to the exact spot, then tap Use this location.",true);return}lpkLast={...cur};lpkClose({lat:cur.lat,lng:cur.lng,name})};
+ show();if(o.focus)setTimeout(()=>{try{q.focus()}catch(e){}},250);
+ {const st=cur||near;msg.remove();map=miniMap(mapEl,st?st.lat:22.6,st?st.lng:79,st?(cur?17:14):4,drag=>{pin.classList.toggle("up",!!drag);if(drag)return;const c=map.center();if(!cur&&map.zoom()<12)return;const p={lat:+c.lat.toFixed(6),lng:+c.lng.toFixed(6)};if(hit&&busKm(hit.lat,hit.lng,p.lat,p.lng)>.15){name="";hit=null}cur=p;show()});el._map=map}})}
+
+/* ---------- a driver's own bus: the number is given while registering, the bus is added when the Principal approves ---------- */
+const busKey=s=>String(s||"").toLowerCase().replace(/[^a-z0-9]/g,"");
+async function busFromMember(r){const B=r&&r.bus;if(!B||!B.name||B.done||!SCH())return"";let res="";
+ const q=await getDocs(query(FXC("buses"),limit(200))),all=q.docs.map(d=>({id:d.id,...d.data()})),o={driverUid:r.id,driverName:r.name||"",phone:r.mobile||""},sc=(all.find(x=>x.sch&&x.sch.lat)||{}).sch||null;
+ if(!all.some(x=>x.driverUid===r.id)){const same=all.find(x=>busKey(x.name)===busKey(B.name));
+  if(same&&same.driverUid&&same.driverUid!==r.id&&D.mem[same.driverUid]&&D.mem[same.driverUid].status==="approved")res="taken";
+  else if(same){await updateDoc(FXD("buses",same.id),{...o,...(!same.route&&B.route?{route:B.route}:{})});res="linked"}
+  else{await fxAdd("buses",{name:String(B.name).slice(0,40),route:String(B.route||"").slice(0,120),...o,sch:sc,on:false,lid:"",until:0,riders:[],uid:S.uid});res="added"}}
+ await updateDoc(doc(db,"societies",S.sid,"members",r.id),{bus:{name:B.name,route:B.route||"",done:true}}).catch(()=>{});
+ if(res==="taken")toast("ℹ️",B.name+" already has a driver","Open School buses to change the driver to "+(r.name||"this person")+".",true);else if(res)toast("🚌",res==="added"?"Bus added":"Bus linked",B.name+" · "+(r.name||""),true);return res}
+/* the Principal's phone: drivers who sent their bus number but have no bus yet */
+function busFromAll(){if(!(SCH()&&isOwner()))return;Object.keys(D.mem||{}).forEach(id=>{const m=D.mem[id];if(m&&m.status==="approved"&&m.bus&&m.bus.name&&!m.bus.done&&!isStu(m))busFromMember({id,...m}).catch(e=>console.warn("bus of driver",e))})}
+/* each bus keeps the logins of its students' parents (riders): the database lets a parent read only those buses */
+let busRT=0;
+function busRiders(L,MAP){clearTimeout(busRT);if(!isAdm()||!L||!MAP)return;busRT=setTimeout(()=>{L.forEach(x=>{const want=[...new Set(MAP.filter(m=>m.amBus===x.id||m.pmBus===x.id).map(m=>m.puid||AUID(m.pid)).filter(Boolean))].sort(),has=(x.riders||[]).slice().sort();
+  if(JSON.stringify(want)!==JSON.stringify(has))updateDoc(FXD("buses",x.id),{riders:want}).catch(e=>console.warn("bus riders",e))})},700)}
+/* once a day on the Principal's phone: make sure every bus lists its riders (needed right after new database rules) */
+async function busRidersDaily(){const k="sh-busr-"+S.sid,t=td();try{if(localStorage.getItem(k)===t)return}catch(e){}const[b,m]=await Promise.all([getDocs(query(FXC("buses"),limit(200))),getDocs(query(FXC("busmap"),limit(3000)))]);
+ if(b.docs.length)busRiders(b.docs.map(d=>({id:d.id,...d.data()})),m.docs.map(d=>({id:d.id,...d.data()})));try{localStorage.setItem(k,t)}catch(e){}}
+
+/* ---------- the pickup point of one student: set once by the parent (the school can also set it for a family) ---------- */
+const busPkO={};
+async function busPkSave(pid,name,cls,p,has){const now=Date.now(),pk={lat:+(+p.lat).toFixed(6),lng:+(+p.lng).toFixed(6),a:String(p.name||"").slice(0,60),ts:now,by:S.uid};
+ try{if(has)await updateDoc(FXD("busmap",pid),{pk,ts:now});else await setDoc(FXD("busmap",pid),{pid,puid:AUID(pid),name:name||"",cls:cls||"",pk,ts:now})}
+ catch(e){if(e&&e.code==="permission-denied")throw fxBad(isOwner()?"Publish the latest Firestore rules (firestore.rules) in the Firebase console, then try again.":"The pickup point could not be saved yet. Please ask the school to update the app.");throw e}
+ busPkO[pid]=false;toast("✅","Pickup point saved","It is used every day until you change it.",true);return pk}
+/* o: {pid,name,cls,pk,has,near} */
+function busPkBox(o){const w=mk("div","buspk"),pk=o.pk&&o.pk.lat?o.pk:null,save=p=>busPkSave(o.pid,o.name,o.cls,p,o.has);
+ const paint=()=>{w.innerHTML="";
+  if(pk&&!busPkO[o.pid]){const r=mk("div","fxr"),t=mk("div","t"),c=mk("button","btn s o","Change");c.type="button";c.onclick=()=>{busPkO[o.pid]=true;paint()};
+   t.append(mk("b",null,"📍 Pickup point"),mk("small",null,busPkTxt(pk)),mk("small",null,"Saved"+(pk.ts?" on "+fxDate(fxYmd(new Date(pk.ts))):"")+" · used every day, also for the evening drop"));r.append(t,c);w.appendChild(r);return}
+  w.appendChild(mk("b",null,pk?"📍 Change pickup point":"📍 Set pickup point"));w.appendChild(mk("small",null,pk?"Choose the new place. It replaces the saved one.":"Do this once. The bus alerts use this place every day — for the morning pickup and the evening drop."));
+  const g=mk("div","buspo"),b1=mk("button","btn s","📍 Use current location"),b2=mk("button","btn s o","🗺️ Select on map"),b3=mk("button","btn s o","🔍 Search address");[b1,b2,b3].forEach(q=>{q.type="button"});
+  b1.onclick=()=>run(b1,async()=>{if(!(await askPerm("loc")))return;const c=await busHere();if((c.accuracy||0)>150){toast("ℹ️","GPS is weak here (±"+Math.round(c.accuracy)+" m)","Step outside and try again, or use Select on map.",true);return}await save({lat:c.latitude,lng:c.longitude,name:""})});
+  const pick=(bt,f)=>async()=>{const v=await locPick({title:"Pickup point · "+String(o.name||"").split(" ")[0],at:pk,near:o.near||null,focus:f});if(v)run(bt,()=>save(v))};b2.onclick=pick(b2,false);b3.onclick=pick(b3,true);
+  g.append(b1,b2,b3);w.appendChild(g);if(pk){const k=mk("a","lnk","Keep the saved place");k.onclick=()=>{busPkO[o.pid]=false;paint()};w.appendChild(k)}};
+ paint();return w}
+
+/* ---------- parents: only their own children's buses ---------- */
+function busParent(b){const P=myProfiles().filter(k=>k.status==="approved"||k.id===S.uid),A={},B={},subs={};let ready=0,denied=false;
+ const draw=()=>{if($("lpk"))return;b.innerHTML="";fxHead(b,"My child's bus","Set the pickup point once. You see only the bus of your own child, and the app tells you when it is near.");
+  if(denied){fxState(b,[],{code:"permission-denied"},"","");return}if(ready<P.length){fxState(b,null,null,"","");return}
+  P.forEach(k=>{const a=A[k.id]||null,c=mk("div","fxk"),top=mk("div","fxr");top.appendChild(av(k.name,k.id===S.uid?photoOf(S.uid):k.photoUrl,34));const nm=mk("div");nm.append(mk("b","fxt",k.name),mk("div","meta",k.flat||""));top.appendChild(nm);c.appendChild(top);
+   const pk=a&&a.pk&&a.pk.lat?a.pk:null;c.appendChild(busPkBox({pid:k.id,name:k.name,cls:clsOf(k),pk,has:!!a}));
+   if(!a||(!a.amBus&&!a.pmBus)){c.appendChild(mk("div","meta","No bus has been assigned yet — the school office does that."+(pk?" Your pickup point is saved and will be used.":"")));b.appendChild(c);return}
+   ["am","pm"].forEach(dir=>{const id=a[dir+"Bus"];if(!id)return;const x=B[id],run=x&&busOn(x)&&x.dir===dir,l=run?busLive(x):null,what=dir==="am"?"pickup":"drop";
+    c.appendChild(mk("div","fxs",dir==="am"?"Morning · to school":"Evening · back home"));const r=mk("div","fxr");r.append(mk("b",null,"🚌 "+((x&&x.name)||a[dir+"Name"]||"Bus")),fxPill(run?"● LIVE":"Not running",run?"g":""));if(l)r.appendChild(mk("span","meta sp1","updated "+ago(l.ts)));c.appendChild(r);
+    const kv=mk("div","fxkv");[["Route",(x&&x.route)||"—"],["Driver",x?(x.driverName||"—")+(x.phone?" · "+x.phone:""):"—"]].forEach(([q,v])=>kv.append(mk("span",null,q),mk("b",null,v)));c.appendChild(kv);
+    if(!run)return;const at=busArr(x,busK(k.id)),km=l&&pk?busKm(l.lat,l.lng,pk.lat,pk.lng):null;let z;
+    if(at&&(km==null||km>BUSZ.arr))z=["d","✅ The bus reached your "+what+" point at "+tm(at)];
+    else if(at||(km!=null&&km<=BUSZ.arr))z=["r","🔴 The bus is at your "+what+" point"];
+    else if(km!=null&&km<=BUSZ.appr)z=["y","🟡 Approaching · "+busFmt(km)+" · about "+busEta(km)+" min"];
+    else if(km!=null&&km<=BUSZ.near)z=["g","🟢 Nearby · "+busFmt(km)+" · about "+busEta(km)+" min"];
+    else if(km!=null)z=["","📍 "+busFmt(km)+" away · ⏱ about "+busEta(km)+" min"];
+    else z=["",pk?"The bus has started. Waiting for its location…":"Set the pickup point above to see how far the bus is."];
+    c.appendChild(mk("div","buszn "+z[0],z[1]));
+    if(l){c.appendChild(busMapEl());const g=mk("div","fxa"),v=mk("a","btn","🗺️ LIVE TRACK");v.href="https://www.google.com/maps?q="+l.lat+","+l.lng;v.target="_blank";v.rel="noopener";v.style.flex="1";g.appendChild(v);if(x.phone){const p=mk("a","btn o","📞 Driver");p.href="tel:"+String(x.phone).replace(/[^\d+]/g,"");p.style.cssText="flex:none;width:auto;padding-left:16px;padding-right:16px";g.appendChild(p)}c.appendChild(g)}
+    if(dir==="am"){const ts=busArr(x,"sch");if(ts)c.appendChild(mk("div","note","🏫 Reached school at "+tm(ts)))}});
+   b.appendChild(c)})};
+ const subB=id=>{if(subs[id])return;subs[id]=1;fxU.push(onSnapshot(FXD("buses",id),s=>{B[id]=s.exists()?{id,...s.data()}:null;draw()},e=>{console.warn("bus",e);subs[id]=0}))};
+ P.forEach(k=>{let f=true;const got=()=>{if(f){f=false;ready++}};fxU.push(onSnapshot(FXD("busmap",k.id),s=>{got();if(s.exists()){A[k.id]=s.data();[A[k.id].amBus,A[k.id].pmBus].filter(Boolean).forEach(subB)}else delete A[k.id];draw()},e=>{got();if(e&&e.code==="permission-denied")denied=true;draw()}))});
+ const iv=setInterval(()=>{if(ready>=P.length&&$("ov").classList.contains("hide"))draw()},10000);fxU.push(()=>clearInterval(iv));draw()}
+
+/* ---------- alerts for parents while the app is open: started, nearby, approaching, arrived, reached school ---------- */
+let busWU=[],busWT=0,busNow=[],busNeed=[],busSig="";
+const busMem=()=>{try{return JSON.parse(localStorage.getItem("sh-busn")||"{}")||{}}catch(e){return{}}};
+const busSeen=k=>!!busMem()[k];
+const busOnce=k=>{const M=busMem();if(M[k])return false;const now=Date.now();Object.keys(M).forEach(q=>{if(now-M[q]>3*864e5)delete M[q]});M[k]=now;try{localStorage.setItem("sh-busn",JSON.stringify(M))}catch(e){}return true};
+function busNote(ic,t,x){toast(ic,t,x,true);try{beep()}catch(e){}try{navigator.vibrate&&navigator.vibrate([150,80,150])}catch(e){}try{notif(ic,t,x)}catch(e){}pxSticky(()=>fxOpen("bus"))}
+function busWatch(){busWU.forEach(u=>{try{u()}catch(e){}});busWU=[];clearInterval(busWT);busNow=[];busNeed=[];busSig="";if(!(SCH()&&S.me&&S.prim&&isStu(S.prim)&&!isAdm()))return;
+ const P=myProfiles().filter(k=>k.status==="approved"||k.id===S.uid),A={},B={},Z={},subs={},gen=busWU,first=n=>String(n||"").split(" ")[0];
+ const chk=()=>{const now=Date.now(),live=[],need=[];P.forEach(k=>{const pid=k.id,a=A[pid];if(!a)return;const kid=first(a.name||k.name),pk=a.pk&&a.pk.lat?a.pk:null;if((a.amBus||a.pmBus)&&!pk)need.push({pid,kid});
+   ["am","pm"].forEach(dir=>{const x=B[a[dir+"Bus"]];if(!x||!busOn(x)||x.dir!==dir||!x.tripId)return;const key=x.tripId+"|"+pid,pm=dir==="pm",what=pm?"drop":"pickup";live.push({pid,kid,bus:x,dir});
+    if(busOnce(key+"|s"))busNote("🚌","School bus update · "+kid,x.name+(pm?" has left the school.":" has started its journey.")+(x.route?" Route: "+x.route+".":"")+" Started "+tm(x.startTs||now)+"."+(pk?" Tap to track it live.":" Set the "+what+" point to get alerts when the bus is near."));
+    const l=busLive(x),st=Z[key]||(Z[key]={});let km=null;
+    if(l&&pk){km=busKm(l.lat,l.lng,pk.lat,pk.lng);
+     if(l.ts!==st.ts){const dt=st.ts?(l.ts-st.ts)/1000:0;st.closing=st.km!=null&&km<st.km-.015;st.spd=typeof l.spd==="number"&&l.spd>=0?l.spd:dt>2?busKm(st.lat,st.lng,l.lat,l.lng)*1000/dt:null;st.km=km;st.ts=l.ts;st.lat=l.lat;st.lng=l.lng;if(km<=BUSZ.arr){if(!st.in)st.in=now}else st.in=0}}
+    /* arrived = the driver's phone marked it, or the bus is inside 120 m and slow, or has stayed there for 30 s (a bus that only drives past is not "arrived") */
+    const at=busArr(x,busK(pid))||(km!=null&&km<=BUSZ.arr&&((st.spd!=null&&st.spd<=BUSSLOW)||(st.in&&now-st.in>=30000))?now:0);
+    if(at){if(busOnce(key+"|a"))busNote("🔴",x.name+" has arrived","at "+kid+"'s "+what+" point · "+tm(at))}
+    else if(km!=null&&st.closing&&!busSeen(key+"|a")){
+     if(km<=BUSZ.appr){if(busOnce(key+"|p"))busNote("🟡","Bus is approaching · "+busFmt(km),x.name+" is about "+busEta(km)+" min from "+kid+"'s "+what+" point. Please be ready.")}
+     else if(km<=BUSZ.near&&!busSeen(key+"|p")&&busOnce(key+"|n"))busNote("🟢","Bus is nearby · "+busFmt(km),x.name+" is about "+busEta(km)+" min from "+kid+"'s "+what+" point.")}
+    if(!pm){const sc=busArr(x,"sch")||(l&&x.sch&&x.sch.lat&&busKm(l.lat,l.lng,x.sch.lat,x.sch.lng)<=BUSZ.arr?l.ts||now:0);if(sc&&busOnce(key+"|d"))busNote("🏫",kid+" has reached school",x.name+" reached the school at "+tm(sc)+".")}})});
+  const sig=live.map(n=>n.pid+n.dir).join()+"|"+need.map(n=>n.pid).join();busNow=live;busNeed=need;if(sig!==busSig){busSig=sig;if(tab==="home")try{rHome()}catch(e){}}};
+ /* a bus the database does not show yet (its riders list is still being written): try again in a minute */
+ const subB=(id,n)=>{if(busWU!==gen||subs[id])return;subs[id]=1;busWU.push(onSnapshot(FXD("buses",id),s=>{B[id]=s.exists()?{id,...s.data()}:null;chk()},()=>{subs[id]=0;if(n<6)setTimeout(()=>subB(id,n+1),60000)}))};
+ P.forEach(k=>busWU.push(onSnapshot(FXD("busmap",k.id),s=>{if(s.exists()){A[k.id]=s.data();[A[k.id].amBus,A[k.id].pmBus].filter(Boolean).forEach(id=>subB(id,0))}else delete A[k.id];chk()},()=>{})));
+ busWT=setInterval(chk,10000);
+ unsubs.push(()=>{busWU.forEach(u=>{try{u()}catch(e){}});busWU=[];clearInterval(busWT);busNow=[];busNeed=[];busSig=""})}
+/* home: "set the pickup point" until it is done, and a card while a child's bus is on its way */
+function busHome(h){const at=h.children[1]||null;busNeed.forEach(n=>{const c=mk("div","card busl need");c.setAttribute("data-noskin","");c.append(mk("b",null,"📍 Set "+n.kid+"'s pickup point"),mk("div","meta","One time only · then the app tells you when the bus is near"));c.style.cursor="pointer";c.onclick=()=>fxOpen("bus");h.insertBefore(c,at)});
+ busNow.forEach(n=>{const c=mk("div","card busl");c.setAttribute("data-noskin","");c.append(mk("b",null,"🚌 "+n.bus.name+" is on the way"),mk("div","meta",n.kid+" · "+(n.dir==="am"?"to school":"back home")+" · tap to track live"));c.style.cursor="pointer";c.onclick=()=>fxOpen("bus");h.insertBefore(c,at)})}
+
+/* ---------- the driver's phone during a trip ---------- */
+const busGeo=(x,dir,R)=>R.filter(m=>m.pk&&m.pk.lat).map(m=>busK(m.pid)+","+m.pk.lat+","+m.pk.lng).concat(dir==="am"&&x.sch&&x.sch.lat?["sch,"+x.sch.lat+","+x.sch.lng]:[]).join(";");
+let busMy={},busMU=null,busMT=0,busTM={},busTU={},busPrev=null;const busDid={},busNx={};
+function busSelf(id){try{return busMy[id]||null}catch(e){return null}}
+function busPos(x){let c=null,s=null;try{s=liveS;c=livePos}catch(e){}if(s&&s.bus===x.id&&!s.nat&&c)return{lat:c.latitude,lng:c.longitude};const l=busLive(x);return l?{lat:l.lat,lng:l.lng}:null}
+/* students of a running trip: W = still to reach (nearest first), done = reached, nop = no pickup point yet */
+function busQueue(x,R,pos){const dir=x.dir||"am",L=R.filter(m=>m[dir+"Bus"]===x.id),W=[],done=[],nop=[];
+ L.forEach(m=>{const at=busArr(x,busK(m.pid));if(at)done.push({m,at});else if(m.pk&&m.pk.lat)W.push({m,km:pos?busKm(pos.lat,pos.lng,m.pk.lat,m.pk.lng):null});else nop.push(m)});
+ W.sort((a,b)=>(a.km==null?1e9:a.km)-(b.km==null?1e9:b.km)||String(a.m.name).localeCompare(String(b.m.name)));done.sort((a,b)=>a.at-b.at);return{W,done,nop,n:L.length}}
+function busDrvNote(ic,t,tx){toast(ic,t,tx,true);try{beep()}catch(e){}try{navigator.vibrate&&navigator.vibrate(120)}catch(e){}try{notif(ic,t,tx)}catch(e){}pxSticky(()=>fxOpen("bus"))}
+/* tells the driver the next pickup each time it changes */
+function busNextNote(x){if(!busOn(x)||!x.tripId||x.driverUid!==S.uid)return;const R=busTM[x.tripId];if(!R)return;const q=busQueue(x,R,busPos(x)),nx=q.W[0],pm=x.dir==="pm",id=nx?(nx.km==null?"":nx.m.pid):(q.done.length?"done":"");
+ if(!id||busNx[x.tripId]===id)return;busNx[x.tripId]=id;
+ if(id==="done")busDrvNote("✅",pm?"All children dropped":"All pickups done",pm?"You can end the trip.":"Go to the school.");else busDrvNote("➡️",(pm?"Next drop: ":"Next pickup: ")+nx.m.name,busFmt(nx.km)+" away · about "+busEta(nx.km)+" min")}
+/* when this page (not the Android service) follows the trip: mark a pickup point once the bus is within 120 m and slow */
+function busAuto(){let s=null,c=null;try{s=liveS;c=livePos}catch(e){}Object.values(busMy).forEach(x=>{try{busNextNote(x)}catch(e){console.warn("next pickup",e)}});
+ if(!s||!s.bus||s.nat||!c){busPrev=null;return}const x=busMy[s.bus];if(!x||!busOn(x)||x.lid!==s.lid||(c.accuracy||0)>150)return;
+ const now=Date.now(),pv=busPrev;busPrev={lat:c.latitude,lng:c.longitude,t:now};const spd=typeof c.speed==="number"&&c.speed>=0?c.speed:pv&&now-pv.t>2000?busKm(pv.lat,pv.lng,c.latitude,c.longitude)*1000/((now-pv.t)/1000):null;if(spd==null||spd>BUSSLOW)return;
+ const up={};String(s.geo||"").split(";").forEach(g=>{const[k,la,ln]=g.split(",");if(!k||busArr(x,k)||busDid[x.tripId+k])return;if(busKm(c.latitude,c.longitude,+la,+ln)<=BUSZ.arr){up["arr."+k]=now;busDid[x.tripId+k]=1}});
+ if(Object.keys(up).length)updateDoc(FXD("buses",x.id),up).catch(e=>{console.warn("arrival",e);Object.keys(up).forEach(k=>delete busDid[x.tripId+k.slice(4)])})}
+function busTrips(){const run={};Object.values(busMy).forEach(x=>{if(!busOn(x)||!x.tripId)return;run[x.tripId]=1;if(busTU[x.tripId])return;const id=x.tripId;
+  busTU[id]=onSnapshot(query(FXC("busmap"),where((x.dir||"am")+"Bus","==",x.id),limit(400)),s=>{busTM[id]=s.docs.map(d=>({id:d.id,...d.data()}));const b=busMy[x.id];if(b)try{busNextNote(b)}catch(e){}},e=>console.warn("trip students",e))});
+ Object.keys(busTU).forEach(id=>{if(!run[id]){try{busTU[id]()}catch(e){}delete busTU[id];delete busTM[id]}})}
+function busDriveOff(){if(busMU){try{busMU()}catch(e){}}busMU=null;clearInterval(busMT);busMy={};Object.keys(busTU).forEach(id=>{try{busTU[id]()}catch(e){}delete busTU[id]});busTM={};busPrev=null}
+function busDrive(){busDriveOff();if(!(SCH()&&S.me&&S.me.status==="approved"&&S.pid===S.uid&&!isStu(S.me)))return;
+ busMU=onSnapshot(query(FXC("buses"),where("driverUid","==",S.uid),limit(10)),s=>{const n={};s.docs.forEach(d=>{n[d.id]={id:d.id,...d.data()}});busMy=n;busTrips();Object.values(n).forEach(x=>{try{busNextNote(x)}catch(e){}})},e=>console.warn("my bus",e));busMT=setInterval(busAuto,6000);
+ unsubs.push(busDriveOff);
+ if(isOwner())setTimeout(()=>{try{busFromAll();busRidersDaily()}catch(e){console.warn(e)}},5000)}
+
+/* ---------- school side: buses, students, the driver's trip, history ---------- */
+FX.bus={ic:"🚌",get t(){return S.me&&isStu(S.me)&&!isAdm()?"My child's bus":S.me&&!isAdm()&&isBusJob(S.me)?"My bus":"School buses"},open(b){
+ if(!isAdm()&&isStu(S.me)){busParent(b);return}
+ let L=null,err=null,MAP=[],mapOk=false,TR=[],view="bus",hb="All";const MP={};const adm=isAdm(),own=isOwner(),mine=x=>x.driverUid===S.uid,subs={};
+ const byN=(p,q)=>String(p.cls+p.name).localeCompare(String(q.cls+q.name),undefined,{numeric:true});
+ const riders=(x,dir)=>MAP.filter(m=>m[dir+"Bus"]===x.id).sort(byN),onBus=x=>MAP.filter(m=>m.amBus===x.id||m.pmBus===x.id).sort(byN),hasPk=m=>!!(m.pk&&m.pk.lat);
+ const schOf=()=>{const q=(L||[]).find(z=>z.sch&&z.sch.lat);return q?q.sch:null};
+ /* --- bus form --- */
+ const edit=x=>{let P=fxPpl();{const d=P.filter(p=>isBusJob(D.mem[p.uid]||p)),st=P.filter(p=>!isStu(p));P=d.length?d.concat(st.filter(p=>!d.includes(p))):st.length?st:P}
+  fxForm(x?"Edit bus":"Add a bus","The driver only starts and ends the trip on their own phone. A driver who joins with Join as staff → Bus driver enters the bus number himself, and the bus is added here when you approve him.",[{k:"name",l:"Bus number / name",ph:"e.g. BUS-04 · DL1PC 1234",req:1,val:x&&x.name,max:40},{k:"route",l:"Route",ph:"e.g. Rohini → School",val:x&&x.route,max:120},{k:"driverUid",l:"Driver (the person who carries the phone)",type:"select",opts:P.map(p=>[p.uid,p.name+" · "+(p.flat||roleLbl(p.role))]),val:x?x.driverUid:(P[0]||{}).uid,req:1},{k:"phone",l:"Driver's phone",type:"tel",val:x&&x.phone,max:15}],"Save",
+   async v=>{const p=P.find(q=>q.uid===v.driverUid);if(!p)throw fxBad("Choose the driver.");const o={name:v.name,route:v.route,driverUid:p.uid,driverName:p.name,phone:v.phone};if(x)await updateDoc(FXD("buses",x.id),o);else await fxAdd("buses",{...o,sch:schOf(),on:false,lid:"",until:0,riders:[],uid:S.uid});toast("✅","Saved","",true)})};
+ /* --- a driver without a bus sends the bus number; the Principal's app turns it into a bus --- */
+ const myBus=mb=>fxForm("My bus","",[{k:"name",l:"Bus number",ph:"e.g. BUS-04 · DL1PC 1234",req:1,val:mb.name,max:40},{k:"route",l:"Route",ph:"e.g. Rohini → School",val:mb.route,max:120}],"Send to the Principal",async v=>{const o={name:v.name,route:v.route||""};await updateDoc(doc(db,"societies",S.sid,"members",S.uid),{bus:o});S.me.bus=o;toast("✅","Sent","The bus appears under My bus once the Principal's app adds it.",true);draw()});
+ /* --- the school's own place, once for all buses: used for "reached school" --- */
+ const schSet=async bt=>{const v=await locPick({title:"School gate",at:schOf()});if(!v)return;const sch={lat:v.lat,lng:v.lng,a:String(v.name||"").slice(0,60)};run(bt,async()=>{await Promise.all((L||[]).map(q=>updateDoc(FXD("buses",q.id),{sch})));toast("✅","School location saved","",true)})};
+ /* --- which student takes which bus (several students of a class at once) --- */
+ const assign=(x,cur)=>{const cl=schClasses(),B2=(L||[]).slice().sort((p,q)=>String(p.name).localeCompare(String(q.name),undefined,{numeric:true}));if(!cur&&!cl.length){toast("ℹ️","No classes yet","",true);return}
+  sheet(z=>{m3(z);z.appendChild(mk("h2",null,cur?"Bus for "+cur.name:"Assign students"));z.appendChild(mk("p","sub","Choose the morning and the evening bus. Each parent sets the child's pickup point once in their own app — you don't enter any stops."));
+   const sel=new Set(),box=mk("div","busckl"),cs=fxSel(cl.length?cl:[""],cl.find(c=>fxStuds(c).length)||cl[0]);
+   const fill=()=>{box.innerHTML="";const st=fxStuds(cs.value);if(!st.length){box.appendChild(mk("div","meta","No students in this class yet."));return}
+    const all=mk("a","lnk","Select all");all.onclick=()=>{const on=sel.size<st.length;sel.clear();if(on)st.forEach(p=>sel.add(p.uid));fill()};all.textContent=sel.size>=st.length?"Clear all":"Select all";box.appendChild(all);
+    st.forEach(p=>{const m=MAP.find(q=>q.pid===p.uid),l=mk("label","busck"),i=mk("input"),t=mk("span");i.type="checkbox";i.checked=sel.has(p.uid);i.onchange=()=>{if(i.checked)sel.add(p.uid);else sel.delete(p.uid);all.textContent=sel.size>=st.length?"Clear all":"Select all"};
+     t.append(mk("b",null,p.name+(fxRoll(p.flat)?" · "+fxRoll(p.flat):"")),mk("small",null,m&&(m.amBus||m.pmBus)?"🚌 "+[m.amName,m.pmName].filter((v,n,a)=>v&&a.indexOf(v)===n).join(" / "):"no bus yet"));l.append(i,t);box.appendChild(l)})};
+   if(cur)z.appendChild(mk("div","meta",cur.name+" · "+(cur.cls||"")));else{cs.onchange=()=>{sel.clear();fill()};fill();z.append(fxLbl("Class",cs),box)}
+   const opts=[["","No bus"]].concat(B2.map(q=>[q.id,q.name])),AM=fxSel(opts,cur?cur.amBus||"":x?x.id:""),PM=fxSel(opts,cur?cur.pmBus||"":x?x.id:""),g=mk("div","g2");g.append(fxLbl("Morning · to school",AM),fxLbl("Evening · back home",PM));z.appendChild(g);
+   const sv=mk("button","btn","Save");sv.type="button";sv.style.marginTop="6px";sv.onclick=()=>{const T=cur?[{uid:cur.pid,name:cur.name,cls:cur.cls||"",roll:cur.roll||""}]:fxStuds(cs.value).filter(p=>sel.has(p.uid)).map(p=>({uid:p.uid,name:p.name,cls:cs.value,roll:fxRoll(p.flat)||""}));
+    if(!T.length){toast("ℹ️","Tick the students first","",true);return}const bn=id=>{const q=B2.find(v=>v.id===id);return q?q.name:""},now=Date.now();
+    run(sv,async()=>{await Promise.all(T.map(t=>setDoc(FXD("busmap",t.uid),{pid:t.uid,puid:AUID(t.uid),name:t.name,cls:t.cls,roll:t.roll,amBus:AM.value,amName:bn(AM.value),pmBus:PM.value,pmName:bn(PM.value),ts:now},{merge:true})));closeSheet();toast("✅","Saved",T.length===1?T[0].name:T.length+" students",true)})};z.appendChild(sv)})};
+ const students=x=>sheet(z=>{m3(z);z.appendChild(mk("h2",null,"Students · "+x.name));const R=onBus(x),n=R.filter(hasPk).length;z.appendChild(mk("p","sub",R.length+" student"+(R.length===1?"":"s")+" on this bus · "+n+" with a pickup point"+(R.length>n?" · "+(R.length-n)+" still to set it (the parent does it in the app)":"")));
+  R.forEach(m=>{const r=mk("div","fxbd"),t=mk("div","t");t.appendChild(mk("b",null,m.name+" · "+m.cls));t.appendChild(mk("small",null,[m.amBus===x.id?"Morning":"",m.pmBus===x.id?"Evening":""].filter(Boolean).join(" + ")+" · "+(hasPk(m)?"📍 "+busPkTxt(m.pk):"⚠️ no pickup point yet")));r.appendChild(t);
+   if(own){const p=mk("button","btn s o","📍");p.type="button";p.setAttribute("aria-label","Set the pickup point of "+m.name);p.onclick=async()=>{const v=await locPick({title:"Pickup point · "+m.name,at:hasPk(m)?m.pk:null,near:schOf()});if(v)run(p,async()=>{await busPkSave(m.pid,m.name,m.cls,v,true);closeSheet()})};const e=mk("button","btn s o","Change");e.type="button";e.onclick=()=>assign(x,m);r.append(p,e)}z.appendChild(r)});
+  if(own){const a=mk("button","btn","＋ Assign students");a.type="button";a.style.marginTop="12px";a.onclick=()=>assign(x);z.appendChild(a)}});
+ /* --- the driver's trip: start, end, and the next pickup --- */
+ const startSheet=x=>sheet(z=>{m3(z);z.appendChild(mk("h2",null,"Start trip · "+x.name));z.appendChild(mk("p","sub","That is all you do: start the trip now and end it when you are done. Your location is shared with the school and the parents of this bus, also when this phone is locked, and the app shows you the next pickup."));
+  const ds=fxSel([["am","Morning · picking children up"],["pm","Evening · dropping children home"]],new Date().getHours()<12?"am":"pm"),inf=mk("div","meta"),upd=()=>{const R=riders(x,ds.value),n=R.filter(hasPk).length;inf.textContent=R.length?n+" of "+R.length+" students have a pickup point."+(n<R.length?" The others are not shown on your list until their parents set it.":""):"No students are on this trip yet."};ds.onchange=upd;upd();z.append(fxLbl("Trip",ds),inf);
+  let mins=120;const ch=mk("div","lch");[[60,"1 hour"],[120,"2 hours"],[180,"3 hours"]].forEach(([m,t])=>{const o=mk("button",m===mins?"on":"",t);o.type="button";o.onclick=()=>{mins=m;[...ch.children].forEach(q=>q.classList.toggle("on",q===o))};ch.appendChild(o)});z.appendChild(mk("div","meta","Stop automatically after"));z.appendChild(ch);
+  const go=mk("button","btn","▶ START TRIP");go.type="button";go.style.marginTop="12px";go.onclick=()=>run(go,async()=>{if(!(await askPerm("loc")))return;const c=await busHere(),now=Date.now(),lid=rid(),until=now+mins*60000,tripId=rid(),dir=ds.value,R=riders(x,dir),gn={};R.filter(hasPk).forEach(m=>{gn[busK(m.pid)]=String(m.name||"").split(" ")[0].slice(0,18)});
+   await setDoc(FXD("bustrips",tripId),{busId:x.id,busName:x.name,route:x.route||"",dir,uid:S.uid,driverName:S.me.name,start:now,end:0,until,ts:now});
+   await updateDoc(FXD("buses",x.id),{on:true,lid,until,startTs:now,dir,tripId,at:null,arr:{},live:{lid,until,end:0,lat:fix6(c.latitude),lng:fix6(c.longitude),acc:Math.round(c.accuracy||0),spd:-1,ts:now}});
+   liveStart({lid,until,cid:null,bus:x.id,geo:busGeo(x,dir,R),gn:JSON.stringify(gn),gl:dir==="pm"?"Next drop":"Next pickup",t0:now},c);closeSheet();toast("🚌","Trip started","Parents of this bus can now see it.",true)});z.appendChild(go)});
+ const stop=async x=>{if(!fxSure("End this trip?"))return;const now=Date.now();if(liveS&&liveS.bus===x.id)liveStop();else if(mine(x))liveNatStop();
+  if(x.tripId)await updateDoc(FXD("bustrips",x.tripId),{end:now}).catch(()=>{});await updateDoc(FXD("buses",x.id),{on:false,endTs:now,"live.end":now});toast("🚌","Trip ended","",true)};
+ const tripPanel=(c,x,me)=>{const dir=x.dir||"am",pm=dir==="pm",q=busQueue(x,MAP,busPos(x)),nx=q.W[0],bx=mk("div","busnx");c.appendChild(mk("div","fxs",busDirL(dir)+" · started "+tm(x.startTs)));
+  if(nx){bx.append(mk("small",null,pm?"Next drop":"Next pickup"),mk("b",null,nx.m.name),mk("span",null,nx.km==null?"Waiting for the bus's location…":"📍 "+busFmt(nx.km)+" away · ⏱ about "+busEta(nx.km)+" min"));
+   if(me){const nv=mk("a","btn","🧭 Navigate");nv.href="https://www.google.com/maps/dir/?api=1&destination="+nx.m.pk.lat+","+nx.m.pk.lng+"&travelmode=driving";nv.target="_blank";nv.rel="noopener";bx.appendChild(nv)}}
+  else bx.append(mk("b",null,q.done.length?(pm?"✅ All children dropped":"✅ All pickups done"):q.n?"No pickup points yet":"No students on this trip"),mk("span",null,q.done.length?(pm?"The trip can be ended.":"Next: the school."):q.n?"The parents have not set them yet.":"The school assigns students to this bus."));
+  c.appendChild(bx);
+  if(q.W.length>1){c.appendChild(mk("div","fxs","Upcoming"));q.W.slice(1).forEach(w=>{const r=mk("div","busrow"),t=mk("div","t");t.appendChild(mk("b",null,w.m.name));t.appendChild(mk("small",null,w.m.cls||""));r.append(t,mk("span","busd",w.km==null?"—":busFmt(w.km)));c.appendChild(r)})}
+  if(q.done.length){c.appendChild(mk("div","fxs","Reached · "+q.done.length+" of "+(q.done.length+q.W.length)));q.done.forEach(w=>{const r=mk("div","busrow"),t=mk("div","t");t.appendChild(mk("b",null,"✅ "+w.m.name));t.appendChild(mk("small",null,w.m.cls||""));r.append(t,mk("span","busd",tm(w.at)));c.appendChild(r)})}
+  if(q.nop.length)c.appendChild(mk("div","meta","No pickup point yet (the parent sets it in the app): "+q.nop.map(m=>m.name).join(", ")));
+  if(!pm){const ts=busArr(x,"sch");if(ts)c.appendChild(mk("div","note","🏫 Reached school at "+tm(ts)));else if(!(x.sch&&x.sch.lat))c.appendChild(mk("div","meta","🏫 The school's location is not set yet, so \"reached school\" cannot be told."+(own?" Set it above.":" The Principal sets it once.")))}};
+ /* --- screens --- */
+ const busCard=x=>{const l=busLive(x),run=busOn(x),c=mk("div","fxk"),top=mk("div","fxr"),me=mine(x),R=onBus(x);top.appendChild(fxPill(run?"● LIVE":"Not running",run?"g":""));if(run)top.appendChild(fxPill(x.dir==="pm"?"Evening":"Morning","b"));if(l)top.appendChild(mk("span","meta sp1","updated "+ago(l.ts)));c.appendChild(top);
+  c.appendChild(mk("b","fxt","🚌 "+x.name));if(x.route)c.appendChild(mk("div","meta","🛣️ "+x.route));c.appendChild(mk("div","meta","Driver: "+(x.driverName||"—")+(x.phone?" · "+x.phone:"")+(adm||me?" · "+R.length+" students"+(R.length?" · "+R.filter(hasPk).length+" with a pickup point":""):"")));
+  if(l&&!me)c.appendChild(busMapEl());
+  if((me||adm)&&run&&x.tripId)tripPanel(c,x,me);
+  const a=mk("div","fxa");if(me&&!run){const s=mk("button","btn g","▶ START TRIP");s.type="button";s.style.flex="1";s.onclick=()=>startSheet(x);a.appendChild(s)}
+  if(me&&run)a.appendChild(fxMini("■ END TRIP",()=>stop(x),"r"));
+  if(l&&!me){const v=mk("a","btn s","🗺️ Track live");v.href="https://www.google.com/maps?q="+l.lat+","+l.lng;v.target="_blank";v.rel="noopener";a.appendChild(v)}
+  if(x.phone&&!me){const p=mk("a","btn s o","📞 Driver");p.href="tel:"+String(x.phone).replace(/[^\d+]/g,"");a.appendChild(p)}
+  if(adm||(me&&!run)){const s=mk("button","btn s o","👥 Students");s.type="button";s.onclick=()=>students(x);a.appendChild(s)}
+  if(own){const e=mk("button","btn s o","Edit");e.type="button";e.onclick=()=>edit(x);a.appendChild(e);a.appendChild(fxMini("Delete",async()=>{if(fxSure("Remove "+x.name+"? Students of this bus will have no bus."))await deleteDoc(FXD("buses",x.id))},"r"))}
+  if(own&&run&&!me)a.appendChild(fxMini("■ End trip",()=>stop(x),"r"));
+  if(a.children.length)c.appendChild(a);return c};
+ const history=()=>{const T=TR.filter(t=>hb==="All"||t.busId===hb).sort((p,q)=>q.start-p.start);
+  if(adm){const ids=[...new Set(TR.map(t=>t.busId))];if(ids.length>1){const s=fxSel([["All","All buses"]].concat(ids.map(i=>[i,(TR.find(t=>t.busId===i)||{}).busName||i])),hb);s.onchange=()=>{hb=s.value;draw()};b.appendChild(s)}}
+  if(!T.length){b.appendChild(fxEmpty("🕘","No trips yet."));return}
+  const tot=T.reduce((s,t)=>s+busDur(t),0),hd=mk("div","fxhd");hd.appendChild(mk("b",null,T.length+" trip"+(T.length===1?"":"s")+" · "+busHrs(tot)));hd.appendChild(mk("p",null,adm?"Every trip of every bus. Export it as a spreadsheet for your records.":"Every trip you have driven."));
+  if(adm){const ex=mk("button","btn","⬇ Export CSV");ex.type="button";ex.onclick=()=>exportCSV("bus-trips-"+td(),["Date","Bus","Route","Driver","Trip","Start","End","Hours"],T.map(t=>{const e=t.end||(t.until<Date.now()?t.until:0);return[fxYmd(new Date(t.start)),t.busName,t.route||"",t.driverName||"",t.dir==="pm"?"Evening":"Morning",tm(t.start),e?tm(e):"running",e?((e-t.start)/36e5).toFixed(2):""]}));hd.appendChild(ex)}b.appendChild(hd);
+  T.slice(0,150).forEach(t=>{const e=t.end||(t.until<Date.now()?t.until:0),c=mk("div","fxk"),top=mk("div","fxr");top.append(fxPill(t.dir==="pm"?"Evening":"Morning","b"),fxPill(e?busHrs(e-t.start):"Running",e?"":"g"),mk("span","meta sp1",fxDate(fxYmd(new Date(t.start)))));c.appendChild(top);c.appendChild(mk("b","fxt","🚌 "+t.busName));c.appendChild(mk("div","meta",(adm?(t.driverName||"")+" · ":"")+tm(t.start)+" – "+(e?tm(e)+(t.end?"":" (stopped automatically)"):"now")));b.appendChild(c)})};
+ const draw=()=>{if($("lpk"))return;b.innerHTML="";const drv=(L||[]).some(mine);
+  fxHead(b,adm?"School buses":drv?"My bus":"School buses",own?"Add the buses and put the students on them. Parents set their own pickup points; drivers only start and end the trip.":drv?"Start the trip when you leave and end it when you are done. The app shows the next pickup by itself.":"Buses of the school and where they are now.",own&&view==="bus"?"＋ Add a bus":"",()=>edit());
+  if(adm||drv)b.appendChild(fxChips([["bus",adm?"Buses":"My bus"],["hist","Trip history"]],view,v=>{view=v;draw()}));
+  if(L&&!err&&!adm&&!drv&&isBusJob(S.me)){const mb=S.me.bus,c=mk("div","fxk");c.appendChild(mk("b","fxt",mb&&mb.name?"🚌 "+mb.name:"🚌 Your bus"));c.appendChild(mk("div","meta",mb&&mb.name?(mb.done?"This bus is not in the school's list right now. Send the number again, or ask the Principal.":"Sent to the Principal. The bus appears here as soon as the Principal's app adds it."):"Enter your bus number. The Principal's app then adds the bus for you."));
+   const e=mk("button","btn",mb&&mb.name?"Change bus details":"＋ Add my bus");e.type="button";e.style.marginTop="10px";e.onclick=()=>myBus(mb||{});c.appendChild(e);b.appendChild(c);return}
+  if(fxState(b,L,err,"🚌",adm?"No buses have been added yet.":"No bus has been given to you yet. Ask the Principal."))return;
+  if(view==="hist"){history();return}
+  if(own){const sc=schOf(),c=mk("div","fxk buspk"),r=mk("div","fxr"),t=mk("div","t"),bt=mk("button","btn s"+(sc?" o":""),sc?"Change":"Set");bt.type="button";bt.onclick=()=>schSet(bt);t.append(mk("b",null,"🏫 School location"),mk("small",null,sc?busPkTxt(sc)+" · used to tell parents \"reached school\"":"Not set yet. Set it once, for all buses, so parents are told when the bus reaches the school."));r.append(t,bt);c.appendChild(r);b.appendChild(c)}
+  const R=(adm?L:drv?L.filter(mine):L).slice().sort((p,q)=>(mine(q)-mine(p))||String(p.name).localeCompare(String(q.name),undefined,{numeric:true}));R.forEach(x=>b.appendChild(busCard(x)))};
+ fxW(query(FXC("buses"),limit(80)),(d,e)=>{L=d||[];err=e;if(!adm)L.filter(mine).forEach(x=>["am","pm"].forEach(dir=>{const k=dir+x.id;if(subs[k])return;subs[k]=1;fxW(query(FXC("busmap"),where(dir+"Bus","==",x.id),limit(400)),r=>{MP[k]=r||[];const seen={};MAP=[].concat(...Object.values(MP)).filter(m=>seen[m.pid]?false:(seen[m.pid]=1));draw()})}));
+  if(adm&&mapOk&&!e)busRiders(L,MAP);if(own&&!e){const sc=schOf();if(sc)L.filter(q=>!(q.sch&&q.sch.lat)).forEach(q=>updateDoc(FXD("buses",q.id),{sch:sc}).catch(()=>{}))}draw()});
+ if(own)try{busFromAll()}catch(e){console.warn(e)}
+ if(adm){fxW(query(FXC("busmap"),limit(3000)),(d,e)=>{MAP=d||[];if(d&&!e){mapOk=true;if(L)busRiders(L,MAP)}if(L)draw()});fxW(query(FXC("bustrips"),orderBy("start","desc"),limit(400)),d=>{TR=d||[];if(L)draw()})}
+ else fxW(query(FXC("bustrips"),where("uid","==",S.uid),limit(300)),d=>{TR=d||[];if(L)draw()});
+ const iv=setInterval(()=>{if(L&&view==="bus"&&L.some(x=>x.on)&&$("ov").classList.contains("hide"))draw()},8000);fxU.push(()=>clearInterval(iv));draw()}};
+
+/* ---------- Exam results: teacher -> class -> students -> results ---------- */
+FX.res={ic:"🏅",t:"Exam results",show:()=>isAdm()||isStu(S.me),open(b){let L=null,err=null;const adm=isAdm(),lk="sh-res-last-"+S.sid,nav={t:isTeacher()?S.uid:null,cls:isTeacher()?myCls():null,stu:null};
+ const last=()=>{try{return JSON.parse(localStorage.getItem(lk)||"{}")}catch(e){return{}}};
+ const pdf=x=>{try{const u=URL.createObjectURL(fxPdf(fxReportCanvas(x)));openPdf(u,("Report card - "+x.studentName+" - "+x.exam).replace(/[\\\/:*?"<>|]+/g," ")+".pdf")}catch(e){fail(e,"Couldn't make the PDF")}};
+ const view=x=>sheet(z=>{m3(z);const T=fxTot(x);z.appendChild(mk("h2",null,x.exam));z.appendChild(mk("p","sub",x.studentName+" · "+x.cls+(x.roll?" · "+x.roll:"")));
+  const t=mk("table","fxtb"),hr=mk("tr");[["Subject",""],["Max","n"],["Marks","n"],["Grade","n"]].forEach(([h,c])=>hr.appendChild(mk("th",c,h)));t.appendChild(hr);
+  (x.subjects||[]).forEach(s=>{const r=mk("tr");r.append(mk("td",null,s.n),mk("td","n",String(s.max)),mk("td","n",String(s.got)),mk("td","n",fxGrade(s.max?s.got/s.max*100:0)));t.appendChild(r)});
+  const tr=mk("tr");[["Total",""],[String(T.max),"n"],[String(T.got),"n"],[T.grade,"n"]].forEach(([h,c])=>{const d=mk("td",c);d.appendChild(mk("b",null,h));tr.appendChild(d)});t.appendChild(tr);z.appendChild(t);
+  const r=mk("div","fxr");r.style.justifyContent="center";r.append(fxPill(T.pct.toFixed(1)+"%","b"),fxPill("Grade "+T.grade,T.pct>=33?"g":"r"));z.appendChild(r);
+  if(x.remarks){z.appendChild(mk("div","fxs","Teacher's remarks"));z.appendChild(mk("p","desc",x.remarks))}z.appendChild(mk("div","meta",(x.byName?"By "+x.byName+" · ":"")+dt(x.ts)));
+  const d=mk("button","btn","⬇ Report card (PDF)");d.type="button";d.style.marginTop="12px";d.onclick=()=>{closeSheet();pdf(x)};z.appendChild(d)});
+ const edit=(x,pre)=>{const cl=fxClasses();if(!cl.length){toast("ℹ️","Add a class first","",true);return}sheet(z=>{m3(z);const P=last();z.appendChild(mk("h2",null,x?"Edit result":"Add a result"));z.appendChild(mk("p","sub","The student sees it as soon as you save."));
+  const c0=x?x.cls:pre&&cl.includes(pre.cls)?pre.cls:(cl.includes(P.cls)?P.cls:(cl.find(c=>fxStuds(c).length)||cl[0])),cs=fxSel(cl.includes(c0)?cl:cl.concat([c0]),c0),ss=mk("select"),fillS=()=>{ss.innerHTML="";const st=fxStuds(cs.value);if(!st.length)ss.appendChild(Object.assign(mk("option",null,"No students in this class yet"),{value:""}));st.forEach(p=>ss.appendChild(Object.assign(mk("option",null,p.name+(fxRoll(p.flat)?" · "+fxRoll(p.flat):"")),{value:p.uid})))};
+  cs.onchange=fillS;fillS();if(x){ss.value=x.studentUid;cs.disabled=ss.disabled=true}else if(pre&&pre.uid)ss.value=pre.uid;
+  const ex=mk("input");ex.placeholder="e.g. Unit Test 1, Half Yearly, Annual";ex.maxLength=50;ex.value=x?x.exam:(P.exam||"");
+  z.append(fxLbl("Class",cs),fxLbl("Student",ss),fxLbl("Exam",ex));z.appendChild(mk("div","fxs","Subjects · max marks · marks obtained"));
+  const rows=mk("div"),row=s=>{if(rows.children.length>=12){toast("ℹ️","Up to 12 subjects","",true);return}const r=mk("div","fxsub"),n=mk("input"),m=mk("input"),g=mk("input"),d=mk("button",null,"✕");n.placeholder="Subject";n.maxLength=30;n.value=s.n||"";m.type=g.type="number";m.placeholder="Max";g.placeholder="Marks";m.min=g.min="0";m.inputMode=g.inputMode="decimal";m.value=s.max!=null?s.max:"";g.value=s.got!=null?s.got:"";d.type="button";d.setAttribute("aria-label","Remove subject");d.onclick=()=>r.remove();r.append(n,m,g,d);rows.appendChild(r)};
+  (x?x.subjects:(P.subs&&P.subs.length?P.subs:["English","Hindi","Mathematics","Science","Social Science"].map(n=>({n,max:100})))).forEach(row);z.appendChild(rows);
+  const ad=mk("a","lnk","＋ Add a subject");ad.style.cssText="text-align:left;margin:0 2px 12px";ad.onclick=()=>row({max:100});z.appendChild(ad);
+  const rm=mk("textarea");rm.placeholder="Remarks (optional)";rm.maxLength=300;rm.value=x?x.remarks||"":"";z.appendChild(rm);
+  const er=mk("div","err"),go=mk("button","btn","Save result");go.type="button";go.onclick=()=>{er.textContent="";const subs=[];
+   for(const r of rows.children){const [n,m,g]=r.querySelectorAll("input"),nm=n.value.trim();if(!nm&&m.value===""&&g.value==="")continue;const mx=+m.value,gt=+g.value;if(!nm||!(mx>0)||g.value===""||gt<0||gt>mx){er.textContent="Check the marks for "+(nm||"each subject")+" (0 to max).";return}subs.push({n:nm,max:mx,got:gt})}
+   const st=fxStuds(cs.value).find(p=>p.uid===ss.value),exam=ex.value.trim();if(!x&&!st){er.textContent="Choose a student.";return}if(!exam){er.textContent="Enter the exam name.";return}if(!subs.length){er.textContent="Add at least one subject.";return}
+   run(go,async()=>{try{localStorage.setItem(lk,JSON.stringify({cls:cs.value,exam,subs:subs.map(s=>({n:s.n,max:s.max}))}))}catch(e){}
+    const dup=x||(L||[]).find(r=>r.studentUid===st.uid&&r.exam.toLowerCase()===exam.toLowerCase());
+    if(dup)await updateDoc(FXD("results",dup.id),{exam,subjects:subs,remarks:rm.value.trim(),byName:S.me.name,ts:Date.now()});
+    else await fxAdd("results",{exam,cls:cs.value,studentUid:st.uid,studentName:st.name,roll:fxRoll(st.flat),subjects:subs,remarks:rm.value.trim(),uid:S.uid,byName:S.me.name});
+    closeSheet();toast("✅","Result saved",(x?x.studentName:st.name)+" · "+exam,true)})};z.append(er,go)})};
+ const card=x=>{const T=fxTot(x),c=mk("div","fxk"),top=mk("div","fxr");c.style.cursor="pointer";c.onclick=()=>view(x);top.append(fxPill(x.exam,"b"),fxPill(T.pct.toFixed(0)+"% · "+T.grade,T.pct>=33?"g":"r"));c.appendChild(top);
+  c.appendChild(mk("b","fxt",adm?x.studentName:x.exam));c.appendChild(mk("div","meta",(adm?x.cls+(x.roll?" · "+x.roll:"")+" · ":"")+T.got+" / "+T.max+" marks · "+dt(x.ts)));
+  const a=mk("div","fxa"),v=mk("button","btn s","View");v.type="button";v.onclick=e=>{e.stopPropagation();view(x)};a.appendChild(v);const p=mk("button","btn s o","⬇ PDF");p.type="button";p.onclick=e=>{e.stopPropagation();pdf(x)};a.appendChild(p);
+  if(adm){const e=mk("button","btn s o","Edit");e.type="button";e.onclick=ev=>{ev.stopPropagation();edit(x)};a.appendChild(e);a.appendChild(fxMini("Delete",async()=>{if(fxSure("Delete this result?"))await deleteDoc(FXD("results",x.id))},"r"))}
+  c.appendChild(a);return c};
+ const tile=(ic,t,s,fn)=>{const c=mk("div","fxk restl");c.style.cursor="pointer";c.onclick=fn;const l=mk("div","prw");if(typeof ic==="string")l.appendChild(mk("i","resi",ic));else l.appendChild(ic);const d=mk("div","t");d.append(mk("b","fxt",t),mk("div","meta",s));l.append(d,mk("span","pplc","›"));c.appendChild(l);return c};
+ const back=(t,fn)=>{const a=mk("a","lnk pplb","← "+t);a.onclick=fn;b.appendChild(a)};
+ const draw=()=>{b.innerHTML="";fxHead(b,adm?"Exam results":"My results",adm?(isOwner()?"Choose a teacher, then the class, then a student.":"Your class. Tap a student to see or add results.")+" Each student sees only their own result.":"Your marks for every exam, with a report card you can download.",adm?"＋ Add a result":"",()=>edit(null,nav.cls?{cls:nav.cls,uid:nav.stu}:null));
+  if(err||L===null){fxState(b,L,err,"🏅","");return}
+  if(!adm){if(!L.length){b.appendChild(fxEmpty("🏅","No results have been shared with you yet."));return}L.slice().sort((p,q)=>q.ts-p.ts).forEach(x=>b.appendChild(card(x)));return}
+  const mem=Object.values(D.mem||{}).filter(x=>x.status==="approved"),T=mem.filter(x=>x.role==="COMMITTEE_MEMBER"&&clsOf(x)&&clsOf(x)!=="Teacher").sort((p,q)=>clsOf(p).localeCompare(clsOf(q),undefined,{numeric:true})),tcls=T.map(clsOf),nRes=c=>L.filter(x=>x.cls===c).length,
+   other=[...new Set(schClasses().concat(L.map(x=>x.cls)))].filter(c=>c&&!tcls.includes(c)).sort((p,q)=>p.localeCompare(q,undefined,{numeric:true}));
+  /* 1. teachers */
+  if(!nav.t){if(!T.length&&!other.length){b.appendChild(fxEmpty("🏅","No teachers or classes yet."));return}fxSec(b,"Teachers");
+   T.forEach(t=>b.appendChild(tile(av(t.name,photoOf(t.id),40),t.name,clsOf(t)+" · "+fxStuds(clsOf(t)).length+" students · "+nRes(clsOf(t))+" results",()=>{nav.t=t.id;nav.cls=null;nav.stu=null;draw()})));
+   if(other.length)b.appendChild(tile("📚","Other classes",other.length+" class"+(other.length===1?"":"es")+" without a class teacher",()=>{nav.t="_";nav.cls=null;nav.stu=null;draw()}));return}
+  const tch=T.find(t=>t.id===nav.t),tname=nav.t==="_"?"Other classes":tch?tch.name:isTeacher()?S.me.name:"Teacher";
+  /* 2. classes of that teacher */
+  if(!nav.cls){back("Teachers",()=>{nav.t=null;draw()});fxSec(b,tname);const cls=nav.t==="_"?other:tch?[clsOf(tch)]:[];if(!cls.length)b.appendChild(fxEmpty("🏅","No class."));
+   cls.forEach(c=>b.appendChild(tile("🏫",c,fxStuds(c).length+" students · "+nRes(c)+" results",()=>{nav.cls=c;nav.stu=null;draw()})));return}
+  /* 3. students of the class */
+  const R=L.filter(x=>x.cls===nav.cls),st=fxStuds(nav.cls);R.forEach(x=>{if(!st.some(p=>p.uid===x.studentUid))st.push({uid:x.studentUid,name:x.studentName,flat:nav.cls+(x.roll?" · "+x.roll:"")})});
+  if(!nav.stu){if(isOwner())back(tname,()=>{nav.cls=null;draw()});fxSec(b,nav.cls+" · "+st.length+" students");if(!st.length)b.appendChild(fxEmpty("🏅","No students in this class yet."));
+   st.forEach(p=>{const mine=R.filter(x=>x.studentUid===p.uid).sort((x,y)=>y.ts-x.ts),c=tile(av(p.name,photoOf(p.uid),40),p.name,(fxRoll(p.flat)?fxRoll(p.flat)+" · ":"")+(mine.length?mine.length+" result"+(mine.length===1?"":"s"):"No result yet"),()=>{nav.stu=p.uid;draw()});
+    if(mine.length){const r=mk("div","fxr");r.style.margin="8px 0 0";mine.slice(0,4).forEach(x=>{const T2=fxTot(x);r.appendChild(fxPill(x.exam+" · "+T2.pct.toFixed(0)+"%",T2.pct>=33?"g":"r"))});c.appendChild(r)}b.appendChild(c)});return}
+  /* 4. one student's results */
+  const p=st.find(q=>q.uid===nav.stu)||{name:"Student"},mine=R.filter(x=>x.studentUid===nav.stu).sort((x,y)=>y.ts-x.ts);back(nav.cls,()=>{nav.stu=null;draw()});fxSec(b,p.name+(fxRoll(p.flat)?" · "+fxRoll(p.flat):""));
+  if(!mine.length)b.appendChild(fxEmpty("🏅","No result for "+p.name+" yet. Use “Add a result”."));mine.forEach(x=>b.appendChild(card(x)))};
+ fxW(adm?query(FXC("results"),orderBy("ts","desc"),limit(600)):query(FXC("results"),where("studentUid","==",PID()),limit(100)),(d,e)=>{L=d||[];err=e;draw()});draw()}};
 
 </script>
 <script>

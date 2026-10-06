@@ -890,6 +890,10 @@ b.mtn{color:var(--a);font-weight:600;background:var(--tint,rgba(91,61,245,.1));b
 .ggb:active{transform:scale(.98)}.ggb:focus-visible{outline:2px solid var(--a);outline-offset:2px}.ggb>i{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-weight:800;font-size:13px;background:var(--bg);color:var(--a);border:1px solid var(--line)}
 .ggb>em{display:none}.ggb.on{pointer-events:none;opacity:.75}.ggb.on>i,.ggb.on>span{display:none}.ggb.on>em{display:inline-flex}
 .ggn{font-size:11.5px;color:var(--muted);text-align:center;margin:8px 0 0;line-height:1.45}.ggn a{color:var(--a);cursor:pointer;font-weight:600}
+.drn{display:flex;align-items:center;gap:8px;min-width:0}.drn>b{flex:1 1 auto;min-width:0}.drk{flex:none;border:0;background:rgba(255,255,255,.22);color:#fff;border-radius:99px;padding:6px 11px;font:600 11.5px Poppins,sans-serif;cursor:pointer;white-space:nowrap}.drk:active{transform:scale(.96)}
+.drws.fix{cursor:default;background:rgba(255,255,255,.12)}.drws.fix:disabled{opacity:1;color:#fff}
+#sChoice.kidonly #goC,#sChoice.kidonly #goT,#sChoice.kidonly #goS{display:none!important}
+.vehdl{display:flex;flex-wrap:wrap;gap:6px 14px;margin:6px 0 4px}.vehdl .lnk{display:inline;margin:0;font-weight:700}
 </style>
 <style>
 #splash{position:fixed;inset:0;z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(900px 500px at 50% 35%,rgba(99,102,241,.45),transparent 70%),radial-gradient(700px 400px at 80% 90%,rgba(20,184,166,.3),transparent 70%),#080d1a;color:#fff;transition:opacity .55s,transform .55s}
@@ -979,7 +983,14 @@ b.mtn{color:var(--a);font-weight:600;background:var(--tint,rgba(91,61,245,.1));b
   sp.style.setProperty("--cx",cx+"px");sp.style.setProperty("--cy",cy+"px");sp.style.setProperty("--lr",(410*s)+"px");im.style.webkitMaskImage=m;im.style.maskImage=m;
   dash.style.left=(cx-R*s)+"px";dash.style.top=(cy-R*s)+"px";dash.style.width=dash.style.height=(2*R*s)+"px";
   its.forEach(function(c,i){var a=(-90+36*i)*Math.PI/180,x=cx+R*s*Math.cos(a),y=cy+R*s*Math.sin(a);c.style.clipPath="circle("+(IR*s)+"px at "+x+"px "+y+"px)";c.style.webkitClipPath=c.style.clipPath;c.style.transformOrigin=x+"px "+y+"px";c.style.animationDelay="0s,"+(i*340)+"ms"})}
- lay();addEventListener("resize",lay);sp.classList.add("mo")}catch(e){}})();</script>
+ lay();addEventListener("resize",lay);sp.classList.add("mo")}catch(e){}})();
+(function(){try{if(window.__splTune)return;window.__splTune=1;if(localStorage.getItem("sh-mute")==="1")return;var AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;var c=new AC();
+ function play(){try{var t=c.currentTime+.05,N=[[523.25,0],[659.25,.13],[783.99,.26],[1046.5,.42]],m=c.createGain();m.gain.value=.5;m.connect(c.destination);
+   N.forEach(function(n,i){var o=c.createOscillator(),o2=c.createOscillator(),g=c.createGain(),s=t+n[1],d=i===N.length-1?1.1:.55;o.type="sine";o2.type="triangle";o.frequency.value=n[0];o2.frequency.value=n[0]*2;var g2=c.createGain();g2.gain.value=.18;o.connect(g);o2.connect(g2);g2.connect(g);g.connect(m);
+    g.gain.setValueAtTime(.0001,s);g.gain.exponentialRampToValueAtTime(.22,s+.015);g.gain.exponentialRampToValueAtTime(.0001,s+d);o.start(s);o2.start(s);o.stop(s+d+.05);o2.stop(s+d+.05)});
+   window.__splTune=2;setTimeout(function(){try{c.close()}catch(e){}},2600)}catch(e){}}
+ if(c.state==="running")play();else{var p=c.resume&&c.resume();setTimeout(function(){if(c.state==="running")play();else{try{c.close()}catch(e){}}},350);if(p&&p.catch)p.catch(function(){})}}catch(e){}})();
+</script>
 <script>(function(){const sp=document.getElementById("splash");if(!sp)return;const f=sp.querySelector(".spf"),p=sp.querySelector(".spp"),q=sp.querySelector(".spq"),m=sp.querySelector(".spm"),bar=sp.querySelector(".spl"),tr=sp.querySelector(".spt"),
  M=[[0,"Starting up…"],[22,"Connecting securely…"],[50,"Loading your workspace…"],[80,"Almost there…"],[100,"Ready!"]];
  let ready=false,val=0,t0=performance.now(),last=t0,mi=-1,fin=false;
@@ -1352,7 +1363,7 @@ const tm=t=>new Date(t).toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"})
 const td=()=>{const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};
 document.title=BRAND+" — "+TAGLINE;
 const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app),rtdb=getDatabase(app,"https://my-building-326a9-default-rtdb.firebaseio.com");
-const SCR=["sLand","sAuth","sChoice","sCreate","sJoin","sWait","sMain"];const show=id=>{SCR.forEach(k=>$(k).classList.toggle("hide",k!==id));if(id!=="sWait"||$("wt").textContent!=="Loading…"){if(window.splashReady)window.splashReady()}if(id==="sChoice"){const g=$("goC");if(g)g.classList.toggle("hide",!!(S.me&&S.me.role&&(!["SOCIETY_ADMIN","COMMITTEE_MEMBER"].includes(S.me.role)||(KIND==="school"&&S.me.role!=="SOCIETY_ADMIN"))))}window.scrollTo(0,0)};
+const SCR=["sLand","sAuth","sChoice","sCreate","sJoin","sWait","sMain"];const show=id=>{$("sChoice").classList.remove("kidonly");SCR.forEach(k=>$(k).classList.toggle("hide",k!==id));if(id!=="sWait"||$("wt").textContent!=="Loading…"){if(window.splashReady)window.splashReady()}if(id==="sChoice"){const g=$("goC");if(g)g.classList.toggle("hide",!!(S.me&&S.me.role&&(!["SOCIETY_ADMIN","COMMITTEE_MEMBER"].includes(S.me.role)||(KIND==="school"&&S.me.role!=="SOCIETY_ADMIN"))))}window.scrollTo(0,0)};
 const fr=e=>({"auth/invalid-credential":"Wrong email or password.","auth/email-already-in-use":"This email is already registered. Log in with it under the same type (society / corporate / school) you signed up with, or use a different email.","auth/weak-password":"Password must be at least 6 characters.","auth/invalid-email":"Please enter a valid email.","auth/too-many-requests":"Too many tries. Wait a bit.","permission-denied":"Not allowed. Check the code or your permissions.","storage/unauthorized":"Upload blocked — the Storage rules are not published yet.","storage/retry-limit-exceeded":"Upload timed out. Check your internet."}[e.code]||(e&&e.message&&!e.code&&e.message.length<90?e.message:"Something went wrong. Please try again."));
 const S={uid:null,user:null,sid:null,soc:null,me:null};const D={comp:{},ann:{},msg:{},inc:{},exp:{},mem:{},dir:{},vis:{},del:{},veh:{},park:{},rep:{}};let unsubs=[],tab="home",sub="comp",join=null,muted=localStorage.getItem("sh-mute")==="1";
 const isOwner=()=>!!(S.me&&S.me.role==="SOCIETY_ADMIN"),isGuard=()=>S.me&&S.me.role==="SECURITY_GUARD",isAdm=()=>S.me&&["SOCIETY_ADMIN","COMMITTEE_MEMBER"].includes(S.me.role),canFin=()=>isAdm()||(S.me&&S.me.role==="ACCOUNTANT"),staff=()=>isGuard()||isAdm();
@@ -1493,8 +1504,8 @@ async function socRows(box){box.innerHTML="";
    if(r.id===S.sid)e.appendChild(mk("b","pos","Active"));else{const b=mk("button","btn s o","Switch");b.style.cssText="width:auto;padding:6px 14px;margin:0";b.onclick=()=>run(b,()=>switchTo(r.id));e.appendChild(b)}box.appendChild(e)});
   if(!v.length)box.appendChild(mk("div","meta","No societies yet."))}catch(x){box.innerHTML="";box.appendChild(mk("div","meta","Couldn't load your societies."))}}
 const addMode=()=>{$("bk").classList.remove("hide");$("bk").onclick=()=>show("sMain")};
-function mySocCard(){const c=mk("div","card");try{pxKids(c)}catch(e){console.warn(e)}c.appendChild(mk("h2",null,"🏘️ My societies"));if(isAdm())c.appendChild(mk("p","sub","You can be an admin or resident in more than one society and switch anytime."));const l=mk("div");c.appendChild(l);socRows(l);
- const g=mk("div","g2");g.style.marginTop="10px";const a=mk("button","btn s","➕ Create another society"),j=mk("button","btn s o","🔑 Join another society");a.onclick=()=>{if(!isAdm())return;addMode();$("goC").onclick()};j.onclick=()=>{addMode();gotoJoin()};if(isAdm()&&(KIND!=="school"||isOwner())){g.append(a,j)}else{g.style.gridTemplateColumns="1fr";if(!(SCH()&&S.prim&&isStu(S.prim)))g.append(j)}c.appendChild(g);return c}
+function mySocCard(){const c=mk("div","card");try{pxKids(c)}catch(e){console.warn(e)}const sw=swCan();if(sw){c.appendChild(mk("h2",null,"🏘️ My societies"));if(isAdm())c.appendChild(mk("p","sub",SCH()?"You can be an admin in more than one school and switch anytime.":"You can be an admin or resident in more than one society and switch anytime."))}const l=mk("div");if(sw){c.appendChild(l);socRows(l)}
+ const g=mk("div","g2");g.style.marginTop="10px";const a=mk("button","btn s","➕ Create another society"),j=mk("button","btn s o","🔑 Join another society");a.onclick=()=>{if(!isAdm())return;addMode();$("goC").onclick()};j.onclick=()=>{addMode();gotoJoin()};if(SCH()){g.style.gridTemplateColumns="1fr";if(isOwner())g.append(a)}else if(isAdm()){g.append(a,j)}else{g.style.gridTemplateColumns="1fr";g.append(j)}if(g.children.length)c.appendChild(g);if(!c.children.length)c.style.display="none";return c}
 $("wsw").onclick=()=>sheet(z=>{z.appendChild(mk("h2",null,"Switch society"));const l=mk("div");z.appendChild(l);socCache=null;socRows(l)});
 
 /* ---------- create society ---------- */
@@ -1558,7 +1569,7 @@ const gotoJoin=w=>{try{joinKid=false}catch(e){}joinWant=KIND==="school"&&(w==="t
   else if(joinWant==="student"){h.textContent="Enter your class code";p.textContent="Ask your class teacher for the class code or invitation link.";$("jf").textContent="Find my class"}
   else{h.textContent="Enter society code";p.textContent="Ask your society admin for the code or invitation link.";$("jf").textContent="Find society"}}
  $("jc").value="";$("j1").classList.remove("hide");$("j2").classList.add("hide");$("jerr").textContent="";$("jnm").value=S.user.displayName||"";show("sJoin")};
-$("goJ").onclick=()=>gotoJoin(KIND==="school"?"student":null);$("goT").onclick=()=>gotoJoin("teacher");$("goS").onclick=()=>gotoJoin("staff");$("jb").onclick=()=>show("sChoice");
+$("goJ").onclick=()=>{if($("sChoice").classList.contains("kidonly")){addKid();return}gotoJoin(KIND==="school"?"student":null)};$("goT").onclick=()=>gotoJoin("teacher");$("goS").onclick=()=>gotoJoin("staff");$("jb").onclick=()=>{let k=false;try{k=!!joinKid}catch(e){}show("sChoice");$("sChoice").classList.toggle("kidonly",k)};
 let joinAs="student";
 /* A school has two kinds of code: the Principal's code (for teachers) and each teacher's class code (for students). */
 async function findJoin(c,er,needP,needC){c=String(c||"").trim().toUpperCase();if(c.length<4){er.textContent="Not found";return false}const s=await getDoc(doc(db,"joinCodes",c));
@@ -1655,7 +1666,7 @@ function listen(){unsubs.forEach(f=>f());unsubs=[];if(wsub){wsub();wsub=null}wsu
    if(isAdm()){if(t==="added"&&d.status==="Pending"&&d.uid!==S.uid)toast("🏖️","New leave request",d.name+" · "+d.from+" → "+d.to)}
    else if(t==="modified"&&d.uid===S.uid&&d.status&&d.status!=="Pending")toast(d.status==="Approved"?"✅":"⛔","Leave "+d.status.toLowerCase(),d.type+" · "+d.from+" → "+d.to)});
   w(isOwner()?query(C("gcomplaints"),limit(300)):query(C("gcomplaints"),where("uid","==",S.uid),limit(100)),"gc",()=>{if(tab==="svc"&&sub==="gc"&&!busyIn("gc"))rGc()},(d,t)=>{
-   if(isOwner()){if(t==="added"&&d.uid!==S.uid)toast("📣","New complaint",d.name+" → "+d.againstName)}
+   if(isOwner()){if(t==="added"&&d.uid!==S.uid)toast("📣","New complaint",(d.anon?"Anonymous student":d.name)+" → "+d.againstName)}
    else if(t==="modified"&&d.uid===S.uid&&d.status)toast("📣","Complaint "+String(d.status).toLowerCase(),d.title)});
   w(query(C("holidays"),limit(200)),"hol",()=>{if(tab==="svc"&&sub==="hol"&&!busyIn("hol"))rMod("hol")},(d,t)=>{if(t==="added"&&d.uid!==S.uid)toast("🎉","New holiday added",d.title+" · "+d.date)})}
  listen3(C,L);listen4(C)}
@@ -2298,8 +2309,8 @@ const RC=new Map(),RP=new Map(),RMime=new Map(),isR=p=>typeof p==="string"&&p.st
 const toDataUrl=b=>new Promise((ok,no)=>{const r=new FileReader();r.onload=()=>ok(r.result);r.onerror=()=>no(r.error);r.readAsDataURL(b)});
 let upN=0;const pill=(on,label)=>{upN+=on?1:-1;let e=$("upg");if(upN<=0){upN=0;if(e)e.remove();return}if(!e){e=mk("div");e.id="upg";document.body.appendChild(e)}e.textContent="⬆️ "+(label||"Uploading")+"…"};
 const rPut=async(path,val,label)=>{pill(true,label);const onp=p=>{try{const e=$("upg");if(e)e.textContent="⬆️ "+(label||"Uploading")+"… "+p+"%";if(fuCur)fuCur(p)}catch(q){}};let t;
- try{try{await rPutX(path,val,onp)}catch(e){if(!e||!e.fuSoft)throw e;await Promise.race([rSet(rRef(rtdb,path),val),new Promise((_,no)=>{t=setTimeout(()=>no(new Error("Upload timed out — please check your internet and try again.")),60000)})]);onp(100)}}
- catch(e){const m=String((e&&e.message)||e);if(/PERMISSION_DENIED|permission/i.test(m))throw new Error("Upload not allowed yet. If you were just approved, ask your society admin to open the app once, then try again.");throw e}finally{clearTimeout(t);pill(false)}};
+ try{try{await rPutX(path,val,onp)}catch(e){if(!e||!e.fuSoft)throw e;await Promise.race([rSet(rRef(rtdb,path),val),new Promise((_,no)=>{t=setTimeout(()=>no(new Error("Upload timed out — please check your internet and try again.")),60000+Math.round((typeof val==="string"?val.length:0)/1e6)*45000)})]);onp(100)}}
+ catch(e){const m=String((e&&e.message)||e);if(/PERMISSION_DENIED|permission/i.test(m)&&typeof val==="string"&&val.length>4000000)throw new Error("The server did not accept a file this large. Smaller files work. For files up to 5 MB the latest Realtime Database rules have to be published in Firebase.");if(/PERMISSION_DENIED|permission/i.test(m))throw new Error("Upload not allowed yet. If you were just approved, ask your society admin to open the app once, then try again.");throw e}finally{clearTimeout(t);pill(false)}};
 function rsv(p){if(!isR(p))return Promise.resolve(p);if(RC.has(p))return Promise.resolve(RC.get(p));if(RP.has(p))return RP.get(p);
  const pr=rGet(rRef(rtdb,p.slice(5))).then(async s=>{const v=s.val();if(typeof v!=="string")throw new Error("File not found");const bl=await dataBlob(v),u=URL.createObjectURL(bl);RC.set(p,u);RMime.set(u,bl.type);RP.delete(p);return u}).catch(x=>{RP.delete(p);throw x});RP.set(p,pr);return pr}
 
@@ -2389,7 +2400,7 @@ function rGc(){const b=$("p_gc");if(!b)return;b.innerHTML="";
   const bt=mk("button","btn","Send to the "+(sch?"principal":"admin"));bt.style.marginTop="10px";
   bt.onclick=()=>run(bt,async()=>{const u=sel.value,t=ti.value.trim(),x=tx.value.trim();if(!u){toast("⚠️","Choose a person","Select the "+aT+" this is about.",true);return}if(!t||x.length<10){toast("⚠️","Add details","Write a title and at least a few words about what happened.",true);return}
    const pp=people.find(q=>(q.uid||q.id)===u)||{},ts=Date.now();
-   await addDoc(collection(db,"societies",S.sid,"gcomplaints"),{uid:S.uid,name:S.me.name,role:me,flat:S.me.flat||"",againstUid:u,againstName:pp.name||"Member",againstRole:pp.role||"",againstFlat:pp.flat||"",title:t,text:x,status:"Open",ts,history:[{s:"Open",ts}]});
+   const anon=sch&&isStu(S.me);await addDoc(collection(db,"societies",S.sid,"gcomplaints"),{uid:S.uid,name:anon?"Anonymous student":S.me.name,role:me,flat:anon?"":S.me.flat||"",...(anon?{anon:true}:{}),againstUid:u,againstName:pp.name||"Member",againstRole:pp.role||"",againstFlat:pp.flat||"",title:t,text:x,status:"Open",ts,history:[{s:"Open",ts}]});
    ti.value="";tx.value="";sel.value="";toast("✅","Sent","The "+(sch?"principal":"admin")+" will review it.",true)});
   c.append(sel,ti,tx,bt);b.appendChild(c)}
  const lc=mk("div","card");lc.appendChild(mk("h2",null,owner?"📋 All complaints ("+L.length+")":"🗂️ Your complaints ("+L.length+")"));
@@ -2398,7 +2409,7 @@ function rGc(){const b=$("p_gc");if(!b)return;b.innerHTML="";
  const V=L.filter(x=>fv==="all"||(fv==="T"&&x.againstRole==="COMMITTEE_MEMBER")||(fv==="P"&&x.againstRole!=="COMMITTEE_MEMBER")||(fv==="open"&&x.status!=="Resolved"&&x.status!=="Dismissed"));
  if(!V.length)lc.appendChild(mk("div","empty",owner?"Nothing here":"You have not raised any complaints"));
  V.forEach(x=>{const d=mk("div","item"),h=mk("div","ih");h.appendChild(mk("b",null,x.title));const st=x.status||"Open";h.appendChild(mk("span","badge"+(st==="Resolved"?" g":st==="Open"?" r":" y"),st));d.appendChild(h);
-  d.appendChild(mk("div","meta",(owner?x.name+" ("+lab(x.role)+(x.flat?" · "+x.flat:"")+") → ":"About ")+x.againstName+" ("+lab(x.againstRole)+(x.againstFlat?" · "+x.againstFlat:"")+") · "+dt(x.ts)));
+  d.appendChild(mk("div","meta",(owner?(x.anon?"Anonymous student → ":x.name+" ("+lab(x.role)+(x.flat?" · "+x.flat:"")+") → "):"About ")+x.againstName+" ("+lab(x.againstRole)+(x.againstFlat?" · "+x.againstFlat:"")+") · "+dt(x.ts)));
   d.appendChild(mk("p","desc",x.text));if(x.note)d.appendChild(mk("div","note","💬 "+(sch?"Principal":"Admin")+": "+x.note));
   if(owner){const g=mk("div","mg"),sl=mk("select");GCS.forEach(q=>{const o=mk("option",null,q);o.value=q;sl.appendChild(o)});sl.value=st;const ni=mk("input");ni.placeholder="Note for the record…";ni.value=x.note||"";const ub=mk("button","btn s","Update");
    ub.onclick=()=>run(ub,()=>updateDoc(doc(db,"societies",S.sid,"gcomplaints",x.id),{status:sl.value,note:ni.value.trim(),history:arrayUnion({s:sl.value,ts:Date.now()})}));
@@ -3183,11 +3194,11 @@ function drwShow(on){fxBuild();const d=$("drw"),was=d.classList.contains("on");i
  const x=$("drx");if(x){if(on&&!was){x.classList.remove("x");void x.offsetWidth;requestAnimationFrame(()=>x.classList.add("x"))}else if(!on)x.classList.remove("x")}}
 function drwDraw(){const d=$("drw");d.innerHTML="";const g=isGuard(),adm=isAdm(),nv=Object.fromEntries(navCfg().map(c=>[c[0],c])),shut=drwShut();
  const h=mk("div","drh"),cx=mk("button","drx");cx.id="drx";cx.type="button";cx.setAttribute("aria-label","Close menu");cx.innerHTML=BGR;cx.onclick=()=>drwShow(false);h.appendChild(cx);
- h.appendChild(av(S.me.name,photoOf(S.uid),46));h.appendChild(mk("b",null,S.me.name));
+ try{swCheck()}catch(e){}h.appendChild(av(S.me.name,photoOf(S.uid),46));{const nr=mk("div","drn");nr.appendChild(mk("b",null,S.me.name));if(kidMany()){const kb=mk("button","drk","⇅ Switch student");kb.type="button";kb.id="drk";kb.setAttribute("data-noskin","");kb.onclick=()=>{drwShow(false);kidSheet()};nr.appendChild(kb)}h.appendChild(nr)}
  {const rl=roleLbl(S.me.role),fl=String(S.me.flat||""),r=mk("div","drr"),own=isOwner(),bd=mk("span","drb"+(own?" bown":adm?" badm":""));
   bd.innerHTML=own||adm?'<svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.600-1.600 8-6 8-11V5l-8-3Zm-1.200 13.600-3.400-3.400 1.400-1.400 2 2 4.400-4.400 1.400 1.400-5.800 5.800Z"/></svg>':"";bd.appendChild(document.createTextNode(rl));r.appendChild(bd);
   if(fl&&fl.toLowerCase()!==rl.toLowerCase())r.appendChild(mk("span","drfl",fl));h.appendChild(r)}
- const ws=mk("button","drws");ws.type="button";ws.append(mk("span",null,KINDS[KIND].ico+" "+S.soc.name),mk("span",null,"Switch ⇅"));ws.onclick=()=>{drwShow(false);$("wsw").onclick()};h.appendChild(ws);d.appendChild(h);
+ const ws=mk("button","drws");ws.type="button";ws.append(mk("span",null,KINDS[KIND].ico+" "+S.soc.name),mk("span",null,"Switch ⇅"));if(swCan())ws.onclick=()=>{drwShow(false);$("wsw").onclick()};else{ws.disabled=true;ws.classList.add("fix");ws.lastChild.remove()}h.appendChild(ws);d.appendChild(h);
  const l=mk("div","drl");l.id="drl";d.appendChild(l);let box=l;
  /* a group of links that opens and closes; the choice is remembered on this phone */
  const grp=t=>{const w=mk("div","drgw"+(shut.has(t)?" shut":"")),hb=mk("button","drg"),c=mk("div","drgc"),i=mk("div","drgi");hb.type="button";hb.appendChild(mk("span",null,t));hb.insertAdjacentHTML("beforeend",'<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>');
@@ -3707,7 +3718,7 @@ function mnCatch(){if(!S.me||mnCaught===S.sid+S.uid)return;const L=Object.values
  const M=L.filter(m=>m.uid!==S.uid&&!m.deleted&&Array.isArray(m.mentions)&&m.mentions.includes(S.uid)&&m.ts>last).sort((a,b)=>a.ts-b.ts);if(M.length)setTimeout(()=>mnAnnounce(M[M.length-1]),1800)}
 function pxInit(){const t=$("mt");if(t){["input","click","keyup"].forEach(k=>t.addEventListener(k,()=>{try{mnUpd()}catch(e){}}));t.addEventListener("blur",()=>setTimeout(mnHide,180))}
  /* switching: students first, then workspaces */
- $("wsw").onclick=()=>sheet(z=>{if(SCH()&&S.prim&&isStu(S.prim)&&(S.kids||[]).length){z.appendChild(mk("h2",null,"Switch student"));const k=mk("div");z.appendChild(k);kidRows(k);z.appendChild(mk("div","sec","Schools"))}else z.appendChild(mk("h2",null,"Switch society"));const l=mk("div");z.appendChild(l);socCache=null;socRows(l)})}
+ $("wsw").onclick=()=>sheet(z=>{const kids=SCH()&&S.prim&&isStu(S.prim)&&(S.kids||[]).length,sw=swCan();if(kids){z.appendChild(mk("h2",null,"Switch student"));const k=mk("div");z.appendChild(k);kidRows(k);if(sw)z.appendChild(mk("div","sec","Schools"))}else if(sw)z.appendChild(mk("h2",null,"Switch society"));if(sw){const l=mk("div");z.appendChild(l);socCache=null;socRows(l)}})}
 pxInit();
 
 /* =====================================================================================================
@@ -4120,7 +4131,7 @@ FX.bus={ic:"🚌",get t(){return S.me&&isStu(S.me)&&!isAdm()?"My child's bus":S.
  const busCard=x=>{const l=busLive(x),run=busOn(x),c=mk("div","fxk"),top=mk("div","fxr"),me=mine(x),R=onBus(x);top.appendChild(fxPill(run?"● LIVE":"Not running",run?"g":""));if(run)top.appendChild(fxPill(x.dir==="pm"?"Evening":"Morning","b"));if(l)top.appendChild(mk("span","meta sp1","updated "+ago(l.ts)));c.appendChild(top);
   c.appendChild(mk("b","fxt","🚌 "+x.name));if(x.route)c.appendChild(mk("div","meta","🛣️ "+x.route));c.appendChild(mk("div","meta","Driver: "+(x.driverName||"—")+(x.phone?" · "+x.phone:"")+(adm||me?" · "+R.length+" students"+(R.length?" · "+R.filter(hasPk).length+" with a pickup point":""):"")));
   if(own){const d=DUTY[x.driverUid],v=VEH[x.id]||{},w=drvDocWarn(v);c.appendChild(mk("div","meta",d&&d.in?"🟢 Driver on duty since "+tm(d.in)+(d.via==="pin"?" · PIN checked":"")+(d.out?" · checked out "+tm(d.out):""):"⚪ Driver has not checked in today"));if(d&&d.selfie){const s=mk("a","lnk","View check-in photo");s.style.cssText="display:inline-block;margin:2px 0 4px";s.onclick=()=>openRef(d.selfie);c.appendChild(s)}
-   if(v.reg||v.ins||v.puc)c.appendChild(mk("div","meta","🚐 "+[v.reg,v.ins?"Insurance till "+fxDate(v.ins):"",v.puc?"PUC till "+fxDate(v.puc):""].filter(Boolean).join(" · ")));if(w)c.appendChild(mk("div","buszn "+(w[0]?"r":"y"),w[1]))}
+   if(v.reg||v.ins||v.puc)c.appendChild(mk("div","meta","🚐 "+[v.reg,v.ins?"Insurance till "+fxDate(v.ins):"",v.puc?"PUC till "+fxDate(v.puc):""].filter(Boolean).join(" · ")));{const dl=vehDocLinks(v);if(dl)c.appendChild(dl)}if(w)c.appendChild(mk("div","buszn "+(w[0]?"r":"y"),w[1]));{const pb=mk("a","lnk","📄 "+(v.reg||v.ins||v.puc||v.docs?"Vehicle papers":"Add vehicle papers (RC, insurance, PUC)"));pb.setAttribute("role","button");pb.tabIndex=0;pb.style.cssText="display:inline-block;margin:2px 0 6px";pb.onclick=()=>busPapers(x,v);c.appendChild(pb)}}
   if(l){const me2=busMapEl("b"+x.id,l,null);me2.onclick=()=>busTrack(x.id,{drv:me});c.appendChild(me2)}
   if((me||adm)&&run&&x.tripId)tripPanel(c,x,me);
   const a=mk("div","fxa");if(me&&!run){const s=mk("button","btn g","▶ START TRIP");s.type="button";s.style.flex="1";s.onclick=()=>startSheet(x);a.appendChild(s)}
@@ -4225,7 +4236,7 @@ FX.res={ic:"🏅",t:"Exam results",show:()=>isAdm()||isStu(S.me),open(b){let L=n
 function isDrv(){try{return !!(S.me&&SCH()&&!isAdm()&&S.me.role==="STAFF"&&isBusJob(S.me))}catch(e){return false}}
 /* support staff do not take part in the discussion chat (notices stay) */
 function noChat(){try{return !!(S.me&&S.me.role==="STAFF")}catch(e){return false}}
-const fxList=()=>isDrv()?["bus","veh","vis","inc","dnote"]:(FXLIST[KIND]||[]);
+const fxList=()=>isDrv()?["bus","veh","vis","inc","dnote"]:(FXLIST[KIND]||[]).concat(KIND==="school"?["vdoc"]:[]);
 const DRVISS=[["brake","🔧","Brake issue"],["tyre","🛞","Tyre issue"],["ac","❄️","AC issue"],["battery","🔋","Battery issue"],["engine","🚌","Engine issue"],["other","🛠️","Something else"]];
 const DRVINC=[["student","🧒","Student issue"],["accident","💥","Accident"],["traffic","🚦","Traffic"],["breakdown","🛑","Bus breakdown"],["parent","🚪","Parent unavailable"],["absent","❌","Student absent"],["medical","🩺","Medical issue"],["other","📝","Other"]];
 const drvDays=d=>{if(!d)return null;const t=new Date(d+"T00:00:00").getTime();return isNaN(t)?null:Math.round((t-new Date(td()+"T00:00:00").getTime())/864e5)};
@@ -4294,9 +4305,25 @@ FX.veh={ic:"🚐",t:"My vehicle",show:isDrv,open(b){const V={};let ok=false;
   B.forEach(x=>{const v=V[x.id]||{},c=mk("div","fxk"),w=drvDocWarn(v),kv=mk("div","fxkv");c.appendChild(mk("b","fxt","🚌 "+x.name));if(x.route)c.appendChild(mk("div","meta","🛣️ "+x.route));
    const dt=(d,k)=>{if(!d)return"Not entered yet";const n=drvDays(d);return fxDate(d)+(n==null?"":n<0?" · expired":n<=15?" · "+n+" day"+(n===1?"":"s")+" left":"")};
    [["Bus number",x.name],["Vehicle registration",v.reg||"Not entered yet"],["Insurance expiry",dt(v.ins)],["PUC expiry",dt(v.puc)],["Next service",dt(v.svc)]].forEach(([q,t])=>kv.append(mk("span",null,q),mk("b",null,t)));c.appendChild(kv);
-   if(w)c.appendChild(mk("div","buszn "+(w[0]?"r":"y"),w[1]));if(ok&&!(v.reg||v.ins||v.puc))c.appendChild(mk("div","meta","The Principal has not entered the papers yet (School buses → Edit)."));
+   {const dl=vehDocLinks(v);if(dl)c.appendChild(dl)}if(w)c.appendChild(mk("div","buszn "+(w[0]?"r":"y"),w[1]));if(ok&&!(v.reg||v.ins||v.puc))c.appendChild(mk("div","meta","The Principal has not entered the papers yet."));
    const a=mk("div","fxa"),r=mk("button","btn","🔧 Report a vehicle issue");r.type="button";r.onclick=()=>drvRepForm("busissues");a.appendChild(r);c.appendChild(a);b.appendChild(c)})};
  Promise.all(Object.keys(busMy).map(id=>getDoc(FXD("busveh",id)).then(d=>{if(d.exists())V[id]=d.data()}).catch(()=>{}))).then(()=>{ok=true;draw()});draw()}};
+
+/* ---------- vehicle papers (the Principal): numbers, dates and the files themselves (RC, insurance, PUC) ---------- */
+const VEHDOC=[["rc","RC"],["insf","Insurance"],["pucf","PUC"]];
+function vehDocLinks(v){const D2=(v&&v.docs)||{},have=VEHDOC.filter(([k])=>D2[k]&&D2[k].url);if(!have.length)return null;const w=mk("div","vehdl");have.forEach(([k,l])=>{const a=mk("a","lnk","📄 "+l);a.setAttribute("role","button");a.tabIndex=0;a.onclick=()=>openRef(D2[k].url,D2[k].name,D2[k].type);w.appendChild(a)});return w}
+function busPapers(x,v){v=v||{};const D2=v.docs||{},has=k=>D2[k]&&D2[k].url?" · already added, choose a file to replace it":"",acc="application/pdf,image/jpeg,image/png";
+ fxForm("Vehicle papers · "+x.name,"The driver of this bus can see these papers. Nobody else in the school is shown them.",[{k:"reg",l:"Vehicle registration no.",ph:"e.g. DL1PC 1234",val:v.reg,max:20},{k:"ins",l:"Insurance valid until",type:"date",val:v.ins},{k:"puc",l:"PUC valid until",type:"date",val:v.puc},{k:"svc",l:"Next service due",type:"date",val:v.svc},
+  {k:"rc",l:"RC (registration certificate)"+has("rc"),type:"file",accept:acc},{k:"insf",l:"Insurance policy"+has("insf"),type:"file",accept:acc},{k:"pucf",l:"PUC certificate"+has("pucf"),type:"file",accept:acc}],"Save",
+  async q=>{const docs={...D2},gone=[];for(const [k] of VEHDOC){const f=q[k];if(!f)continue;const url=await UP(f,"docs",f.name);if(docs[k]&&docs[k].url&&docs[k].url!==url)gone.push(docs[k].url);docs[k]={url,name:f.name,type:f.type||"",size:f.size,ts:Date.now()}}
+   await setDoc(FXD("busveh",x.id),{busId:x.id,busName:x.name,reg:String(q.reg||"").toUpperCase(),ins:q.ins||"",puc:q.puc||"",svc:q.svc||"",docs,ts:Date.now()},{merge:true});gone.forEach(u=>{try{rmFile(u)}catch(e){}});toast("✅","Papers saved",x.name,true)})}
+FX.vdoc={ic:"📄",t:"Vehicle papers",show:()=>SCH()&&isOwner(),open(b){let L=null,err=null;const V={};
+ const draw=()=>{b.innerHTML="";fxHead(b,"Vehicle papers","Registration, insurance and PUC of every school bus: the dates and the papers themselves. You are reminded before a paper runs out.");if(fxState(b,L,err,"🚐","No bus yet. Add the bus under School bus first."))return;
+  L.forEach(x=>{const v=V[x.id]||{},c=mk("div","fxk"),w=drvDocWarn(v),kv=mk("div","fxkv"),dt=d=>{if(!d)return"Not entered yet";const n=drvDays(d);return fxDate(d)+(n==null?"":n<0?" · expired":n<=15?" · "+n+" day"+(n===1?"":"s")+" left":"")};
+   c.appendChild(mk("b","fxt","🚌 "+x.name));c.appendChild(mk("div","meta","Driver: "+(x.driverName||"—")));[["Vehicle registration",v.reg||"Not entered yet"],["Insurance expiry",dt(v.ins)],["PUC expiry",dt(v.puc)],["Next service",dt(v.svc)]].forEach(([q,t])=>kv.append(mk("span",null,q),mk("b",null,t)));c.appendChild(kv);
+   const dl=vehDocLinks(v);if(dl)c.appendChild(dl);else c.appendChild(mk("div","meta","No paper has been uploaded yet."));if(w)c.appendChild(mk("div","buszn "+(w[0]?"r":"y"),w[1]));
+   const a=mk("div","fxa"),e=mk("button","btn","📄 Add / edit papers");e.type="button";e.onclick=()=>busPapers(x,v);a.appendChild(e);c.appendChild(a);b.appendChild(c)})};
+ fxW(query(FXC("buses"),limit(100)),(d,e)=>{L=(d||[]).slice().sort((p,q)=>String(p.name).localeCompare(String(q.name),undefined,{numeric:true}));err=e;draw()});fxW(query(FXC("busveh"),limit(200)),d=>{(d||[]).forEach(v=>{V[v.id]=v});if(L)draw()});draw()}};
 
 /* ---------- alerts for the driver ----------
    From the school: message, emergency, holiday, service reminder (drvmsg, written by the Principal).
@@ -4308,11 +4335,11 @@ const DRVK={msg:["💬","Message from the Principal"],emg:["🚨","Emergency ale
 function drvPush(ic,t,x,id,quiet){const L=drvLog();if(id&&L.some(e=>e.id===id))return;L.unshift({ic,t,x:x||"",ts:Date.now(),id:id||""});try{localStorage.setItem(drvLogK(),JSON.stringify(L.slice(0,60)))}catch(e){}
  if(!quiet){toast(ic,t,x,true);try{beep()}catch(e){}try{navigator.vibrate&&navigator.vibrate(ic==="🚨"?[300,120,300,120,300]:120)}catch(e){}try{notif(ic,t,x)}catch(e){}pxSticky(()=>fxOpen("dnote"))}
  try{if(fxKey==="dnote"&&$("fx").classList.contains("on"))fxOpen("dnote");else if(tab==="home")rHome()}catch(e){}}
-function drvDiff(){if(!isDrv()||!busMyOk)return;const cur={b:{}};let wait=false;Object.values(busMy).forEach(x=>{const r=busRo[x.id];if(!r||!r.am||!r.pm){wait=true;return}const st={};r.am.concat(r.pm).forEach(m=>{st[m.pid]={n:m.name||"",p:m.pk&&m.pk.lat?(+m.pk.lat).toFixed(5)+","+(+m.pk.lng).toFixed(5):""}});cur.b[x.id]={n:x.name||"",r:x.route||"",s:st}});if(wait)return;
+function drvDiff(){if(!isDrv()||!busMyOk)return;const cur={b:{}};let wait=false;Object.values(busMy).forEach(x=>{const r=busRo[x.id];if(!r||!r.am||!r.pm){wait=true;return}const st={};r.am.concat(r.pm).forEach(m=>{st[m.pid]={n:m.name||"",p:m.pk&&m.pk.lat?(+m.pk.lat).toFixed(5)+","+(+m.pk.lng).toFixed(5):"",o:busOffToday(m)?td():""}});cur.b[x.id]={n:x.name||"",r:x.route||"",s:st}});if(wait)return;
  let old=null;try{old=JSON.parse(localStorage.getItem(drvSnapK())||"null")}catch(e){}try{localStorage.setItem(drvSnapK(),JSON.stringify(cur))}catch(e){}if(!old||!old.b)return;
  Object.keys(cur.b).forEach(id=>{if(!old.b[id])drvPush("🔁","Bus assigned to you",cur.b[id].n)});Object.keys(old.b).forEach(id=>{if(!cur.b[id])drvPush("🔁","Bus reassigned",old.b[id].n+" is no longer on your name.")});
  Object.keys(cur.b).forEach(id=>{const a=old.b[id],c=cur.b[id];if(!a)return;if(a.r!==c.r)drvPush("🛣️","Route changed",c.n+": "+(c.r||"no route"));
-  Object.keys(c.s).forEach(p=>{if(!a.s[p])drvPush("➕","Student added",c.s[p].n+" · "+c.n);else if(a.s[p].p!==c.s[p].p&&c.s[p].p)drvPush("📍","Pickup point changed",c.s[p].n+(a.s[p].p?" has a new pickup point.":" has set a pickup point."))});
+  Object.keys(c.s).forEach(p=>{if(!a.s[p])drvPush("➕","Student added",c.s[p].n+" · "+c.n);else{if(a.s[p].p!==c.s[p].p&&c.s[p].p)drvPush("📍","Pickup point changed",c.s[p].n+(a.s[p].p?" has a new pickup point.":" has set a pickup point."));const o0=a.s[p].o||"",o1=c.s[p].o||"";if(o1&&o1!==o0)drvPush("🏠","Not taking the bus today",c.s[p].n+" · "+c.n+". No need to stop for this child today.");else if(!o1&&o0===td())drvPush("🚌","Back on the bus today",c.s[p].n+" · "+c.n)}});
   Object.keys(a.s).forEach(p=>{if(!c.s[p])drvPush("➖","Student removed",a.s[p].n+" · "+c.n)})})}
 let drvMU=[];
 function drvWatch(){drvMU.forEach(u=>{try{u()}catch(e){}});drvMU=[];drvDutyC=null;try{drvChatGate()}catch(e){}if(!isDrv())return;
@@ -4428,10 +4455,11 @@ async function fuKid(f,k,rec){if(k==="jph")return UP(f,"avatars","kid.jpg");cons
 /* upload to the file database with real progress and the server's own answer; falls back to the plain way if that is not possible */
 const RTURL="https://my-building-326a9-default-rtdb.firebaseio.com";
 function rPutX(path,val,onp){return new Promise(async(ok,no)=>{let tok="";try{tok=await auth.currentUser.getIdToken()}catch(e){}if(!tok)return no(Object.assign(new Error("no token"),{fuSoft:1}));
- const x=new XMLHttpRequest();x.open("PUT",RTURL+"/"+path.split("/").map(encodeURIComponent).join("/")+".json?print=silent&auth="+encodeURIComponent(tok));x.setRequestHeader("Content-Type","application/json");x.timeout=120000;
- x.upload.onprogress=e=>{if(e.lengthComputable&&onp)onp(Math.min(99,Math.round(e.loaded/e.total*100)))};
- x.onload=()=>{if(x.status>=200&&x.status<300){onp&&onp(100);ok()}else if(x.status===401||x.status===403)no(new Error("PERMISSION_DENIED: the server refused this file"));else if(x.status===413)no(new Error("The server refused this file: it is too large."));else no(Object.assign(new Error("upload "+x.status),{fuSoft:x.status>=500}))};
- x.onerror=()=>no(Object.assign(new Error("network"),{fuSoft:1}));x.ontimeout=()=>no(new Error("Upload timed out — please check your internet and try again."));x.send(JSON.stringify(val))})}
+ const x=new XMLHttpRequest();x.open("PUT",RTURL+"/"+path.split("/").map(encodeURIComponent).join("/")+".json?print=silent&auth="+encodeURIComponent(tok));x.setRequestHeader("Content-Type","application/json");x.timeout=900000;
+ let last=Date.now(),stall=false;const tick=setInterval(()=>{if(Date.now()-last>75000){stall=true;clearInterval(tick);try{x.abort()}catch(e){}}},5000),fin=()=>clearInterval(tick);
+ x.upload.onprogress=e=>{last=Date.now();if(e.lengthComputable&&onp)onp(Math.min(99,Math.round(e.loaded/e.total*100)))};x.upload.onload=()=>{last=Date.now()};x.onabort=()=>{fin();no(new Error(stall?"Upload stopped: the internet is too slow or was lost. Please try again on a better connection.":"Upload cancelled."))};
+ x.onload=()=>{fin();if(x.status>=200&&x.status<300){onp&&onp(100);ok()}else if(x.status===401||x.status===403)no(new Error("PERMISSION_DENIED: the server refused this file"));else if(x.status===413)no(new Error("The server refused this file: it is too large."));else no(Object.assign(new Error("upload "+x.status),{fuSoft:x.status>=500}))};
+ x.onerror=()=>{fin();no(Object.assign(new Error("network"),{fuSoft:1}))};x.ontimeout=()=>{fin();no(new Error("Upload timed out — please check your internet and try again."))};x.send(JSON.stringify(val))})}
 
 /* =====================================================================================================
    LOOK AND FEEL: password meter, focus relay on the login page, loading screen
@@ -4488,6 +4516,20 @@ function ggInit(){const sub=$("asub");if(!sub||$("agg")||!ggCan())return;
  n.append(lk("Terms of Use","terms")," and ",lk("Privacy Policy","privacy"),".");
  sub.after(or,b,n);b.onclick=()=>ggGo(b)}
 try{ggInit()}catch(e){console.warn("google button",e)}
+/* ---------- who may switch between schools ----------
+   In a school only a Principal switches schools. Teachers, staff and students stay in their school (a parent switches between
+   their children instead). Someone who is a Principal of another school keeps the switch, so they can always get back to it. */
+let swAdm=false,swKey="";
+const swCan=()=>!SCH()||isOwner()||!S.me||S.me.status!=="approved"||swAdm;
+function swCheck(){const k=S.sid+"|"+S.uid;if(swKey===k||!S.sid||!S.uid)return;swKey=k;swAdm=false;if(!SCH()||isOwner())return;
+ socIds().then(async({ids})=>{const o=ids.filter(i=>i!==S.sid);if(!o.length)return;const R=await Promise.all(o.map(i=>getDoc(doc(db,"societies",i,"members",S.uid)).then(m=>m.exists()?m.data():null).catch(()=>null)));
+  if(swKey===k&&R.some(m=>m&&m.role==="SOCIETY_ADMIN")){swAdm=true;try{drwDraw()}catch(e){}try{if(tab==="more")goTab("more")}catch(e){}}}).catch(()=>{})}
+const kidMany=()=>!!(SCH()&&S.prim&&isStu(S.prim)&&myProfiles().length>1);
+function kidSheet(){sheet(z=>{z.appendChild(mk("h2",null,"Switch student"));const k=mk("div");z.appendChild(k);kidRows(k)})}
+/* ---------- a soft click when a switch is turned on or off (silent when sounds are muted) ---------- */
+function tgSound(on){try{if(muted)return;actx=actx||new(window.AudioContext||window.webkitAudioContext)();if(actx.state==="suspended")actx.resume();const t=actx.currentTime,o=actx.createOscillator(),g=actx.createGain();o.type="sine";o.connect(g);g.connect(actx.destination);
+  o.frequency.setValueAtTime(on?660:520,t);o.frequency.exponentialRampToValueAtTime(on?990:390,t+.07);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.12,t+.008);g.gain.exponentialRampToValueAtTime(.0001,t+.11);o.start(t);o.stop(t+.12)}catch(e){}}
+document.addEventListener("change",e=>{const t=e.target;if(t&&t.tagName==="INPUT"&&t.type==="checkbox"&&t.closest&&t.closest(".tg")){window.__tgs=(window.__tgs||0)+1;tgSound(t.checked)}},true);
 
 </script>
 <script>

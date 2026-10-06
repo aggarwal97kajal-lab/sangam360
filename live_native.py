@@ -552,6 +552,12 @@ public class LiveLocationService extends Service implements LocationListener {
             for (String k : hit) { a.put(k, iv(now)); q.append("&updateMask.fieldPaths=").append(enc("arr." + k)); }
             fields.put("arr", map(a));
         }
+        // sharing of a bus trip has ended here (Stop in the notification, time over, log-out): the trip ends with it
+        if (bb && end > 0 && ended == 0) {
+            fields.put("on", new JSONObject().put("booleanValue", false));
+            fields.put("endTs", iv(end));
+            q.append("&updateMask.fieldPaths=on&updateMask.fieldPaths=endTs");
+        }
         // the answer then carries just these two fields: enough to notice that the trip was ended from another phone
         if (bb) q.append("&mask.fieldPaths=on&mask.fieldPaths=lid");
         byte[] body = new JSONObject().put("fields", fields).toString().getBytes("UTF-8");

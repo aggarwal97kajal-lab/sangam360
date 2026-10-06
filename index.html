@@ -786,25 +786,35 @@ b.mtn{color:var(--a);font-weight:600;background:var(--tint,rgba(91,61,245,.1));b
 .busl{border-left:5px solid var(--grn)}.busl b{display:block;font-size:15px}
 .restl .prw{gap:12px}.restl .t{flex:1;min-width:0}.resi{font-style:normal;flex:none;width:40px;height:40px;border-radius:12px;background:var(--bg);display:grid;place-items:center;font-size:20px}
 #jbusw input{margin-bottom:10px}#jbusw .btn{margin:0}
-#lpk{position:fixed;inset:0;z-index:65;background:var(--bg);color:var(--text);display:flex;flex-direction:column;animation:uxfd .2s ease both;padding-top:env(safe-area-inset-top,0px)}
-.lph{display:flex;align-items:center;gap:10px;padding:10px 12px 6px}.lph b{font-size:16px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.lph button{border:0;background:var(--card);color:var(--text);width:38px;height:38px;border-radius:50%;font-size:16px;cursor:pointer;flex:none}
-.lps{display:flex;gap:8px;padding:4px 12px 8px}.lps input{flex:1;min-width:0;margin:0}.lps .btn{width:auto;flex:none;margin:0;padding:0 16px}
-.lpr{margin:0 12px 8px;background:var(--card);border:1px solid var(--line);border-radius:14px;max-height:38vh;overflow-y:auto;padding:4px}.lpr .meta{padding:10px}
-.lpr button{display:block;width:100%;text-align:left;border:0;background:transparent;color:var(--text);padding:9px 10px;border-radius:10px;cursor:pointer;font-family:inherit}.lpr button:active{background:var(--bg)}
-.lpr b{display:block;font-size:14px}.lpr small{display:block;font-size:12px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.lpm{position:relative;flex:1;min-height:160px;background:#e3ebf6;overflow:hidden}.lpmap{position:absolute;inset:0;z-index:0}
-.lpp{position:absolute;left:50%;top:50%;z-index:500;font-style:normal;font-size:34px;line-height:1;transform:translate(-50%,-92%);pointer-events:none;transition:transform .15s;filter:drop-shadow(0 3px 3px rgba(0,0,0,.35))}.lpp.up{transform:translate(-50%,-118%)}
-.lpmap{touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none}.mml{position:absolute;inset:0;overflow:hidden}.mmt{position:absolute;left:0;top:0;width:256px;height:256px;max-width:none;pointer-events:none;user-select:none}
-.mmz{position:absolute;right:10px;top:10px;z-index:3;display:grid;gap:6px}.mmz button{width:38px;height:38px;border-radius:12px;border:0;background:#fff;color:#111827;font-size:22px;line-height:1;box-shadow:0 2px 8px rgba(0,0,0,.25);cursor:pointer}
-.mma{position:absolute;right:4px;bottom:2px;z-index:3;font-size:10px;color:#334155;background:rgba(255,255,255,.75);padding:1px 5px;border-radius:6px}
-.lpf{padding:10px 12px calc(12px + env(safe-area-inset-bottom,0px));background:var(--card);border-top:1px solid var(--line)}.lpf .meta{margin-bottom:8px;min-height:18px}.lpf .fxa{margin:0}.lpf .fxa .btn{margin:0}.lpf .fxa .btn:last-child{flex:1}.lpf .fxa .btn:first-child{width:auto;flex:none}
-.lpmap.mmoff::before{content:"The map could not load. Check the internet. You can still search a place by name or use My location.";position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:70px 30px;color:#475569;font-size:14px}
+#lpk{position:fixed;inset:0;z-index:65;background:#e3ebf6;color:var(--text);animation:uxfd .2s ease both;overflow:hidden}
+.lpmap{position:absolute;inset:0;z-index:0;touch-action:none;user-select:none;-webkit-user-select:none}#lpk.mini .lpmap{cursor:grab}
+.mml{position:absolute;inset:0;overflow:hidden}.mmt{position:absolute;left:0;top:0;width:256px;height:256px;max-width:none;pointer-events:none;user-select:none}.mmk{position:absolute;transform:translate(-50%,-50%);z-index:2}
+.mma{position:absolute;left:4px;bottom:2px;z-index:3;font-size:10px;color:#334155;background:rgba(255,255,255,.75);padding:1px 5px;border-radius:6px}
+.lpmap.mmoff::before{content:"The map could not load. Check the internet. You can still search a place by name or use your location.";position:absolute;inset:0;z-index:4;display:grid;place-items:center;text-align:center;padding:90px 30px;color:#475569;font-size:14px;pointer-events:none}
+.lpp{position:absolute;left:50%;top:50%;z-index:5;font-style:normal;font-size:40px;line-height:1;transform:translate(-50%,-94%);pointer-events:none;transition:transform .16s;filter:drop-shadow(0 4px 4px rgba(0,0,0,.35))}.lpp.up{transform:translate(-50%,-124%)}
+.lpp::after{content:"";position:absolute;left:50%;bottom:-3px;width:10px;height:5px;margin-left:-5px;border-radius:50%;background:rgba(0,0,0,.28);transition:transform .16s,opacity .16s}.lpp.up::after{transform:translateY(12px) scale(1.5);opacity:.5}
+.lpkt{position:absolute;left:12px;right:12px;top:calc(10px + env(safe-area-inset-top,0px));z-index:10;display:flex;align-items:center;gap:4px;background:var(--card);border-radius:16px;padding:4px 6px;box-shadow:0 6px 22px rgba(10,12,30,.22)}
+.lpkt input{flex:1;min-width:0;margin:0;border:0!important;background:transparent!important;box-shadow:none!important;padding:11px 4px;font-size:15.5px;color:var(--text);outline:0}
+.lpkb,.lpkc{border:0;background:transparent;color:var(--text);width:40px;height:40px;border-radius:50%;font-size:19px;cursor:pointer;flex:none;line-height:1}.lpkc{font-size:15px;color:var(--muted)}.lpkb:active,.lpkc:active{background:var(--bg)}
+.lpr{position:absolute;left:0;right:0;top:0;bottom:0;z-index:9;background:var(--bg);padding:calc(72px + env(safe-area-inset-top,0px)) 12px 16px;overflow-y:auto}.lpr .meta{padding:14px 8px}
+.lpr button{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:0;border-bottom:1px solid var(--line);background:transparent;color:var(--text);padding:12px 6px;cursor:pointer;font-family:inherit}.lpr button:active{background:var(--card)}
+.lpr button i{font-style:normal;flex:none;width:36px;height:36px;border-radius:50%;background:var(--card);display:grid;place-items:center;font-size:17px}.lpr button span{flex:1;min-width:0}
+.lpr b{display:block;font-size:14.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.lpr small{display:block;font-size:12.5px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.lpr em{font-style:normal;flex:none;font-size:12px;font-weight:700;color:var(--muted)}
+.lprh{font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:14px 6px 4px}
+.mmz{position:absolute;right:12px;top:calc(76px + env(safe-area-inset-top,0px));z-index:6;display:grid;gap:8px}.mmz button,.lploc{width:42px;height:42px;border-radius:50%;border:0;background:var(--card);color:var(--text);font-size:22px;line-height:1;box-shadow:0 3px 12px rgba(10,12,30,.25);cursor:pointer}
+.lploc{position:absolute;right:12px;bottom:calc(178px + env(safe-area-inset-bottom,0px));z-index:6;font-size:21px;color:var(--a)}
+.lpme{display:block;width:16px;height:16px;border-radius:50%;background:#2563eb;border:3px solid #fff;box-shadow:0 0 0 6px rgba(37,99,235,.22),0 1px 4px rgba(0,0,0,.4)}
+.lpf{position:absolute;left:0;right:0;bottom:0;z-index:7;background:var(--card);border-radius:22px 22px 0 0;padding:14px 16px calc(14px + env(safe-area-inset-bottom,0px));box-shadow:0 -8px 26px rgba(10,12,30,.18)}
+.lpl{display:block;font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}.lpa{display:block;font-size:18px;line-height:1.25;margin:3px 0 2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.lpf .meta{min-height:34px;margin:0 0 10px;font-size:12.5px}.lpf .btn{margin:0}
+#lpk.srch .lpf,#lpk.srch .lploc,#lpk.srch .mmz,#lpk.srch .lpp{display:none}
+.busmp{position:relative;overflow:hidden;height:170px;border-radius:14px;margin:8px 0}.busmp.live{background:#e3ebf6}.busmp .maplibregl-ctrl-attrib{font-size:9px}
+.busmk{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:#fff;border:2px solid var(--a);font-style:normal;font-size:18px;box-shadow:0 2px 8px rgba(0,0,0,.35)}.busmk.pk{border-color:#16a34a;width:30px;height:30px;font-size:15px}
 .buspk{border:1px solid var(--line);border-radius:14px;padding:12px;margin:10px 0}.fxk.buspk{margin:0 0 12px}.buspk>b{display:block;font-size:15px}.buspk small{display:block;color:var(--muted);font-size:12.5px;margin-top:2px}
 .buspk .fxr{gap:10px;flex-wrap:nowrap;align-items:center}.buspk .t{flex:1;min-width:0}.buspk .t b{display:block;font-size:14.5px}.buspk .fxr .btn{width:auto;flex:none;margin:0;padding:8px 14px}.buspk .lnk{display:block;margin-top:8px;text-align:center}
 .buspo{display:grid;gap:8px;margin-top:10px}.buspo .btn{margin:0}
 .buszn{font-size:15px;font-weight:700;margin:10px 0 4px;padding:9px 12px;border-radius:12px;background:var(--bg);color:var(--text)}.buszn.g{background:rgba(22,163,74,.14);color:#15803d}.buszn.y{background:rgba(234,179,8,.2);color:#92600a}.buszn.r{background:rgba(220,38,38,.13);color:#b91c1c}.buszn.d{background:rgba(22,163,74,.1);color:var(--text);font-weight:600}
 :root[data-theme=dark] .buszn.g{color:#4ade80}:root[data-theme=dark] .buszn.y{color:#facc15}:root[data-theme=dark] .buszn.r{color:#f87171}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .buszn.g{color:#4ade80}:root:not([data-theme="light"]) .buszn.y{color:#facc15}:root:not([data-theme="light"]) .buszn.r{color:#f87171}}
 .busnx{border-radius:16px;padding:14px;margin:8px 0 6px;background:var(--tint,rgba(91,61,245,.1));display:grid;gap:2px}.busnx small{font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}.busnx b{font-size:22px;line-height:1.2}.busnx span{font-size:15px;font-weight:600}.busnx .btn{margin:10px 0 0}
 .busd{flex:none;font-weight:700;font-size:13.5px;color:var(--muted)}
 .busckl{border:1px solid var(--line);border-radius:14px;padding:6px 10px;margin:0 0 12px;max-height:38vh;overflow-y:auto}.busckl .lnk{display:block;text-align:right;margin:4px 2px 2px}
@@ -2416,7 +2426,7 @@ window.__back=function(){try{
  if(!$("atm").classList.contains("hide")){shut();return true}
  {const lgv=$("legal");if(lgv&&!lgv.classList.contains("hide")){lgv.classList.add("hide");return true}}
  const pm=$("permd");if(pm){pm.remove();return true}
- if($("lpk")){lpkClose();return true}
+ {const lk=$("lpk");if(lk){if(lk._back)lk._back();else lpkClose();return true}}
  if($("pdfv")){closePdf();return true}
  const ov=$("ov");if(ov&&!ov.classList.contains("hide")){closeSheet();return true}
  if(fxOnBack())return true;
@@ -2794,7 +2804,7 @@ function liveBattery(){const N=liveNat();if(!N||typeof N.status!=="function")ret
    c.appendChild(mk("p",null,"Some phones pause apps in the background to save battery. So your live location keeps updating when the phone is locked, open Battery in the app settings and choose \"Unrestricted\" (on some phones: \"No restrictions\" or \"Allow background activity\")."));
    const g=mk("div","pstk"),a=mk("button",null,"Open settings"),b=mk("button",null,"Not now");a.type=b.type="button";a.onclick=()=>{close();try{Promise.resolve(N.openSettings({})).catch(()=>{})}catch(e){}};b.onclick=()=>close();g.append(a,b);c.appendChild(g)})},700)}).catch(()=>{})}
 function liveWrite(o){const s=liveS;if(!s||!S.sid)return;const d={lid:s.lid,until:s.until,end:0,...o};
- if(s.bus)setDoc(doc(db,"societies",S.sid,"buses",s.bus),{live:d},{merge:true}).catch(()=>{});else if(s.cid)setDoc(doc(db,"societies",S.sid,"dmchats",s.cid),{live:{[S.uid]:d}},{merge:true}).catch(()=>{});else pset({live:d})}
+ if(s.bus){setDoc(doc(db,"societies",S.sid,"buses",s.bus),{live:d,...(o.end?{on:false,endTs:o.end}:{})},{merge:true}).catch(()=>{});if(o.end&&s.trip)updateDoc(doc(db,"societies",S.sid,"bustrips",s.trip),{end:o.end}).catch(()=>{})}else if(s.cid)setDoc(doc(db,"societies",S.sid,"dmchats",s.cid),{live:{[S.uid]:d}},{merge:true}).catch(()=>{});else pset({live:d})}
 /* the newest position is kept and sent at most every 12 seconds, also when the phone reports nothing new in between */
 function liveFlush(){const s=liveS;if(!s)return;if(Date.now()>=s.until){liveStop();return}
  if(s.bus){const bx=busSelf(s.bus);if(bx&&((bx.lid===s.lid&&!bx.on)||(bx.lid!==s.lid&&(bx.startTs||0)>(s.t0||0)))){liveStop(true);liveNatStop();return}}
@@ -2805,7 +2815,7 @@ function liveWatch(){if(!navigator.geolocation||!liveS)return;if(liveW!=null)nav
 function liveGo(first){const s=liveS;if(!s)return;clearInterval(liveT);liveT=setInterval(liveFlush,4000);
  if(!liveNat()){s.nat=false;liveWatch();return}
  liveNatStart(s).then(ok=>{if(liveS!==s)return;s.nat=ok;liveSave();if(ok){if(liveW!=null&&navigator.geolocation)navigator.geolocation.clearWatch(liveW);liveW=null;if(first)liveBattery()}else{liveNatStop();liveWatch()}})}
-function liveStart(s,c){if(liveS&&((liveS.cid||"")+"|"+(liveS.bus||""))!==((s.cid||"")+"|"+(s.bus||"")))liveWrite({end:Date.now(),ts:Date.now()});   // the earlier sharing was in another chat: close it there
+function liveStart(s,c){if(liveS&&liveS.bus&&!s.bus&&Date.now()<liveS.until){toast("ℹ️","A bus trip is running","Your bus keeps sharing its location. Live location in a chat is not available during a trip.",true);return}if(liveS&&((liveS.cid||"")+"|"+(liveS.bus||""))!==((s.cid||"")+"|"+(s.bus||"")))liveWrite({end:Date.now(),ts:Date.now()});   // the earlier sharing was in another chat: close it there
  liveStop(true);liveS=s;liveSave();liveLast=Date.now();livePos=liveSent=c;
  liveWrite({lat:fix6(c.latitude),lng:fix6(c.longitude),acc:Math.round(c.accuracy||0),ts:Date.now()});liveGo(true)}
 function liveStop(silent){if(liveW!=null&&navigator.geolocation){navigator.geolocation.clearWatch(liveW)}liveW=null;clearInterval(liveT);if(liveS&&!silent){liveWrite({end:Date.now(),ts:Date.now()});liveNatStop()}liveS=null;livePos=liveSent=null;liveDrop()}
@@ -3638,62 +3648,115 @@ const busFmt=km=>km<1?Math.max(10,Math.round(km*100)*10)+" m":km.toFixed(1)+" km
 const busHere=()=>new Promise((ok,no)=>{if(!navigator.geolocation)return no(new Error("Location is not supported on this phone."));navigator.geolocation.getCurrentPosition(g=>ok(g.coords),()=>no(new Error("Couldn't get your location. Turn on GPS and try again.")),{enableHighAccuracy:true,timeout:20000,maximumAge:15000})});
 async function busLine(pid){try{const d=await getDoc(FXD("busmap",pid));if(!d.exists())return"";const a=d.data(),n=a.amName||a.pmName;return n?"🚌 "+n+(a.pk&&a.pk.lat?"":" · pickup point not set"):""}catch(e){return""}}
 const busDur=t=>{const e=t.end||(t.until&&t.until<Date.now()?t.until:0);return e?Math.max(0,e-t.start):0},busHrs=ms=>{const m=Math.round(ms/60000);return Math.floor(m/60)+" h "+String(m%60).padStart(2,"0")+" min"};
-function busMapEl(){const m=mk("div","fxmap lmp on");m.innerHTML=MAPSVG+'<i class="lpin"></i>';return m}
 /* the key of a student inside buses/{id}.arr: short, and does not show who the student is */
 const busK=pid=>{let h=2166136261;for(const c of String(pid)){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}return"k"+(h>>>0).toString(36)};
 const busArr=(x,k)=>{const t=(x&&x.arr||{})[k]||0;return t>=((x&&x.startTs)||0)?t:0};
 const busPkTxt=p=>p&&p.lat?(p.a?p.a+" · ":"")+(+p.lat).toFixed(4)+", "+(+p.lng).toFixed(4):"";
-/* ---------- choose a place: search by name, move the map under the pin, or use the phone's GPS ---------- */
-let lpkLast=null;
-/* a small map of its own (OpenStreetMap tiles): drag to move, pinch / buttons / wheel to zoom. The chosen point is the middle. */
-function miniMap(el,lat,lng,z,onMove){const T=256,ly=mk("div","mml"),tiles={},P=new Map();let zoom=z,cx=0,cy=0,pd=0,dead=false,moved=false;
+/* ---------- maps ----------
+   The map is OpenFreeMap (free OpenStreetMap vector tiles, no key) drawn by MapLibre GL, loaded when a map is first opened.
+   If that cannot load (old phone, no WebGL, blocked) a small built-in tile map is used instead, so choosing a place always works.
+   Both are used through the same few functions: center, zoom, set, zoomBy, mark, fit, resize, remove. */
+const MLCDN="https://cdn.jsdelivr.net/npm/maplibre-gl@5/dist/maplibre-gl";
+let mlP=null,mlBad=0,lpkLast=null;
+const lpkDark=()=>{const t=document.documentElement.getAttribute("data-theme");return t==="dark"||(t!=="light"&&!!(window.matchMedia&&matchMedia("(prefers-color-scheme:dark)").matches))};
+const mlLoad=()=>mlP||(Date.now()-mlBad<60000?Promise.resolve(null):mlP=new Promise(ok=>{const G=()=>window.maplibregl&&window.maplibregl.Map?window.maplibregl:null;let fin=false;const end=v=>{if(fin)return;fin=true;if(!v){mlP=null;mlBad=Date.now()}ok(v)};if(G())return end(G());
+ try{const cv=document.createElement("canvas");if(!(cv.getContext("webgl2")||cv.getContext("webgl")))return end(null)}catch(e){return end(null)}
+ const c=document.createElement("link");c.rel="stylesheet";c.href=MLCDN+".css";document.head.appendChild(c);const s=document.createElement("script");s.src=MLCDN+".js";s.onload=()=>end(G());s.onerror=()=>end(null);document.head.appendChild(s);setTimeout(()=>end(G()),9000)}));
+function mapML(G,el,lat,lng,z,onMove,still){const M=new G.Map({container:el,style:"https://tiles.openfreemap.org/styles/"+(lpkDark()?"dark":"liberty"),center:[lng,lat],zoom:Math.max(1,z-1),maxZoom:19,attributionControl:{compact:true},dragRotate:false,pitchWithRotate:false,interactive:!still});
+ try{M.touchZoomRotate.disableRotation();M.keyboard.disable()}catch(e){}
+ let ok=false;M.on("load",()=>{ok=true;el.classList.remove("mmoff")});M.on("error",()=>{if(!ok)el.classList.add("mmoff")});
+ if(onMove){M.on("movestart",()=>onMove(true));M.on("moveend",()=>onMove(false))}
+ return{kind:"ml",center:()=>{const c=M.getCenter();return{lat:c.lat,lng:c.lng}},zoom:()=>M.getZoom()+1,set:(la,ln,zz)=>{M.jumpTo(zz!=null?{center:[ln,la],zoom:Math.max(1,zz-1)}:{center:[ln,la]})},zoomBy:d=>{M.easeTo({zoom:M.getZoom()+d,duration:200})},
+  mark:(node,la,ln)=>{const k=new G.Marker({element:node}).setLngLat([ln,la]).addTo(M);return{move:(a,b)=>{k.setLngLat([b,a])},remove:()=>{k.remove()}}},
+  fit:(P,pad)=>{const la=P.map(p=>p.lat),ln=P.map(p=>p.lng);M.fitBounds([[Math.min(...ln),Math.min(...la)],[Math.max(...ln),Math.max(...la)]],{padding:pad||40,maxZoom:16,duration:0})},
+  resize:()=>{try{M.resize()}catch(e){}},remove:()=>{try{M.remove()}catch(e){}}}}
+/* the built-in map (OpenStreetMap picture tiles): drag to move, pinch / wheel to zoom */
+function miniMap(el,lat,lng,z,onMove,still){const T=256,ly=mk("div","mml"),tiles={},P=new Map(),MK=[];let zoom=z,cx=0,cy=0,pd=0,dead=false,moved=false;
  const px=(la,ln,zz)=>{const n=T*2**zz,s=Math.sin(Math.max(-85,Math.min(85,la))*Math.PI/180);return[(ln+180)/360*n,(.5-Math.log((1+s)/(1-s))/(4*Math.PI))*n]};
  const ll=()=>{const n=T*2**zoom;return{lng:((cx/n*360-180+540)%360)-180,lat:Math.atan(Math.sinh(Math.PI*(1-2*cy/n)))*180/Math.PI}};
  const draw=()=>{if(dead)return;const w=el.clientWidth||320,h=el.clientHeight||320,n=2**zoom,keep={};cy=Math.max(0,Math.min(n*T,cy));
   for(let X=Math.floor((cx-w/2)/T);X<=Math.floor((cx+w/2)/T);X++)for(let Y=Math.floor((cy-h/2)/T);Y<=Math.floor((cy+h/2)/T);Y++){if(Y<0||Y>=n)continue;const xx=((X%n)+n)%n,k=zoom+"/"+xx+"/"+Y+"@"+X;keep[k]=1;let im=tiles[k];
    if(!im){im=new Image();im.alt="";im.draggable=false;im.className="mmt";im.onerror=()=>{im.style.visibility="hidden";el.classList.add("mmoff")};im.onload=()=>el.classList.remove("mmoff");im.src="https://tile.openstreetmap.org/"+zoom+"/"+xx+"/"+Y+".png";ly.appendChild(im);tiles[k]=im}
    im.style.transform="translate("+Math.round(X*T-cx+w/2)+"px,"+Math.round(Y*T-cy+h/2)+"px)"}
-  Object.keys(tiles).forEach(k=>{if(!keep[k]){tiles[k].remove();delete tiles[k]}})};
+  Object.keys(tiles).forEach(k=>{if(!keep[k]){tiles[k].remove();delete tiles[k]}});
+  MK.forEach(m=>{const p=px(m.la,m.ln,zoom);m.node.style.left=Math.round(p[0]-cx+w/2)+"px";m.node.style.top=Math.round(p[1]-cy+h/2)+"px"})};
  const set=(la,ln,zz)=>{if(zz!=null)zoom=Math.max(3,Math.min(19,Math.round(zz)));[cx,cy]=px(la,ln,zoom);draw()};
  const zoomBy=d=>{const c=ll(),nz=Math.max(3,Math.min(19,zoom+d));if(nz===zoom)return;set(c.lat,c.lng,nz);onMove&&onMove(false)};
  const dist=()=>{const a=[...P.values()];return Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y)};
- el.addEventListener("pointerdown",e=>{if(e.target.closest(".mmz"))return;P.set(e.pointerId,{x:e.clientX,y:e.clientY});try{el.setPointerCapture(e.pointerId)}catch(q){}if(P.size===2)pd=dist()});
- el.addEventListener("pointermove",e=>{const p=P.get(e.pointerId);if(!p)return;const dx=e.clientX-p.x,dy=e.clientY-p.y;p.x=e.clientX;p.y=e.clientY;
-  if(P.size===1){if(dx||dy){cx-=dx;cy-=dy;moved=true;draw();onMove&&onMove(true)}}else if(P.size===2&&pd){const r=dist()/pd;if(r>1.55){pd=dist();zoomBy(1)}else if(r<.64){pd=dist();zoomBy(-1)}}});
- const up=e=>{if(!P.has(e.pointerId))return;P.delete(e.pointerId);pd=0;if(!P.size&&moved){moved=false;onMove&&onMove(false)}};el.addEventListener("pointerup",up);el.addEventListener("pointercancel",up);
- el.addEventListener("wheel",e=>{e.preventDefault();zoomBy(e.deltaY<0?1:-1)},{passive:false});el.addEventListener("dblclick",()=>zoomBy(1));
- const zc=mk("div","mmz"),zi=mk("button",null,"+"),zo=mk("button",null,"−");zi.type=zo.type="button";zi.setAttribute("aria-label","Zoom in");zo.setAttribute("aria-label","Zoom out");zi.onclick=()=>zoomBy(1);zo.onclick=()=>zoomBy(-1);zc.append(zi,zo);
- el.append(ly,zc,mk("span","mma","© OpenStreetMap"));set(lat,lng,z);const ro=()=>draw();window.addEventListener("resize",ro);setTimeout(draw,200);
- return{center:()=>ll(),zoom:()=>zoom,set,remove(){dead=true;window.removeEventListener("resize",ro)}}}
-const lpkGet=async(u)=>{const c=new AbortController(),t=setTimeout(()=>c.abort(),9000);try{const r=await fetch(u,{signal:c.signal,headers:{Accept:"application/json"}});if(!r.ok)throw new Error("search "+r.status);return await r.json()}finally{clearTimeout(t)}};
-/* place search: Photon first, Nominatim when it fails or finds nothing (both are OpenStreetMap search services) */
-async function lpkFind(q,near){let out=[];
- try{const j=await lpkGet("https://photon.komoot.io/api/?limit=7&lang=en&q="+encodeURIComponent(q)+(near?"&lat="+near.lat+"&lon="+near.lng:""));
-  out=((j&&j.features)||[]).map(f=>{const p=f.properties||{},g=(f.geometry||{}).coordinates||[],n=p.name||[p.housenumber,p.street].filter(Boolean).join(" ")||p.city||"";return{name:n,sub:[p.street&&p.street!==n?p.street:"",p.district||p.locality||"",p.city&&p.city!==n?p.city:"",p.state||"",p.country||""].filter((x,i,a)=>x&&a.indexOf(x)===i).join(", "),lat:+g[1],lng:+g[0]}}).filter(r=>r.name&&isFinite(r.lat)&&isFinite(r.lng))}catch(e){console.warn("place search",e)}
- if(out.length)return out;
- const j=await lpkGet("https://nominatim.openstreetmap.org/search?format=jsonv2&limit=7&q="+encodeURIComponent(q));
- return(Array.isArray(j)?j:[]).map(r=>{const d=String(r.display_name||""),n=r.name||d.split(",")[0];return{name:n,sub:d.split(",").slice(1,5).join(",").trim(),lat:+r.lat,lng:+r.lon}}).filter(r=>r.name&&isFinite(r.lat)&&isFinite(r.lng))}
-function lpkClose(v){const el=$("lpk");if(!el)return;const f=el._done;try{el._map&&el._map.remove()}catch(e){}el.remove();if(f)f(v||null)}
-/* o: {title, at:{lat,lng}, near:{lat,lng}, focus:true = start in the search box} -> {lat,lng,name} or null */
-function locPick(o){o=o||{};lpkClose();return new Promise(done=>{const el=mk("div");el.id="lpk";el.setAttribute("data-noskin","");el.setAttribute("data-noswipe","");el._done=done;
- const hd=mk("div","lph"),x=mk("button",null,"✕"),q=mk("input"),sb=mk("button","btn s","Search"),rs=mk("div","lpr hide"),mp=mk("div","lpm"),mapEl=mk("div","lpmap"),pin=mk("i","lpp","📍"),msg=mk("div","lpmsg",""),ft=mk("div","lpf"),cd=mk("div","meta"),g=mk("div","fxa"),me=mk("button","btn s o","📍 My location"),ok=mk("button","btn","Use this location");
- x.type=sb.type=me.type=ok.type="button";x.setAttribute("aria-label","Close");q.type="search";q.placeholder="Search a place, area or address";q.setAttribute("data-nofl","");q.setAttribute("enterkeyhint","search");q.maxLength=120;q.id="lpq";ok.id="lpok";
- const sr=mk("div","lps");sr.append(q,sb);hd.append(x,mk("b",null,o.title||"Choose the location"));mp.append(mapEl,pin,msg);g.append(me,ok);ft.append(cd,g);el.append(hd,sr,rs,mp,ft);document.body.appendChild(el);
- let cur=o.at&&o.at.lat?{lat:+o.at.lat,lng:+o.at.lng}:null,name="",hit=null,map=null,seq=0,tmr=0;const near=cur||o.near||lpkLast||null;
- const show=()=>{cd.textContent=cur?(name?name+" · ":"")+cur.lat.toFixed(5)+", "+cur.lng.toFixed(5):"Search a place or move the map so the pin is on the exact spot.";ok.disabled=!cur};
- const setAt=(p,nm,zoom)=>{cur={lat:+(+p.lat).toFixed(6),lng:+(+p.lng).toFixed(6)};name=nm||"";hit=nm?{...cur}:null;if(map)map.set(cur.lat,cur.lng,zoom||17);show()};
- const list=L=>{rs.innerHTML="";rs.classList.remove("hide");if(!L.length){rs.appendChild(mk("div","meta","No place found. Try the area name, or move the map yourself."));return}
-  L.forEach(r=>{const b=mk("button");b.type="button";b.append(mk("b",null,r.name),mk("small",null,r.sub||""));b.onclick=()=>{rs.classList.add("hide");q.value=r.name;setAt(r,r.name);try{q.blur()}catch(e){}};rs.appendChild(b)})};
- const find=async()=>{const t=q.value.trim();if(t.length<3){rs.classList.add("hide");return}const p=busParse(t);if(p){rs.classList.add("hide");setAt(p,"");return}
-  const n=++seq;rs.innerHTML="";rs.classList.remove("hide");rs.appendChild(mk("div","meta","Searching…"));
-  try{const L=await lpkFind(t,map&&map.zoom()>=9?map.center():near);if(n===seq&&$("lpk")===el)list(L)}catch(e){if(n===seq&&$("lpk")===el){rs.innerHTML="";rs.appendChild(mk("div","meta","Couldn't search right now. Check the internet, or use My location."))}}};
- q.oninput=()=>{clearTimeout(tmr);tmr=setTimeout(find,600)};q.onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();clearTimeout(tmr);find()}};sb.onclick=()=>{clearTimeout(tmr);find()};
- x.onclick=()=>lpkClose();
- me.onclick=()=>run(me,async()=>{if(!(await askPerm("loc")))return;const c=await busHere();setAt({lat:c.latitude,lng:c.longitude},"")});
- ok.onclick=()=>{if(!cur)return;if(map&&map.zoom()<14){toast("ℹ️","Zoom in closer","Bring the pin to the exact spot, then tap Use this location.",true);return}lpkLast={...cur};lpkClose({lat:cur.lat,lng:cur.lng,name})};
- show();if(o.focus)setTimeout(()=>{try{q.focus()}catch(e){}},250);
- {const st=cur||near;msg.remove();map=miniMap(mapEl,st?st.lat:22.6,st?st.lng:79,st?(cur?17:14):4,drag=>{pin.classList.toggle("up",!!drag);if(drag)return;const c=map.center();if(!cur&&map.zoom()<12)return;const p={lat:+c.lat.toFixed(6),lng:+c.lng.toFixed(6)};if(hit&&busKm(hit.lat,hit.lng,p.lat,p.lng)>.15){name="";hit=null}cur=p;show()});el._map=map}})}
+ if(!still){el.addEventListener("pointerdown",e=>{P.set(e.pointerId,{x:e.clientX,y:e.clientY});try{el.setPointerCapture(e.pointerId)}catch(q){}if(P.size===2)pd=dist()});
+  el.addEventListener("pointermove",e=>{const p=P.get(e.pointerId);if(!p)return;const dx=e.clientX-p.x,dy=e.clientY-p.y;p.x=e.clientX;p.y=e.clientY;
+   if(P.size===1){if(dx||dy){cx-=dx;cy-=dy;moved=true;draw();onMove&&onMove(true)}}else if(P.size===2&&pd){const r=dist()/pd;if(r>1.55){pd=dist();zoomBy(1)}else if(r<.64){pd=dist();zoomBy(-1)}}});
+  const up=e=>{if(!P.has(e.pointerId))return;P.delete(e.pointerId);pd=0;if(!P.size&&moved){moved=false;onMove&&onMove(false)}};el.addEventListener("pointerup",up);el.addEventListener("pointercancel",up);
+  el.addEventListener("wheel",e=>{e.preventDefault();zoomBy(e.deltaY<0?1:-1)},{passive:false});el.addEventListener("dblclick",()=>zoomBy(1))}
+ el.append(ly,mk("span","mma","© OpenStreetMap"));set(lat,lng,z);const ro=()=>draw();window.addEventListener("resize",ro);setTimeout(draw,200);
+ return{kind:"mini",center:()=>ll(),zoom:()=>zoom,set,zoomBy,resize:draw,
+  mark:(node,la,ln)=>{const m={node,la,ln};node.classList.add("mmk");ly.appendChild(node);MK.push(m);draw();return{move:(a,b)=>{m.la=a;m.ln=b;draw()},remove:()=>{node.remove();const i=MK.indexOf(m);if(i>=0)MK.splice(i,1)}}},
+  fit:(Q,pad)=>{const la=Q.map(p=>p.lat),ln=Q.map(p=>p.lng),w=(el.clientWidth||320)-2*(pad||40),h=(el.clientHeight||200)-2*(pad||40);let zz=16;for(;zz>3;zz--){const a=px(Math.max(...la),Math.min(...ln),zz),b=px(Math.min(...la),Math.max(...ln),zz);if(Math.abs(b[0]-a[0])<=w&&Math.abs(b[1]-a[1])<=h)break}set((Math.max(...la)+Math.min(...la))/2,(Math.max(...ln)+Math.min(...ln))/2,zz)},
+  remove(){dead=true;window.removeEventListener("resize",ro)}}}
+async function mapMake(el,lat,lng,z,onMove,still){const G=await mlLoad();if(G){try{return mapML(G,el,lat,lng,z,onMove,still)}catch(e){console.warn("map",e);el.innerHTML=""}}return miniMap(el,lat,lng,z,onMove,still)}
 
+/* ---------- places: search near you, and the address of a point (OpenStreetMap search services: Photon, then Nominatim) ---------- */
+const lpkGet=async(u)=>{const c=new AbortController(),t=setTimeout(()=>c.abort(),9000);try{const r=await fetch(u,{signal:c.signal,headers:{Accept:"application/json"}});if(!r.ok)throw new Error("search "+r.status);return await r.json()}finally{clearTimeout(t)}};
+const lpkProp=f=>{const p=f.properties||{},g=(f.geometry||{}).coordinates||[],n=p.name||[p.housenumber,p.street].filter(Boolean).join(" ")||p.locality||p.district||p.city||"";return{name:n,sub:[p.street&&p.street!==n?p.street:"",p.locality||"",p.district||"",p.city&&p.city!==n?p.city:"",p.state||""].filter((x,i,a)=>x&&x!==n&&a.indexOf(x)===i).slice(0,4).join(", "),lat:+g[1],lng:+g[0]}};
+async function lpkFind(q,near){let out=[];
+ try{const j=await lpkGet("https://photon.komoot.io/api/?limit=8&lang=en&q="+encodeURIComponent(q)+(near?"&lat="+near.lat+"&lon="+near.lng+"&zoom=12&location_bias_scale=0.1":""));out=((j&&j.features)||[]).map(lpkProp).filter(r=>r.name&&isFinite(r.lat)&&isFinite(r.lng))}catch(e){console.warn("place search",e)}
+ if(!out.length){const j=await lpkGet("https://nominatim.openstreetmap.org/search?format=jsonv2&limit=8&q="+encodeURIComponent(q)+(near?"&viewbox="+(near.lng-.4)+","+(near.lat+.4)+","+(near.lng+.4)+","+(near.lat-.4):""));
+  out=(Array.isArray(j)?j:[]).map(r=>{const d=String(r.display_name||"").split(",").map(s=>s.trim());return{name:r.name||d[0],sub:d.slice(1,4).join(", "),lat:+r.lat,lng:+r.lon}}).filter(r=>r.name&&isFinite(r.lat)&&isFinite(r.lng))}
+ if(near)out.forEach(r=>{r.km=busKm(near.lat,near.lng,r.lat,r.lng)});return out}
+const lpkRC={};
+async function lpkRev(p){const k=p.lat.toFixed(4)+","+p.lng.toFixed(4);if(lpkRC[k])return lpkRC[k];let r=null;
+ try{const j=await lpkGet("https://photon.komoot.io/reverse?lang=en&limit=1&lat="+p.lat+"&lon="+p.lng),f=((j&&j.features)||[])[0];if(f){const v=lpkProp(f);if(v.name)r={name:v.name,sub:v.sub}}}catch(e){}
+ if(!r){try{const j=await lpkGet("https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=18&lat="+p.lat+"&lon="+p.lng);if(j&&j.display_name){const d=String(j.display_name).split(",").map(s=>s.trim());r={name:j.name||d[0],sub:d.slice(1,4).join(", ")}}}catch(e){}}
+ if(r)lpkRC[k]=r;return r}
+/* places chosen before, kept on this phone only */
+const lpkRecent=()=>{try{const a=JSON.parse(localStorage.getItem("sh-places")||"[]");return Array.isArray(a)?a.filter(p=>p&&p.name&&p.lat):[]}catch(e){return[]}};
+const lpkRemember=p=>{if(!p.name)return;try{const a=lpkRecent().filter(q=>busKm(q.lat,q.lng,p.lat,p.lng)>.05);a.unshift({name:p.name,sub:p.sub||"",lat:p.lat,lng:p.lng});localStorage.setItem("sh-places",JSON.stringify(a.slice(0,6)))}catch(e){}};
+function lpkClose(v){const el=$("lpk");if(!el)return;const f=el._done;try{el._map&&el._map.remove()}catch(e){}el.remove();if(f)f(v||null)}
+/* Full-screen "choose a place": the map moves under a fixed pin, the address of the pin is shown, search lists places near you.
+   o: {title, at:{lat,lng}, near:{lat,lng}, focus:true = start in the search box} -> {lat,lng,name} or null */
+function locPick(o){o=o||{};lpkClose();return new Promise(done=>{const el=mk("div");el.id="lpk";el.setAttribute("data-noskin","");el.setAttribute("data-noswipe","");el._done=done;
+ const mapEl=mk("div","lpmap"),pin=mk("i","lpp"),top=mk("div","lpkt"),bk=mk("button","lpkb","←"),q=mk("input"),clr=mk("button","lpkc hide","✕"),rs=mk("div","lpr hide"),zc=mk("div","mmz"),zi=mk("button",null,"+"),zo=mk("button",null,"−"),me=mk("button","lploc","◎"),ft=mk("div","lpf"),lb=mk("small","lpl",o.title||"Choose the location"),ad=mk("b","lpa",""),cd=mk("div","meta",""),ok=mk("button","btn","Confirm location");
+ [bk,clr,zi,zo,me,ok].forEach(b=>{b.type="button"});bk.setAttribute("aria-label","Back");clr.setAttribute("aria-label","Clear search");zi.setAttribute("aria-label","Zoom in");zo.setAttribute("aria-label","Zoom out");me.setAttribute("aria-label","My location");
+ q.type="text";q.inputMode="search";q.placeholder="Search for a place or area";q.setAttribute("data-nofl","");q.setAttribute("enterkeyhint","search");q.setAttribute("autocomplete","off");q.maxLength=120;q.id="lpq";ok.id="lpok";pin.innerHTML="📍";
+ top.append(bk,q,clr);zc.append(zi,zo);ft.append(lb,ad,cd,ok);el.append(mapEl,pin,zc,me,ft,rs,top);document.body.appendChild(el);
+ let cur=o.at&&o.at.lat?{lat:+o.at.lat,lng:+o.at.lng}:null,name="",sub="",hit=null,map=null,seq=0,rq=0,tmr=0,rt=0,mine=null,dot=null,busy=false;const near0=cur||o.near||lpkLast||null;
+ const show=()=>{ad.textContent=!cur?"Move the map or search":busy&&!name?"Finding the address…":name||"Pinned place";cd.textContent=!cur?"Bring the pin to the exact spot. You can search, or tap ◎ for where you are now.":(sub?sub+" · ":"")+cur.lat.toFixed(5)+", "+cur.lng.toFixed(5);ok.disabled=!cur};
+ const rev=()=>{clearTimeout(rt);if(!cur||hit)return;const n=++rq,p={...cur};busy=true;show();rt=setTimeout(async()=>{const r=await lpkRev(p).catch(()=>null);if(n!==rq||$("lpk")!==el)return;busy=false;if(r){name=r.name;sub=r.sub}show()},450)};
+ const setAt=(p,nm,sb,zoom)=>{cur={lat:+(+p.lat).toFixed(6),lng:+(+p.lng).toFixed(6)};name=nm||"";sub=nm?sb||"":"";hit=nm?{...cur}:null;rq++;busy=false;if(map)map.set(cur.lat,cur.lng,zoom||17);show();if(!nm)rev()};
+ const panel=on=>{rs.classList.toggle("hide",!on);el.classList.toggle("srch",!!on)};
+ const row=(ic,t,s,km,fn)=>{const b=mk("button"),i=mk("i",null,ic),w=mk("span");b.type="button";w.append(mk("b",null,t),mk("small",null,s||""));b.append(i,w);if(km!=null)b.appendChild(mk("em",null,busFmt(km)));b.onclick=fn;rs.appendChild(b)};
+ const choose=r=>{panel(false);q.value=r.name;clr.classList.remove("hide");try{q.blur()}catch(e){}setAt(r,r.name,r.sub)};
+ const here=async quiet=>{if(!quiet&&!(await askPerm("loc")))return false;const c=await busHere();mine={lat:c.latitude,lng:c.longitude};if(map){if(dot)dot.move(mine.lat,mine.lng);else dot=map.mark(mk("i","lpme"),mine.lat,mine.lng)}return true};
+ const idle=()=>{rs.innerHTML="";row("◎","Use my current location","GPS of this phone",null,()=>{panel(false);try{q.blur()}catch(e){}run(me,async()=>{if(await here())setAt(mine,"","")})});
+  const R=lpkRecent();if(R.length)rs.appendChild(mk("div","lprh","Recent"));R.forEach(r=>row("🕘",r.name,r.sub,mine?busKm(mine.lat,mine.lng,r.lat,r.lng):null,()=>choose(r)))};
+ const find=async()=>{const t=q.value.trim();clr.classList.toggle("hide",!q.value);if(t.length<2){idle();panel(true);return}const p=busParse(t);if(p){panel(false);setAt(p,"","");return}
+  const n=++seq,ref=mine||(map&&map.zoom()>=9?map.center():near0);panel(true);if(!rs.querySelector("button em,button b")||rs.querySelector(".lprh"))rs.innerHTML="";if(!rs.children.length)rs.appendChild(mk("div","meta","Searching near you…"));
+  try{const L=await lpkFind(t,ref);if(n!==seq||$("lpk")!==el)return;rs.innerHTML="";if(!L.length){rs.appendChild(mk("div","meta","No place found. Try the area or a landmark, or move the map yourself."));return}L.forEach(r=>row("📍",r.name,r.sub,r.km,()=>choose(r)))}
+  catch(e){if(n===seq&&$("lpk")===el){rs.innerHTML="";rs.appendChild(mk("div","meta","Couldn't search right now. Check the internet, or move the map yourself."))}}};
+ q.onfocus=()=>{if(q.value.trim().length<2){idle();panel(true)}else panel(true)};q.oninput=()=>{clearTimeout(tmr);tmr=setTimeout(find,380)};q.onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();clearTimeout(tmr);find()}};
+ clr.onclick=()=>{q.value="";clr.classList.add("hide");idle();panel(true);try{q.focus()}catch(e){}};
+ bk.onclick=()=>{if(!rs.classList.contains("hide")){panel(false);try{q.blur()}catch(e){}}else lpkClose()};el._back=()=>bk.onclick();
+ zi.onclick=()=>map&&map.zoomBy(1);zo.onclick=()=>map&&map.zoomBy(-1);
+ me.onclick=()=>run(me,async()=>{if(await here())setAt(mine,"","")});
+ ok.onclick=()=>{if(!cur)return;if(map&&map.zoom()<14){toast("ℹ️","Zoom in closer","Bring the pin to the exact spot, then tap Confirm location.",true);return}lpkLast={...cur};const label=name?(name+(sub?", "+sub.split(", ")[0]:"")).slice(0,60):"";if(name)lpkRemember({name,sub,lat:cur.lat,lng:cur.lng});lpkClose({lat:cur.lat,lng:cur.lng,name:label})};
+ show();if(cur&&!name)rev();
+ const st=cur||near0;mapMake(mapEl,st?st.lat:22.6,st?st.lng:79,st?(cur?17:14):4,drag=>{pin.classList.toggle("up",!!drag);if(drag)return;const c=map.center();if(!cur&&map.zoom()<12)return;const p={lat:+c.lat.toFixed(6),lng:+c.lng.toFixed(6)};if(cur&&busKm(cur.lat,cur.lng,p.lat,p.lng)<.004)return;
+   if(hit&&busKm(hit.lat,hit.lng,p.lat,p.lng)<=.15){cur=p;show();return}hit=null;name="";sub="";cur=p;show();rev()})
+  .then(m=>{if($("lpk")!==el){m.remove();return}map=m;el._map=m;el.classList.add(m.kind);if(cur)m.set(cur.lat,cur.lng,17);if(mine)dot=m.mark(mk("i","lpme"),mine.lat,mine.lng);setTimeout(()=>m.resize(),250)});
+ /* someone who has already allowed location: show where they are, and start there when nothing is chosen yet */
+ if(pHint("loc"))here(true).then(()=>{if($("lpk")===el&&!cur&&mine)setAt(mine,"","")}).catch(()=>{});
+ if(o.focus)setTimeout(()=>{try{q.focus()}catch(e){}},300)})}
+
+/* ---------- a small live map inside a card: the bus and (for a parent) the child's pickup point ---------- */
+const busMaps={};
+function busMapsOff(){Object.keys(busMaps).forEach(k=>{try{busMaps[k].ad&&busMaps[k].ad.remove()}catch(e){}delete busMaps[k]})}
+function busMapEl(key,l,pk){if(!key||!l){const m=mk("div","fxmap lmp on");m.innerHTML=MAPSVG+'<i class="lpin"></i>';return m}
+ let o=busMaps[key];const upd=()=>{if(!o.ad)return;try{if(o.mb)o.mb.move(o.l.lat,o.l.lng);else o.mb=o.ad.mark(mk("i","busmk","🚌"),o.l.lat,o.l.lng);
+   if(o.pk&&o.pk.lat){if(o.mp)o.mp.move(o.pk.lat,o.pk.lng);else o.mp=o.ad.mark(mk("i","busmk pk","📍"),o.pk.lat,o.pk.lng)}
+   if(o.pk&&o.pk.lat&&busKm(o.l.lat,o.l.lng,o.pk.lat,o.pk.lng)>.03)o.ad.fit([o.l,o.pk],46);else o.ad.set(o.l.lat,o.l.lng,16);o.ad.resize()}catch(e){console.warn("bus map",e)}};
+ if(!o){const el=mk("div","fxmap busmp");el.innerHTML=MAPSVG+'<i class="lpin"></i>';o=busMaps[key]={el,ad:null,mb:null,mp:null,l,pk};
+  mlLoad().then(G=>{if(!G||busMaps[key]!==o)return;try{el.innerHTML="";el.classList.add("live");o.ad=mapML(G,el,o.l.lat,o.l.lng,16,null,true);upd()}catch(e){console.warn("bus map",e);o.ad=null;el.classList.remove("live");el.innerHTML=MAPSVG+'<i class="lpin"></i>'}})}
+ o.l=l;o.pk=pk||null;upd();if(o.ad)setTimeout(()=>{try{o.ad.resize()}catch(e){}},60);return o.el}
 /* ---------- a driver's own bus: the number is given while registering, the bus is added when the Principal approves ---------- */
 const busKey=s=>String(s||"").toLowerCase().replace(/[^a-z0-9]/g,"");
 async function busFromMember(r){const B=r&&r.bus;if(!B||!B.name||B.done||!SCH())return"";let res="";
@@ -3727,7 +3790,7 @@ function busPkBox(o){const w=mk("div","buspk"),pk=o.pk&&o.pk.lat?o.pk:null,save=
    t.append(mk("b",null,"📍 Pickup point"),mk("small",null,busPkTxt(pk)),mk("small",null,"Saved"+(pk.ts?" on "+fxDate(fxYmd(new Date(pk.ts))):"")+" · used every day, also for the evening drop"));r.append(t,c);w.appendChild(r);return}
   w.appendChild(mk("b",null,pk?"📍 Change pickup point":"📍 Set pickup point"));w.appendChild(mk("small",null,pk?"Choose the new place. It replaces the saved one.":"Do this once. The bus alerts use this place every day — for the morning pickup and the evening drop."));
   const g=mk("div","buspo"),b1=mk("button","btn s","📍 Use current location"),b2=mk("button","btn s o","🗺️ Select on map"),b3=mk("button","btn s o","🔍 Search address");[b1,b2,b3].forEach(q=>{q.type="button"});
-  b1.onclick=()=>run(b1,async()=>{if(!(await askPerm("loc")))return;const c=await busHere();if((c.accuracy||0)>150){toast("ℹ️","GPS is weak here (±"+Math.round(c.accuracy)+" m)","Step outside and try again, or use Select on map.",true);return}await save({lat:c.latitude,lng:c.longitude,name:""})});
+  b1.onclick=()=>run(b1,async()=>{if(!(await askPerm("loc")))return;const c=await busHere();if((c.accuracy||0)>150){toast("ℹ️","GPS is weak here (±"+Math.round(c.accuracy)+" m)","Step outside and try again, or use Select on map.",true);return}const r=await Promise.race([lpkRev({lat:c.latitude,lng:c.longitude}).catch(()=>null),new Promise(k=>setTimeout(()=>k(null),4000))]);await save({lat:c.latitude,lng:c.longitude,name:r&&r.name?(r.name+(r.sub?", "+r.sub.split(", ")[0]:"")):""})});
   const pick=(bt,f)=>async()=>{const v=await locPick({title:"Pickup point · "+String(o.name||"").split(" ")[0],at:pk,near:o.near||null,focus:f});if(v)run(bt,()=>save(v))};b2.onclick=pick(b2,false);b3.onclick=pick(b3,true);
   g.append(b1,b2,b3);w.appendChild(g);if(pk){const k=mk("a","lnk","Keep the saved place");k.onclick=()=>{busPkO[o.pid]=false;paint()};w.appendChild(k)}};
  paint();return w}
@@ -3748,14 +3811,14 @@ function busParent(b){const P=myProfiles().filter(k=>k.status==="approved"||k.id
     else if(km!=null&&km<=BUSZ.appr)z=["y","🟡 Approaching · "+busFmt(km)+" · about "+busEta(km)+" min"];
     else if(km!=null&&km<=BUSZ.near)z=["g","🟢 Nearby · "+busFmt(km)+" · about "+busEta(km)+" min"];
     else if(km!=null)z=["","📍 "+busFmt(km)+" away · ⏱ about "+busEta(km)+" min"];
-    else z=["",pk?"The bus has started. Waiting for its location…":"Set the pickup point above to see how far the bus is."];
-    c.appendChild(mk("div","buszn "+z[0],z[1]));
-    if(l){c.appendChild(busMapEl());const g=mk("div","fxa"),v=mk("a","btn","🗺️ LIVE TRACK");v.href="https://www.google.com/maps?q="+l.lat+","+l.lng;v.target="_blank";v.rel="noopener";v.style.flex="1";g.appendChild(v);if(x.phone){const p=mk("a","btn o","📞 Driver");p.href="tel:"+String(x.phone).replace(/[^\d+]/g,"");p.style.cssText="flex:none;width:auto;padding-left:16px;padding-right:16px";g.appendChild(p)}c.appendChild(g)}
+    else z=["",!l?(x.live&&x.live.lid===x.lid&&x.live.end?"The driver's phone is not sharing the bus's location right now.":"The bus has started. Waiting for its location…"):"Set the pickup point above to see how far the bus is."];
+    c.appendChild(mk("div","buszn "+z[0],z[1]));if(l&&Date.now()-l.ts>180000)c.appendChild(mk("div","meta","Last seen "+ago(l.ts)+". The driver's phone is not sending its location right now (no network, or the phone is off)."));
+    if(l){c.appendChild(busMapEl("p"+k.id+dir,l,pk));const g=mk("div","fxa"),v=mk("a","btn","🗺️ LIVE TRACK");v.href="https://www.google.com/maps?q="+l.lat+","+l.lng;v.target="_blank";v.rel="noopener";v.style.flex="1";g.appendChild(v);if(x.phone){const p=mk("a","btn o","📞 Driver");p.href="tel:"+String(x.phone).replace(/[^\d+]/g,"");p.style.cssText="flex:none;width:auto;padding-left:16px;padding-right:16px";g.appendChild(p)}c.appendChild(g)}
     if(dir==="am"){const ts=busArr(x,"sch");if(ts)c.appendChild(mk("div","note","🏫 Reached school at "+tm(ts)))}});
    b.appendChild(c)})};
  const subB=id=>{if(subs[id])return;subs[id]=1;fxU.push(onSnapshot(FXD("buses",id),s=>{B[id]=s.exists()?{id,...s.data()}:null;draw()},e=>{console.warn("bus",e);subs[id]=0}))};
  P.forEach(k=>{let f=true;const got=()=>{if(f){f=false;ready++}};fxU.push(onSnapshot(FXD("busmap",k.id),s=>{got();if(s.exists()){A[k.id]=s.data();[A[k.id].amBus,A[k.id].pmBus].filter(Boolean).forEach(subB)}else delete A[k.id];draw()},e=>{got();if(e&&e.code==="permission-denied")denied=true;draw()}))});
- const iv=setInterval(()=>{if(ready>=P.length&&$("ov").classList.contains("hide"))draw()},10000);fxU.push(()=>clearInterval(iv));draw()}
+ const iv=setInterval(()=>{if(ready>=P.length&&$("ov").classList.contains("hide"))draw()},10000);fxU.push(()=>clearInterval(iv));fxU.push(busMapsOff);draw()}
 
 /* ---------- alerts for parents while the app is open: started, nearby, approaching, arrived, reached school ---------- */
 let busWU=[],busWT=0,busNow=[],busNeed=[],busSig="";
@@ -3803,17 +3866,26 @@ function busNextNote(x){if(!busOn(x)||!x.tripId||x.driverUid!==S.uid)return;cons
  if(!id||busNx[x.tripId]===id)return;busNx[x.tripId]=id;
  if(id==="done")busDrvNote("✅",pm?"All children dropped":"All pickups done",pm?"You can end the trip.":"Go to the school.");else busDrvNote("➡️",(pm?"Next drop: ":"Next pickup: ")+nx.m.name,busFmt(nx.km)+" away · about "+busEta(nx.km)+" min")}
 /* when this page (not the Android service) follows the trip: mark a pickup point once the bus is within 120 m and slow */
-function busAuto(){let s=null,c=null;try{s=liveS;c=livePos}catch(e){}Object.values(busMy).forEach(x=>{try{busNextNote(x)}catch(e){console.warn("next pickup",e)}});
+function busAuto(){let s=null,c=null;try{s=liveS;c=livePos}catch(e){}Object.values(busMy).forEach(x=>{try{busNextNote(x)}catch(e){console.warn("next pickup",e)}if(!s&&Date.now()-busT0>9000)busResume(x).catch(e=>console.warn("resume trip",e))});
  if(!s||!s.bus||s.nat||!c){busPrev=null;return}const x=busMy[s.bus];if(!x||!busOn(x)||x.lid!==s.lid||(c.accuracy||0)>150)return;
  const now=Date.now(),pv=busPrev;busPrev={lat:c.latitude,lng:c.longitude,t:now};const spd=typeof c.speed==="number"&&c.speed>=0?c.speed:pv&&now-pv.t>2000?busKm(pv.lat,pv.lng,c.latitude,c.longitude)*1000/((now-pv.t)/1000):null;if(spd==null||spd>BUSSLOW)return;
  const up={};String(s.geo||"").split(";").forEach(g=>{const[k,la,ln]=g.split(",");if(!k||busArr(x,k)||busDid[x.tripId+k])return;if(busKm(c.latitude,c.longitude,+la,+ln)<=BUSZ.arr){up["arr."+k]=now;busDid[x.tripId+k]=1}});
  if(Object.keys(up).length)updateDoc(FXD("buses",x.id),up).catch(e=>{console.warn("arrival",e);Object.keys(up).forEach(k=>delete busDid[x.tripId+k.slice(4)])})}
+/* a trip of mine is running but this phone is not sharing (the phone restarted, the app was installed again, a second phone...): share again */
+const busRes={},busFix={};let busT0=0;
+async function busResume(x,manual){if(!x||!busOn(x)||x.driverUid!==S.uid||!x.tripId)return false;let s=null;try{s=liveS}catch(e){}if(s&&s.bus===x.id&&s.lid===x.lid)return true;if(!manual&&(s||busRes[x.tripId]))return false;
+ if(!manual){const l=busLive(x);if(l&&Date.now()-l.ts<90000)return false}   /* another phone of this driver is sharing */
+ const R=busTM[x.tripId];if(!R)return false;busRes[x.tripId]=1;if(!(await askPerm("loc")))return false;const c=await busHere();try{s=liveS}catch(e){}if(s&&s.bus===x.id&&s.lid===x.lid)return true;
+ const dir=x.dir||"am",L=R.filter(m=>m[dir+"Bus"]===x.id),gn={};L.forEach(m=>{if(m.pk&&m.pk.lat)gn[busK(m.pid)]=String(m.name||"").split(" ")[0].slice(0,18)});
+ liveStart({lid:x.lid,until:x.until,cid:null,bus:x.id,trip:x.tripId,geo:busGeo(x,dir,L),gn:JSON.stringify(gn),gl:dir==="pm"?"Next drop":"Next pickup",t0:x.startTs||Date.now()},c);toast("🚌","Location sharing is on again",x.name,true);return true}
+/* a trip that was ended by the phone itself (Stop in the notification, time over, log-out): close its line in the trip history */
+function busClose(x){if(!x||x.on||!x.tripId||!x.endTs||busFix[x.tripId]||x.driverUid!==S.uid)return;busFix[x.tripId]=1;getDoc(FXD("bustrips",x.tripId)).then(d=>{if(d.exists()&&!d.data().end)return updateDoc(FXD("bustrips",x.tripId),{end:x.endTs})}).catch(()=>{})}
 function busTrips(){const run={};Object.values(busMy).forEach(x=>{if(!busOn(x)||!x.tripId)return;run[x.tripId]=1;if(busTU[x.tripId])return;const id=x.tripId;
   busTU[id]=onSnapshot(query(FXC("busmap"),where((x.dir||"am")+"Bus","==",x.id),limit(400)),s=>{busTM[id]=s.docs.map(d=>({id:d.id,...d.data()}));const b=busMy[x.id];if(b)try{busNextNote(b)}catch(e){}},e=>console.warn("trip students",e))});
  Object.keys(busTU).forEach(id=>{if(!run[id]){try{busTU[id]()}catch(e){}delete busTU[id];delete busTM[id]}})}
 function busDriveOff(){if(busMU){try{busMU()}catch(e){}}busMU=null;clearInterval(busMT);busMy={};Object.keys(busTU).forEach(id=>{try{busTU[id]()}catch(e){}delete busTU[id]});busTM={};busPrev=null}
-function busDrive(){busDriveOff();if(!(SCH()&&S.me&&S.me.status==="approved"&&S.pid===S.uid&&!isStu(S.me)))return;
- busMU=onSnapshot(query(FXC("buses"),where("driverUid","==",S.uid),limit(10)),s=>{const n={};s.docs.forEach(d=>{n[d.id]={id:d.id,...d.data()}});busMy=n;busTrips();Object.values(n).forEach(x=>{try{busNextNote(x)}catch(e){}})},e=>console.warn("my bus",e));busMT=setInterval(busAuto,6000);
+function busDrive(){busDriveOff();busT0=Date.now();if(!(SCH()&&S.me&&S.me.status==="approved"&&S.pid===S.uid&&!isStu(S.me)))return;
+ busMU=onSnapshot(query(FXC("buses"),where("driverUid","==",S.uid),limit(10)),s=>{const n={};s.docs.forEach(d=>{n[d.id]={id:d.id,...d.data()}});busMy=n;busTrips();Object.values(n).forEach(x=>{try{busNextNote(x);busClose(x)}catch(e){}})},e=>console.warn("my bus",e));busMT=setInterval(busAuto,6000);
  unsubs.push(busDriveOff);
  if(isOwner())setTimeout(()=>{try{busFromAll();busRidersDaily()}catch(e){console.warn(e)}},5000)}
 
@@ -3856,10 +3928,11 @@ FX.bus={ic:"🚌",get t(){return S.me&&isStu(S.me)&&!isAdm()?"My child's bus":S.
   const go=mk("button","btn","▶ START TRIP");go.type="button";go.style.marginTop="12px";go.onclick=()=>run(go,async()=>{if(!(await askPerm("loc")))return;const c=await busHere(),now=Date.now(),lid=rid(),until=now+mins*60000,tripId=rid(),dir=ds.value,R=riders(x,dir),gn={};R.filter(hasPk).forEach(m=>{gn[busK(m.pid)]=String(m.name||"").split(" ")[0].slice(0,18)});
    await setDoc(FXD("bustrips",tripId),{busId:x.id,busName:x.name,route:x.route||"",dir,uid:S.uid,driverName:S.me.name,start:now,end:0,until,ts:now});
    await updateDoc(FXD("buses",x.id),{on:true,lid,until,startTs:now,dir,tripId,at:null,arr:{},live:{lid,until,end:0,lat:fix6(c.latitude),lng:fix6(c.longitude),acc:Math.round(c.accuracy||0),spd:-1,ts:now}});
-   liveStart({lid,until,cid:null,bus:x.id,geo:busGeo(x,dir,R),gn:JSON.stringify(gn),gl:dir==="pm"?"Next drop":"Next pickup",t0:now},c);closeSheet();toast("🚌","Trip started","Parents of this bus can now see it.",true)});z.appendChild(go)});
+   liveStart({lid,until,cid:null,bus:x.id,trip:tripId,geo:busGeo(x,dir,R),gn:JSON.stringify(gn),gl:dir==="pm"?"Next drop":"Next pickup",t0:now},c);closeSheet();toast("🚌","Trip started","Parents of this bus can now see it.",true)});z.appendChild(go)});
  const stop=async x=>{if(!fxSure("End this trip?"))return;const now=Date.now();if(liveS&&liveS.bus===x.id)liveStop();else if(mine(x))liveNatStop();
   if(x.tripId)await updateDoc(FXD("bustrips",x.tripId),{end:now}).catch(()=>{});await updateDoc(FXD("buses",x.id),{on:false,endTs:now,"live.end":now});toast("🚌","Trip ended","",true)};
  const tripPanel=(c,x,me)=>{const dir=x.dir||"am",pm=dir==="pm",q=busQueue(x,MAP,busPos(x)),nx=q.W[0],bx=mk("div","busnx");c.appendChild(mk("div","fxs",busDirL(dir)+" · started "+tm(x.startTs)));
+  if(me&&!(liveS&&liveS.bus===x.id)){const w=mk("div","buszn y","This phone is not sharing the bus's location."),rb=mk("button","btn","▶ Share location from this phone");rb.type="button";rb.style.margin="6px 0 10px";rb.onclick=()=>run(rb,async()=>{if(!(await busResume(x,true)))toast("ℹ️","Couldn't start sharing","Allow location for the app and try again.",true);draw()});c.append(w,rb)}
   if(nx){bx.append(mk("small",null,pm?"Next drop":"Next pickup"),mk("b",null,nx.m.name),mk("span",null,nx.km==null?"Waiting for the bus's location…":"📍 "+busFmt(nx.km)+" away · ⏱ about "+busEta(nx.km)+" min"));
    if(me){const nv=mk("a","btn","🧭 Navigate");nv.href="https://www.google.com/maps/dir/?api=1&destination="+nx.m.pk.lat+","+nx.m.pk.lng+"&travelmode=driving";nv.target="_blank";nv.rel="noopener";bx.appendChild(nv)}}
   else bx.append(mk("b",null,q.done.length?(pm?"✅ All children dropped":"✅ All pickups done"):q.n?"No pickup points yet":"No students on this trip"),mk("span",null,q.done.length?(pm?"The trip can be ended.":"Next: the school."):q.n?"The parents have not set them yet.":"The school assigns students to this bus."));
@@ -3871,7 +3944,7 @@ FX.bus={ic:"🚌",get t(){return S.me&&isStu(S.me)&&!isAdm()?"My child's bus":S.
  /* --- screens --- */
  const busCard=x=>{const l=busLive(x),run=busOn(x),c=mk("div","fxk"),top=mk("div","fxr"),me=mine(x),R=onBus(x);top.appendChild(fxPill(run?"● LIVE":"Not running",run?"g":""));if(run)top.appendChild(fxPill(x.dir==="pm"?"Evening":"Morning","b"));if(l)top.appendChild(mk("span","meta sp1","updated "+ago(l.ts)));c.appendChild(top);
   c.appendChild(mk("b","fxt","🚌 "+x.name));if(x.route)c.appendChild(mk("div","meta","🛣️ "+x.route));c.appendChild(mk("div","meta","Driver: "+(x.driverName||"—")+(x.phone?" · "+x.phone:"")+(adm||me?" · "+R.length+" students"+(R.length?" · "+R.filter(hasPk).length+" with a pickup point":""):"")));
-  if(l&&!me)c.appendChild(busMapEl());
+  if(l)c.appendChild(busMapEl("b"+x.id,l,null));
   if((me||adm)&&run&&x.tripId)tripPanel(c,x,me);
   const a=mk("div","fxa");if(me&&!run){const s=mk("button","btn g","▶ START TRIP");s.type="button";s.style.flex="1";s.onclick=()=>startSheet(x);a.appendChild(s)}
   if(me&&run)a.appendChild(fxMini("■ END TRIP",()=>stop(x),"r"));
@@ -3901,7 +3974,7 @@ FX.bus={ic:"🚌",get t(){return S.me&&isStu(S.me)&&!isAdm()?"My child's bus":S.
  if(own)try{busFromAll()}catch(e){console.warn(e)}
  if(adm){fxW(query(FXC("busmap"),limit(3000)),(d,e)=>{MAP=d||[];if(d&&!e){mapOk=true;if(L)busRiders(L,MAP)}if(L)draw()});fxW(query(FXC("bustrips"),orderBy("start","desc"),limit(400)),d=>{TR=d||[];if(L)draw()})}
  else fxW(query(FXC("bustrips"),where("uid","==",S.uid),limit(300)),d=>{TR=d||[];if(L)draw()});
- const iv=setInterval(()=>{if(L&&view==="bus"&&L.some(x=>x.on)&&$("ov").classList.contains("hide"))draw()},8000);fxU.push(()=>clearInterval(iv));draw()}};
+ const iv=setInterval(()=>{if(L&&view==="bus"&&L.some(x=>x.on)&&$("ov").classList.contains("hide"))draw()},8000);fxU.push(()=>clearInterval(iv));fxU.push(busMapsOff);draw()}};
 
 /* ---------- Exam results: teacher -> class -> students -> results ---------- */
 FX.res={ic:"🏅",t:"Exam results",show:()=>isAdm()||isStu(S.me),open(b){let L=null,err=null;const adm=isAdm(),lk="sh-res-last-"+S.sid,nav={t:isTeacher()?S.uid:null,cls:isTeacher()?myCls():null,stu:null};

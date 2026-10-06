@@ -820,6 +820,9 @@ b.mtn{color:var(--a);font-weight:600;background:var(--tint,rgba(91,61,245,.1));b
 .busckl{border:1px solid var(--line);border-radius:14px;padding:6px 10px;margin:0 0 12px;max-height:38vh;overflow-y:auto}.busckl .lnk{display:block;text-align:right;margin:4px 2px 2px}
 .busck{display:flex;align-items:center;gap:12px;padding:9px 2px;border-top:1px solid var(--line);cursor:pointer}.busck:first-of-type{border-top:0}.busck input{width:20px;height:20px;flex:none;margin:0;accent-color:var(--a)}.busck span{min-width:0}.busck b{display:block;font-size:14px;font-weight:600}.busck small{display:block;font-size:12px;color:var(--muted)}
 .busl.need{border-left-color:var(--a)}
+.gmk{position:absolute;width:0;height:0;display:flex;align-items:center;justify-content:center;pointer-events:none}.gmk>*{flex:none}
+.gmx.gmoff::after{content:"Google Maps could not start. Close this map and open it again.";position:absolute;inset:0;z-index:5;display:grid;place-items:center;text-align:center;padding:90px 30px;background:#e8eaed;color:#475569;font-size:14px;font-weight:600}
+.busau{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center;margin-top:8px}.busnx .busau span{font-size:12.5px;font-weight:500;color:var(--muted)}.busau .lnk{display:inline;margin:0;font-size:12.5px;font-weight:700}
 /* ===== drivers, uploads, switches, login polish, loading, map screens ===== */
 /* the page itself is not zoomed with two fingers (maps and the PDF viewer are) */
 #sMain,section.scr,#fx,#ov,#drw,#idp,#toasts{touch-action:pan-x pan-y}
@@ -1337,7 +1340,7 @@ const firebaseConfig = {
 };
 /* ======================== */
 import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import {getAuth,GoogleAuthProvider,signInWithPopup,signInWithCredential,createUserWithEmailAndPassword,signInWithEmailAndPassword,updateProfile,signOut,sendPasswordResetEmail,onAuthStateChanged,deleteUser} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import {getAuth,GoogleAuthProvider,signInWithPopup,signInWithCredential,getAdditionalUserInfo,createUserWithEmailAndPassword,signInWithEmailAndPassword,updateProfile,signOut,sendPasswordResetEmail,onAuthStateChanged,deleteUser} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import {getFirestore,collection,doc,getDoc,getDocs,setDoc,addDoc,updateDoc,deleteDoc,onSnapshot,query,orderBy,limit,where,writeBatch,arrayUnion} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import {getFunctions,httpsCallable} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-functions.js";
 import {getDatabase,ref as rRef,set as rSet,get as rGet,update as rUpdate,remove as rRemove} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
@@ -1445,7 +1448,7 @@ $("asub").onclick=async()=>{const em=$("ae").value.trim(),pw=$("ap").value,er=$(
  try{if(mode==="login"){loginKind=KIND;await signInWithEmailAndPassword(auth,em,pw)}else{const nm=$("an").value.trim();if(!nm){er.textContent="Enter your name.";return}const c=await createUserWithEmailAndPassword(auth,em,pw);await updateProfile(c.user,{displayName:nm})}}catch(e){er.textContent=fr(e)}};
 $("afg").onclick=()=>{const e=$("ae").value.trim();if(!e){$("aerr").textContent="Type your email first.";return}sendPasswordResetEmail(auth,e).then(()=>$("aerr").textContent="Reset link sent ✔").catch(x=>$("aerr").textContent=fr(x))};
 $("aerr").setAttribute("data-noskin","");const logout=async()=>{try{if(liveS){liveStop();await new Promise(r=>setTimeout(r,700))}else liveNatStop()}catch(e){}await signOut(auth);location.href=location.pathname};$("lo1").onclick=$("lo2").onclick=logout;
-onAuthStateChanged(auth,u=>{if(!u){try{liveNatStop()}catch(e){}unsubs.forEach(f=>f());unsubs=[];if(authMsg){mode="login";authUI();show("sAuth");$("aerr").textContent=authMsg;authMsg=""}else show("sLand");return}S.user=u;S.uid=u.uid;boot()});
+onAuthStateChanged(auth,u=>{if(!u){try{liveNatStop()}catch(e){}unsubs.forEach(f=>f());unsubs=[];if(authMsg){mode="login";authUI();show("sAuth");$("aerr").textContent=authMsg;authMsg=""}else show("sLand");return}if(ggHold){ggHold=u;return}S.user=u;S.uid=u.uid;boot()});
 const qp=new URLSearchParams(location.search).get("join");if(qp)$("jc").value=qp.toUpperCase();
 
 async function kindGuard(t){t=t||"society";if(!loginKind||t===loginKind||!KINDS[t])return false;const w=KINDS[t];authMsg="This email is already registered with a "+w.word+" ("+w.person+" account). Please log in from \""+w.card+"\". One email can be used in only one of society / corporate / school.";loginKind=null;await signOut(auth);return true}
@@ -3740,10 +3743,11 @@ const busPkTxt=p=>p&&p.lat?(p.a?p.a+" · ":"")+(+p.lat).toFixed(4)+", "+(+p.lng)
 const MLCDN="https://cdn.jsdelivr.net/npm/maplibre-gl@5/dist/maplibre-gl";
 let mlP=null,mlBad=0,lpkLast=null;
 const lpkDark=()=>{const t=document.documentElement.getAttribute("data-theme");return t==="dark"||(t!=="light"&&!!(window.matchMedia&&matchMedia("(prefers-color-scheme:dark)").matches))};
+const mapBox=el=>{const b=document.createElement("div");b.className="mapbx";b.style.cssText="position:absolute;left:0;top:0;width:100%;height:100%";el.appendChild(b);return b};
 const mlLoad=()=>mlP||(Date.now()-mlBad<60000?Promise.resolve(null):mlP=new Promise(ok=>{const G=()=>window.maplibregl&&window.maplibregl.Map?window.maplibregl:null;let fin=false;const end=v=>{if(fin)return;fin=true;if(!v){mlP=null;mlBad=Date.now()}ok(v)};if(G())return end(G());
  try{const cv=document.createElement("canvas");if(!(cv.getContext("webgl2")||cv.getContext("webgl")))return end(null)}catch(e){return end(null)}
  const c=document.createElement("link");c.rel="stylesheet";c.href=MLCDN+".css";document.head.appendChild(c);const s=document.createElement("script");s.src=MLCDN+".js";s.onload=()=>end(G());s.onerror=()=>end(null);document.head.appendChild(s);setTimeout(()=>end(G()),9000)}));
-function mapML(G,el,lat,lng,z,onMove,still){const M=new G.Map({container:el,style:"https://tiles.openfreemap.org/styles/"+(lpkDark()?"dark":"liberty"),center:[lng,lat],zoom:Math.max(1,z-1),maxZoom:19,attributionControl:{compact:true},dragRotate:false,pitchWithRotate:false,interactive:!still});
+function mapML(G,el,lat,lng,z,onMove,still){const bx=mapBox(el),M=new G.Map({container:bx,style:"https://tiles.openfreemap.org/styles/"+(lpkDark()?"dark":"liberty"),center:[lng,lat],zoom:Math.max(1,z-1),maxZoom:19,attributionControl:{compact:true},dragRotate:false,pitchWithRotate:false,interactive:!still});
  try{M.touchZoomRotate.disableRotation();M.keyboard.disable()}catch(e){}
  let ok=false;M.on("load",()=>{ok=true;el.classList.remove("mmoff")});M.on("error",()=>{if(!ok)el.classList.add("mmoff")});
  if(onMove){M.on("movestart",()=>onMove(true));M.on("moveend",()=>onMove(false))}
@@ -3752,7 +3756,7 @@ function mapML(G,el,lat,lng,z,onMove,still){const M=new G.Map({container:el,styl
   fit:(P,pad)=>{const la=P.map(p=>p.lat),ln=P.map(p=>p.lng);M.fitBounds([[Math.min(...ln),Math.min(...la)],[Math.max(...ln),Math.max(...la)]],{padding:pad||40,maxZoom:16,duration:0})},
   line:P=>{const d={type:"Feature",properties:{},geometry:{type:"LineString",coordinates:P.map(p=>[p.lng,p.lat])}},put=()=>{try{const s=M.getSource("ln");if(s)s.setData(d);else{M.addSource("ln",{type:"geojson",data:d});M.addLayer({id:"ln",type:"line",source:"ln",layout:{"line-cap":"round","line-join":"round"},paint:{"line-color":"#2563eb","line-width":4,"line-opacity":.8,"line-dasharray":[1.4,1.6]}})}}catch(e){}};if(ok)put();else M.once("load",put)},
   tilt:on=>{try{M.easeTo({pitch:on?58:0,duration:500})}catch(e){}},user:fn=>{M.on("dragstart",fn);M.on("zoomstart",e=>{if(e&&e.originalEvent)fn()})},
-  resize:()=>{try{M.resize()}catch(e){}},remove:()=>{try{M.remove()}catch(e){}}}}
+  resize:()=>{try{M.resize()}catch(e){}},remove:()=>{try{M.remove()}catch(e){}try{bx.remove()}catch(e){}}}}
 /* the built-in map (OpenStreetMap picture tiles): drag to move, pinch / wheel to zoom */
 function miniMap(el,lat,lng,z,onMove,still){const T=256,ly=mk("div","mml"),tiles={},P=new Map(),MK=[];let zoom=z,cx=0,cy=0,pd=0,dead=false,moved=false;
  const px=(la,ln,zz)=>{const n=T*2**zz,s=Math.sin(Math.max(-85,Math.min(85,la))*Math.PI/180);return[(ln+180)/360*n,(.5-Math.log((1+s)/(1-s))/(4*Math.PI))*n]};
@@ -3776,12 +3780,44 @@ function miniMap(el,lat,lng,z,onMove,still){const T=256,ly=mk("div","mml"),tiles
   mark:(node,la,ln)=>{const m={node,la,ln};node.classList.add("mmk");ly.appendChild(node);MK.push(m);draw();return{move:(a,b)=>{m.la=a;m.ln=b;draw()},remove:()=>{node.remove();const i=MK.indexOf(m);if(i>=0)MK.splice(i,1)}}},
   fit:(Q,pad)=>{const la=Q.map(p=>p.lat),ln=Q.map(p=>p.lng),w=(el.clientWidth||320)-2*(pad||40),h=(el.clientHeight||200)-2*(pad||40);let zz=16;for(;zz>3;zz--){const a=px(Math.max(...la),Math.min(...ln),zz),b=px(Math.min(...la),Math.max(...ln),zz);if(Math.abs(b[0]-a[0])<=w&&Math.abs(b[1]-a[1])<=h)break}set((Math.max(...la)+Math.min(...la))/2,(Math.max(...ln)+Math.min(...ln))/2,zz)},
   remove(){dead=true;window.removeEventListener("resize",ro)}}}
-async function mapMake(el,lat,lng,z,onMove,still){const G=await mlLoad();if(G){try{return mapML(G,el,lat,lng,z,onMove,still)}catch(e){console.warn("map",e);el.innerHTML=""}}return miniMap(el,lat,lng,z,onMove,still)}
+/* ---------- Google Maps (only in an app built with a Google Maps key: window.SANGAM_GMAPS_KEY) ----------
+   Map, place search, places within 100 m and addresses then come from Google. Without a key, or if Google refuses it, the other maps are used. */
+const gmKey=()=>{try{return String(window.SANGAM_GMAPS_KEY||"").trim()}catch(e){return ""}};
+let gmP=null,gmBad=0,gmTok=null;
+const gmLoad=()=>{if(!gmKey()||(gmBad&&Date.now()<gmBad))return Promise.resolve(null);return gmP||(gmP=new Promise(ok=>{let fin=false;const end=v=>{if(fin)return;fin=true;if(!v){gmP=null;gmBad=Math.max(gmBad,Date.now()+60000)}ok(v)};
+ const ready=async()=>{try{const g=window.google.maps,[core,m,p,gc]=await Promise.all(["core","maps","places","geocoding"].map(n=>g.importLibrary(n)));end({LatLng:core.LatLng,LatLngBounds:core.LatLngBounds,Map:m.Map,OverlayView:m.OverlayView,Polyline:m.Polyline,P:p,Geocoder:gc.Geocoder})}catch(e){console.warn("google maps",e);end(null)}};
+ if(window.google&&window.google.maps&&window.google.maps.importLibrary){ready();return}
+ /* Google calls this when the key is wrong, not allowed for this app, or the project has no billing */
+ window.gm_authFailure=()=>{console.warn("google maps: the key was refused");gmBad=Date.now()+86400000;gmP=null;document.querySelectorAll(".gmx").forEach(e=>e.classList.add("gmoff"));try{toast("🗺️","Google Maps could not start","The key or billing needs checking. Close the map and open it again to use the standard map.",true)}catch(e){}};
+ window.__gmReady=ready;const s=document.createElement("script");s.async=true;s.src="https://maps.googleapis.com/maps/api/js?key="+encodeURIComponent(gmKey())+"&v=weekly&loading=async&libraries=places&language=en&region=IN&callback=__gmReady";s.onerror=()=>end(null);document.head.appendChild(s);setTimeout(()=>end(null),9000)}))};
+function mapGM(G,el,lat,lng,z,onMove,still){const bx=mapBox(el),dark=lpkDark(),M=new G.Map(bx,{center:{lat,lng},zoom:z,minZoom:2,maxZoom:20,disableDefaultUI:true,clickableIcons:false,keyboardShortcuts:false,gestureHandling:still?"none":"greedy",isFractionalZoomEnabled:true,colorScheme:dark?"DARK":"LIGHT",backgroundColor:dark?"#1f2937":"#e8eaed"});
+ el.classList.add("gmx");const L=[];let mv=false,ln=null;
+ if(onMove){const st=()=>{if(!mv){mv=true;onMove(true)}};L.push(M.addListener("dragstart",st),M.addListener("center_changed",st),M.addListener("zoom_changed",st),M.addListener("idle",()=>{if(mv){mv=false;onMove(false)}}))}
+ return{kind:"gm",center:()=>{const c=M.getCenter();return{lat:c.lat(),lng:c.lng()}},zoom:()=>M.getZoom(),
+  set:(la,lo,zz)=>{const o=zz!=null?{center:{lat:la,lng:lo},zoom:zz}:{center:{lat:la,lng:lo}};if(M.moveCamera)M.moveCamera(o);else{M.setCenter(o.center);if(zz!=null)M.setZoom(zz)}},
+  zoomBy:d=>{M.setZoom(Math.max(2,Math.min(20,Math.round(M.getZoom()+d))))},
+  mark:(node,la,lo)=>{const w=document.createElement("div");w.className="gmk";w.appendChild(node);const ov=new G.OverlayView();let p=new G.LatLng(la,lo);
+   ov.onAdd=function(){this.getPanes().overlayMouseTarget.appendChild(w)};ov.draw=function(){const pr=this.getProjection();if(!pr)return;const pt=pr.fromLatLngToDivPixel(p);if(pt){w.style.left=pt.x+"px";w.style.top=pt.y+"px"}};ov.onRemove=function(){w.remove()};ov.setMap(M);
+   return{move:(a,b)=>{p=new G.LatLng(a,b);try{ov.draw()}catch(e){}},remove:()=>{try{ov.setMap(null)}catch(e){}w.remove()}}},
+  fit:(P,pad)=>{const b=new G.LatLngBounds();P.forEach(q=>b.extend({lat:q.lat,lng:q.lng}));M.fitBounds(b,pad||40);const h=M.addListener("idle",()=>{h.remove();if(M.getZoom()>16)M.setZoom(16)})},
+  line:P=>{const path=P.map(q=>({lat:q.lat,lng:q.lng}));if(ln)ln.setPath(path);else ln=new G.Polyline({map:M,path,clickable:false,strokeOpacity:0,icons:[{icon:{path:"M 0,-1 0,1",strokeOpacity:.85,strokeColor:"#2563eb",scale:3},offset:"0",repeat:"12px"}]})},
+  tilt:()=>{},user:fn=>{L.push(M.addListener("dragstart",fn));el.addEventListener("wheel",fn,{passive:true});el.addEventListener("touchstart",e=>{if(e.touches&&e.touches.length>1)fn()},{passive:true})},
+  resize:()=>{},remove:()=>{L.forEach(h=>{try{h.remove()}catch(e){}});try{ln&&ln.setMap(null)}catch(e){}el.classList.remove("gmx","gmoff");try{bx.remove()}catch(e){}}}}
+const gmParts=(t,skip)=>String(t||"").split(",").map(x=>x.trim()).filter((x,i,a)=>x&&x!==skip&&a.indexOf(x)===i);
+async function gmFind(G,q,near){const P=G.P;if(!gmTok)gmTok=new P.AutocompleteSessionToken();const rq={input:q,sessionToken:gmTok,language:"en",region:"in"};if(near){rq.locationBias={center:{lat:near.lat,lng:near.lng},radius:30000};rq.origin={lat:near.lat,lng:near.lng}}
+ const r=await P.AutocompleteSuggestion.fetchAutocompleteSuggestions(rq);return((r&&r.suggestions)||[]).map(x=>x.placePrediction).filter(Boolean).slice(0,8).map(p=>({name:(p.mainText&&p.mainText.text)||(p.text&&p.text.text)||"",sub:(p.secondaryText&&p.secondaryText.text)||"",km:typeof p.distanceMeters==="number"?p.distanceMeters/1000:undefined,gp:p})).filter(x=>x.name)}
+/* a place from Google's suggestions gets its position when it is chosen */
+async function lpkFill(r){if(isFinite(r.lat)&&isFinite(r.lng))return r;if(!r.gp)throw new Error("This place has no position.");const pl=r.gp.toPlace();await pl.fetchFields({fields:["location","displayName","formattedAddress"]});gmTok=null;const L=pl.location;if(!L)throw new Error("This place has no position.");r.lat=L.lat();r.lng=L.lng();return r}
+async function gmNear(G,p){const P=G.P,r=await P.Place.searchNearby({fields:["displayName","formattedAddress","location"],locationRestriction:{center:{lat:p.lat,lng:p.lng},radius:100},maxResultCount:10,rankPreference:(P.SearchNearbyRankPreference||{}).DISTANCE||"DISTANCE",language:"en",region:"in"}),seen={};
+ return((r&&r.places)||[]).map(x=>{const L=x.location,n=String(x.displayName||"");return L&&n?{name:n,sub:gmParts(x.formattedAddress,n).slice(0,3).join(", "),lat:L.lat(),lng:L.lng()}:null}).filter(v=>v&&!seen[v.name.toLowerCase()]&&(seen[v.name.toLowerCase()]=1)).map(v=>{v.km=busKm(p.lat,p.lng,v.lat,v.lng);return v}).filter(v=>v.km<=.1).sort((a,b)=>a.km-b.km).slice(0,8)}
+async function gmRev(G,p){const r=await new G.Geocoder().geocode({location:{lat:p.lat,lng:p.lng}}),a=(r&&r.results)||[];if(!a.length)return null;const best=a.find(x=>!(x.types||[]).includes("plus_code"))||a[0],d=gmParts(best.formatted_address).filter(x=>!/^[A-Z0-9]{4}\+[A-Z0-9]{2,}/.test(x));if(!d.length)return null;const num=d.length>1&&d[0].length<=8&&/\d/.test(d[0]);return{name:num?d[0]+", "+d[1]:d[0],sub:d.slice(num?2:1,num?5:4).filter(x=>x!=="India").join(", ")}}
+async function mapMake(el,lat,lng,z,onMove,still){const GG=await gmLoad();if(GG){try{return mapGM(GG,el,lat,lng,z,onMove,still)}catch(e){console.warn("google map",e);el.classList.remove("gmx");el.innerHTML=""}}const G=await mlLoad();if(G){try{return mapML(G,el,lat,lng,z,onMove,still)}catch(e){console.warn("map",e);el.innerHTML=""}}return miniMap(el,lat,lng,z,onMove,still)}
 
 /* ---------- places: search near you, and the address of a point (OpenStreetMap search services: Photon, then Nominatim) ---------- */
 const lpkGet=async(u)=>{const c=new AbortController(),t=setTimeout(()=>c.abort(),9000);try{const r=await fetch(u,{signal:c.signal,headers:{Accept:"application/json"}});if(!r.ok)throw new Error("search "+r.status);return await r.json()}finally{clearTimeout(t)}};
 const lpkProp=f=>{const p=f.properties||{},g=(f.geometry||{}).coordinates||[],n=p.name||[p.housenumber,p.street].filter(Boolean).join(" ")||p.locality||p.district||p.city||"";return{name:n,sub:[p.street&&p.street!==n?p.street:"",p.locality||"",p.district||"",p.city&&p.city!==n?p.city:"",p.state||""].filter((x,i,a)=>x&&x!==n&&a.indexOf(x)===i).slice(0,4).join(", "),lat:+g[1],lng:+g[0]}};
 async function lpkFind(q,near){let out=[];
+ {const G=await gmLoad();if(G){try{return await gmFind(G,q,near)}catch(e){console.warn("google search",e)}}}
  try{const j=await lpkGet("https://photon.komoot.io/api/?limit=8&lang=en&q="+encodeURIComponent(q)+(near?"&lat="+near.lat+"&lon="+near.lng+"&zoom=12&location_bias_scale=0.1":""));out=((j&&j.features)||[]).map(lpkProp).filter(r=>r.name&&isFinite(r.lat)&&isFinite(r.lng))}catch(e){console.warn("place search",e)}
  if(!out.length){const j=await lpkGet("https://nominatim.openstreetmap.org/search?format=jsonv2&limit=8&q="+encodeURIComponent(q)+(near?"&viewbox="+(near.lng-.4)+","+(near.lat+.4)+","+(near.lng+.4)+","+(near.lat-.4):""));
   out=(Array.isArray(j)?j:[]).map(r=>{const d=String(r.display_name||"").split(",").map(s=>s.trim());return{name:r.name||d[0],sub:d.slice(1,4).join(", "),lat:+r.lat,lng:+r.lon}}).filter(r=>r.name&&isFinite(r.lat)&&isFinite(r.lng))}
@@ -3789,11 +3825,13 @@ async function lpkFind(q,near){let out=[];
 /* named places within about 400 m of a point, nearest first */
 const lpkNC={};
 async function lpkNear(p){const k=p.lat.toFixed(4)+","+p.lng.toFixed(4);if(lpkNC[k])return lpkNC[k];let out=[];
+ {const G=await gmLoad();if(G){try{out=await gmNear(G,p);lpkNC[k]=out;return out}catch(e){console.warn("google nearby",e);out=[]}}}
  try{const j=await lpkGet("https://photon.komoot.io/reverse?lang=en&limit=12&radius=0.4&lat="+p.lat+"&lon="+p.lng),seen={};out=((j&&j.features)||[]).map(lpkProp).filter(r=>r.name&&isFinite(r.lat)&&isFinite(r.lng)&&!seen[r.name.toLowerCase()]&&(seen[r.name.toLowerCase()]=1));out.forEach(r=>{r.km=busKm(p.lat,p.lng,r.lat,r.lng)});out=out.filter(r=>r.km<=.45).sort((a,b)=>a.km-b.km).slice(0,8)}catch(e){}
  if(out.length)lpkNC[k]=out;return out}
 const lpkRC={};
 async function lpkRev(p){const k=p.lat.toFixed(4)+","+p.lng.toFixed(4);if(lpkRC[k])return lpkRC[k];let r=null;
- try{const j=await lpkGet("https://photon.komoot.io/reverse?lang=en&limit=1&lat="+p.lat+"&lon="+p.lng),f=((j&&j.features)||[])[0];if(f){const v=lpkProp(f);if(v.name)r={name:v.name,sub:v.sub}}}catch(e){}
+ {const G=await gmLoad();if(G){try{r=await gmRev(G,p)}catch(e){console.warn("google address",e)}}}
+ if(!r)try{const j=await lpkGet("https://photon.komoot.io/reverse?lang=en&limit=1&lat="+p.lat+"&lon="+p.lng),f=((j&&j.features)||[])[0];if(f){const v=lpkProp(f);if(v.name)r={name:v.name,sub:v.sub}}}catch(e){}
  if(!r){try{const j=await lpkGet("https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=18&lat="+p.lat+"&lon="+p.lng);if(j&&j.display_name){const d=String(j.display_name).split(",").map(s=>s.trim());r={name:j.name||d[0],sub:d.slice(1,4).join(", ")}}}catch(e){}}
  if(r)lpkRC[k]=r;return r}
 /* places chosen before, kept on this phone only */
@@ -3815,7 +3853,7 @@ function locPick(o){o=o||{};lpkClose();return new Promise(done=>{const el=mk("di
  const setAt=(p,nm,sb,zoom)=>{cur={lat:+(+p.lat).toFixed(6),lng:+(+p.lng).toFixed(6)};name=nm||"";sub=nm?sb||"":"";hit=nm?{...cur}:null;rq++;busy=false;if(map)map.set(cur.lat,cur.lng,zoom||17);show();rev()};
  const panel=on=>{rs.classList.toggle("hide",!on);el.classList.toggle("srch",!!on)};
  const row=(ic,t,s,km,fn)=>{const b=mk("button"),i=mk("i",null,ic),w=mk("span");b.type="button";w.append(mk("b",null,t),mk("small",null,s||""));b.append(i,w);if(km!=null)b.appendChild(mk("em",null,busFmt(km)));b.onclick=fn;rs.appendChild(b)};
- const choose=r=>{panel(false);q.value=r.name;clr.classList.remove("hide");try{q.blur()}catch(e){}setAt(r,r.name,r.sub)};
+ const choose=async r=>{panel(false);q.value=r.name;clr.classList.remove("hide");try{q.blur()}catch(e){}if(!isFinite(r.lat)||!isFinite(r.lng)){try{await lpkFill(r)}catch(e){if($("lpk")===el)toast("ℹ️","Couldn't open this place","Check the internet and try again, or move the map yourself.",true);return}if($("lpk")!==el)return}setAt(r,r.name,r.sub)};
  const here=async quiet=>{if(!quiet&&!(await askPerm("loc")))return false;const c=await busHere();mine={lat:c.latitude,lng:c.longitude};if(map){if(dot)dot.move(mine.lat,mine.lng);else dot=map.mark(mk("i","lpme"),mine.lat,mine.lng)}return true};
  const idle=()=>{rs.innerHTML="";row("◎","Use my current location","GPS of this phone",null,()=>{panel(false);try{q.blur()}catch(e){}run(me,async()=>{if(await here())setAt(mine,"","")})});
   if(NR.length){rs.appendChild(mk("div","lprh","Nearby"));NR.forEach(r=>row("📍",r.name,r.sub,r.km,()=>choose(r)))}
@@ -3846,7 +3884,7 @@ function busMapEl(key,l,pk){if(!key||!l){const m=mk("div","fxmap lmp on");m.inne
    if(o.pk&&o.pk.lat){if(o.mp)o.mp.move(o.pk.lat,o.pk.lng);else o.mp=o.ad.mark(mk("i","busmk pk","📍"),o.pk.lat,o.pk.lng)}
    if(o.pk&&o.pk.lat&&busKm(o.l.lat,o.l.lng,o.pk.lat,o.pk.lng)>.03)o.ad.fit([o.l,o.pk],46);else o.ad.set(o.l.lat,o.l.lng,16);o.ad.resize()}catch(e){console.warn("bus map",e)}};
  if(!o){const el=mk("div","fxmap busmp");el.innerHTML=MAPSVG+'<i class="lpin"></i>';o=busMaps[key]={el,ad:null,mb:null,mp:null,l,pk};
-  mlLoad().then(G=>{if(!G||busMaps[key]!==o)return;try{el.innerHTML="";el.classList.add("live");o.ad=mapML(G,el,o.l.lat,o.l.lng,16,null,true);upd()}catch(e){console.warn("bus map",e);o.ad=null;el.classList.remove("live");el.innerHTML=MAPSVG+'<i class="lpin"></i>'}})}
+  gmLoad().then(GG=>GG?{gm:GG}:mlLoad().then(G=>G?{ml:G}:null)).then(R=>{if(!R||busMaps[key]!==o)return;try{el.innerHTML="";el.classList.add("live");o.ad=R.gm?mapGM(R.gm,el,o.l.lat,o.l.lng,16,null,true):mapML(R.ml,el,o.l.lat,o.l.lng,16,null,true);upd()}catch(e){console.warn("bus map",e);o.ad=null;el.classList.remove("live","gmx");el.innerHTML=MAPSVG+'<i class="lpin"></i>'}})}
  o.l=l;o.pk=pk||null;upd();if(o.ad)setTimeout(()=>{try{o.ad.resize()}catch(e){}},60);return o.el}
 
 /* ---------- full-screen maps inside the app: follow a bus live, or show one place ---------- */
@@ -3989,8 +4027,11 @@ function busNextNote(x){if(!busOn(x)||!x.tripId||x.driverUid!==S.uid)return;cons
  if(!id||busNx[x.tripId]===id)return;busNx[x.tripId]=id;
  if(id==="done")busDrvNote("✅",pm?"All children dropped":"All pickups done",pm?"You can end the trip.":"Go to the school.");else busDrvNote("➡️",(pm?"Next drop: ":"Next pickup: ")+nx.m.name,busFmt(nx.km)+" away · about "+busEta(nx.km)+" min")}
 /* when this page (not the Android service) follows the trip: mark a pickup point once the bus is within 120 m and slow */
+let busHand=false;
 function busAuto(){let s=null,c=null;try{s=liveS;c=livePos}catch(e){}Object.values(busMy).forEach(x=>{try{busNextNote(x)}catch(e){console.warn("next pickup",e)}if(!s&&Date.now()-busT0>9000)busResume(x).catch(e=>console.warn("resume trip",e))});
- if(!s||!s.bus||s.nat||!c){busPrev=null;return}const x=busMy[s.bus];if(!x||!busOn(x)||x.lid!==s.lid||(c.accuracy||0)>150)return;
+ /* when the phone's background service is sharing, the open app checks too, from the position the service last sent */
+ if(s&&s.bus&&s.nat){const x0=busMy[s.bus],l=x0&&busLive(x0);c=l&&Date.now()-(l.ts||0)<45000?{latitude:l.lat,longitude:l.lng,accuracy:l.acc||0,speed:typeof l.spd==="number"?l.spd:undefined}:null}
+ if(!s||!s.bus||!c){busPrev=null;return}const x=busMy[s.bus];if(!x||!busOn(x)||x.lid!==s.lid||(c.accuracy||0)>150)return;
  const now=Date.now(),pv=busPrev;busPrev={lat:c.latitude,lng:c.longitude,t:now};const spd=typeof c.speed==="number"&&c.speed>=0?c.speed:pv&&now-pv.t>2000?busKm(pv.lat,pv.lng,c.latitude,c.longitude)*1000/((now-pv.t)/1000):null;if(spd==null||spd>BUSSLOW)return;
  /* the list is taken fresh, so a child added or back on the bus after the trip began is included */
  const R0=busTripR(x),geo=R0?busGeo(x,x.dir||"am",R0.filter(m=>m[(x.dir||"am")+"Bus"]===x.id)):String(s.geo||""),up={};geo.split(";").forEach(g=>{const[k,la,ln]=g.split(",");if(!k||busArr(x,k)||busDid[x.tripId+k])return;if(busKm(c.latitude,c.longitude,+la,+ln)<=BUSZ.arr){up["arr."+k]=now;busDid[x.tripId+k]=1}});
@@ -4065,11 +4106,12 @@ FX.bus={ic:"🚌",get t(){return S.me&&isStu(S.me)&&!isAdm()?"My child's bus":S.
   const mark=(m,f)=>fxMini(f==="arr"?(pm?"✓ Dropped":"✓ Picked"):"Absent",()=>updateDoc(FXD("buses",x.id),{[f+"."+key(m)]:Date.now()}),f==="arr"?"g":"o");
   if(me&&!(liveS&&liveS.bus===x.id)){const w=mk("div","buszn y","This phone is not sharing the bus's location."),rb=mk("button","btn","▶ Share location from this phone");rb.type="button";rb.style.margin="6px 0 10px";rb.onclick=()=>run(rb,async()=>{if(!(await busResume(x,true)))toast("ℹ️","Couldn't start sharing","Allow location for the app and try again.",true);draw()});c.append(w,rb)}
   if(nx){bx.append(mk("small",null,pm?"Next drop":"Next pickup"),mk("b",null,nx.m.name),mk("span",null,nx.km==null?"Waiting for the bus's location…":"📍 "+busFmt(nx.km)+" away · ⏱ about "+busEta(nx.km)+" min"));
-   if(me){const g=mk("div","fxa"),nv=mk("button","btn","🧭 Navigate");nv.type="button";nv.onclick=()=>busTrack(x.id,{pk:nx.m.pk,kid:String(nx.m.name).split(" ")[0],what:pm?"drop":"pickup",drv:true});g.append(nv,mark(nx.m,"arr"),mark(nx.m,"abs"));bx.appendChild(g)}}
+   if(me){const g=mk("div","fxa"),nv=mk("button","btn","🧭 Navigate");nv.type="button";nv.onclick=()=>busTrack(x.id,{pk:nx.m.pk,kid:String(nx.m.name).split(" ")[0],what:pm?"drop":"pickup",drv:true});g.append(nv);if(busHand)g.append(mark(nx.m,"arr"),mark(nx.m,"abs"));bx.appendChild(g);
+    const au=mk("div","busau");au.append(mk("span",null,"✨ Marks itself as "+(pm?"dropped":"picked")+" when the bus stops here. Nothing to tap."));const hb=mk("a","lnk",busHand?"Hide the buttons":"✋ Mark by hand");hb.setAttribute("role","button");hb.tabIndex=0;hb.onclick=()=>{busHand=!busHand;draw()};au.appendChild(hb);bx.appendChild(au)}}
   else bx.append(mk("b",null,q.done.length||q.abs.length?(rem?"Check the students below":pm?"✅ All children dropped":"✅ All pickups done"):q.n?"No pickup points yet":"No students on this trip"),mk("span",null,q.done.length||q.abs.length?(rem?"They have no pickup point; tick them yourself.":pm?"The trip can be ended.":"Next: the school."):q.n?"The parents have not set them yet.":"The school assigns students to this bus."));
   c.appendChild(bx);
   const row=(m,right,btns)=>{const r=mk("div","busrow"),t=mk("div","t");t.appendChild(mk("b",null,m.name));t.appendChild(mk("small",null,m.cls||""));r.append(t);if(right)r.appendChild(mk("span","busd",right));if(me&&btns)btns.forEach(b2=>r.appendChild(b2));c.appendChild(r)};
-  if(q.W.length>1){c.appendChild(mk("div","fxs","Upcoming"));q.W.slice(1).forEach(w=>row(w.m,w.km==null?"—":busFmt(w.km),[mark(w.m,"arr"),mark(w.m,"abs")]))}
+  if(q.W.length>1){c.appendChild(mk("div","fxs","Upcoming"));q.W.slice(1).forEach(w=>row(w.m,w.km==null?"—":busFmt(w.km),busHand?[mark(w.m,"arr"),mark(w.m,"abs")]:null))}
   if(q.nop.length){c.appendChild(mk("div","fxs","No pickup point yet · "+q.nop.length));q.nop.forEach(m=>row(m,me?"":"parent has not set it",[mark(m,"arr"),mark(m,"abs")]))}
   if(q.done.length){c.appendChild(mk("div","fxs",(pm?"Dropped":"Picked")+" · "+q.done.length));q.done.forEach(w=>row({name:"✅ "+w.m.name,cls:w.m.cls},tm(w.at)))}
   if(q.abs.length){c.appendChild(mk("div","fxs","Absent · "+q.abs.length));q.abs.forEach(m=>row({name:"❌ "+m.name,cls:m.cls},busOffToday(m)?"parent: not today":"",busOffToday(m)?null:[fxMini("Undo",()=>updateDoc(FXD("buses",x.id),{["abs."+key(m)]:0}))]))}
@@ -4423,15 +4465,21 @@ function ggErr(e){const c=String((e&&e.code)||""),m=String((e&&e.message)||e||""
  if(/user-disabled/.test(c))return "This account has been disabled.";
  if(/^google_/.test(c))return "Google sign-in did not work ("+c.slice(7)+"). Please try again or use your email and password.";
  return fr(e)}
+/* while a Google sign-in is being checked the app does not open yet (see onAuthStateChanged): true, or the signed-in user once known */
+let ggHold=false;
+const ggIsNew=c=>{try{const i=getAdditionalUserInfo(c);if(i&&typeof i.isNewUser==="boolean")return i.isNewUser}catch(e){}try{const m=c.user.metadata;return !!(m&&m.creationTime&&m.creationTime===m.lastSignInTime)}catch(e){return false}};
 async function ggGo(btn){const er=$("aerr");er.textContent="";
  if(mode==="signup"&&!$("agc").checked){er.textContent="Please tick the box to agree to the Terms of Use and Privacy Policy.";const g=$("agr");g.classList.remove("shk");void g.offsetWidth;g.classList.add("shk");return}
- if(btn.disabled)return;btn.disabled=true;btn.classList.add("on");const kind0=loginKind;
+ if(btn.disabled)return;btn.disabled=true;btn.classList.add("on");const kind0=loginKind;let cred=null,keep=false;
  try{loginKind=KIND;
   if(ggNat()){const r=await ggPlug().signIn({clientId:String(window.SANGAM_GOOGLE_CLIENT||"")});if(!r||r.cancelled||!r.idToken){loginKind=kind0;return}
-   await signInWithCredential(auth,GoogleAuthProvider.credential(r.idToken))}
-  else{const p=new GoogleAuthProvider();p.setCustomParameters({prompt:"select_account"});await signInWithPopup(auth,p)}}
- catch(e){loginKind=kind0;const t=ggErr(e);if(t){console.warn("google sign-in",e&&e.code,e&&e.message);er.textContent=t}}
- finally{btn.disabled=false;btn.classList.remove("on")}}
+   ggHold=true;cred=await signInWithCredential(auth,GoogleAuthProvider.credential(r.idToken))}
+  else{const p=new GoogleAuthProvider();p.setCustomParameters({prompt:"select_account"});ggHold=true;cred=await signInWithPopup(auth,p)}
+  /* Login tab + a Google account that was never signed up here: the account Google just made is removed again, and the person is told to sign up first */
+  if(mode==="login"&&ggIsNew(cred)){loginKind=kind0;authMsg="No account found for this Google ID. Please sign up first: tap “Sign up”, then “Continue with Google”.";try{await deleteUser(cred.user)}catch(e){console.warn("google: remove new account",e&&e.code);try{await signOut(auth)}catch(q){}}keep=true;setTimeout(()=>{ggHold=false},700);const msg=authMsg||"No account found for this Google ID. Please sign up first: tap “Sign up”, then “Continue with Google”.";setTimeout(()=>{if(auth.currentUser)return;authMsg="";mode="login";authUI();show("sAuth");$("aerr").textContent=msg},120);return}
+  const held=ggHold;ggHold=false;if(held&&held!==true){S.user=held;S.uid=held.uid;boot()}}
+ catch(e){loginKind=kind0;const held=ggHold;ggHold=false;if(held&&held!==true){S.user=held;S.uid=held.uid;boot();return}const t=ggErr(e);if(t){console.warn("google sign-in",e&&e.code,e&&e.message);er.textContent=t}}
+ finally{if(!keep)ggHold=false;btn.disabled=false;btn.classList.remove("on")}}
 function ggInit(){const sub=$("asub");if(!sub||$("agg")||!ggCan())return;
  const or=mk("div","ggo","or");or.setAttribute("data-noskin","");
  const b=mk("button","ggb");b.id="agg";b.type="button";b.setAttribute("data-noskin","");b.innerHTML='<i aria-hidden="true">G</i><span>Continue with Google</span><em class="dots" aria-hidden="true"><i></i><i></i><i></i></em>';

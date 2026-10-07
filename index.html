@@ -1089,6 +1089,7 @@ body.plk nav button:not(#n_home):not(#n_sub){opacity:.4}
 .hdf .fxch{grid-column:1/-1;margin:0}
 .hds{font-size:12.5px;line-height:1.45;color:var(--muted);margin:2px 0 4px}
 .pta b.pos{color:var(--grn)}.pta b.neg{color:var(--red)}
+.pln .btn.actp,.pln .btn.actp:disabled{color:var(--grn);border-color:var(--grn);background:color-mix(in srgb,var(--grn) 10%,transparent);opacity:1;cursor:default;transform:none}
 /* "Mute notifications" in the Me tab and its sheet */
 .mtb{width:100%;border:0;background:none;color:inherit;font-family:inherit;cursor:pointer;text-align:left;gap:10px}
 .mtb small{margin-left:auto;color:var(--muted);font-size:12.5px;text-align:right}
@@ -1586,12 +1587,18 @@ $("asub").onclick=async()=>{const em=$("ae").value.trim(),pw=$("ap").value,er=$(
  try{if(mode==="login"){loginKind=KIND;await signInWithEmailAndPassword(auth,em,pw)}else{const nm=$("an").value.trim();if(!nm){er.textContent="Enter your name.";return}const c=await createUserWithEmailAndPassword(auth,em,pw);await updateProfile(c.user,{displayName:nm})}}catch(e){er.textContent=fr(e)}};
 $("afg").onclick=()=>{const e=$("ae").value.trim();if(!e){$("aerr").textContent="Type your email first.";return}sendPasswordResetEmail(auth,e).then(()=>$("aerr").textContent="Reset link sent ✔").catch(x=>$("aerr").textContent=fr(x))};
 $("aerr").setAttribute("data-noskin","");const logout=async()=>{try{if(liveS){liveStop();await new Promise(r=>setTimeout(r,700))}else liveNatStop()}catch(e){}await signOut(auth);location.href=location.pathname};$("lo1").onclick=$("lo2").onclick=logout;
-onAuthStateChanged(auth,u=>{if(!u){try{liveNatStop()}catch(e){}unsubs.forEach(f=>f());unsubs=[];if(authMsg){mode="login";authUI();show("sAuth");$("aerr").textContent=authMsg;authMsg=""}else show("sLand");return}if(ggHold){ggHold=u;return}S.user=u;S.uid=u.uid;boot()});
+/* ---------- waiting for approval: the screen moves on by itself the moment the teacher / admin decides ---------- */
+let waitU=null;
+const waitOff=()=>{if(waitU){try{waitU()}catch(e){}waitU=null}};
+function waitWatch(){waitOff();if(!S.sid||!S.uid||!S.me)return;const sid=S.sid,uid=S.uid,st0=S.me.status;
+ waitU=onSnapshot(doc(db,"societies",sid,"members",uid),s=>{const st=s.exists()?s.data().status:"";if(st===st0||S.sid!==sid||S.uid!==uid)return;waitOff();if($("sWait").classList.contains("hide"))return;
+  if(st==="approved")toast("✅","You are approved","Opening "+BRAND+"…",true);boot()},e=>console.warn("approval",e))}
+onAuthStateChanged(auth,u=>{if(!u){try{liveNatStop()}catch(e){}try{waitOff();kidsOff()}catch(e){}unsubs.forEach(f=>f());unsubs=[];if(authMsg){mode="login";authUI();show("sAuth");$("aerr").textContent=authMsg;authMsg=""}else show("sLand");return}if(ggHold){ggHold=u;return}S.user=u;S.uid=u.uid;boot()});
 const qp=new URLSearchParams(location.search).get("join");if(qp)$("jc").value=qp.toUpperCase();
 
 async function kindGuard(t){t=t||"society";if(!loginKind||t===loginKind||!KINDS[t])return false;const w=KINDS[t];authMsg="This email is already registered with a "+w.word+" ("+w.person+" account). Please log in from \""+w.card+"\". One email can be used in only one of society / corporate / school.";loginKind=null;await signOut(auth);return true}
 async function memCheck(sid,name){try{const m=await getDoc(doc(db,"societies",sid,"members",S.uid));if(!m.exists())return"";const st=m.data().status;if(st==="approved")return"You are already a member of "+name+".";if(st==="pending")return"Your request to join "+name+" is already pending. Please wait for the admin to approve you."}catch(e){}return""}
-async function boot(){$("bk").classList.add("hide");$("wsw").classList.add("hide");if(!window.__acl){window.__acl=setInterval(syncAcl,6000);setTimeout(syncAcl,2500)}
+async function boot(){waitOff();$("bk").classList.add("hide");$("wsw").classList.add("hide");if(!window.__acl){window.__acl=setInterval(syncAcl,6000);setTimeout(syncAcl,2500)}
  try{$("wt").textContent="Loading…";show("sWait");$("wtxt").textContent="";$("wre").classList.add("hide");
   const tb=await getDoc(doc(db,"deletedUsers",S.uid));
   if(tb.exists()){await deleteDoc(doc(db,"userSociety",S.uid)).catch(()=>{});
@@ -1602,7 +1609,7 @@ async function boot(){$("bk").classList.add("hide");$("wsw").classList.add("hide
   S.sid=us.data().societyId;const m=await getDoc(doc(db,"societies",S.sid,"members",S.uid));
   if(!m.exists()){show("sChoice");return}S.me=m.data();socIds().then(({ids})=>$("wsw").classList.toggle("hide",ids.length<2||S.me.status==="approved")).catch(()=>{});
   if(S.me.status!=="approved"&&loginKind){try{const s0=await getDoc(doc(db,"societies",S.sid));if(s0.exists()&&await kindGuard(s0.data().type)){S.me=null;S.sid=null;return}}catch(e){}}
-  if(S.me.status!=="approved"){$("wt").textContent=S.me.status==="rejected"?"Request not approved":"Waiting for approval";$("wtxt").textContent=S.me.status==="rejected"?"Please contact your society admin.":"Your society admin has been notified. You'll get access as soon as you're approved.";$("wre").classList.remove("hide");show("sWait");return}
+  if(S.me.status!=="approved"){$("wt").textContent=S.me.status==="rejected"?"Request not approved":"Waiting for approval";$("wtxt").textContent=S.me.status==="rejected"?"Please contact your society admin.":"Your society admin has been notified. You'll get access as soon as you're approved.";$("wre").classList.remove("hide");show("sWait");waitWatch();return}
   const s=await getDoc(doc(db,"societies",S.sid));S.soc=s.data();if(await kindGuard(S.soc.type)){S.me=null;S.soc=null;S.sid=null;return}loginKind=null;setKind(S.soc.type||"society");checkSuper();
   if(S.soc.active===false){$("wt").textContent="Society inactive";$("wtxt").textContent="This society is currently suspended. Please contact support.";show("sWait");return}
   await kidsLoad();startApp();
@@ -1768,10 +1775,12 @@ function startApp(){
  $("annf").classList.toggle("hide",!isAdm());annSetup();ensureTCode();document.querySelector("#t_fin .bal").classList.toggle("hide",!canFin());$("finf").classList.toggle("hide",!canFin());$("pk_adm").classList.toggle("hide",!isAdm());
  $("vf_res").classList.toggle("hide",isGuard());$("vf_grd").classList.toggle("hide",!staff());$("df_grd").classList.toggle("hide",!staff());$("vh_res").classList.toggle("hide",isGuard());$("vsr").classList.toggle("hide",!staff());
  setFin("inc");setHero();drawNav();syncDirPhoto();if(KIND==="company"&&isAdm()&&!socGst())setTimeout(()=>toast("🧾","Add your GST number","Finance → GST number. It is printed on every invoice.",true),2500);
- listen();show("sMain");lockWas=null;go("home");try{planGate();planEnsure();payWarm()}catch(e){}fxStart();uxCoach();try{busWatch()}catch(e){console.warn("bus alerts",e)}try{busDrive()}catch(e){console.warn("my bus",e)}try{drvWatch()}catch(e){console.warn("driver alerts",e)}liveResume();setTimeout(firstRunPerms,900);
+ listen();try{kidsWatch()}catch(e){console.warn(e)}show("sMain");lockWas=null;go("home");try{planGate();planEnsure();payWarm()}catch(e){}fxStart();uxCoach();try{busWatch()}catch(e){console.warn("bus alerts",e)}try{busDrive()}catch(e){console.warn("my bus",e)}try{drvWatch()}catch(e){console.warn("driver alerts",e)}liveResume();setTimeout(firstRunPerms,900);
 }
 const flats=()=>{const one=S.soc.towers.length===1,r=[];S.soc.towers.forEach(t=>gF(t,one).forEach(l=>r.push((one?"":t.name+" · ")+"Flat "+l)));return r};
-function setHero(){const h=$("hav");h.innerHTML="";h.appendChild(av(S.me.name,photoOf(S.uid),42));h.onclick=()=>go("more")}
+/* my own picture: the login's public one, or - on the 2nd, 3rd ... student of a login - that student's own photo */
+const myPhoto=()=>S.pid&&S.pid!==S.uid?((S.me&&S.me.photoUrl)||""):photoOf(S.uid);
+function setHero(){const h=$("hav");h.innerHTML="";h.appendChild(av(S.me.name,myPhoto(),42));h.onclick=()=>go("more")}
 function w(qr,key,after,onNew){let first=true;unsubs.push(onSnapshot(qr,s=>{const o={};s.docs.forEach(d=>o[d.id]={id:d.id,...d.data()});D[key]=o;
  if(!first&&onNew)s.docChanges().forEach(c=>{if(c.type!=="removed"&&!c.doc.metadata.hasPendingWrites)onNew({id:c.doc.id,...c.doc.data()},c.type)});first=false;after&&after();if(tab==="home")rHome()},e=>{console.error(e);if(e&&e.code==="permission-denied"){/* silent: normal while a profile or workspace is being deleted */}else toast("⚠️","Could not load "+key,"Check your connection.",true)}))}
 function listen(){unsubs.forEach(f=>f());unsubs=[];if(wsub){wsub();wsub=null}wsubK="";const C=n=>collection(db,"societies",S.sid,n),L=(n,k)=>query(C(n),orderBy("ts","desc"),limit(k)),F=n=>query(C(n),where("flat","==",S.me.flat),limit(60));
@@ -2268,7 +2277,11 @@ function muteSheet(done){sheet(z=>{z.classList.add("mts");z.appendChild(mk("h2",
  z.appendChild(mk("p","meta","A message that mentions you by name"+(SCH()?" and the school-bus alerts are":" is")+" always shown."))})}
 
 /* ---------- people / me ---------- */
-$("pfile").onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const p0=await cropImage(f,[1],true,640,.9);if(!p0)return;const old=(D.dir[S.uid]||{}).photo,p=await UP(await dataBlob(p0),"avatars","a.jpg");await setDoc(doc(db,"societies",S.sid,"directory",S.uid),{uid:S.uid,name:S.me.name,flat:S.me.flat,role:S.me.role,photo:p},{merge:true});if(old&&old!==p)rmFile(old);toast("✅","Profile photo updated","",true)}catch(x){fail(x,"Could not update photo")}e.target.value=""};
+$("pfile").onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const p0=await cropImage(f,[1],true,640,.9);if(!p0)return;
+ /* the 2nd, 3rd ... student of a login: the photo goes onto that student's own record, not onto the login's public entry (the first student's) */
+ if(S.pid&&S.pid!==S.uid){const pid=S.pid,was=S.me.photoUrl,p=await UP(await dataBlob(p0),"avatars","kid.jpg");try{await updateDoc(doc(db,"societies",S.sid,"members",pid),{photoUrl:p})}catch(x){rmFile(p);throw x}
+  if(S.pid===pid)S.me.photoUrl=p;const k=(S.kids||[]).find(q=>q.id===pid);if(k)k.photoUrl=p;if(was&&was!==p)rmFile(was);kidsPaint();toast("✅","Profile photo updated",S.me.name||"",true);e.target.value="";return}
+ const old=(D.dir[S.uid]||{}).photo,p=await UP(await dataBlob(p0),"avatars","a.jpg");await setDoc(doc(db,"societies",S.sid,"directory",S.uid),{uid:S.uid,name:S.me.name,flat:S.me.flat,role:S.me.role,photo:p},{merge:true});if(old&&old!==p)rmFile(old);toast("✅","Profile photo updated","",true)}catch(x){fail(x,"Could not update photo")}e.target.value=""};
 const rmRt=u=>{if(typeof u==="string"&&u.startsWith("rtdb:"))rRemove(rRef(rtdb,u.slice(5))).catch(()=>{})};
 async function delMember(r){if(/_k\d+$/.test(r.id)){if(!confirm("Remove "+r.name+" from the school?\nThe parent's login and their other children stay."))return;
  try{await deleteDoc(doc(db,"societies",S.sid,"members",r.id));getDocs(query(collection(db,"societies",S.sid,"attendance"),where("uid","==",r.id))).then(q=>q.docs.forEach(d=>deleteDoc(d.ref))).catch(()=>{});deleteDoc(doc(db,"societies",S.sid,"busmap",r.id)).catch(()=>{});rmRt(r.photoUrl);toast("🗑️","Removed",r.name,true)}catch(e){fail(e)}return}
@@ -2303,7 +2316,7 @@ function rMore(){const m=$("mr");m.innerHTML="";if(isAdm()){const ic=mk("div","c
    const del=mk("button","btn s r","Delete message"),dis=mk("button","btn s o","Dismiss");del.onclick=()=>run(del,async()=>{try{const ms=await getDoc(doc(db,"societies",S.sid,"messages",r.msgId));if(ms.exists()){const m0=ms.data();[m0.img,m0.voice,m0.file&&m0.file.url].forEach(rmFile)}}catch(e){}await deleteDoc(doc(db,"societies",S.sid,"messages",r.msgId)).catch(()=>{});await deleteDoc(doc(db,"societies",S.sid,"reports",r.id))});dis.onclick=()=>run(dis,()=>deleteDoc(doc(db,"societies",S.sid,"reports",r.id)));g.append(del,dis);d.appendChild(g);rc.appendChild(d)});m.appendChild(rc)}
   m.appendChild(pplCard(mem.filter(x=>x.status==="approved")));
   }
- const p=mk("div","card");p.style.textAlign="center";const a=av(S.me.name,photoOf(S.uid),92);a.style.margin="4px auto 10px";a.style.cursor="pointer";a.onclick=()=>$("pfile").click();p.appendChild(a);
+ const p=mk("div","card");p.style.textAlign="center";const a=av(S.me.name,myPhoto(),92);a.style.margin="4px auto 10px";a.style.cursor="pointer";a.onclick=()=>$("pfile").click();p.appendChild(a);
  const cb=mk("button","btn s o","📷 Change profile photo");cb.style.cssText="width:auto;margin:0 auto 12px;padding:7px 16px";cb.onclick=()=>$("pfile").click();p.appendChild(cb);
  p.appendChild(mk("h2",null,S.me.name));p.appendChild(mk("div","meta",S.soc.name+" · "+S.me.flat+" · "+roleLbl(S.me.role)+" · Plan "+planName()));
  const t=mk("button","tg mtb"),ms=mk("small",null,muteSum()+" ›");t.type="button";t.append(mk("span",null,"🔕 Mute notifications"),ms);t.onclick=()=>muteSheet(()=>{ms.textContent=muteSum()+" ›"});p.appendChild(t);
@@ -2788,8 +2801,10 @@ function plansCard(m){const n=unitsN(),adm=isAdm(),PL=paidPlans(),rec=PL.find(p=
  const c=mk("div","card");c.id="plansCard";c.appendChild(mk("h2",null,"⭐ Subscription plans"));c.appendChild(mk("div","meta",(isOrg()?"Your "+KINDS[KIND].word+" has "+n+(KIND==="school"?" users":" employees"):"Your society has "+n+" flats")+" · suggested plan: "+rec.name));
  const sg=mk("div","seg");sg.style.marginTop="10px";const bm=mk("button","on","Monthly"),by=mk("button",null,"Yearly (save up to 17%)");{const st=planState();if(st.kind!=="paid"){const nt=mk("div","note",st.kind==="locked"?"🔒 "+(st.why==="expired"?"Your plan has expired.":"Your free trial has ended.")+" Choose a plan to continue.":st.kind==="trial"?"🎁 Free trial: "+st.left+" day"+(st.left===1?"":"s")+" left. Choose a plan any time to continue after the trial.":"🎁 Every new workspace starts with a "+TRIAL_DAYS+"-day free trial.");nt.style.margin="10px 0 0";nt.setAttribute("data-noskin","");c.appendChild(nt)}}
  sg.append(bm,by);c.appendChild(sg);const L=mk("div");c.appendChild(L);
- const draw=()=>{L.innerHTML="";bm.classList.toggle("on",cyc==="m");by.classList.toggle("on",cyc==="y");const st=planState(),cur=st.kind==="paid"?st.p:null;PL.forEach(p=>{const isCur=!!(cur&&cur.id===p.id),hi=cur?isCur:p===rec,d=mk("div","pln"+(isCur?" curp":!cur&&p===rec?" recp":""));{const nm=mk("b","plnn");nm.append(mk("i",null,planTier(p)[0]),document.createTextNode(p.name));d.appendChild(nm)}d.appendChild(mk("div","ppr",p.m?rs(cyc==="m"?p.m:p.y)+(cyc==="m"?" / month":" / year"):(p.cu?"Custom pricing":"Free")));p.f.forEach(x=>d.appendChild(mk("div","pf2","✓ "+x)));
-  if(p.m&&adm){const b=mk("button","btn s"+(hi?"":" o"),isCur?"Renew "+p.name:(cur&&cur.m>p.m?"Switch to ":"Upgrade to ")+p.name);b.onclick=()=>paySheet(p,cyc);d.appendChild(b)}else if(p.cu){const b=mk("button","btn s o","Contact sales");b.onclick=()=>{location.href="mailto:"+SUPPORT_EMAIL+"?subject="+encodeURIComponent(BRAND+" "+p.name+" plan · "+S.soc.name)};d.appendChild(b)}else if(!p.m){const b=mk("button","btn s o","Free forever");b.disabled=true;d.appendChild(b)}L.appendChild(d)})};
+ const draw=()=>{L.innerHTML="";bm.classList.toggle("on",cyc==="m");by.classList.toggle("on",cyc==="y");/* the plan in use is ONE card: this plan with the billing that was paid (monthly or yearly), not the same plan under the other tab */
+  const st=planState(),cur=st.kind==="paid"?st.p:null,cc=cur?subInfo().cy:null;PL.forEach(p=>{const same=!!(cur&&cur.id===p.id),isCur=same&&(!cc||cc===cyc),hi=cur?isCur:p===rec,d=mk("div","pln"+(isCur?" curp":!cur&&p===rec?" recp":""));{const nm=mk("b","plnn");nm.append(mk("i",null,planTier(p)[0]),document.createTextNode(p.name));d.appendChild(nm)}d.appendChild(mk("div","ppr",p.m?rs(cyc==="m"?p.m:p.y)+(cyc==="m"?" / month":" / year"):(p.cu?"Custom pricing":"Free")));p.f.forEach(x=>d.appendChild(mk("div","pf2","✓ "+x)));
+  if(isCur){const b=mk("button","btn s o actp","✓ Active plan");b.type="button";b.disabled=true;d.appendChild(b)}
+  else if(p.m&&adm){const b=mk("button","btn s"+(hi?"":" o"),same?"Switch to "+(cyc==="y"?"yearly":"monthly")+" billing":(cur&&cur.m>p.m?"Switch to ":"Upgrade to ")+p.name);b.onclick=()=>paySheet(p,cyc);d.appendChild(b)}else if(p.cu){const b=mk("button","btn s o","Contact sales");b.onclick=()=>{location.href="mailto:"+SUPPORT_EMAIL+"?subject="+encodeURIComponent(BRAND+" "+p.name+" plan · "+S.soc.name)};d.appendChild(b)}else if(!p.m){const b=mk("button","btn s o","Free forever");b.disabled=true;d.appendChild(b)}L.appendChild(d)})};
  bm.onclick=()=>{cyc="m";draw()};by.onclick=()=>{cyc="y";draw()};draw();if(!adm)c.appendChild(mk("div","meta","Only the society admin can change the plan."));m.appendChild(c)}
 function subInfo(){const sub=S.soc.subscription||{};let ls=null;try{ls=JSON.parse(localStorage.getItem("sh-plan-"+S.sid)||"null")}catch(e){}
  const pid=String(sub.plan||sub.planId||sub.planName||S.soc.plan||(ls&&ls.plan)||"").toLowerCase(),p=planList().find(x=>x.id===pid||x.name.toLowerCase()===pid)||null;let cy=null;
@@ -2808,7 +2823,8 @@ function rSub(){const m=$("sb");m.innerHTML="";window.scrollTo(0,0);subDot();
  c.appendChild(mk("b",null,p&&p.m?p.name+(cy?" · "+(cy==="y"?"Yearly":"Monthly"):""):"Free trial"));
  c.appendChild(mk("div","subst",sub.until?(ex?"⚠️ Expired on "+dt(sub.until):"Active · "+left+" day"+(left===1?"":"s")+" left (until "+dt(sub.until)+")"):pst.kind==="trial"?"Free trial · "+pst.left+" day"+(pst.left===1?"":"s")+" left (until "+dt(pst.until)+")":pst.kind==="locked"?"⚠️ Free trial ended on "+dt(pst.until)+" — upgrade to continue.":TRIAL_DAYS+"-day free trial — pick a plan below any time."));
  if(sub.until&&!ex&&cy){const tot=cy==="y"?365:30,bar=mk("div","sbar"),fi=mk("i");fi.style.width=Math.max(4,Math.min(100,Math.round(left/tot*100)))+"%";bar.appendChild(fi);c.appendChild(bar)}
- if(isAdm()){let b=null;
+ /* Renew is offered only once the plan has run out. While it is active, its card below says "Active plan". */
+ if(isAdm()&&ex){let b=null;
   if(p&&p.m&&cy){b=mk("button","btn s","Renew "+p.name+" · "+(cy==="y"?"1 year":"30 days")+" · "+rs(cy==="y"?p.y:p.m));b.onclick=()=>paySheet(p,cy)}
   else if(p&&p.m){b=mk("button","btn s","Renew "+p.name+" plan");b.onclick=()=>$("plansCard").scrollIntoView({behavior:"smooth"})}
   else if(sub.until){b=mk("button","btn s","Choose a plan to renew");b.onclick=()=>$("plansCard").scrollIntoView({behavior:"smooth"})}
@@ -3704,7 +3720,7 @@ function drwShow(on){if(on&&planLocked()){lockNudge();return}fxBuild();const d=$
  const x=$("drx");if(x){if(on&&!was){x.classList.remove("x");void x.offsetWidth;requestAnimationFrame(()=>x.classList.add("x"))}else if(!on)x.classList.remove("x")}}
 function drwDraw(){const d=$("drw");d.innerHTML="";const g=isGuard(),adm=isAdm(),nv=Object.fromEntries(navCfg().map(c=>[c[0],c])),shut=drwShut();
  const h=mk("div","drh"),cx=mk("button","drx");cx.id="drx";cx.type="button";cx.setAttribute("aria-label","Close menu");cx.innerHTML=BGR;cx.onclick=()=>drwShow(false);h.appendChild(cx);
- try{swCheck()}catch(e){}h.appendChild(av(S.me.name,photoOf(S.uid),46));{const nr=mk("div","drn");nr.appendChild(mk("b",null,S.me.name));if(kidMany()){const kb=mk("button","drk","⇅ Switch student");kb.type="button";kb.id="drk";kb.setAttribute("data-noskin","");kb.onclick=()=>{drwShow(false);kidSheet()};nr.appendChild(kb)}h.appendChild(nr)}
+ try{swCheck()}catch(e){}h.appendChild(av(S.me.name,myPhoto(),46));{const nr=mk("div","drn");nr.appendChild(mk("b",null,S.me.name));if(kidMany()){const kb=mk("button","drk","⇅ Switch student");kb.type="button";kb.id="drk";kb.setAttribute("data-noskin","");kb.onclick=()=>{drwShow(false);kidSheet()};nr.appendChild(kb)}h.appendChild(nr)}
  {const rl=roleLbl(S.me.role),fl=String(S.me.flat||""),r=mk("div","drr"),own=isOwner(),bd=mk("span","drb"+(own?" bown":adm?" badm":""));
   bd.innerHTML=own||adm?'<svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.600-1.600 8-6 8-11V5l-8-3Zm-1.200 13.600-3.400-3.400 1.400-1.400 2 2 4.400-4.400 1.400 1.400-5.800 5.800Z"/></svg>':"";bd.appendChild(document.createTextNode(rl));r.appendChild(bd);
   if(fl&&fl.toLowerCase()!==rl.toLowerCase())r.appendChild(mk("span","drfl",fl));h.appendChild(r)}
@@ -4144,6 +4160,21 @@ async function kidsLoad(keep){S.prim=S.prim&&keep?S.prim:S.me;if(!keep){S.pid=S.
  try{if(!(S.soc&&(S.soc.type||"society")==="school"&&isStu(S.prim)))return;const us=await getDoc(doc(db,"userSociety",S.uid)),ids=((us.exists()&&us.data().kids)||{})[S.sid]||[];
   S.kids=(await Promise.all(ids.map(id=>getDoc(doc(db,"societies",S.sid,"members",id)).catch(()=>null)))).filter(d=>d&&d.exists()).map(d=>({id:d.id,...d.data()}));
   if(!keep){let want="";try{want=localStorage.getItem("sh-pid-"+S.sid+"-"+S.uid)||""}catch(e){}const k=S.kids.find(x=>x.id===want&&x.status==="approved");if(k){S.me={...k};S.pid=k.id}}}catch(e){console.warn("students of this login",e)}}
+/* ---------- live: a student who is waiting for the class teacher becomes "approved" here the moment it happens ----------
+   Every other student of this login is watched (societies/{sid}/members/{login}_k2 ...). The watch belongs to the
+   login, not to the profile in use, so it stays on while the person switches between students. */
+let kidU=[],kidBox=null;
+function kidsOff(){kidU.forEach(f=>{try{f()}catch(e){}});kidU=[]}
+function kidsPaint(){try{setHero();if(tab==="home")rHome();if(tab==="more")rMore();if($("drw")&&$("drw").classList.contains("on"))drwDraw();if(kidBox&&kidBox.isConnected&&!$("ov").classList.contains("hide"))kidRows(kidBox)}catch(e){console.warn(e)}}
+function kidsWatch(){kidsOff();if(!(S.sid&&S.uid&&S.soc&&SCH()&&S.prim&&isStu(S.prim)))return;const sid=S.sid,uid=S.uid;
+ (S.kids||[]).forEach(k0=>{const id=k0.id;kidU.push(onSnapshot(doc(db,"societies",sid,"members",id),s=>{if(S.sid!==sid||S.uid!==uid)return;const i=(S.kids||[]).findIndex(x=>x.id===id);if(i<0)return;const was=S.kids[i];
+   if(!s.exists()){S.kids.splice(i,1);if(PID()===id)switchKid(uid);else kidsPaint();return}
+   const now={id,...s.data()};S.kids[i]=now;
+   if(PID()===id&&now.status!=="approved"){switchKid(uid);return}
+   if(was.status===now.status&&was.name===now.name&&was.flat===now.flat&&was.photoUrl===now.photoUrl)return;
+   if(was.status!==now.status&&now.status==="approved")toast("✅",(now.name||"Student")+" is approved","You can switch to this student now.");
+   else if(was.status!==now.status&&now.status==="rejected")toast("⛔",(now.name||"Student")+" was not approved","Please contact the class teacher.");
+   kidsPaint()},e=>console.warn("student profile",e)))})}
 function switchKid(id){const k=id===S.uid?S.prim:(S.kids||[]).find(x=>x.id===id);if(!k||k.status!=="approved"||id===PID())return;try{localStorage.setItem("sh-pid-"+S.sid+"-"+S.uid,id)}catch(e){}
  closeSheet();try{leaveDM()}catch(e){}try{fxHide();drwShow(false)}catch(e){}unsubs.forEach(f=>f());unsubs=[];Object.keys(D).forEach(q=>{D[q]={}});const me={...k};delete me.id;S.me=me;S.pid=id;tab="home";startApp();toast("✅","Switched to "+k.name,k.flat||"",true)}
 function addKid(){addMode();gotoJoin("student");joinKid=true;$("j1").querySelector("h2").textContent="Add another student";$("j1").querySelector("p.sub").textContent="Enter the class code of this child's class teacher. Both children stay on this login and you can switch between them."}
@@ -4156,7 +4187,7 @@ async function kidSubmit(nm,mo,xv){const fId=$("jid").files[0],fPh=$("jph").file
  await setDoc(doc(db,"societies",S.sid,"members",id),{uid:id,puid:S.uid,kid:true,name:nm,mobile:mo,flat:fl,role:"RESIDENT",status:"pending",ts:Date.now(),idUrl,photoUrl,tUid:join.teacherUid});
  await setDoc(doc(db,"userSociety",S.uid),{kids:{[S.sid]:arrayUnion(id)}},{merge:true});
  updateDoc(doc(db,"societies",S.sid,"members",S.uid),{flats:arrayUnion(fl)}).catch(()=>{});
- joinKid=false;try{history.replaceState(null,"",location.pathname)}catch(e){}await kidsLoad(true);show("sMain");go("more");toast("✅","Request sent",nm+" appears under My students once the class teacher approves.",true)}
+ joinKid=false;try{history.replaceState(null,"",location.pathname)}catch(e){}await kidsLoad(true);kidsWatch();show("sMain");go("more");toast("✅","Request sent",nm+" appears under My students once the class teacher approves.",true)}
 /* a bus driver gives the bus number while registering; the bus is added when the Principal approves */
 function pxBusUi(){const j=$("jjob"),w=$("jbusw");if(!j||!w)return;w.classList.toggle("hide",!(KIND==="school"&&joinAs==="staff"&&j.value==="Bus driver"&&!kidMode()))}
 function pxBusReg(){const er=$("jerr"),name=$("jbus").value.trim();if(name.length<2){er.textContent="Enter your bus number.";return null}return{name:name.slice(0,40),route:$("jroute").value.trim().slice(0,120)}}
@@ -5046,7 +5077,7 @@ function swCheck(){const k=S.sid+"|"+S.uid;if(swKey===k||!S.sid||!S.uid)return;s
  socIds().then(async({ids})=>{const o=ids.filter(i=>i!==S.sid);if(!o.length)return;const R=await Promise.all(o.map(i=>getDoc(doc(db,"societies",i,"members",S.uid)).then(m=>m.exists()?m.data():null).catch(()=>null)));
   if(swKey===k&&R.some(m=>m&&m.role==="SOCIETY_ADMIN")){swAdm=true;try{drwDraw()}catch(e){}try{if(tab==="more")goTab("more")}catch(e){}}}).catch(()=>{})}
 const kidMany=()=>!!(SCH()&&S.prim&&isStu(S.prim)&&myProfiles().length>1);
-function kidSheet(){sheet(z=>{z.appendChild(mk("h2",null,"Switch student"));const k=mk("div");z.appendChild(k);kidRows(k)})}
+function kidSheet(){sheet(z=>{z.appendChild(mk("h2",null,"Switch student"));const k=mk("div");z.appendChild(k);kidBox=k;kidRows(k)})}
 /* ---------- a soft click when a switch is turned on or off (silent when sounds are muted) ---------- */
 function tgSound(on){try{if(muted)return;actx=actx||new(window.AudioContext||window.webkitAudioContext)();if(actx.state==="suspended")actx.resume();const t=actx.currentTime,o=actx.createOscillator(),g=actx.createGain();o.type="sine";o.connect(g);g.connect(actx.destination);
   o.frequency.setValueAtTime(on?660:520,t);o.frequency.exponentialRampToValueAtTime(on?990:390,t+.07);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.12,t+.008);g.gain.exponentialRampToValueAtTime(.0001,t+.11);o.start(t);o.stop(t+.12)}catch(e){}}

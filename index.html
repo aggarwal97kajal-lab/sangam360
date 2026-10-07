@@ -1451,7 +1451,6 @@ const KINDS={
   skin:[["Societies","Schools"],["societies","schools"],["Society","School"],["society","school"],["Residents","Students"],["residents","students"],["Resident","Student"],["resident","student"],["Flats","Classes"],["flats","classes"],["Flat","Class"],["flat","class"],["Towers","Blocks"],["towers","blocks"],["Tower","Block"],["tower","block"],["Maintenance","Fee"],["maintenance","fee"],["Committee member","Teacher"],["committee member","teacher"],["Tenant","Parent"],["tenant","parent"]]}
 };
 let KIND=(()=>{try{const k=localStorage.getItem("sh-kind");return KINDS[k]?k:"society"}catch(e){return"society"}})();
-const FREE_FLAT_LIMIT = 25;      // flats allowed on the FREE plan (billing comes in a later phase)
 const firebaseConfig = {
   apiKey: "AIzaSyBu2COxm-QXEPAKgftvHmEw4gg2qhaN7zg",
   authDomain: "my-building-326a9.firebaseapp.com",
@@ -1655,7 +1654,7 @@ $("n1").onclick=()=>{if(KIND==="school"&&!$("crole").value){$("cerr").textConten
   run($("n1"),async()=>{if(await findJoin(c,$("cerr"),true)){$("jc").value=c;$("jerr").textContent="";show("sJoin")}});return}
  c3Txt();if(!$("sn").value.trim()||!cityVal()||!$("ss").value.trim()||!/^\d{6}$/.test($("spin").value.trim())){$("cerr").textContent=!$("ss").value?"Choose your state.":!cityVal()?"Choose your city.":"Fill all fields. PIN must be 6 digits.";return}if(isOrg()&&$("kx")._f.some(f=>f[1].tagName==="SELECT"&&!f[1].value)){$("cerr").textContent="Please choose all the options.";return}if(KIND==="company"){const gf=$("kx")._f.find(f=>f[0]==="GST number"),gv=gf?gf[1].value.trim().toUpperCase():"";if(!GSTRE.test(gv)){$("cerr").textContent="GST number is mandatory for companies. Enter a valid 15-character GSTIN (e.g. 22AAAAA0000A1Z5).";return}gf[1].value=gv}step(2)};
 $("b2b").onclick=()=>step(1);$("b3b").onclick=()=>step(2);
-$("n2").onclick=()=>{if(isOrg()){const g=grps.map(x=>x.trim()).filter(Boolean);if(!g.length||new Set(g.map(x=>x.toLowerCase())).size!==g.length){$("cerr").textContent="Add at least one "+KINDS[KIND].grp.one+" (no duplicates).";return}grps=g;step(3);return}if(towers.some(t=>!t.name.trim())){$("cerr").textContent="Give every tower a name.";return}if(flatTotal()>FREE_FLAT_LIMIT){$("cerr").textContent="The FREE plan allows up to "+FREE_FLAT_LIMIT+" flats.";return}step(3)};
+$("n2").onclick=()=>{if(isOrg()){const g=grps.map(x=>x.trim()).filter(Boolean);if(!g.length||new Set(g.map(x=>x.toLowerCase())).size!==g.length){$("cerr").textContent="Add at least one "+KINDS[KIND].grp.one+" (no duplicates).";return}grps=g;step(3);return}if(towers.some(t=>!t.name.trim())){$("cerr").textContent="Give every tower a name.";return}step(3)};
 const gen=()=>{const c="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";let s="";for(let i=0;i<6;i++)s+=c[Math.floor(Math.random()*c.length)];return s};
 $("n3").onclick=()=>run($("n3"),async()=>{
  const nm=$("cn").value.trim(),mo=$("cm").value.trim();if(!nm||mo.length<8){$("cerr").textContent="Enter your name and mobile number.";return}
@@ -2895,9 +2894,11 @@ function payWarm(){if(!PAY_API||!S.me||Date.now()-payWarmAt<240000)return;payWar
  try{fetch(PAY_API.replace(/\/+$/,"")+"/healthz",{mode:"no-cors",cache:"no-store"}).catch(()=>{payWarmAt=0})}catch(e){payWarmAt=0}}
 document.addEventListener("visibilitychange",()=>{if(!document.hidden)payWarm()});
 /* ---- plan status: a paid plan, the 14-day free trial, or locked ----
-   The trial dates are written by the payment server into societies/{sid}.trial and are tied to the login that
-   created the organisation. Nothing about it is kept on the phone, so reinstalling the app or clearing its
-   data changes nothing, and the same login does not get a second trial by creating another organisation. */
+   The trial dates are written by the payment server into societies/{sid}.trial. They count from the day the
+   person who created the organisation signed up, and are the same for everyone in it (a teacher or student who
+   joins later does not get extra days). Nothing about it is kept on the phone, so reinstalling the app or
+   clearing its data changes nothing. The Firestore rules use the same dates, so the lock also holds for an
+   old or modified copy of the app. */
 const TRIAL_DAYS=14;
 const paidPlans=()=>planList().filter(p=>p.m>0||p.cu);
 /* the badge follows the price: the cheapest paid plan is bronze, then silver, gold, diamond; custom plans wear the crown */
@@ -2936,7 +2937,7 @@ function planGate(){if(!S.me||!S.soc)return;const lk=planLocked();if(lk===lockWa
 setInterval(()=>{try{planGate()}catch(e){}},30000);
 /* asks the server once per organisation to record when its free trial started */
 let trialAsk="";
-function planEnsure(){if(!PAY_API||!S.sid||!S.soc)return;const tr=S.soc.trial;if(tr&&tr.by==="server"&&Number(tr.endsAt)>0)return;if(trialAsk===S.sid)return;trialAsk=S.sid;const sid=S.sid;
+function planEnsure(){if(!PAY_API||!S.sid||!S.soc)return;const tr=S.soc.trial;if(tr&&tr.by==="server"&&tr.v===2&&Number(tr.endsAt)>0)return;if(trialAsk===S.sid)return;trialAsk=S.sid;const sid=S.sid;
  api("/v1/orgs/trial",{sid}).then(r=>{if(S.sid!==sid||!S.soc||!r||!r.trial)return;S.soc.trial=r.trial;planGate();try{if(tab==="home")rHome();if(tab==="sub")rSub()}catch(e){}}).catch(()=>{trialAsk=""})}
 /* who can be billed: unit ("Flat 101", "Class 5-A · 12", "Sales · EMP-104") -> the names of the people in it */
 const billUnits=()=>{const m={};Object.values(D.mem||{}).forEach(x=>{if(x.status!=="approved"||!x.flat)return;if(KIND==="school"?!isStu(x):!isOrg()&&!/Flat /.test(x.flat))return;const a=m[x.flat]=m[x.flat]||[];if(x.name&&!a.includes(x.name))a.push(x.name)});return m};
@@ -3554,7 +3555,7 @@ function fxOnBack(){const d=$("drw");if(d&&d.classList.contains("on")){drwShow(f
 
 /* ---------- the side bar ---------- */
 const SUBI={comp:"🛠️",vis:"🚪",del:"📦",veh:"🚗",park:"🅿️",help:"🧹",mkt:"🛍️",att:"📝",leave:"🌴",room:"📅",tt:"🗓️",hol:"🎉",hw:"📚",gc:"⚖️"};
-const FXLIST={society:["lf","ven","meet","exr"],school:["res","gp","ptm","bus","bday"],company:["task","shift","pay","asset","claim","bday"]};
+const FXLIST={society:["lf","ven","meet","exr"],school:["res","gp","ptm","bus","pay","bday"],company:["task","shift","pay","asset","claim","bday"]};
 const fxShown=k=>{const F=FX[k];return !!F&&(!F.show||F.show())};
 const BGR='<span class="bgr" aria-hidden="true"><i></i><i></i><i></i></span>';
 const drwShut=()=>{try{return new Set(JSON.parse(localStorage.getItem("sh-drg")||"[]"))}catch(e){return new Set()}};
@@ -3818,12 +3819,12 @@ FX.shift={ic:"🕒",t:"Shift roster",open(b){let wk=fxYmd(fxMon(new Date())),L=n
 
 /* ---------- Payslips & letters (private to each employee) ---------- */
 const PAYK=["Payslip","Offer letter","Appointment letter","Appraisal letter","Form 16","Experience letter","Other"];
-FX.pay={ic:"📄",t:"Payslips & letters",show:()=>!isGuard(),open(b){let L=null,err=null,who="All";const hr=isOwner();
- const up=()=>{const P=fxPpl();if(!P.length){toast("ℹ️","No employees yet","",true);return}fxForm("Upload a document","Only this employee and you (the admin) can open it.",[{k:"to",l:"Employee",type:"select",opts:fxPOpts(P),val:who!=="All"&&P.some(p=>p.uid===who)?who:P[0].uid,req:1},{k:"kind",l:"Type",type:"select",opts:PAYK,val:"Payslip",req:1},{k:"month",l:"Month",type:"month",val:td().slice(0,7)},{k:"title",l:"Title",ph:"e.g. Salary slip",max:60},{k:"file",l:"File (PDF or photo, up to 3 MB)",type:"file",accept:"application/pdf,image/*",req:1}],"Upload",
+FX.pay={ic:"📄",t:"Payslips & letters",show:()=>KIND==="school"?!isStu(S.me):!isGuard(),open(b){let L=null,err=null,who="All";const hr=isOwner();
+ const up=()=>{const P=fxPpl().filter(p=>KIND!=="school"||!isStu(p));if(!P.length){toast("ℹ️","No employees yet","",true);return}fxForm("Upload a document","Only this employee and you (the admin) can open it.",[{k:"to",l:"Employee",type:"select",opts:fxPOpts(P),val:who!=="All"&&P.some(p=>p.uid===who)?who:P[0].uid,req:1},{k:"kind",l:"Type",type:"select",opts:PAYK,val:"Payslip",req:1},{k:"month",l:"Month",type:"month",val:td().slice(0,7)},{k:"title",l:"Title",ph:"e.g. Salary slip",max:60},{k:"file",l:"File (PDF or photo, up to 3 MB)",type:"file",accept:"application/pdf,image/*",req:1}],"Upload",
   async v=>{const p=P.find(q=>q.uid===v.to),f=v.file;if(f.size>5*1048576&&!/^image\//.test(f.type))throw fxBad("File is too large (max 5 MB).");const url=await UP(f,"docs",f.name);
    await fxAdd("payslips",{to:p.uid,toName:p.name,kind:v.kind,month:v.month,title:v.title,file:{url,name:f.name,type:f.type||"",size:f.size},uid:S.uid,byName:S.me.name});toast("✅","Uploaded",p.name,true)})};
  const mlbl=m=>/^\d{4}-\d{2}$/.test(m||"")?new Date(m+"-01T00:00:00").toLocaleDateString([],{month:"long",year:"numeric"}):"";
- const draw=()=>{b.innerHTML="";fxHead(b,hr?"Payslips & letters":"My documents",hr?"Upload a payslip or letter for one employee. Nobody else can open it.":"Payslips and letters from your company. Only you can open them.",hr?"⬆ Upload a document":"",up);
+ const draw=()=>{b.innerHTML="";fxHead(b,hr?"Payslips & letters":"My documents",hr?"Upload a payslip or letter for one employee. Nobody else can open it.":"Payslips and letters from your "+KINDS[KIND].word+". Only you can open them.",hr?"⬆ Upload a document":"",up);
   if(fxState(b,L,err,"📄",hr?"Nothing uploaded yet.":"No documents for you yet."))return;
   let R=L;if(hr){const ids=[...new Set(L.map(x=>x.to))];if(ids.length>1){const s=fxSel([["All","All employees"]].concat(ids.map(i=>[i,(L.find(x=>x.to===i)||{}).toName||i])),who);s.onchange=()=>{who=s.value;draw()};b.appendChild(s)}if(who!=="All")R=L.filter(x=>x.to===who)}
   R.slice().sort((p,q)=>q.ts-p.ts).forEach(x=>{const c=mk("div","fxk"),top=mk("div","fxr");top.appendChild(fxPill(x.kind,"b"));if(mlbl(x.month))top.appendChild(mk("span","meta sp1",mlbl(x.month)));c.appendChild(top);
@@ -4605,7 +4606,7 @@ FX.res={ic:"🏅",t:"Exam results",show:()=>isAdm()||isStu(S.me),open(b){let L=n
 function isDrv(){try{return !!(S.me&&SCH()&&!isAdm()&&S.me.role==="STAFF"&&isBusJob(S.me))}catch(e){return false}}
 /* support staff do not take part in the discussion chat (notices stay) */
 function noChat(){try{return !!(S.me&&S.me.role==="STAFF")}catch(e){return false}}
-const fxList=()=>isDrv()?["bus","veh","vis","inc","dnote"]:(FXLIST[KIND]||[]).concat(KIND==="school"?["vdoc"]:[]);
+const fxList=()=>isDrv()?["bus","veh","vis","inc","dnote","pay"]:(FXLIST[KIND]||[]).concat(KIND==="school"?["vdoc"]:[]);
 const DRVISS=[["brake","🔧","Brake issue"],["tyre","🛞","Tyre issue"],["ac","❄️","AC issue"],["battery","🔋","Battery issue"],["engine","🚌","Engine issue"],["other","🛠️","Something else"]];
 const DRVINC=[["student","🧒","Student issue"],["accident","💥","Accident"],["traffic","🚦","Traffic"],["breakdown","🛑","Bus breakdown"],["parent","🚪","Parent unavailable"],["absent","❌","Student absent"],["medical","🩺","Medical issue"],["other","📝","Other"]];
 const drvDays=d=>{if(!d)return null;const t=new Date(d+"T00:00:00").getTime();return isNaN(t)?null:Math.round((t-new Date(td()+"T00:00:00").getTime())/864e5)};

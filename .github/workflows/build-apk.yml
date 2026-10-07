@@ -58,6 +58,10 @@ jobs:
       - name: Add background live location
         run: python3 live_native.py
 
+      # "Download" saves the file in the phone's Downloads folder (Download/Sangam360) instead of opening the share sheet
+      - name: Add file downloads
+        run: python3 download_native.py
+
       # The app's own signing key (repository secrets KEYSTORE_BASE64 and KEYSTORE_PASSWORD): every APK then has the same signature, so a new APK installs over the old one.
       - name: Add signing key
         env:
@@ -73,12 +77,14 @@ jobs:
       - name: Copy app files
         run: npx cap sync android
 
-      # If the build does not go through with the Google sign-in libraries it is built again without them, and as a last step without the own key.
+      # The build is tried again with less each time, so that there is always an APK:
+      #   1. everything   2. without the download plugin (downloads then go through the Filesystem plugin or the share sheet)
+      #   3. with the download plugin, without Google sign-in   4. also without the own key   5. as 4 and without the download plugin
       - name: Build APK
         working-directory: android
         env:
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-        run: ./gradlew assembleDebug || (echo "Building again without Google sign-in" && cd .. && python3 google_native.py --remove && cd android && ./gradlew assembleDebug) || (echo "Building again with a temporary key" && cd .. && python3 google_native.py --plain && cd android && ./gradlew assembleDebug)
+        run: ./gradlew assembleDebug || (echo "Building again without the download plugin" && cd .. && python3 download_native.py --remove && cd android && ./gradlew assembleDebug) || (echo "Building again without Google sign-in" && cd .. && python3 download_native.py && python3 google_native.py --remove && cd android && ./gradlew assembleDebug) || (echo "Building again with a temporary key" && cd .. && python3 google_native.py --plain && cd android && ./gradlew assembleDebug) || (echo "Building again with a temporary key and without the download plugin" && cd .. && python3 download_native.py --remove && cd android && ./gradlew assembleDebug)
 
       - name: Rename APK
         run: cp android/app/build/outputs/apk/debug/app-debug.apk Sangam360.apk

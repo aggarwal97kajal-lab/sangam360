@@ -1089,6 +1089,12 @@ body.plk nav button:not(#n_home):not(#n_sub){opacity:.4}
 .hdf .fxch{grid-column:1/-1;margin:0}
 .hds{font-size:12.5px;line-height:1.45;color:var(--muted);margin:2px 0 4px}
 .pta b.pos{color:var(--grn)}.pta b.neg{color:var(--red)}
+/* school chat: the row that chooses the class chat / staff room, and the "unread for another student" line in the inbox */
+.chrm{margin:0;padding:8px 12px;gap:8px;background:var(--card);border-bottom:1px solid var(--line);flex:none}
+.chrm button i{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--red);margin-left:7px;vertical-align:middle}
+.chrm button.on i{background:#fff}
+.ibn{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;border:1px solid var(--line);background:var(--tint,rgba(91,61,245,.08));color:var(--text);border-radius:12px;padding:10px 12px;margin:0 0 10px;font:500 13px Poppins,sans-serif;text-align:left;cursor:pointer}
+.ibn b{flex:none;color:var(--a);font-weight:600}
 .pln .btn.actp,.pln .btn.actp:disabled{color:var(--grn);border-color:var(--grn);background:color-mix(in srgb,var(--grn) 10%,transparent);opacity:1;cursor:default;transform:none}
 /* "Mute notifications" in the Me tab and its sheet */
 .mtb{width:100%;border:0;background:none;color:inherit;font-family:inherit;cursor:pointer;text-align:left;gap:10px}
@@ -1211,7 +1217,7 @@ body.plk nav button:not(#n_home):not(#n_sub){opacity:.4}
   <section id="t_comm" class="hide"><div class="seg"><button id="sn1" class="on">📢 Notices</button><button id="sn2">💬 Chat</button><button id="sn3">✉️ Inbox</button></div>
    <div id="v_ann"><div class="card hide" id="annf"><h2>Publish a notice</h2><div id="aaw" class="hide"><select id="aaud"></select></div><div class="note hide" id="aainfo" style="margin:0 0 10px"></div><select id="at"></select><input id="atl" placeholder="Title" maxlength="80"><textarea id="atx" placeholder="Message…" maxlength="800"></textarea><button class="btn" id="apub">Publish</button></div><div id="alist"></div></div>
    <button id="swpk" aria-label="Open chat"><i>‹</i><b>Chat</b><i>💬</i></button>
-   <div id="v_chat" class="hide"><div class="chw"><div class="chh" id="chhd"><button class="cb" id="chb">←</button><div class="chlogo">🏢</div><div class="chti"><b id="chn">Society chat</b><small id="chs"></small></div><div class="stack" id="stk"></div></div><div class="msgs" id="msgs"></div><button id="jmp" class="hide" type="button" aria-label="Jump to latest message"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.200" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg><b id="jmpn" class="hide"></b></button><div id="fday" class="hide" data-noskin></div></div>
+   <div id="v_chat" class="hide"><div class="chw"><div class="chh" id="chhd"><button class="cb" id="chb">←</button><div class="chlogo">🏢</div><div class="chti"><b id="chn">Society chat</b><small id="chs"></small></div><div class="stack" id="stk"></div></div><div id="chrm" class="fxch chrm hide" data-noskin role="group" aria-label="Choose the chat"></div><div class="msgs" id="msgs"></div><button id="jmp" class="hide" type="button" aria-label="Jump to latest message"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.200" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg><b id="jmpn" class="hide"></b></button><div id="fday" class="hide" data-noskin></div></div>
     <div class="cdock"><div id="rb" class="rb hide"><span id="rbt"></span><b id="rbx" style="cursor:pointer;padding:0 6px">✕</b></div><div id="typ" class="typ hide"></div><div id="eb" class="eb hide"></div>
      <div id="atsc" class="hide"></div><div id="atm" class="atm hide" role="dialog" aria-label="Attach"><i class="hdl"></i><div class="atg"><button id="a_gal" type="button"><span style="--k:#7c3aed"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="1.8"/><path d="m4 18 5-5 4 4 3-3 4 4"/></svg></span>Gallery</button><button id="a_cam" type="button"><span style="--k:#e11d48"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l1.5-2.5h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13.5" r="3.5"/></svg></span>Camera</button><button id="a_doc" type="button"><span style="--k:#2563eb"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h7l5 5v12a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg></span>Document</button><button id="a_loc" type="button"><span style="--k:#059669"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span>Location</button><button id="a_pol" type="button"><span style="--k:#d97706"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 20V10M12 20V4M19 20v-7"/></svg></span>Poll</button><button id="a_con" type="button"><span style="--k:#0891b2"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span>Contact</button></div></div>
      <div id="lpb" class="lpb hide"></div>
@@ -1786,8 +1792,8 @@ function w(qr,key,after,onNew){let first=true;unsubs.push(onSnapshot(qr,s=>{cons
 function listen(){unsubs.forEach(f=>f());unsubs=[];if(wsub){wsub();wsub=null}wsubK="";const C=n=>collection(db,"societies",S.sid,n),L=(n,k)=>query(C(n),orderBy("ts","desc"),limit(k)),F=n=>query(C(n),where("flat","==",S.me.flat),limit(60));
  w(isAdm()?L("complaints",isTeacher()?150:50):query(C("complaints"),where("uid","==",S.uid),limit(50)),"comp",()=>{if(isTeacher()){const o={};Object.values(D.comp).forEach(c=>{if(c.uid===S.uid||clsOf(c)===myCls())o[c.id]=c});D.comp=o}rComp()},(d,t)=>{if(t==="added"&&isAdm()&&d.uid!==S.uid&&(!isTeacher()||clsOf(d)===myCls()))toast("🛠️","New complaint",d.title,false,"comp")});
  w(L("announcements",SCH()?120:30),"ann",()=>{if(SCH()){const o={};Object.values(D.ann).forEach(a=>{if(annVis(a))o[a.id]=a});D.ann=o}rAnn()},(d,t)=>{if(t==="added"&&d.uid!==S.uid&&annVis(d))toast(d.type==="Emergency"?"🚨":"📢",d.title,d.type,false,d.type==="Emergency"?"sos":"ann")});
- w(L("messages",80),"msg",()=>{rChat();try{mnCatch()}catch(e){}},(d,t)=>{if(t==="added"&&d.uid!==S.uid&&mnHit(d))return;if(t==="added"&&d.uid!==S.uid&&!(tab==="comm"&&!$("v_chat").classList.contains("hide")&&!dmc))toast("💬",d.name,lbl(d),false,"chat")});
- w(query(C("dmchats"),where("users","array-contains",S.uid),limit(100)),"dmc",()=>{Object.values(D.dmc).forEach(c=>{if(!(c.id in dmT))dmT[c.id]=c.lastTs});rInbox();chatTick()},(d,t)=>{if(d.lastFrom&&d.lastFrom!==S.uid&&isUn(d)&&dmT[d.id]!==d.lastTs&&!(dmc&&dmc.cid===d.id&&!document.hidden)){dmT[d.id]=d.lastTs;const pu=(d.users||[]).find(u=>u!==S.uid);toast("✉️",(D.dir[pu]||{}).name||(d.names&&d.names[pu])||"New message",d.last||"",false,"chat")}});
+ if(SCH())roomListen();else w(L("messages",80),"msg",()=>{rChat();try{mnCatch()}catch(e){}},(d,t)=>{if(t==="added"&&d.uid!==S.uid&&mnHit(d))return;if(t==="added"&&d.uid!==S.uid&&!(tab==="comm"&&!$("v_chat").classList.contains("hide")&&!dmc))toast("💬",d.name,lbl(d),false,"chat")});
+ w(query(C("dmchats"),where("users","array-contains",S.uid),limit(100)),"dmc",()=>{Object.values(D.dmc).forEach(c=>{if(!(c.id in dmT))dmT[c.id]=c.lastTs});rInbox();chatTick()},(d,t)=>{if(d.lastFrom&&d.lastFrom!==S.uid&&isUn(d)&&dmT[d.id]!==d.lastTs&&!(dmc&&dmc.cid===d.id&&!document.hidden)){dmT[d.id]=d.lastTs;const pu=(d.users||[]).find(u=>u!==S.uid),k=dmMine(d)?null:dmKid(d);toast("✉️",dmWho(d,pu).n+(k?" → for "+String(k.name||"").split(" ")[0]:""),d.last||"",false,"chat")}});
  w(query(C("directory"),limit(300)),"dir",()=>{setHero();rChat();rVis();rDel();rVeh()});
  if(canFin()){w(L("contributions",100),"inc",rFin);w(L("expenses",100),"exp",rFin)}else if(!isGuard()&&S.me.flat){w(query(C("contributions"),where("flat","==",S.me.flat),limit(100)),"inc",rFin)}
  if(isAdm()){w(query(C("members"),limit(SCH()?1000:300)),"mem",()=>{if(isTeacher()){const o={};Object.values(D.mem).forEach(x=>{if(memVis(x))o[x.id]=x});D.mem=o}if(tab==="more")rMore()},(d,t)=>{if(t==="added"&&d.status==="pending"&&memVis(d))toast("🙋",d.want==="COMMITTEE_MEMBER"?"New teacher request":d.want?"New staff request":"New resident request",d.name+" · "+d.flat,false,"join")});w(L("reports",50),"rep",()=>{if(tab==="more")rMore()})}
@@ -1963,23 +1969,51 @@ function fdayUpd(){const b=$("msgs"),f=$("fday");if(!b||!f)return;if(Date.now()-
  if(!cur){f.classList.add("hide");return}f.textContent=cur.textContent;f.style.top=(b.offsetTop+8)+"px";f.classList.remove("hide");clearTimeout(fdT);fdT=setTimeout(()=>f.classList.add("hide"),1200)}
 $("msgs").addEventListener("scroll",()=>{if(jmpRaf)return;jmpRaf=requestAnimationFrame(()=>{jmpRaf=0;jmpUpd();fdayUpd()})},{passive:true});
 $("jmp").onclick=()=>{const b=$("msgs");b.scrollTo({top:b.scrollHeight,behavior:"smooth"})};
-function rChat(){if(!S.me)return;const b=$("msgs"),keep=b.scrollTop,atEnd=b.scrollHeight-b.scrollTop-b.clientHeight<90||!b.scrollHeight;b.innerHTML="";const ppl=Object.values(D.dir);updPres(true);const lg=document.querySelector("#chhd .chlogo");if(lg){lg.innerHTML="";lg.classList.toggle("dm",!!dmc);if(dmc)lg.appendChild(av(peerName(),(D.dir[dmc.peer]||{}).photo,42));else lg.textContent=KINDS[KIND].ico}$("stk").style.display=dmc?"none":"";$("mt").placeholder="Message";$("mt").setAttribute("data-noskin","");$("chn").textContent=dmc?peerName():S.soc.name+" Community";
+/* ---------- SCHOOL: one group chat per class, and one for the staff ----------
+   Other kinds of workspace keep their single community chat. In a school every group message says which chat it
+   belongs to: cls = the class ("Class 5-A") or "@staff", and ck = cls + "|" + time. The chat is read by ck alone
+   (a range on one field needs no extra database index). Messages from before this, without cls, are not shown.
+     student / parent : the class of the student that is in use (it follows "Switch student")
+     class teacher    : the own class and the staff room
+     Principal        : every class and the staff room (the one that is open is loaded)
+     other staff      : the staff room */
+const ROOM_STAFF="@staff";
+let chatRoom="",roomU=[],RM={};
+const roomLbl=r=>r===ROOM_STAFF?"Staff room":r,roomTitle=r=>r===ROOM_STAFF?"Staff room":r+" chat",roomCk=(r,ts)=>r+"|"+String(ts).padStart(15,"0");
+function chatRooms(){if(!SCH()||!S.me)return[];if(isOwner())return schClasses().filter(c=>c!==ROOM_STAFF).concat([ROOM_STAFF]);const c=clsOf(S.me);if(isStu(S.me))return[c||"School"];return(isTeacher()&&c&&c!=="Teacher"?[c]:[]).concat([ROOM_STAFF])}
+const roomKey=()=>"sh-room-"+S.sid+"-"+(S.pid||S.uid);
+function curRoom(){const R=chatRooms();if(!R.length)return"";if(R.includes(chatRoom))return chatRoom;let w="";try{w=localStorage.getItem(roomKey())||""}catch(e){}return chatRoom=R.includes(w)?w:R[0]}
+const roomQ=r=>query(vcol("messages"),where("ck",">=",r+"|"),where("ck","<=",r+"|"),orderBy("ck","desc"),limit(80));
+const roomUnread=r=>{const M=RM[r];if(!M)return false;const t=rdGet("g:"+r);return Object.values(M).some(m=>m.uid!==S.uid&&!m.deleted&&m.ts>t)};
+/* the people of the chat that is open: the class with its teacher and the Principal, or the staff */
+function chatPpl(){const all=Object.values(D.dir);if(!SCH()||dmc)return all;const r=curRoom();return all.filter(p=>r===ROOM_STAFF?STAFFR.includes(p.role):p.role==="SOCIETY_ADMIN"||clsOf(p)===r)}
+function roomNew(d,r){if(d.uid===S.uid)return;if(mnHit(d))return;const open=tab==="comm"&&!$("v_chat").classList.contains("hide")&&!dmc&&r===curRoom();if(!open)toast("💬",d.name+(chatRooms().length>1?" · "+roomLbl(r):""),lbl(d),false,"chat")}
+function roomListen(){roomU.forEach(f=>{try{f()}catch(e){}});roomU=[];RM={};D.msg={};chatRoom="";const cur=curRoom();if(!cur)return;
+ (isOwner()?[cur]:chatRooms()).forEach(r=>{let first=true;const u=onSnapshot(roomQ(r),s=>{const o={};s.docs.forEach(d=>{const v={id:d.id,...d.data()};if(v.cls===r)o[d.id]=v});RM[r]=o;
+   if(!first)s.docChanges().forEach(c=>{if(c.type==="added"&&!c.doc.metadata.hasPendingWrites){const d={id:c.doc.id,...c.doc.data()};if(d.cls===r)roomNew(d,r)}});first=false;
+   if(r===curRoom()){D.msg=o;rChat();try{mnCatch()}catch(e){}}else try{roomChips()}catch(e){}if(tab==="home")rHome()},
+  e=>{console.error(e);if(!(e&&e.code==="permission-denied"))toast("⚠️","Could not load the chat","Check your connection.",true)});roomU.push(u);unsubs.push(u)})}
+function setRoom(r){if(r===curRoom()||!chatRooms().includes(r))return;chatRoom=r;try{localStorage.setItem(roomKey(),r)}catch(e){}replyTo=null;showReply();if(isOwner()){D.msg={};rChat();roomListen()}else{D.msg=RM[r]||{};rChat();bottom()}}
+function roomChips(){const w=$("chrm");if(!w)return;const R=SCH()&&!dmc?chatRooms():[];w.classList.toggle("hide",R.length<2);if(R.length<2){w.innerHTML="";w.dataset.sig="";return}
+ const cur=curRoom(),sig=R.join("|")+"#"+cur+"#"+R.map(r=>r!==cur&&roomUnread(r)?1:0).join("");if(w.dataset.sig===sig)return;w.dataset.sig=sig;w.innerHTML="";
+ R.forEach(r=>{const b=mk("button",r===cur?"on":null,roomLbl(r));b.type="button";b.setAttribute("aria-pressed",r===cur?"true":"false");if(r!==cur&&roomUnread(r)){const i=mk("i");i.setAttribute("aria-label","new messages");b.appendChild(i)}b.onclick=()=>setRoom(r);w.appendChild(b)})}
+function rChat(){if(!S.me)return;try{roomChips()}catch(e){console.warn(e)}const b=$("msgs"),keep=b.scrollTop,atEnd=b.scrollHeight-b.scrollTop-b.clientHeight<90||!b.scrollHeight;b.innerHTML="";const ppl=chatPpl();updPres(true);const lg=document.querySelector("#chhd .chlogo");if(lg){lg.innerHTML="";lg.classList.toggle("dm",!!dmc);if(dmc)lg.appendChild(av(peerName(),peerPhoto(),42));else lg.textContent=KINDS[KIND].ico}$("stk").style.display=dmc?"none":"";$("mt").placeholder="Message";$("mt").setAttribute("data-noskin","");$("chn").textContent=dmc?peerName():SCH()?roomTitle(curRoom()):S.soc.name+" Community";
  const st=$("stk");st.innerHTML="";ppl.slice(0,4).forEach(p=>st.appendChild(av(p.name,p.photo,30)));
- $("chhd").onclick=dmc?()=>profile(dmc.peer,{name:dmc.name}):()=>sheet(z=>{z.appendChild(mk("h2",null,"Members ("+ppl.length+")"));z.appendChild(mk("p","sub",S.soc.name));ppl.sort((x,y)=>(x.name||"").localeCompare(y.name||"")).forEach(p=>{const r=mk("div","mem");const pu=p.uid||p.id;r.style.cursor="pointer";r.onclick=()=>profile(pu,p);r.appendChild(avd(p.name,p.photo,44,pu));const d=mk("div");const bb=mk("b");bb.append(p.name);d.appendChild(bb);d.appendChild(mk("small",null,(p.flat||"")+" · "+(online(pu)?"Online":"Offline")));r.appendChild(d);if(ROLE[p.role])r.appendChild(mk("span","chip",ROLE[p.role]));z.appendChild(r)})});
+ $("chhd").onclick=dmc?()=>profile(dmc.peer,{name:dmc.name}):()=>sheet(z=>{z.appendChild(mk("h2",null,"Members ("+ppl.length+")"));z.appendChild(mk("p","sub",SCH()?roomTitle(curRoom())+" · "+S.soc.name:S.soc.name));ppl.sort((x,y)=>(x.name||"").localeCompare(y.name||"")).forEach(p=>{const r=mk("div","mem");const pu=p.uid||p.id;r.style.cursor="pointer";r.onclick=()=>profile(pu,p);r.appendChild(avd(p.name,p.photo,44,pu));const d=mk("div");const bb=mk("b");bb.append(p.name);d.appendChild(bb);d.appendChild(mk("small",null,(p.flat||"")+" · "+(online(pu)?"Online":"Offline")));r.appendChild(d);if(ROLE[p.role])r.appendChild(mk("span","chip",ROLE[p.role]));z.appendChild(r)})});
  const hd=hid(),v=Object.values(dmc?D.dmm:D.msg).filter(x=>!hd.has(x.id)).sort((x,y)=>x.ts-y.ts);
- const ck=dmc?dmc.cid:"g",shown=!$("v_chat").classList.contains("hide"),fresh=shown&&chatKey!==ck,newest=v.length?v[v.length-1]:null;
+ const ck=dmc?dmc.cid:SCH()?"g:"+curRoom():"g",shown=!$("v_chat").classList.contains("hide"),fresh=shown&&chatKey!==ck,newest=v.length?v[v.length-1]:null;
  if(!shown)chatKey=null;else if(fresh){chatKey=ck;chatOpenAt=Date.now();const r0=rdGet(ck);unrN=r0?v.filter(m=>m.ts>r0&&m.uid!==S.uid).length:0;unrAt=unrN?r0:0;chatSeen=unrN?r0:(newest?newest.ts:0);chatTop=newest?newest.ts:0}
- if(v.length<80){const ms=mk("div","mile",dmc?"🔒 Private chat with "+peerName()+". Only the two of you can read these messages.":"🔒 "+S.soc.name+" community chat. Only approved members can read these messages.");ms.setAttribute("data-noskin","");b.appendChild(ms)}
- if(!v.length){const e0=mk("div","empty",dmc?"👋 Say hi to "+peerName().split(" ")[0]+"!":(HELLO[KIND]||HELLO.society));e0.setAttribute("data-noskin","");b.appendChild(e0)}
+ if(v.length<80){const ms=mk("div","mile",dmc?"🔒 Private chat with "+peerName()+". Only the two of you can read these messages.":SCH()?(curRoom()===ROOM_STAFF?"💬 Staff room · the chat of the Principal, the teachers and the staff of "+S.soc.name+".":"💬 "+roomTitle(curRoom())+" · for the students and parents of this class, the class teacher and the Principal."):"🔒 "+S.soc.name+" community chat. Only approved members can read these messages.");ms.setAttribute("data-noskin","");b.appendChild(ms)}
+ if(!v.length){const e0=mk("div","empty",dmc?"👋 Say hi to "+peerName().split(" ")[0]+"!":SCH()?(curRoom()===ROOM_STAFF?"👋 No messages yet. Say hello to the staff!":"👋 No messages yet. Say hello to your class!"):(HELLO[KIND]||HELLO.society));e0.setAttribute("data-noskin","");b.appendChild(e0)}
  let last=0,lu="",ld="",unrDone=false;
  v.forEach(m=>{const day=new Date(m.ts).toDateString();if(day!==ld){b.appendChild(mk("div","day",dayLbl(m.ts)));ld=day;lu=""}
   if(unrAt&&!unrDone&&m.ts>unrAt&&m.uid!==S.uid){unrDone=true;const u=mk("div","unr");u.appendChild(mk("span",null,unrN+" unread message"+(unrN===1?"":"s")));b.appendChild(u);lu=""}
-  const mine=m.uid===S.uid,grp=m.uid===lu&&m.ts-last<300000;lu=m.uid;last=m.ts;const dr=D.dir[m.uid]||{};
+  const mine=m.uid===S.uid,sk=m.uid+"|"+(m.pid||""),grp=sk===lu&&m.ts-last<300000;lu=sk;last=m.ts;const dr=D.dir[m.uid]||{};
   const r=mk("div","mr"+(mine?" me":"")+(grp?" grp":"")+(!fresh&&m.ts>chatTop?" nw":""));
-  if(!mine){if(grp)r.appendChild(mk("div","gsp"));else{const A=avd(m.name,dr.photo,36,m.uid);A.classList.add("pf");A.onclick=e=>{e.stopPropagation();profile(m.uid,m)};r.appendChild(A)}}
+  if(!mine){if(grp)r.appendChild(mk("div","gsp"));else{const A=avd(m.name,m.pid?m.ph:dr.photo,36,m.uid);A.classList.add("pf");A.onclick=e=>{e.stopPropagation();profile(m.uid,m)};r.appendChild(A)}}
   const bub=mk("div","bub");
   if(m.deleted){bub.classList.add("dl");bub.appendChild(mk("div","t","🚫 "+(mine?"You deleted this message":(m.delBy&&m.delBy!==m.uid?"Removed by admin":"This message was deleted"))));bub.appendChild(mk("div","tm",tm(m.ts)));r.appendChild(bub);b.appendChild(r);return}
-  if(!mine&&!grp&&!dmc){const wh=mk("div","who");const n=mk("span","pf",m.name);n.style.color=ucol(m.uid||m.name);n.onclick=e=>{e.stopPropagation();profile(m.uid,m)};wh.appendChild(n);wh.appendChild(mk("small",null,m.flat));if(ROLE[dr.role])wh.appendChild(mk("span","chip",ROLE[dr.role]));bub.appendChild(wh)}
+  if((!mine||(m.pid||m.uid)!==(S.pid||S.uid))&&!grp&&!dmc){const wh=mk("div","who");const n=mk("span","pf",m.name);n.style.color=ucol(m.uid||m.name);n.onclick=e=>{e.stopPropagation();profile(m.uid,m)};wh.appendChild(n);wh.appendChild(mk("small",null,m.flat));if(ROLE[dr.role])wh.appendChild(mk("span","chip",ROLE[dr.role]));bub.appendChild(wh)}
   if(m.replyTo){const q=mk("div","rq");q.appendChild(mk("b",null,m.replyTo.name));q.appendChild(document.createTextNode(m.replyTo.text));bub.appendChild(q)}
   if(m.img&&okImg(m.img)){const i=mk("img","pic");i.src=m.img;i.alt="Photo";i.onclick=e=>{e.stopPropagation();sheet(z=>{const g=mk("img","bigpic");g.src=m.img;z.appendChild(g)})};bub.appendChild(i)}
   if(m.voice&&okAud(m.voice)){bub.classList.add("wd");bub.appendChild(voiceEl(m))}
@@ -2061,31 +2095,61 @@ $("mic").onclick=startRec;$("rcx").onclick=()=>stopRec(true);$("rcs").onclick=()
 /* ---------- private (1-to-1) chats ---------- */
 Object.assign(D,{dmc:{},dmm:{}});
 let dmc=null,dmUnsub=null,dmFrom="inbox";
-const peerName=()=>(D.dir[dmc.peer]||{}).name||dmc.name||"Member";
+/* One login can stand for several students (brothers and sisters). Two rules:
+   - students of the SAME class share their private chats; the chat only shows the name and photo of the student who
+     is in use. For that the chat remembers how each side last wrote: who.{uid} = {n: name, f: class, p: photo, k: 1 = not the login's first student}.
+   - a student of ANOTHER class has private chats of their own: the chat id gets "_c<class>" at the end and sc.{uid}
+     says for which class of that login it is. The inbox shows the chats of the class that is in use. */
+const dmHash=s=>{let h=5381;for(const ch of String(s))h=((h*33)^ch.codePointAt(0))>>>0;return h.toString(36)};
+const dmScope=()=>{try{const a=clsOf(S.me),b=clsOf(S.prim);return SCH()&&S.pid&&S.pid!==S.uid&&a&&a!==b?a:""}catch(e){return""}};
+const dmSc=c=>(c&&c.sc&&c.sc[S.uid])||"";
+const dmMine=c=>!SCH()||dmSc(c)===dmScope();
+/* the student of this login a chat belongs to */
+const dmKid=c=>{const sc=dmSc(c);return myProfiles().find(k=>(k.id===S.uid||k.status==="approved")&&(sc?clsOf(k)===sc:k.id===S.uid))||null};
+const dmWho=(c,pu)=>{const d=D.dir[pu]||{},w=(c&&c.who&&c.who[pu])||{};return{n:w.n||d.name||(c&&c.names&&c.names[pu])||"Member",p:w.n?(w.p||(w.k?"":d.photo)):d.photo,f:w.f||d.flat||""}};
+const dmCur=()=>D.dmc[dmc.cid]||dmc.seed||null;
+const peerName=()=>dmWho(dmCur(),dmc.peer).n,peerPhoto=()=>dmWho(dmCur(),dmc.peer).p;
+const shortPh=p=>typeof p==="string"&&p.length<600?p:"";
 const lastSeen=u=>{const pr=D.pres[u];return pr&&pr.seen?"last seen "+dayLbl(pr.seen).toLowerCase()+" at "+tm(pr.seen):"Offline"};
 const msgRef=id=>dmc?doc(db,"societies",S.sid,"dmchats",dmc.cid,"messages",id):doc(db,"societies",S.sid,"messages",id);
 const isUn=c=>c&&c.lastFrom&&c.lastFrom!==S.uid&&(c.lastTs||0)>((c.reads&&c.reads[S.uid])||0);
-async function pushMsg(o){if(!dmc){await addDoc(vcol("messages"),o);return}
- const ref=doc(db,"societies",S.sid,"dmchats",dmc.cid);
- await setDoc(ref,{users:[S.uid,dmc.peer],names:{[S.uid]:S.me.name,[dmc.peer]:peerName()},last:(o.uid===S.uid?"":"")+lbl(o).slice(0,60),lastTs:o.ts,lastFrom:S.uid,reads:{[S.uid]:o.ts}},{merge:true});
+async function pushMsg(o){
+ /* written as the 2nd, 3rd ... student of a login: the message carries that student's own photo */
+ if(S.pid&&S.pid!==S.uid){o.pid=S.pid;const p=shortPh(myPhoto());if(p)o.ph=p}
+ if(!dmc){if(SCH()){const r=curRoom();o.cls=r;o.ck=roomCk(r,o.ts)}await addDoc(vcol("messages"),o);return}
+ const ref=doc(db,"societies",S.sid,"dmchats",dmc.cid),c=D.dmc[dmc.cid],seed=dmc.seed||{},me={n:S.me.name||"",f:S.me.flat||"",p:shortPh(myPhoto()),k:o.pid?1:0};
+ const old={users:[S.uid,dmc.peer],names:{[S.uid]:S.me.name,[dmc.peer]:peerName()},last:lbl(o).slice(0,60),lastTs:o.ts,lastFrom:S.uid,reads:{[S.uid]:o.ts}};
+ const who={[S.uid]:me};if(seed.who&&seed.who[dmc.peer]&&!(c&&c.who&&c.who[dmc.peer]))who[dmc.peer]=seed.who[dmc.peer];
+ const sc=Object.assign({},c&&c.sc,dmc.sc),scoped=Object.keys(sc).length>0;
+ try{await setDoc(ref,Object.assign({},old,{who},scoped?{sc}:{}),{merge:true})}
+ catch(e){/* database rules that do not know the new fields yet: an ordinary chat still goes through as it always did */if(scoped||!(e&&e.code==="permission-denied"))throw e;await setDoc(ref,old,{merge:true})}
  await addDoc(collection(ref,"messages"),o)}
 function markRead(){if(!dmc||document.hidden)return;const last=Object.values(D.dmm).filter(m=>m.uid!==S.uid).reduce((a,m)=>Math.max(a,m.ts||0),0);if(!last)return;const c=D.dmc[dmc.cid],r=(c&&c.reads&&c.reads[S.uid])||0;if(r>=last)return;
  setDoc(doc(db,"societies",S.sid,"dmchats",dmc.cid),{reads:{[S.uid]:Math.max(Date.now(),last)}},{merge:true}).catch(()=>{})}
 function leaveDM(){if(!dmc)return;dmc=null;if(dmUnsub){dmUnsub();dmUnsub=null}D.dmm={};replyTo=null;showReply();$("mt").value="";tog();pset({typing:0,typingTo:""});$("eb").classList.add("hide")}
 function dmBack(){const f=dmFrom;leaveDM();if(f==="chat"){cview("chat");rChat();bottom()}else{cview("inbox");rInbox()}}
-function openDM(uid,from){uid=AUID(uid);closeSheet();if(!S.me||!uid||uid===S.uid)return;const cid=[S.uid,uid].sort().join("_");if(dmc&&dmc.cid===cid)return;
+/* cid0: an existing chat (from the inbox). Without it the chat is worked out: mine for the class I am on, or - when
+   somebody of the school messages a student who is the 2nd child of a login and in another class - that child's chat. */
+function openDM(uid,from,cid0){const raw=String(uid||"");uid=AUID(raw);closeSheet();if(!S.me||!uid||uid===S.uid)return;
+ const base=[S.uid,uid].sort().join("_"),sc={},seed={names:{},who:{}};let cid=cid0||base;
+ if(!cid0&&SCH()){const mine=dmScope(),kid=raw!==uid&&D.mem?D.mem[raw]:null,theirs=kid&&clsOf(kid)&&clsOf(kid)!==clsOf(D.dir[uid]||{})?clsOf(kid):"";
+  if(kid)seed.who[uid]={n:kid.name||"",f:kid.flat||"",p:shortPh(kid.photoUrl),k:1};
+  if(mine){sc[S.uid]=mine;cid=base+"_c"+dmHash(mine)}else if(theirs){sc[uid]=theirs;cid=base+"_c"+dmHash(theirs)}}
+ if(dmc&&dmc.cid===cid)return;
  const onChat=tab==="comm"&&!$("v_chat").classList.contains("hide")&&!dmc;leaveDM();
- dmc={cid,peer:uid,name:(D.dir[uid]||{}).name||"Member"};dmFrom=from||(onChat?"chat":"inbox");D.dmm={};
+ seed.sc=sc;dmc={cid,peer:uid,name:(seed.who[uid]&&seed.who[uid].n)||(D.dir[uid]||{}).name||"Member",sc,seed};dmFrom=from||(onChat?"chat":"inbox");D.dmm={};
  if(tab!=="comm")goTab("comm");cview("chat");rChat();bottom();
  dmUnsub=onSnapshot(query(collection(db,"societies",S.sid,"dmchats",cid,"messages"),orderBy("ts","desc"),limit(80)),sn=>{const o={};sn.docs.forEach(x=>o[x.id]={id:x.id,...x.data()});D.dmm=o;rChat();markRead()},
   e=>{console.error(e);toast("🔒","Private chat unavailable",e&&e.code==="permission-denied"?"Publish firestore.rules-dm-additions.txt in Firebase → Firestore → Rules.":"Check your connection.",true)})}
-function rInbox(){if(!S.me)return;const L=Object.values(D.dmc).filter(c=>c.users&&c.users.includes(S.uid)).sort((x,y)=>(y.lastTs||0)-(x.lastTs||0)),un=L.filter(isUn).length;
+function rInbox(){if(!S.me)return;const A=Object.values(D.dmc).filter(c=>c.users&&c.users.includes(S.uid)),L=A.filter(dmMine).sort((x,y)=>(y.lastTs||0)-(x.lastTs||0)),oth=A.filter(c=>!dmMine(c)&&isUn(c)),un=L.filter(isUn).length+oth.length;
  $("sn3").textContent="✉️ Inbox"+(un?" ("+un+")":"");const b=$("inbx");if(!b)return;b.innerHTML="";
- if(!L.length){b.appendChild(mk("div","empty","💬 No private chats yet.\nTap “New private chat” or open a member’s profile to start one."));b.firstChild.style.whiteSpace="pre-line";return}
- L.forEach(c=>{const pu=c.users.find(u=>u!==S.uid),d=D.dir[pu]||{},nm=d.name||(c.names&&c.names[pu])||"Member",u=isUn(c),r=mk("div","ibr"+(u?" un":""));
-  r.appendChild(avd(nm,d.photo,48,pu));const x=mk("div","ibt");x.append(mk("b",null,nm),mk("small",null,(c.lastFrom===S.uid?"You: ":"")+(c.last||"")));
+ /* unread chats of another student of this login (another class): one line that says so and switches to that student */
+ {const by={};oth.forEach(c=>{const k=dmKid(c);if(k){by[k.id]=by[k.id]||{k,n:0};by[k.id].n++}});Object.values(by).forEach(({k,n})=>{const r=mk("button","ibn");r.type="button";r.setAttribute("data-noskin","");r.append(mk("span",null,"✉️ "+n+" unread chat"+(n===1?"":"s")+" for "+String(k.name||"").split(" ")[0]+" · "+clsOf(k)),mk("b",null,"Switch ›"));r.onclick=()=>switchKid(k.id);b.appendChild(r)})}
+ if(!L.length){const e0=mk("div","empty","💬 No private chats yet.\nTap “New private chat” or open a member’s profile to start one.");e0.style.whiteSpace="pre-line";b.appendChild(e0);return}
+ L.forEach(c=>{const pu=c.users.find(u=>u!==S.uid),d=D.dir[pu]||{},W=dmWho(c,pu),nm=W.n+(SCH()&&W.f&&isStu(d.role?d:{role:"RESIDENT"})&&clsOf({flat:W.f})?" · "+clsOf({flat:W.f}):""),u=isUn(c),r=mk("div","ibr"+(u?" un":""));
+  r.appendChild(avd(W.n,W.p,48,pu));const x=mk("div","ibt");x.append(mk("b",null,nm),mk("small",null,(c.lastFrom===S.uid?"You: ":"")+(c.last||"")));
   const t=mk("div","it");t.appendChild(mk("span",null,new Date(c.lastTs).toDateString()===new Date().toDateString()?tm(c.lastTs):dayLbl(c.lastTs)));if(u)t.appendChild(mk("span","ubd","•"));
-  r.append(x,t);r.onclick=()=>openDM(pu,"inbox");b.appendChild(r)})}
+  r.append(x,t);r.onclick=()=>openDM(pu,"inbox",c.id);b.appendChild(r)})}
 $("dmnew").onclick=()=>sheet(z=>{z.appendChild(mk("h2",null,"✉️ New private chat"));z.appendChild(mk("p","sub",KIND==="company"?"Choose a colleague to message.":KIND==="school"?"Choose someone from your school to message.":"Choose a neighbour to message."));
  const q=mk("input","dmsr");q.placeholder="🔍 Search by name or flat";const ls=mk("div","dmls");z.append(q,ls);
  const draw=()=>{ls.innerHTML="";const t=q.value.trim().toLowerCase(),ppl=Object.values(D.dir).filter(p=>(p.uid||p.id)!==S.uid&&((p.name||"")+" "+(p.flat||"")).toLowerCase().includes(t)).sort((a,b)=>(a.name||"").localeCompare(b.name||""));
@@ -2174,7 +2238,7 @@ const KB=[
 {t:"Domestic help",k:["domestic help","maid","cook","driver","nanny","helper","bai","servant","house help","maid attendance"],a:c=>c.soc?"🧹 "+c.svc+" → Domestic help: admins add helpers; guards mark their entry/exit; you can rate your own helper.":"Domestic help is a society feature."},
 {t:"Classifieds",k:["classified","classifieds","buy sell","sell","marketplace","for sale","olx","post classified"],a:c=>c.soc?"🛍️ "+c.svc+" → Classifieds → Post a classified (photo, price, details). You can delete your own post any time.":"Classifieds are a society feature."},
 {t:"Notices",k:["notice","notices","announcement","announcements","circular","emergency notice","post notice","publish notice","announce"],a:c=>"📢 "+c.comm+" → Notices shows every announcement; the latest one is also on Home."+(c.adm?" To publish: Publish a notice → choose type, add title & text → Publish (Emergency type alerts everyone)."+(c.sch?(c.own?" As Principal you choose who it is for: all teachers, all students or everyone.":" A teacher's notice goes to their own class."):""):" "+(c.sch?"The Principal and teachers":"Admins")+" publish them.")},
-{t:"Chat",k:["chat","message","messages","group chat","community chat","voice note","voice","attach","attach file","share location","share contact","sticker","emoji","reply","edit message","delete message","report message","mention","photo in chat"],a:c=>"💬 "+c.comm+" → Chat is the group chat. Use ＋ to share a document, photo, location or contact, and hold the mic for a voice note. Tap a message to reply, report or delete (for me / for everyone). You can edit your own message within 5 minutes."},
+{t:"Chat",k:["chat","message","messages","group chat","community chat","voice note","voice","attach","attach file","share location","share contact","sticker","emoji","reply","edit message","delete message","report message","mention","photo in chat"],a:c=>"💬 "+c.comm+" → Chat is the group chat"+(c.sch?" of your class (teachers also have the Staff room, the Principal can open every class). With more than one student on a login, Switch student opens that student’s class chat and private chats":"")+". Use ＋ to share a document, photo, location or contact, and hold the mic for a voice note. Tap a message to reply, report or delete (for me / for everyone). You can edit your own message within 5 minutes."},
 {t:"Private chat",k:["private chat","dm","personal message","one to one","direct message","inbox","new private chat","private message"],a:c=>"✉️ "+c.comm+" → Inbox → New private chat, or tap anyone’s photo in the group chat → Send private message."},
 {t:"SOS & emergency",k:["sos","emergency","panic","danger","emergency alert","sos kaise","help button"],a:c=>c.grd?"🚨 When someone sends an SOS you and the admins are alerted instantly with the person's name and "+c.unit+". The emergency contacts are in your Me tab → 🆘 Emergency contacts (📞 Call).":"🚨 "+c.me+" tab → 🆘 Emergency contacts → SOS — Send emergency alert → Yes, send SOS. Security and the admins are notified instantly with your "+c.unit+". The same card lists the emergency numbers with 📞 Call."+(c.adm?" Admins add the contacts there (Police, Fire, Ambulance…).":"")},
 {t:"Finance & fund",k:["finance","fund","balance","income","expense","expenses","transactions","accounts","accountant","record income","record expense","kharcha"],a:c=>"💰 "+c.fin+" shows the balance and recent transactions."+(c.adm?" Admins and accountants use Record income / expense; you can export reports.":" You see payments recorded against your own "+c.unit+".")},
@@ -2389,12 +2453,12 @@ document.addEventListener("visibilitychange",()=>pset({seen:document.hidden?0:Da
 const online=u=>{const p=D.pres[u];return !!p&&Date.now()-p.seen<130000};
 const dot=u=>mk("i","pd "+(online(u)?"on":"off"));
 const avd=(n,ph,sz,u)=>{const w=mk("div","avd");w.appendChild(av(n,ph,sz));const d=dot(u);d.classList.add("bdg");w.appendChild(d);return w};
-function updPres(skip){if(!S.me||!$("chs"))return;const ppl=Object.values(D.dir),ids=ppl.map(p=>p.uid||p.id).filter(online),ty=Object.values(D.pres).filter(p=>p.uid!==S.uid&&Date.now()-(p.typing||0)<4500&&online(p.uid)&&(dmc?p.uid===dmc.peer&&p.typingTo===S.uid:!p.typingTo)).map(p=>(p.name||"").split(" ")[0]);
+function updPres(skip){if(!S.me||!$("chs"))return;const ppl=chatPpl(),ids=ppl.map(p=>p.uid||p.id).filter(online),ty=Object.values(D.pres).filter(p=>p.uid!==S.uid&&Date.now()-(p.typing||0)<4500&&online(p.uid)&&(dmc?p.uid===dmc.peer&&p.typingTo===S.uid:!p.typingTo&&(!SCH()||(p.typingIn||"")===curRoom()))).map(p=>(p.name||"").split(" ")[0]);
  $("chs").textContent=ty.length?ty.slice(0,2).join(", ")+" typing…":dmc?(online(dmc.peer)?"Online":lastSeen(dmc.peer)):ids.length+" online · "+ppl.length+" members";$("chs").style.color=ty.length?"var(--grn)":"";
  const t=$("typ");t.classList.toggle("hide",!ty.length);t.textContent="✍️ "+ty.join(", ")+(ty.length>1?" are":" is")+" typing…";
  const sg=ids.join();if(!skip&&sg!==psig){psig=sg;rChat()}else psig=sg}
 setInterval(()=>updPres(),3000);
-$("mt").addEventListener("input",()=>{if(Date.now()-lastTyp>2000){lastTyp=Date.now();pset({typing:Date.now(),typingTo:dmc?dmc.peer:""})}});
+$("mt").addEventListener("input",()=>{if(Date.now()-lastTyp>2000){lastTyp=Date.now();pset({typing:Date.now(),typingTo:dmc?dmc.peer:"",typingIn:dmc||!SCH()?"":curRoom()})}});
 $("chb").onclick=e=>{e.stopPropagation();dmc?dmBack():$("sn1").click()};
 const EMO=[["😀","😀 😃 😄 😁 😆 😅 😂 🤣 🙂 😉 😊 😇 🥰 😍 🤩 😘 😋 😜 🤪 😎 🤓 🥳 😏 😒 😞 😔 😟 🙁 😢 😭 😤 😠 😡 🤯 😳 🥺 😱 😰 🤗 🤔 🤭 🤫 🙄 😬 😴 🤒 🤕 🤢 🥵 🥶"],
 ["👍","👍 👎 👌 ✌️ 🤞 🤟 🤘 🤙 👈 👉 👆 👇 👋 🤚 ✋ 👏 🙌 👐 🤝 🙏 💪 ✍️ 💅 🧠 👀 👂 👃 👄 👶 👦 👧 👨 👩 👴 👵"],

@@ -1704,7 +1704,7 @@ function drawNav(){const n=$("nav");n.innerHTML="";navCfg().forEach(c=>{const b=
 function markNav(){const T=tab==="sub"&&!isMgr()?"more":tab;navCfg().forEach(c=>{const k=c[0].split(":"),on=k[0]===T&&(k.length<2||k[1]===sub);$("n_"+c[0].replace(":","_")).classList.toggle("on",on)});try{navInd()}catch(e){}}
 function go(key){const k=key.split(":");if(k[0]==="fx"){fxOpen(k[1]);return}if(k[1])sub=k[1];goTab(k[0])}
 function goTab(t){if(t==="sub"&&!isMgr())t="home";try{const O=["home","svc","comm","fin","more","sub"],mn=document.querySelector("#sMain main");if(mn&&t!==tab)mn.dataset.dir=O.indexOf(t)<O.indexOf(tab)?"l":"r";if(t==="home")homeAt=Date.now()}catch(e){}tab=t;["home","svc","comm","fin","more","sub"].forEach(x=>$("t_"+x).classList.toggle("hide",x!==t));markNav();
- if(t==="home")rHome();if(t==="more")rMore();if(t==="sub")rSub();if(t==="svc")setSub(sub);if(t==="comm"&&!$("v_chat").classList.contains("hide"))bottom()}
+ if(t==="home")rHome();if(t==="more")rMore();if(t==="sub")rSub();if(t==="fin"||t==="sub")try{payWarm()}catch(e){}if(t==="svc")setSub(sub);if(t==="comm"&&!$("v_chat").classList.contains("hide"))bottom()}
 function setSub(s){sub=s;if(!subList().includes(s))sub=subList()[0];const g=$("ssg"),key=subList().join();g.classList.toggle("hide",isGuard());if(g.dataset.k!==key){g.dataset.k=key;g.innerHTML="";g.appendChild(mk("i","sind"));subList().forEach(k=>{const b=mk("button",null,SUBSK()[k]);b.dataset.k=k;b.onclick=()=>{setSub(k);markNav()};g.appendChild(b)});g.dataset.init=""}
  const ind=g.querySelector(".sind");[...g.querySelectorAll("button")].forEach(b=>b.classList.toggle("on",b.dataset.k===sub));const mv=()=>{const b=g.querySelector("button.on");if(!b||!ind||!b.offsetWidth)return;if(!g.dataset.init){ind.style.transition="none"}ind.style.width=b.offsetWidth+"px";ind.style.transform="translateX("+b.offsetLeft+"px)";if(!g.dataset.init){void ind.offsetWidth;ind.style.transition="";g.dataset.init="1"}const l=b.offsetLeft-(g.clientWidth-b.offsetWidth)/2;g.scrollTo({left:Math.max(0,l),behavior:"smooth"})};mv();requestAnimationFrame(mv);["att","comp","vis","del","veh","park","help","mkt","leave","room","tt","hw","hol","gc"].forEach(k=>{const e=$("p_"+k)||Object.assign($("p_att").parentNode.appendChild(mk("div","hide")),{id:"p_"+k});e.classList.toggle("hide",k!==sub)});if(MODS[sub])rMod(sub);if(sub==="att")rAtt();if(sub==="gc")rGc();watchSub();if(sub==="help")rHelp();if(sub==="mkt")rMkt();markNav()}
 const bottom=()=>setTimeout(()=>{const b=$("msgs");if(!b)return;const u=b.querySelector(".unr");b.scrollTop=u&&Date.now()-chatOpenAt<900?Math.max(0,u.offsetTop-b.offsetTop-64):b.scrollHeight;jmpUpd()},60);
@@ -1728,7 +1728,7 @@ function startApp(){
  $("annf").classList.toggle("hide",!isAdm());annSetup();ensureTCode();document.querySelector("#t_fin .bal").classList.toggle("hide",!canFin());$("finf").classList.toggle("hide",!canFin());$("pk_adm").classList.toggle("hide",!isAdm());
  $("vf_res").classList.toggle("hide",isGuard());$("vf_grd").classList.toggle("hide",!staff());$("df_grd").classList.toggle("hide",!staff());$("vh_res").classList.toggle("hide",isGuard());$("vsr").classList.toggle("hide",!staff());
  setFin("inc");setHero();drawNav();syncDirPhoto();if(KIND==="company"&&isAdm()&&!socGst())setTimeout(()=>toast("🧾","Add your GST number","Finance → GST number. It is printed on every invoice.",true),2500);
- listen();show("sMain");go("home");fxStart();uxCoach();try{busWatch()}catch(e){console.warn("bus alerts",e)}try{busDrive()}catch(e){console.warn("my bus",e)}try{drvWatch()}catch(e){console.warn("driver alerts",e)}liveResume();setTimeout(firstRunPerms,900);
+ listen();show("sMain");go("home");try{payWarm()}catch(e){}fxStart();uxCoach();try{busWatch()}catch(e){console.warn("bus alerts",e)}try{busDrive()}catch(e){console.warn("my bus",e)}try{drvWatch()}catch(e){console.warn("driver alerts",e)}liveResume();setTimeout(firstRunPerms,900);
 }
 const flats=()=>{const one=S.soc.towers.length===1,r=[];S.soc.towers.forEach(t=>gF(t,one).forEach(l=>r.push((one?"":t.name+" · ")+"Flat "+l)));return r};
 function setHero(){const h=$("hav");h.innerHTML="";h.appendChild(av(S.me.name,photoOf(S.uid),42));h.onclick=()=>go("more")}
@@ -2854,11 +2854,21 @@ const RZP_JS="https://checkout.razorpay.com/v1/checkout.js";
 const payOn=()=>!!PAY_API,gwOn=()=>!!(S.soc&&S.soc.gateway&&S.soc.gateway.keyId);
 async function api(path,body){
  if(!PAY_API){const x=new Error("Online payments are not switched on yet.");x.fxv=true;throw x}
- let r;try{const t=await auth.currentUser.getIdToken();r=await fetch(PAY_API.replace(/\/+$/,"")+path,{method:"POST",headers:{"Content-Type":"application/json",Authorization:"Bearer "+t},body:JSON.stringify(body||{})})}
+ /* a sleeping server can need about a minute to answer its first request, so the limit is generous */
+ const ac=new AbortController(),kill=setTimeout(()=>ac.abort(),90000);
+ let r;try{const t=await auth.currentUser.getIdToken();r=await fetch(PAY_API.replace(/\/+$/,"")+path,{method:"POST",headers:{"Content-Type":"application/json",Authorization:"Bearer "+t},body:JSON.stringify(body||{}),signal:ac.signal})}
  catch(e){const x=new Error("Check your internet connection and try again.");x.net=true;x.fxv=true;throw x}
+ finally{clearTimeout(kill)}
  let j=null;try{j=await r.json()}catch(e){}
  if(!r.ok||!j){const er=(j&&j.error)||{},x=new Error(er.message||"Something went wrong. Please try again.");x.pcode=er.code||"";x.info=er;x.http=r.status;x.fxv=true;throw x}
  return j}
+/* On a small hosting plan the payment server sleeps when nobody uses it and needs up to a minute to wake.
+   It is nudged quietly when the app opens, when the app comes back to the front and when Finance or Plan is
+   opened, so that it is already awake by the time someone taps Pay. Nothing is sent except an empty request. */
+let payWarmAt=0;
+function payWarm(){if(!PAY_API||!S.me||Date.now()-payWarmAt<240000)return;payWarmAt=Date.now();
+ try{fetch(PAY_API.replace(/\/+$/,"")+"/healthz",{mode:"no-cors",cache:"no-store"}).catch(()=>{payWarmAt=0})}catch(e){payWarmAt=0}}
+document.addEventListener("visibilitychange",()=>{if(!document.hidden)payWarm()});
 const BTYPES=[["maintenance","Monthly maintenance"],["event","Event fee"],["other","One-time charge"]];
 const bTitle=b=>String((b&&b.title)||"").trim()||((b&&b.month?mname(b.month)+" ":"")+KINDS[KIND].fee);
 const payMeth=m=>({upi:"UPI",card:"Card",netbanking:"Net banking",wallet:"Wallet",emi:"EMI",paylater:"Pay later"})[m]||(m?String(m):"");
@@ -2868,19 +2878,20 @@ const closedBill=b=>b.status==="Paid"||b.status==="Refunded";
 const payAsBill=p=>({id:p.chargeId,flat:p.flat||"",month:p.period||"",title:p.description,amount:p.amount,due:p.dueAt||p.createdAt,ts:p.createdAt,status:"Paid",paidAt:p.paidAt,receiptNo:p.receiptNumber,paidBy:p.payerName||"",utr:p.razorpayPaymentId,payMethod:p.paymentMethod,gateway:"razorpay",confirmedBy:"Razorpay (verified online)"});
 
 /* ---- full-screen payment states: processing, success, failed, being verified ---- */
-let payScr=null,payLock=false,payPoll=null;
+let payScr=null,payLock=false,payPoll=null,paySlowT=null;
 const PYI={ok:'<svg class="ck" viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="24"/><path d="M14 27l8 8 16-17"/></svg>',
  bad:'<svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" aria-hidden="true"><circle cx="26" cy="26" r="23" stroke-width="3"/><path d="M18 18l16 16M34 18L18 34"/></svg>',
  unsure:'<svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="26" cy="26" r="23" stroke-width="3"/><path d="M26 14v13l8 5"/></svg>',
  wait:'<div class="dots big"><i></i><i></i><i></i></div>'};
-function payFrame(kind,title){clearInterval(payPoll);payPoll=null;
+function payFrame(kind,title){clearInterval(payPoll);payPoll=null;clearTimeout(paySlowT);
  if(!payScr){payScr=mk("div","pyo");payScr.setAttribute("data-noskin","");payScr.setAttribute("role","dialog");payScr.setAttribute("aria-modal","true");document.body.appendChild(payScr)}
  payScr.innerHTML="";payScr.setAttribute("aria-label",title);const c=mk("div","pyc"),i=mk("div","pyi "+kind);i.innerHTML=PYI[kind];c.append(i,mk("h2",null,title));payScr.appendChild(c);return c}
-function payClose(){clearInterval(payPoll);payPoll=null;payLock=false;if(payScr){payScr.remove();payScr=null}}
+function payClose(){clearInterval(payPoll);payPoll=null;clearTimeout(paySlowT);payLock=false;if(payScr){payScr.remove();payScr=null}}
 const payRows=(c,R)=>{const t=mk("div","pyt");R.filter(r=>r[1]).forEach(r=>{const e=mk("div");e.append(mk("span",null,r[0]),mk("b",null,r[1]));if(r[2]){e.classList.add("cpy");e.title="Tap to copy";e.onclick=()=>cp(r[1])}t.appendChild(e)});c.appendChild(t);return t};
 const payBtns=(c,B)=>{const w=mk("div","pyb");B.forEach(([t,fn,cl])=>{const b=mk("button","btn"+(cl||""),t);b.type="button";b.onclick=fn;w.appendChild(b)});c.appendChild(w);const f=w.querySelector("button");if(f)setTimeout(()=>{try{f.focus({preventScroll:true})}catch(e){}},60);return w};
 const toHistory=()=>{payClose();go("fin");setTimeout(()=>{const h=$("payhist");if(h)h.scrollIntoView({behavior:"smooth",block:"start"})},250)};
-function payWait(title,sub){payLock=true;const c=payFrame("wait",title);c.append(mk("p","pys",sub),mk("p","pyn","Please do not close the app or press back."))}
+function payWait(title,sub){payLock=true;const c=payFrame("wait",title),p=mk("p","pys",sub);c.append(p,mk("p","pyn","Please do not close the app or press back."));
+ paySlowT=setTimeout(()=>{if(p.isConnected)p.textContent="This is taking a little longer than usual. Please keep the app open."},7000)}
 function payDone(v,o){payLock=false;const c=payFrame("ok","Payment Successful");
  c.append(mk("div","pya",rs(v.amount)),mk("p","pys",v.description||""));
  payRows(c,[["Transaction ID",v.razorpayPaymentId,1],["Date & Time",dtm(v.paidAt||Date.now())],["Paid via",payMeth(v.paymentMethod)],["Receipt no.",v.receiptNumber]]);
@@ -2947,7 +2958,7 @@ async function payStart(kind,body,o){
    catch(e){payUnsure(kind,ord.paymentId,o)}}}};
  /* inside the Android app: let UPI apps (GPay, PhonePe, Paytm ...) open from the checkout */
  try{if(window.Capacitor&&window.Capacitor.isNativePlatform&&window.Capacitor.isNativePlatform())opts.webview_intent=true}catch(e){}
- try{const r=new window.Razorpay(opts);r.on("payment.failed",x=>{lastErr=(x&&x.error)||{}});r.open()}
+ try{clearTimeout(paySlowT);const r=new window.Razorpay(opts);r.on("payment.failed",x=>{lastErr=(x&&x.error)||{}});r.open()}
  catch(e){console.error(e);release();payFailed(o,{soft:1,msg:"Razorpay could not be opened. Please try again."})}}
 
 /* ---- payment details -> proceed to pay ---- */

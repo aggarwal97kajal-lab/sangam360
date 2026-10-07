@@ -1056,6 +1056,30 @@ b.mtn{color:var(--a);font-weight:600;background:var(--tint,rgba(91,61,245,.1));b
 .gwc span{display:block;font-size:11px;color:var(--muted);margin-bottom:2px}
 .gwc code{display:block}
 .pycf{position:fixed;inset:0;overflow:hidden;pointer-events:none}
+/* plan badge, plan card on the home screen, lock screen, current plan */
+.plb{display:inline-flex;align-items:center;gap:6px;max-width:100%;padding:4px 11px 4px 6px;border-radius:99px;background:color-mix(in srgb,var(--pc,var(--a)) 15%,transparent);color:var(--text);font-size:12px;line-height:1.2;white-space:nowrap}
+.plb i{font-style:normal;font-size:15px;line-height:1}
+.plb b{font-weight:600;overflow:hidden;text-overflow:ellipsis}
+.drp{margin:9px 0 2px}
+.drp .plb{background:rgba(255,255,255,.22);color:#fff}
+.card.plh{display:flex;align-items:center;gap:12px;border-left:4px solid var(--pc,var(--a))}
+.plhi{flex:none;width:48px;height:48px;border-radius:50%;display:grid;place-items:center;font-size:25px;line-height:1;background:color-mix(in srgb,var(--pc,var(--a)) 15%,transparent)}
+.plht{flex:1;min-width:0}
+.plht b{display:block;font-size:15.5px;font-weight:650;color:var(--text)}
+.plht span{display:block;font-size:13px;line-height:1.4;color:var(--text);margin-top:1px;overflow-wrap:anywhere}
+.plht small{display:block;font-size:11.5px;color:var(--muted);margin-top:2px}
+.plh .btn{width:auto;flex:none;margin:0;padding:9px 14px}
+.card.lkc{text-align:center;padding:28px 18px 20px}
+.lki{width:76px;height:76px;border-radius:50%;display:grid;place-items:center;font-size:36px;line-height:1;margin:0 auto 14px;background:color-mix(in srgb,var(--red) 12%,transparent)}
+.lkc h2{font-size:20px;font-weight:700;margin-bottom:6px;text-wrap:balance}
+.lkc .sub{font-size:14.5px;color:var(--text);margin-bottom:8px}
+.lkc .meta{line-height:1.55;margin:0 auto 18px;max-width:38ch}
+.lkc .btn{margin-bottom:10px}
+body.plk nav button:not(#n_home):not(#n_sub){opacity:.4}
+.pln.curp{border-color:var(--grn);box-shadow:0 0 0 3px color-mix(in srgb,var(--grn) 20%,transparent)}
+.pln.curp:after{content:"Current plan";position:absolute;top:-10px;right:12px;background:var(--grn);color:#fff;font-size:10.5px;font-weight:600;padding:2px 10px;border-radius:99px}
+.plnn{display:flex;align-items:center;gap:7px}
+.plnn i{font-style:normal;font-size:18px;line-height:1}
 @media (prefers-reduced-motion:reduce){.pyo,.pyi{animation:none}.pycf{display:none}}
 </style>
 </head>
@@ -1516,7 +1540,7 @@ const ANN=["General","Emergency","Maintenance","Water shutdown","Power shutdown"
 const VTYPES=["Guest","Cab","Food delivery","Courier","Service provider","Other"],COURIERS=["Amazon","Flipkart","Swiggy","Zomato","Blinkit","India Post","Other"];
 const GSTRE=/^\d{2}[A-Z]{5}\d{4}[A-Z][A-Z\d]Z[A-Z\d]$/;let loginKind=null,authMsg="";
 const roleLbl=x=>{const K=KINDS[KIND],sk=K.skin?Object.fromEntries(K.skin):{};const m={RESIDENT:K.person,TENANT:sk["Tenant"]||"Tenant",COMMITTEE_MEMBER:sk["Committee member"]||"Committee member",ACCOUNTANT:"Accountant",SECURITY_GUARD:"Security guard",STAFF:"Staff",SOCIETY_ADMIN:KIND==="school"?"Principal":"Admin"};return m[x]||String(x||"").replace("_"," ")};
-const planName=()=>{try{const i=subInfo();return i.p&&i.p.name?i.p.name:"Free trial"}catch(e){return"Free"}};
+const planName=()=>{try{const st=planState();return st.kind==="paid"?(st.p?st.p.name:"Active"):st.kind==="locked"?(st.why==="expired"?"Plan expired":"Trial ended"):"Free trial"}catch(e){return"Free trial"}};
 const socGst=()=>String((S.soc&&(S.soc.gstin||(S.soc.extra&&(S.soc.extra["GST number"]||S.soc.extra["GST / registration no."]))))||"").toUpperCase();
 const fill=(el,a)=>{el.innerHTML="";a.forEach(x=>el.appendChild(Object.assign(mk("option",null,x),{value:x})))};
 const COLS=["#6d5dfc","#ff6b9d","#00a8e8","#f59e0b","#10b981","#ef4444","#8b5cf6","#0ea5e9"];const col=n=>{let h=0;for(const c of (n||"?"))h=(h*31+c.charCodeAt(0))|0;return COLS[Math.abs(h)%COLS.length]};
@@ -1702,8 +1726,8 @@ const subList=()=>isDrv()?["att","leave","hol"]:isGuard()?["vis","del","veh","he
 const navCfg=()=>{if(isGuard()||isDrv()||KIND==="society")return navCfg0();const o=KINDS[KIND].nav;return navCfg0().map(c=>o[c[0]]?[c[0],o[c[0]][0],o[c[0]][1]]:c)};
 function drawNav(){const n=$("nav");n.innerHTML="";navCfg().forEach(c=>{const b=mk("button");b.id="n_"+c[0].replace(":","_");b.appendChild(mk("span",null,c[1]));b.appendChild(document.createTextNode(c[2]));b.onclick=()=>go(c[0]);n.appendChild(b)});n.classList.toggle("six",navCfg().length>5);markNav();subDot()}
 function markNav(){const T=tab==="sub"&&!isMgr()?"more":tab;navCfg().forEach(c=>{const k=c[0].split(":"),on=k[0]===T&&(k.length<2||k[1]===sub);$("n_"+c[0].replace(":","_")).classList.toggle("on",on)});try{navInd()}catch(e){}}
-function go(key){const k=key.split(":");if(k[0]==="fx"){fxOpen(k[1]);return}if(k[1])sub=k[1];goTab(k[0])}
-function goTab(t){if(t==="sub"&&!isMgr())t="home";try{const O=["home","svc","comm","fin","more","sub"],mn=document.querySelector("#sMain main");if(mn&&t!==tab)mn.dataset.dir=O.indexOf(t)<O.indexOf(tab)?"l":"r";if(t==="home")homeAt=Date.now()}catch(e){}tab=t;["home","svc","comm","fin","more","sub"].forEach(x=>$("t_"+x).classList.toggle("hide",x!==t));markNav();
+function go(key){const k=key.split(":");if(k[0]==="fx"){if(planLocked()){lockNudge();return}fxOpen(k[1]);return}if(k[1])sub=k[1];goTab(k[0])}
+function goTab(t){if(planLocked()&&t!=="home"&&!(t==="sub"&&isMgr())){if(t!==tab)lockNudge();t="home"}if(t==="sub"&&!isMgr())t="home";try{const O=["home","svc","comm","fin","more","sub"],mn=document.querySelector("#sMain main");if(mn&&t!==tab)mn.dataset.dir=O.indexOf(t)<O.indexOf(tab)?"l":"r";if(t==="home")homeAt=Date.now()}catch(e){}tab=t;["home","svc","comm","fin","more","sub"].forEach(x=>$("t_"+x).classList.toggle("hide",x!==t));markNav();
  if(t==="home")rHome();if(t==="more")rMore();if(t==="sub")rSub();if(t==="fin"||t==="sub")try{payWarm()}catch(e){}if(t==="svc")setSub(sub);if(t==="comm"&&!$("v_chat").classList.contains("hide"))bottom()}
 function setSub(s){sub=s;if(!subList().includes(s))sub=subList()[0];const g=$("ssg"),key=subList().join();g.classList.toggle("hide",isGuard());if(g.dataset.k!==key){g.dataset.k=key;g.innerHTML="";g.appendChild(mk("i","sind"));subList().forEach(k=>{const b=mk("button",null,SUBSK()[k]);b.dataset.k=k;b.onclick=()=>{setSub(k);markNav()};g.appendChild(b)});g.dataset.init=""}
  const ind=g.querySelector(".sind");[...g.querySelectorAll("button")].forEach(b=>b.classList.toggle("on",b.dataset.k===sub));const mv=()=>{const b=g.querySelector("button.on");if(!b||!ind||!b.offsetWidth)return;if(!g.dataset.init){ind.style.transition="none"}ind.style.width=b.offsetWidth+"px";ind.style.transform="translateX("+b.offsetLeft+"px)";if(!g.dataset.init){void ind.offsetWidth;ind.style.transition="";g.dataset.init="1"}const l=b.offsetLeft-(g.clientWidth-b.offsetWidth)/2;g.scrollTo({left:Math.max(0,l),behavior:"smooth"})};mv();requestAnimationFrame(mv);["att","comp","vis","del","veh","park","help","mkt","leave","room","tt","hw","hol","gc"].forEach(k=>{const e=$("p_"+k)||Object.assign($("p_att").parentNode.appendChild(mk("div","hide")),{id:"p_"+k});e.classList.toggle("hide",k!==sub)});if(MODS[sub])rMod(sub);if(sub==="att")rAtt();if(sub==="gc")rGc();watchSub();if(sub==="help")rHelp();if(sub==="mkt")rMkt();markNav()}
@@ -1728,7 +1752,7 @@ function startApp(){
  $("annf").classList.toggle("hide",!isAdm());annSetup();ensureTCode();document.querySelector("#t_fin .bal").classList.toggle("hide",!canFin());$("finf").classList.toggle("hide",!canFin());$("pk_adm").classList.toggle("hide",!isAdm());
  $("vf_res").classList.toggle("hide",isGuard());$("vf_grd").classList.toggle("hide",!staff());$("df_grd").classList.toggle("hide",!staff());$("vh_res").classList.toggle("hide",isGuard());$("vsr").classList.toggle("hide",!staff());
  setFin("inc");setHero();drawNav();syncDirPhoto();if(KIND==="company"&&isAdm()&&!socGst())setTimeout(()=>toast("🧾","Add your GST number","Finance → GST number. It is printed on every invoice.",true),2500);
- listen();show("sMain");go("home");try{payWarm()}catch(e){}fxStart();uxCoach();try{busWatch()}catch(e){console.warn("bus alerts",e)}try{busDrive()}catch(e){console.warn("my bus",e)}try{drvWatch()}catch(e){console.warn("driver alerts",e)}liveResume();setTimeout(firstRunPerms,900);
+ listen();show("sMain");lockWas=null;go("home");try{planGate();planEnsure();payWarm()}catch(e){}fxStart();uxCoach();try{busWatch()}catch(e){console.warn("bus alerts",e)}try{busDrive()}catch(e){console.warn("my bus",e)}try{drvWatch()}catch(e){console.warn("driver alerts",e)}liveResume();setTimeout(firstRunPerms,900);
 }
 const flats=()=>{const one=S.soc.towers.length===1,r=[];S.soc.towers.forEach(t=>gF(t,one).forEach(l=>r.push((one?"":t.name+" · ")+"Flat "+l)));return r};
 function setHero(){const h=$("hav");h.innerHTML="";h.appendChild(av(S.me.name,photoOf(S.uid),42));h.onclick=()=>go("more")}
@@ -1759,7 +1783,7 @@ function listen(){unsubs.forEach(f=>f());unsubs=[];if(wsub){wsub();wsub=null}wsu
  listen3(C,L);listen4(C)}
 
 /* ---------- home ---------- */
-function rHome(){const h=$("hm");h.innerHTML="";const hr=new Date().getHours();h.appendChild(mk("div","card","👋 Good "+(hr<12?"morning":hr<17?"afternoon":"evening")+", "+S.me.name.split(" ")[0]+" · "+S.me.flat));
+function rHome(){const h=$("hm");h.innerHTML="";if(planLocked()){lockHome(h);return}planHome(h);
  if(isDrv()){try{drvHome(h)}catch(e){console.warn("driver home",e)}try{uxHome(h)}catch(e){}return}
  const V=Object.values(D.vis),dl=Object.values(D.del),today=td();
  const open=Object.values(D.comp).filter(c=>!["Resolved","Closed"].includes(c.status)).length,bal=Object.values(D.inc).reduce((a,c)=>a+c.amount,0)-Object.values(D.exp).reduce((a,c)=>a+c.amount,0),pend=Object.values(D.mem).filter(m=>m.status==="pending").length;
@@ -2138,7 +2162,7 @@ const KB=[
 {t:"Delete a profile",k:["delete profile","remove member","remove person","delete resident","delete employee","delete student","remove user","permanent delete","profile delete","delete user","delete member","remove from","delete","deleted","remove","hatao","hatana","hata do","member profile","delete a member","profile hatana"],a:c=>c.own?"🗑 People tab → find the person → Delete. It permanently erases their profile and data, and they can’t log in again unless they sign up afresh.":"Only the main admin can delete a profile. Ask your admin."},
 {t:"Invite people",k:["invite","invite link","join link","share code","my code","qr code","where is code","code kaha","copy invitation","invite people","invite residents","invite employees","invite students"],a:c=>c.adm?"📨 People tab → Invite card: share the join code, show the Join QR code or tap Copy invitation link. People then follow Join my "+c.org+".":"Ask your admin for the join code or invitation link."},
 {t:"Polls, amenities & documents",k:["poll","polls","vote","amenity","amenities","clubhouse","gym","hall booking","document","documents","staff directory","vault"],a:c=>"🗂️ In your "+c.me+" tab you’ll find Polls, Amenity booking, the Staff directory and Documents where your plan includes them. Admins add the content."},
-{t:"Plans & subscription",k:["plan","plans","subscription","upgrade","pricing","price","cost","free","trial","razorpay","renew","premium","starter","growth","enterprise","expiry","expire","free plan"],a:c=>{const L=c.soc?PLANS_SOC:(PLAN_ORG[c.k]||[]);const u=c.soc?"flats":c.com?"employees":"users";const rows=L.map(p=>"• "+p.name+": "+(p.cu?"custom":p.m?"₹"+p.m+"/mo":"Free")+" · "+(p.max>=1e9?"unlimited":"up to "+p.max)+" "+u).join("\n");return "⭐ Plans:\n"+rows+"\nOnly the main admin sees the Plan tab (renew via Razorpay). Everyone else just sees the plan name in their profile."}},
+{t:"Plans & subscription",k:["plan","plans","subscription","upgrade","pricing","price","cost","free","trial","razorpay","renew","premium","starter","growth","enterprise","expiry","expire","free plan"],a:c=>{const L=c.soc?PLANS_SOC:(PLAN_ORG[c.k]||[]);const u=c.soc?"flats":c.com?"employees":"users";const rows=L.filter(p=>p.m||p.cu).map(p=>"• "+p.name+": "+(p.cu?"custom":"₹"+p.m+"/mo")+" · "+(p.max>=1e9?"unlimited":"up to "+p.max)+" "+u).join("\n");return "⭐ Every new workspace gets a "+TRIAL_DAYS+"-day free trial. After that a plan is needed to keep using the app:\n"+rows+"\nOnly the main admin sees the Plan tab (pay with Razorpay). Everyone sees the plan badge on the home screen and in the side menu."}},
 {t:"Delete my "+"workspace",k:["delete society","delete company","delete school","close society","remove society","delete workspace","delete organisation","delete organization"],a:c=>c.own?"🗑 Me tab → Delete this "+c.org+" → type its name to confirm. This permanently erases the "+c.org+" and all its data.":"Only the main admin can delete the "+c.org+"."},
 {t:"Delete my account",k:["delete account","delete my account","remove my account","account delete","deactivate","close account"],a:c=>c.own?"To remove everything, delete the "+c.org+" from the Me tab (type its name to confirm).":"Ask your admin to delete your profile (People tab → Delete). After that you can’t log in unless you sign up again."},
 {t:"Errors & not working",k:["error","not allowed","permission denied","something went wrong","failed","not working","bug","crash","stuck","loading","hang"],a:()=>"⚠️ Try: 1) check your internet 2) refresh the page 3) log out and back in. ‘Not allowed / permission’ errors mean your admin must update the database rules. Still stuck? Email our team below.",m:1},
@@ -2274,7 +2298,7 @@ function p3(m){
 const fns=()=>getFunctions(app),call=(n,d)=>httpsCallable(fns(),n)(d).then(r=>r.data);
 const loadJS=u=>new Promise((ok,no)=>{const e=document.createElement("script");e.src=u;e.onload=ok;e.onerror=()=>no(new Error("Could not load "+u));document.head.appendChild(e)});
 /* a Sangam360 plan: paid into Sangam360's own Razorpay account and recorded apart from the organisation's bills */
-function payOnline(purpose,pm,extra){return payStart("subscriptions",{sid:S.sid,plan:extra&&extra.plan,cycle:extra&&extra.cycle},{name:BRAND,plan:true,pm,retry:()=>payOnline(purpose,pm,extra),after:async()=>{try{const d=await getDoc(doc(db,"societies",S.sid));if(d.exists()&&d.data().subscription)S.soc.subscription=d.data().subscription}catch(e){}try{subDot();if(tab==="sub")rSub()}catch(e){}}})}
+function payOnline(purpose,pm,extra){return payStart("subscriptions",{sid:S.sid,plan:extra&&extra.plan,cycle:extra&&extra.cycle},{name:BRAND,plan:true,pm,retry:()=>payOnline(purpose,pm,extra),after:async()=>{try{const d=await getDoc(doc(db,"societies",S.sid));if(d.exists()&&d.data().subscription)S.soc.subscription=d.data().subscription}catch(e){}try{subDot();planGate();if(tab==="sub")rSub()}catch(e){}}})}
 let isSuper=false;async function checkSuper(){try{isSuper=(await getDoc(doc(db,"superadmins",S.uid))).exists()}catch(e){isSuper=false}}
 function p4(m){const adm=isAdm(),sub=S.soc.subscription||{},now=Date.now(),left=sub.until?Math.ceil((sub.until-now)/864e5):null;
  if(false){const si=subInfo(),ec=mk("div","card");ec.appendChild(mk("h2",null,"💳 Subscription"));ec.appendChild(mk("div","meta",(si.p&&si.p.m?si.p.name+(si.cy?" · "+(si.cy==="y"?"Yearly":"Monthly"):"")+" · ":"")+(sub.until?(left<=0?"⚠️ Expired "+dt(sub.until):"Active · "+left+" day"+(left===1?"":"s")+" left"):"Free trial")));const eb=mk("button","btn s o",adm?"View plans & renew":"View plans");eb.style.marginTop="8px";eb.onclick=()=>go("sub");ec.appendChild(eb);m.appendChild(ec)}
@@ -2684,11 +2708,12 @@ const PM=[["upi","📲","UPI","GPay, PhonePe, Paytm, BHIM & all UPI apps",["upi"
 function paySheet(p,cyc){sheet(z=>{z.appendChild(mk("h2",null,"Pay for "+p.name));z.appendChild(mk("p","sub",rs(cyc==="m"?p.m:p.y)+(cyc==="m"?" per month":" per year")+" · choose how to pay"));
  PM.forEach(x=>{const r=mk("button","pmo"),d=mk("div");d.append(mk("b",null,x[2]),mk("small",null,x[3]));r.append(mk("span",null,x[1]),d);r.onclick=()=>{closeSheet();payOnline("plan",x[4],{plan:p.id,cycle:cyc}).catch(e=>fail(e,"Payment failed"))};z.appendChild(r)});
  z.appendChild(mk("p","meta","Secured by Razorpay."))})}
-function plansCard(m){const n=unitsN(),adm=isAdm(),rec=planList().find(p=>n<=p.max)||planList().slice(-1)[0];let cyc=subInfo().cy||"m";
+function plansCard(m){const n=unitsN(),adm=isAdm(),PL=paidPlans(),rec=PL.find(p=>n<=p.max)||PL.slice(-1)[0];let cyc=subInfo().cy||"m";
  const c=mk("div","card");c.id="plansCard";c.appendChild(mk("h2",null,"⭐ Subscription plans"));c.appendChild(mk("div","meta",(isOrg()?"Your "+KINDS[KIND].word+" has "+n+(KIND==="school"?" users":" employees"):"Your society has "+n+" flats")+" · suggested plan: "+rec.name));
- const sg=mk("div","seg");sg.style.marginTop="10px";const bm=mk("button","on","Monthly"),by=mk("button",null,"Yearly (save up to 17%)");sg.append(bm,by);c.appendChild(sg);const L=mk("div");c.appendChild(L);
- const draw=()=>{L.innerHTML="";bm.classList.toggle("on",cyc==="m");by.classList.toggle("on",cyc==="y");planList().forEach(p=>{const d=mk("div","pln"+(p===rec?" recp":""));{const cu=subInfo().p;d.appendChild(mk("b",null,p.name+(cu&&cu.id===p.id&&(S.soc.subscription||{}).until>Date.now()?" · Current plan":"")))}d.appendChild(mk("div","ppr",p.m?rs(cyc==="m"?p.m:p.y)+(cyc==="m"?" / month":" / year"):(p.cu?"Custom pricing":"Free")));p.f.forEach(x=>d.appendChild(mk("div","pf2","✓ "+x)));
-  if(p.m&&adm){const b=mk("button","btn s"+(p===rec?"":" o"),"Choose "+p.name);b.onclick=()=>paySheet(p,cyc);d.appendChild(b)}else if(p.cu){const b=mk("button","btn s o","Contact sales");b.onclick=()=>{location.href="mailto:"+SUPPORT_EMAIL+"?subject="+encodeURIComponent(BRAND+" "+p.name+" plan · "+S.soc.name)};d.appendChild(b)}else if(!p.m){const b=mk("button","btn s o","Free forever");b.disabled=true;d.appendChild(b)}L.appendChild(d)})};
+ const sg=mk("div","seg");sg.style.marginTop="10px";const bm=mk("button","on","Monthly"),by=mk("button",null,"Yearly (save up to 17%)");{const st=planState();if(st.kind!=="paid"){const nt=mk("div","note",st.kind==="locked"?"🔒 "+(st.why==="expired"?"Your plan has expired.":"Your free trial has ended.")+" Choose a plan to continue.":st.kind==="trial"?"🎁 Free trial: "+st.left+" day"+(st.left===1?"":"s")+" left. Choose a plan any time to continue after the trial.":"🎁 Every new workspace starts with a "+TRIAL_DAYS+"-day free trial.");nt.style.margin="10px 0 0";nt.setAttribute("data-noskin","");c.appendChild(nt)}}
+ sg.append(bm,by);c.appendChild(sg);const L=mk("div");c.appendChild(L);
+ const draw=()=>{L.innerHTML="";bm.classList.toggle("on",cyc==="m");by.classList.toggle("on",cyc==="y");const st=planState(),cur=st.kind==="paid"?st.p:null;PL.forEach(p=>{const isCur=!!(cur&&cur.id===p.id),hi=cur?isCur:p===rec,d=mk("div","pln"+(isCur?" curp":!cur&&p===rec?" recp":""));{const nm=mk("b","plnn");nm.append(mk("i",null,planTier(p)[0]),document.createTextNode(p.name));d.appendChild(nm)}d.appendChild(mk("div","ppr",p.m?rs(cyc==="m"?p.m:p.y)+(cyc==="m"?" / month":" / year"):(p.cu?"Custom pricing":"Free")));p.f.forEach(x=>d.appendChild(mk("div","pf2","✓ "+x)));
+  if(p.m&&adm){const b=mk("button","btn s"+(hi?"":" o"),isCur?"Renew "+p.name:(cur&&cur.m>p.m?"Switch to ":"Upgrade to ")+p.name);b.onclick=()=>paySheet(p,cyc);d.appendChild(b)}else if(p.cu){const b=mk("button","btn s o","Contact sales");b.onclick=()=>{location.href="mailto:"+SUPPORT_EMAIL+"?subject="+encodeURIComponent(BRAND+" "+p.name+" plan · "+S.soc.name)};d.appendChild(b)}else if(!p.m){const b=mk("button","btn s o","Free forever");b.disabled=true;d.appendChild(b)}L.appendChild(d)})};
  bm.onclick=()=>{cyc="m";draw()};by.onclick=()=>{cyc="y";draw()};draw();if(!adm)c.appendChild(mk("div","meta","Only the society admin can change the plan."));m.appendChild(c)}
 function subInfo(){const sub=S.soc.subscription||{};let ls=null;try{ls=JSON.parse(localStorage.getItem("sh-plan-"+S.sid)||"null")}catch(e){}
  const pid=String(sub.plan||sub.planId||sub.planName||S.soc.plan||(ls&&ls.plan)||"").toLowerCase(),p=planList().find(x=>x.id===pid||x.name.toLowerCase()===pid)||null;let cy=null;
@@ -2702,10 +2727,10 @@ function subDot(){const b=$("n_sub");if(!b)return;const o=b.querySelector(".ndot
 function rSub(){const m=$("sb");m.innerHTML="";window.scrollTo(0,0);subDot();
  if(!isMgr()){const c0=mk("div","card subh");c0.appendChild(mk("small",null,"⭐ Your plan"));c0.appendChild(mk("b",null,planName()));m.appendChild(c0);return}
  if(!isAdm()){const bk=mk("a","lnk","‹ Back");bk.style.cssText="display:inline-block;margin:0 0 10px;cursor:pointer";bk.onclick=()=>go("more");m.appendChild(bk)}
- const{sub,p,cy}=subInfo(),left=sub.until?Math.ceil((sub.until-Date.now())/864e5):null,ex=left!==null&&left<=0,c=mk("div","card subh"+(ex?" xp":""));
+ const{sub,p,cy}=subInfo(),left=sub.until?Math.ceil((sub.until-Date.now())/864e5):null,ex=left!==null&&left<=0,pst=planState(),c=mk("div","card subh"+(ex||pst.kind==="locked"?" xp":""));
  c.appendChild(mk("small",null,"💳 Your subscription"));
  c.appendChild(mk("b",null,p&&p.m?p.name+(cy?" · "+(cy==="y"?"Yearly":"Monthly"):""):"Free trial"));
- c.appendChild(mk("div","subst",sub.until?(ex?"⚠️ Expired on "+dt(sub.until):"Active · "+left+" day"+(left===1?"":"s")+" left (until "+dt(sub.until)+")"):"No paid plan yet — pick one below."));
+ c.appendChild(mk("div","subst",sub.until?(ex?"⚠️ Expired on "+dt(sub.until):"Active · "+left+" day"+(left===1?"":"s")+" left (until "+dt(sub.until)+")"):pst.kind==="trial"?"Free trial · "+pst.left+" day"+(pst.left===1?"":"s")+" left (until "+dt(pst.until)+")":pst.kind==="locked"?"⚠️ Free trial ended on "+dt(pst.until)+" — upgrade to continue.":TRIAL_DAYS+"-day free trial — pick a plan below any time."));
  if(sub.until&&!ex&&cy){const tot=cy==="y"?365:30,bar=mk("div","sbar"),fi=mk("i");fi.style.width=Math.max(4,Math.min(100,Math.round(left/tot*100)))+"%";bar.appendChild(fi);c.appendChild(bar)}
  if(isAdm()){let b=null;
   if(p&&p.m&&cy){b=mk("button","btn s","Renew "+p.name+" · "+(cy==="y"?"1 year":"30 days")+" · "+rs(cy==="y"?p.y:p.m));b.onclick=()=>paySheet(p,cy)}
@@ -2869,6 +2894,54 @@ let payWarmAt=0;
 function payWarm(){if(!PAY_API||!S.me||Date.now()-payWarmAt<240000)return;payWarmAt=Date.now();
  try{fetch(PAY_API.replace(/\/+$/,"")+"/healthz",{mode:"no-cors",cache:"no-store"}).catch(()=>{payWarmAt=0})}catch(e){payWarmAt=0}}
 document.addEventListener("visibilitychange",()=>{if(!document.hidden)payWarm()});
+/* ---- plan status: a paid plan, the 14-day free trial, or locked ----
+   The trial dates are written by the payment server into societies/{sid}.trial and are tied to the login that
+   created the organisation. Nothing about it is kept on the phone, so reinstalling the app or clearing its
+   data changes nothing, and the same login does not get a second trial by creating another organisation. */
+const TRIAL_DAYS=14;
+const paidPlans=()=>planList().filter(p=>p.m>0||p.cu);
+/* the badge follows the price: the cheapest paid plan is bronze, then silver, gold, diamond; custom plans wear the crown */
+const PTIER=[["🥉","#b45309"],["🥈","#64748b"],["🥇","#d97706"],["💎","#0284c7"],["👑","#7c3aed"]];
+const planTier=p=>{if(!p)return["⭐","var(--a)"];if(p.cu)return PTIER[4];const L=planList().filter(x=>x.m>0).sort((a,b)=>a.m-b.m),i=L.findIndex(x=>x.id===p.id);return PTIER[Math.max(0,Math.min(i,3))]};
+function planState(){const soc=S.soc||{},sub=soc.subscription||{},tr=soc.trial||null,now=Date.now(),until=Number(sub.until)||0;let p=null;try{p=subInfo().p}catch(e){}
+ if(until>now)return{kind:"paid",p:p&&(p.m>0||p.cu)?p:null,until,left:Math.ceil((until-now)/864e5)};
+ const te=tr?Number(tr.endsAt)||0:0;
+ if(te>now)return{kind:"trial",until:te,left:Math.ceil((te-now)/864e5)};
+ if(te)return{kind:"locked",why:until?"expired":"trial",until:Math.max(te,until)};
+ return{kind:"unknown"}}
+const planLocked=()=>{try{return!!(S.me&&S.soc&&planState().kind==="locked")}catch(e){return false}};
+function planBadge(){const st=planState(),e=mk("span","plb");e.setAttribute("data-noskin","");let ic="🎁",t="Free trial",c="var(--a)";
+ if(st.kind==="paid"){const tr=planTier(st.p);ic=tr[0];c=tr[1];t=st.p?st.p.name+" plan":"Active plan"}
+ else if(st.kind==="locked"){ic="🔒";c="var(--red)";t=st.why==="expired"?"Plan expired":"Trial ended"}
+ e.style.setProperty("--pc",c);e.append(mk("i",null,ic),mk("b",null,t));return e}
+/* the first card on the home screen: which plan this organisation is on */
+function planHome(h){const st=planState(),c=mk("div","card plh"),tr=st.kind==="paid"?planTier(st.p):null,ic=mk("div","plhi",tr?tr[0]:"🎁"),tx=mk("div","plht");c.setAttribute("data-noskin","");if(tr)c.style.setProperty("--pc",tr[1]);
+ if(st.kind==="paid")tx.append(mk("b",null,st.p?st.p.name+" plan":"Active plan"),mk("span",null,st.p?"You are a member of the "+st.p.name+" plan":"Your plan is active"),mk("small",null,"Valid till "+bdate(st.until)));
+ else if(st.kind==="trial")tx.append(mk("b",null,"Free trial"),mk("span",null,st.left+" day"+(st.left===1?"":"s")+" left of your "+TRIAL_DAYS+"-day free trial"),mk("small",null,"Ends on "+bdate(st.until)));
+ else tx.append(mk("b",null,"Free trial"),mk("span",null,"You are on the "+TRIAL_DAYS+"-day free trial"));
+ c.append(ic,tx);if(st.kind!=="paid"&&isMgr()){const b=mk("button","btn s","Upgrade");b.type="button";b.onclick=()=>go("sub");c.appendChild(b)}h.appendChild(c)}
+/* the whole home screen once the trial (or a paid plan) has run out */
+function lockHome(h){const st=planState(),own=isMgr(),c=mk("div","card lkc");c.setAttribute("data-noskin","");
+ c.append(mk("div","lki","🔒"),mk("h2",null,st.why==="expired"?"Your plan has expired":"Your trial period has ended"),
+  mk("p","sub",own?"Kindly upgrade to continue.":"Kindly ask your admin to upgrade the plan to continue."),
+  mk("p","meta",(st.why==="expired"?"The plan ended on ":"The free trial ended on ")+bdate(st.until)+". Nothing has been deleted: everything is back as soon as a plan is active."));
+ if(own){const b=mk("button","btn","Upgrade now");b.type="button";b.onclick=()=>go("sub");c.appendChild(b)}
+ let sw=false;try{sw=swCan()}catch(e){}if(sw){const b=mk("button","btn s o","Switch workspace");b.type="button";b.onclick=()=>$("wsw").onclick();c.appendChild(b)}
+ const lo=mk("a","lnk","Log out");lo.onclick=logout;c.appendChild(lo);h.appendChild(c)}
+const lockNudge=()=>{const st=planState();toast("🔒",st.why==="expired"?"Your plan has expired":"Your trial period has ended",isMgr()?"Kindly upgrade to continue.":"Kindly ask your admin to upgrade.",true)};
+/* applies / lifts the lock the moment the plan status changes (trial runs out, a plan is bought) */
+let lockWas=null;
+function planGate(){if(!S.me||!S.soc)return;const lk=planLocked();if(lk===lockWas)return;const first=lockWas===null;lockWas=lk;document.body.classList.toggle("plk",lk);if(first&&!lk)return;
+ if(lk){try{closeSheet()}catch(e){}try{fxHide();drwShow(false)}catch(e){}}try{goTab(lk?"home":tab)}catch(e){console.warn(e)}}
+setInterval(()=>{try{planGate()}catch(e){}},30000);
+/* asks the server once per organisation to record when its free trial started */
+let trialAsk="";
+function planEnsure(){if(!PAY_API||!S.sid||!S.soc)return;const tr=S.soc.trial;if(tr&&tr.by==="server"&&Number(tr.endsAt)>0)return;if(trialAsk===S.sid)return;trialAsk=S.sid;const sid=S.sid;
+ api("/v1/orgs/trial",{sid}).then(r=>{if(S.sid!==sid||!S.soc||!r||!r.trial)return;S.soc.trial=r.trial;planGate();try{if(tab==="home")rHome();if(tab==="sub")rSub()}catch(e){}}).catch(()=>{trialAsk=""})}
+/* who can be billed: unit ("Flat 101", "Class 5-A · 12", "Sales · EMP-104") -> the names of the people in it */
+const billUnits=()=>{const m={};Object.values(D.mem||{}).forEach(x=>{if(x.status!=="approved"||!x.flat)return;if(KIND==="school"?!isStu(x):!isOrg()&&!/Flat /.test(x.flat))return;const a=m[x.flat]=m[x.flat]||[];if(x.name&&!a.includes(x.name))a.push(x.name)});return m};
+const uGrp=f=>String(f).split(" · ")[0],uId=f=>String(f).split(" · ").slice(1).join(" · ");
+const uLabel=(f,names)=>{const nm=(names||[]).join(", ");if(!isOrg())return nm?f+" — "+nm:f;const id=uId(f);return(nm||f)+(id?" · "+(KIND==="school"?"Roll ":"")+id:"")};
 const BTYPES=[["maintenance","Monthly maintenance"],["event","Event fee"],["other","One-time charge"]];
 const bTitle=b=>String((b&&b.title)||"").trim()||((b&&b.month?mname(b.month)+" ":"")+KINDS[KIND].fee);
 const payMeth=m=>({upi:"UPI",card:"Card",netbanking:"Net banking",wallet:"Wallet",emi:"EMI",paylater:"Pay later"})[m]||(m?String(m):"");
@@ -3051,7 +3124,17 @@ function rGw(force){const c=$("gwcard");if(!c)return;const own=!!(S.me&&isOwner(
   const r=await api("/v1/orgs/gateway/connect",{sid:S.sid,keyId:a,keySecret:s});ks.value="";S.soc.gateway={provider:"razorpay",keyId:r.keyId,mode:r.mode,connectedAt:Date.now()};gwHook={webhookUrl:r.webhookUrl,webhookSecret:r.webhookSecret};rGw(true);rBills();toast("✅","Razorpay connected","Now add the webhook shown below.",true)});
  c.append(kid,ks,b)}
 function rGst(){const c=$("gstcard");if(!c)return;const on=!!(S.me&&isAdm()&&KIND==="company");c.classList.toggle("hide",!on);if(on&&!c.contains(document.activeElement))$("gstin").value=socGst()}
-function syncBillFlats(){const s=$("bfl");if(!s)return;const L=occFlats().sort((a,b)=>a.localeCompare(b,undefined,{numeric:true})),sig=L.join("|");if(s.dataset.sig===sig)return;const v=s.value;s.dataset.sig=sig;fill(s,["All occupied flats"].concat(L));if(L.includes(v))s.value=v}
+/* Societies: one list of flats with the residents' names. Schools and companies: first the class / department,
+   then the people in it by name with roll number / employee id, so two students with the same name can be told apart. */
+function syncBillFlats(){const s=$("bfl");if(!s)return;const U=billUnits(),F=Object.keys(U),K=KINDS[KIND],org=isOrg(),num=(a,b)=>a.localeCompare(b,undefined,{numeric:true}),opt=(sel,v,t)=>sel.appendChild(Object.assign(mk("option",null,t),{value:v}));
+ let g=$("bgrp");
+ if(org&&!g){g=mk("select");g.id="bgrp";g.style.marginTop="8px";g.setAttribute("data-noskin","");g.onchange=()=>{s.dataset.sig="";syncBillFlats()};s.parentNode.insertBefore(g,s)}else if(!org&&g){g.remove();g=null}
+ if(org)s.setAttribute("data-noskin","");else s.removeAttribute("data-noskin");
+ const gname=String((K.grp&&K.grp.t)||"groups").toLowerCase(),who=K.person.toLowerCase()+"s";
+ if(g){g.setAttribute("aria-label","Choose "+((K.grp&&K.grp.one)||"group"));const G=[...new Set(F.map(uGrp))].sort(num),gs=KIND+"|"+G.join("|");if(g.dataset.sig!==gs){const v=g.value;g.dataset.sig=gs;g.innerHTML="";opt(g,"","All "+gname);G.forEach(x=>opt(g,x,x));if(G.includes(v))g.value=v}}
+ const grp=g?g.value:"",L=F.filter(f=>!g||(grp&&uGrp(f)===grp)).sort((a,b)=>org?num(uLabel(a,U[a]),uLabel(b,U[b])):num(a,b)),sig=KIND+"|"+grp+"|"+L.map(f=>f+"="+U[f].join(",")).join("|");
+ if(s.dataset.sig===sig)return;const v=s.value;s.dataset.sig=sig;s.innerHTML="";s.setAttribute("aria-label",org?"Choose "+K.person.toLowerCase():"Choose flat");
+ opt(s,"",!org?"All occupied flats":grp?"All "+who+" of "+grp:"All "+who);L.forEach(f=>opt(s,f,uLabel(f,U[f])));if(L.includes(v))s.value=v}
 setInterval(()=>{if(S.me&&isAdm())syncBillFlats()},3000);
 function initBills(m){if(isAdm()){const g=mk("div","card");g.appendChild(mk("h2",null,"🧾 Generate a bill"));g.appendChild(mk("div","meta","The bill is sent to the resident(s) of the flat you choose. They pay it online in the app."));
   const fl=mk("select");fl.id="bfl";fl.style.marginTop="8px";const ty=mk("select");ty.setAttribute("aria-label","Type of bill");BTYPES.forEach(([v,t])=>ty.appendChild(Object.assign(mk("option",null,t),{value:v})));const ti=mk("input");ti.placeholder="Name of this charge (e.g. Diwali event fee)";ti.maxLength=60;const tw=mk("div","hide");tw.appendChild(ti);ty.onchange=()=>tw.classList.toggle("hide",ty.value==="maintenance");const mi=mk("input");mi.type="month";mi.value=mKey(new Date());const ai=mk("input");ai.type="number";ai.min=1;ai.placeholder="Amount ₹";ai.value=(S.soc.settings||{}).monthlyAmount||"";
@@ -3059,7 +3142,7 @@ function initBills(m){if(isAdm()){const g=mk("div","card");g.appendChild(mk("h2"
   const fi=mk("input");fi.type="file";fi.accept="image/*,application/pdf";fi.className="hide";const fb=mk("label","btn s o"),ft=mk("span",null,"📎 Upload maintenance bill (photo or PDF)");fb.append(ft,fi);fb.style.cssText="margin-bottom:10px;cursor:pointer";fi.onchange=()=>{if(fi.files[0])ft.textContent="✓ "+fi.files[0].name.slice(0,26)};
   const r=mk("div","g2");r.append(mi,ai);g.append(fl,ty,tw,r,mk("div","meta","Due date"),di,fb);
   const gb=mk("button","btn","Generate bill & send");gb.onclick=()=>run(gb,async()=>{const a=Math.round(Number(ai.value)*100)/100,kind=ty.value,title=kind==="maintenance"?"":ti.value.trim();if(!mi.value||!(a>=1)||!di.value){toast("ℹ️","Enter amount, month and due date","The amount must be at least ₹1.",true);return}if(kind!=="maintenance"&&!title){toast("ℹ️","Enter a name for this charge","",true);return}
-   const L=fl.selectedIndex===0?occFlats():[fl.value];if(!L.length||!L[0]){toast("ℹ️","No flat selected","",true);return}/* one monthly bill per flat and month; any number of other charges */
+   const U=billUnits(),gr=$("bgrp"),grp=gr?gr.value:"",L=fl.value?[fl.value]:Object.keys(U).filter(f=>!grp||uGrp(f)===grp);if(!L.length||!L[0]){toast("ℹ️","No flat selected","",true);return}/* one monthly bill per flat and month; any number of other charges */
    const tag=kind==="maintenance"?"":"_"+Date.now().toString(36),bid=f=>bref(mi.value,f)+tag,todo=L.filter(f=>!D.bills[bid(f)]);if(!todo.length){toast("ℹ️","Bill already exists","That flat already has a bill for "+mname(mi.value),true);return}
    let docUrl="",docName="";if(fi.files[0]){docUrl=await UP(fi.files[0],"billdocs",fi.files[0].name);docName=fi.files[0].name}
    const due=new Date(di.value+"T23:59:59").getTime();for(let i=0;i<todo.length;i+=400){const bt=writeBatch(db);todo.slice(i,i+400).forEach(f=>bt.set(doc(db,"societies",S.sid,"bills",bid(f)),Object.assign({flat:f,month:mi.value,type:kind,amount:a,due,status:"Unpaid",ts:Date.now(),docUrl,docName},title?{title}:{})));await bt.commit()}
@@ -3090,7 +3173,7 @@ function rBills(){if(!S.me||isGuard())return;ensure("billbox",initBills);try{rGw
   if(rf.length){const c=card("↩️ Refunded bills ("+rf.length+")");c.appendChild(mk("div","meta","The payment for these bills was refunded from Razorpay. Reopen a bill if it still has to be paid."));rf.forEach(b=>{const r=mk("div","ex"),t=mk("div",null,b.flat);t.appendChild(mk("span",null,bTitle(b)+" · "+rs(b.amount)));const o=ghost(mk("button","btn s o","Reopen"));o.onclick=()=>{if(!confirm("Reopen this bill so it can be paid again?"))return;run(o,()=>updateDoc(doc(db,"societies",S.sid,"bills",b.id),{status:"Unpaid",paymentId:"",utr:"",receiptNo:"",payMethod:"",paidAt:0,reopenedAt:Date.now()}))};r.append(t,o);c.appendChild(r)})}
   const od=B.filter(b=>b.status==="Unpaid"&&b.due<now),by={};od.forEach(b=>(by[b.flat]=by[b.flat]||[]).push(b));const fs=Object.keys(by).sort((a,b)=>a.localeCompare(b,undefined,{numeric:true}));
   const df=card("🚨 Defaulters ("+fs.length+")");const out=B.filter(b=>!closedBill(b)).reduce((a,b)=>a+b.amount,0);df.appendChild(mk("div","meta","Total outstanding "+rs(out)+" · collected "+rs(B.filter(b=>b.status==="Paid").reduce((a,b)=>a+b.amount,0))));if(!fs.length)df.appendChild(mk("div","meta","No overdue dues 🎉"));
-  fs.forEach(f=>{const L=by[f],tot=L.reduce((a,b)=>a+b.amount,0),r=mk("div","ex"),t=mk("div",null,f),rm=Math.max(...L.map(x=>x.remindedAt||0));t.appendChild(mk("span",null,rs(tot)+" · "+L.length+" overdue: "+L.map(x=>bTitle(x)).join(", ")+(rm?" · reminded "+dt(rm):"")));
+  const BU=billUnits();fs.forEach(f=>{const L=by[f],tot=L.reduce((a,b)=>a+b.amount,0),r=mk("div","ex"),t=mk("div",null,isOrg()?uLabel(f,BU[f]):f),rm=Math.max(...L.map(x=>x.remindedAt||0));t.appendChild(mk("span",null,rs(tot)+" · "+L.length+" overdue: "+L.map(x=>bTitle(x)).join(", ")+(rm?" · reminded "+dt(rm):"")));
    const b=ghost(mk("button","btn s o","Remind"));b.onclick=()=>{const mm=Object.values(D.mem).find(x=>x.flat===f&&x.mobile),msg="Hello, dues of "+rs(tot)+" for "+f+" ("+S.soc.name+") are overdue: "+L.map(x=>bTitle(x)).join(", ")+". Please pay in the "+BRAND+" app at the earliest.";if(mm)window.open("https://wa.me/91"+mm.mobile.replace(/\D/g,"").slice(-10)+"?text="+encodeURIComponent(msg),"_blank");
     run(b,async()=>{const bt=writeBatch(db);L.forEach(x=>bt.update(doc(db,"societies",S.sid,"bills",x.id),{remindedAt:Date.now()}));await bt.commit();toast("⏰","Reminder sent","In-app alert"+(mm?" + WhatsApp":""),true)})};r.append(t,b);df.appendChild(r)});
   if(B.length){const eb=mk("button","btn s o","⬇️ Export all bills (CSV)");eb.style.marginTop="10px";eb.onclick=()=>exportCSV("bills",["Month","Bill","Flat","Amount","Due","Status","Paid on","Receipt","Paid via","Reference"],B.sort((a,b)=>b.month.localeCompare(a.month)).map(b=>[b.month,bTitle(b),b.flat,b.amount,bdate(b.due),b.status==="Unpaid"&&b.due<now?"Overdue":b.status,b.paidAt?bdate(b.paidAt):"",b.receiptNo||"",b.gateway==="razorpay"?"Razorpay "+payMeth(b.payMethod):"",b.utr||""]));df.appendChild(eb)}}
@@ -3141,8 +3224,8 @@ function listen4(C){
  if(!isGuard())w(isAdm()?query(C("bills"),limit(600)):query(C("bills"),where("flat","==",S.me.flat),limit(60)),"bills",rBills,(d,t)=>{if(t==="modified"&&!isAdm()&&d.status==="Unpaid"&&d.remindedAt&&Date.now()-d.remindedAt<12e4)toast("⏰","Maintenance reminder",bTitle(d)+" · "+rs(d.amount)+" is overdue");if(t==="added"&&isAdm()===false&&d.status==="Unpaid")toast("🧾","New maintenance bill",bTitle(d)+" · "+rs(d.amount));if(t==="modified"&&!isAdm()&&d.status==="Paid"&&!payScr)toast("✅","Payment confirmed","Receipt "+d.receiptNo)});
  /* payment records are written only by the payment server; a member sees their own, finance roles see the organisation's */
  if(!isGuard())w(canFin()?query(C("payments"),orderBy("createdAt","desc"),limit(500)):query(C("payments"),where("userId","==",S.uid),limit(200)),"pay",rBills);
- unsubs.push(onSnapshot(doc(db,"societies",S.sid),s=>{if(!s.exists()||!S.soc)return;const d=s.data(),g0=JSON.stringify(S.soc.gateway||null),p0=JSON.stringify(S.soc.subscription||null);S.soc.gateway=d.gateway||null;if(d.subscription)S.soc.subscription=d.subscription;
-  if(g0!==JSON.stringify(S.soc.gateway)){try{rGw();rBills()}catch(e){}}if(p0!==JSON.stringify(S.soc.subscription||null)){try{subDot();if(tab==="sub")rSub()}catch(e){}}},()=>{}));
+ unsubs.push(onSnapshot(doc(db,"societies",S.sid),s=>{if(!s.exists()||!S.soc)return;const d=s.data(),g0=JSON.stringify(S.soc.gateway||null),p0=JSON.stringify([S.soc.subscription||null,S.soc.trial||null]);S.soc.gateway=d.gateway||null;if(d.subscription)S.soc.subscription=d.subscription;if(d.trial)S.soc.trial=d.trial;
+  if(g0!==JSON.stringify(S.soc.gateway)){try{rGw();rBills()}catch(e){}}if(p0!==JSON.stringify([S.soc.subscription||null,S.soc.trial||null])){try{subDot();planGate();if(tab==="sub")rSub();if(tab==="home")rHome()}catch(e){}}},()=>{}));
  w(staff()?query(C("helpers"),limit(300)):query(C("helpers"),where("uid","==",S.uid),limit(20)),"help",rHelp);
  w(query(C("classifieds"),limit(150)),"cls",rMkt)}
 
@@ -3463,7 +3546,7 @@ function fxBuild(){if($("fx"))return;
  const end=e=>{if(mode===2){const t=(e.changedTouches&&e.changedTouches[0])||{clientX:sx},v=(t.clientX-sx)/Math.max(1,Date.now()-t0),open=wasOpen?!(pr<.6||v<-.45):(pr>.35||v>.45);
    d.classList.remove("drag");sc.classList.remove("drag");d.style.transform="";sc.style.opacity="";if(open&&!wasOpen){d.classList.remove("on")}void d.offsetWidth;drwShow(open)}mode=0};
  document.addEventListener("touchend",end,{passive:true});document.addEventListener("touchcancel",end,{passive:true})}
-function fxOpen(key){const F=FX[key];if(!F||!S.me)return;fxBuild();drwShow(false);closeSheet();fxStop();fxKey=key;fxFresh=0;$("fxt").textContent=F.ic+" "+F.t;const b=$("fxb");b.innerHTML="";$("fx").classList.add("on");b.scrollTop=0;
+function fxOpen(key){const F=FX[key];if(!F||!S.me)return;if(planLocked()){lockNudge();return}fxBuild();drwShow(false);closeSheet();fxStop();fxKey=key;fxFresh=0;$("fxt").textContent=F.ic+" "+F.t;const b=$("fxb");b.innerHTML="";$("fx").classList.add("on");b.scrollTop=0;
  try{F.open(b)}catch(e){console.error(e);b.appendChild(fxEmpty("⚠️","Couldn't open this page."))}}
 function fxHide(){fxStop();fxKey=null;const p=$("fx");if(p){p.classList.remove("on");$("fxb").innerHTML=""}}
 /* Android back button / gesture (called from window.__back) */
@@ -3475,7 +3558,7 @@ const FXLIST={society:["lf","ven","meet","exr"],school:["res","gp","ptm","bus","
 const fxShown=k=>{const F=FX[k];return !!F&&(!F.show||F.show())};
 const BGR='<span class="bgr" aria-hidden="true"><i></i><i></i><i></i></span>';
 const drwShut=()=>{try{return new Set(JSON.parse(localStorage.getItem("sh-drg")||"[]"))}catch(e){return new Set()}};
-function drwShow(on){fxBuild();const d=$("drw"),was=d.classList.contains("on");if(on)try{tipHide()}catch(e){}if(on){if(!S.me)return;if(!was)drwDraw()}d.classList.toggle("on",!!on);$("drs").classList.toggle("on",!!on);document.body.classList.toggle("drwon",!!on);
+function drwShow(on){if(on&&planLocked()){lockNudge();return}fxBuild();const d=$("drw"),was=d.classList.contains("on");if(on)try{tipHide()}catch(e){}if(on){if(!S.me)return;if(!was)drwDraw()}d.classList.toggle("on",!!on);$("drs").classList.toggle("on",!!on);document.body.classList.toggle("drwon",!!on);
  const x=$("drx");if(x){if(on&&!was){x.classList.remove("x");void x.offsetWidth;requestAnimationFrame(()=>x.classList.add("x"))}else if(!on)x.classList.remove("x")}}
 function drwDraw(){const d=$("drw");d.innerHTML="";const g=isGuard(),adm=isAdm(),nv=Object.fromEntries(navCfg().map(c=>[c[0],c])),shut=drwShut();
  const h=mk("div","drh"),cx=mk("button","drx");cx.id="drx";cx.type="button";cx.setAttribute("aria-label","Close menu");cx.innerHTML=BGR;cx.onclick=()=>drwShow(false);h.appendChild(cx);
@@ -3483,6 +3566,7 @@ function drwDraw(){const d=$("drw");d.innerHTML="";const g=isGuard(),adm=isAdm()
  {const rl=roleLbl(S.me.role),fl=String(S.me.flat||""),r=mk("div","drr"),own=isOwner(),bd=mk("span","drb"+(own?" bown":adm?" badm":""));
   bd.innerHTML=own||adm?'<svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.600-1.600 8-6 8-11V5l-8-3Zm-1.200 13.600-3.400-3.400 1.400-1.400 2 2 4.400-4.400 1.400 1.400-5.800 5.800Z"/></svg>':"";bd.appendChild(document.createTextNode(rl));r.appendChild(bd);
   if(fl&&fl.toLowerCase()!==rl.toLowerCase())r.appendChild(mk("span","drfl",fl));h.appendChild(r)}
+ try{const pr=mk("div","drp");pr.appendChild(planBadge());h.appendChild(pr)}catch(e){console.warn(e)}
  const ws=mk("button","drws");ws.type="button";ws.append(mk("span",null,KINDS[KIND].ico+" "+S.soc.name),mk("span",null,"Switch ⇅"));if(swCan())ws.onclick=()=>{drwShow(false);$("wsw").onclick()};else{ws.disabled=true;ws.classList.add("fix");ws.lastChild.remove()}h.appendChild(ws);d.appendChild(h);
  const l=mk("div","drl");l.id="drl";d.appendChild(l);let box=l;
  /* a group of links that opens and closes; the choice is remembered on this phone */

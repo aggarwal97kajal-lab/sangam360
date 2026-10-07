@@ -1089,6 +1089,17 @@ body.plk nav button:not(#n_home):not(#n_sub){opacity:.4}
 .hdf .fxch{grid-column:1/-1;margin:0}
 .hds{font-size:12.5px;line-height:1.45;color:var(--muted);margin:2px 0 4px}
 .pta b.pos{color:var(--grn)}.pta b.neg{color:var(--red)}
+/* "Plan invoices": the small card, and its sheet with one row per month */
+.pic{display:flex;align-items:center;gap:12px;width:100%;text-align:left;font-family:inherit;color:var(--text);cursor:pointer;border:1px solid var(--line)}
+.pic .pici{font-style:normal;font-size:23px;width:44px;height:44px;flex:none;display:grid;place-items:center;border-radius:12px;background:var(--tint,rgba(91,61,245,.1))}
+.pict{flex:1;min-width:0}.pict b{display:block;font-size:15px;font-weight:600}.pict span{display:block;font-size:12.5px;color:var(--muted);margin-top:2px}
+.pic em{font-style:normal;font-size:22px;line-height:1;color:var(--muted)}
+.pivs{text-align:left}.pivs h2,.pivs .sub{text-align:left}
+.pivm{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;border:1px solid var(--line);background:var(--bg);color:var(--text);border-radius:14px;padding:12px 14px;margin:0 0 8px;font-family:inherit;text-align:left;cursor:pointer}
+.pivm.on{border-color:var(--a);background:var(--tint,rgba(91,61,245,.08))}
+.pivm b{display:block;font-size:14.5px;font-weight:600}.pivm small{display:block;font-size:12px;color:var(--muted);margin-top:2px}.pivm em{font-style:normal;color:var(--muted);font-size:18px}
+.pivl{margin:-2px 0 10px;padding:0 4px}
+.dml{margin:0 0 10px;padding-left:20px;text-align:left;font-size:13.5px;line-height:1.5}.dml li{margin:5px 0}
 /* school chat: the row that chooses the class chat / staff room, and the "unread for another student" line in the inbox */
 .chrm{margin:0;padding:8px 12px;gap:8px;background:var(--card);border-bottom:1px solid var(--line);flex:none}
 .chrm button i{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--red);margin-left:7px;vertical-align:middle}
@@ -1781,7 +1792,7 @@ function startApp(){
  $("annf").classList.toggle("hide",!isAdm());annSetup();ensureTCode();document.querySelector("#t_fin .bal").classList.toggle("hide",!canFin());$("finf").classList.toggle("hide",!canFin());$("pk_adm").classList.toggle("hide",!isAdm());
  $("vf_res").classList.toggle("hide",isGuard());$("vf_grd").classList.toggle("hide",!staff());$("df_grd").classList.toggle("hide",!staff());$("vh_res").classList.toggle("hide",isGuard());$("vsr").classList.toggle("hide",!staff());
  setFin("inc");setHero();drawNav();syncDirPhoto();if(KIND==="company"&&isAdm()&&!socGst())setTimeout(()=>toast("🧾","Add your GST number","Finance → GST number. It is printed on every invoice.",true),2500);
- listen();try{kidsWatch()}catch(e){console.warn(e)}show("sMain");lockWas=null;go("home");try{planGate();planEnsure();payWarm()}catch(e){}fxStart();uxCoach();try{busWatch()}catch(e){console.warn("bus alerts",e)}try{busDrive()}catch(e){console.warn("my bus",e)}try{drvWatch()}catch(e){console.warn("driver alerts",e)}liveResume();setTimeout(firstRunPerms,900);
+ listen();try{kidsWatch()}catch(e){console.warn(e)}show("sMain");lockWas=null;go("home");try{planGate();planEnsure();payWarm()}catch(e){}try{subHist()}catch(e){}fxStart();uxCoach();try{busWatch()}catch(e){console.warn("bus alerts",e)}try{busDrive()}catch(e){console.warn("my bus",e)}try{drvWatch()}catch(e){console.warn("driver alerts",e)}liveResume();setTimeout(firstRunPerms,900);
 }
 const flats=()=>{const one=S.soc.towers.length===1,r=[];S.soc.towers.forEach(t=>gF(t,one).forEach(l=>r.push((one?"":t.name+" · ")+"Flat "+l)));return r};
 /* my own picture: the login's public one, or - on the 2nd, 3rd ... student of a login - that student's own photo */
@@ -1814,7 +1825,7 @@ function listen(){unsubs.forEach(f=>f());unsubs=[];if(wsub){wsub();wsub=null}wsu
  listen3(C,L);listen4(C)}
 
 /* ---------- home ---------- */
-function rHome(){const h=$("hm");h.innerHTML="";if(planLocked()){lockHome(h);return}planHome(h);
+function rHome(){const h=$("hm");h.innerHTML="";if(planLocked()){lockHome(h);return}planHome(h);try{const ic=invCard();if(ic)h.appendChild(ic)}catch(e){console.warn(e)}
  if(isDrv()){try{drvHome(h)}catch(e){console.warn("driver home",e)}try{uxHome(h)}catch(e){}return}
  const V=Object.values(D.vis),dl=Object.values(D.del),today=td();
  const open=Object.values(D.comp).filter(c=>!["Resolved","Closed"].includes(c.status)).length,bal=Object.values(D.inc).reduce((a,c)=>a+c.amount,0)-Object.values(D.exp).reduce((a,c)=>a+c.amount,0),pend=Object.values(D.mem).filter(m=>m.status==="pending").length;
@@ -2278,7 +2289,7 @@ const KB=[
 {t:"Delete a profile",k:["delete profile","remove member","remove person","delete resident","delete employee","delete student","remove user","permanent delete","profile delete","delete user","delete member","remove from","delete","deleted","remove","hatao","hatana","hata do","member profile","delete a member","profile hatana"],a:c=>c.own?"🗑 People tab → open the card with the person → ⋮ next to the name → 🗑 Delete. It permanently erases their profile and data, and they can’t log in again unless they sign up afresh.":"Only the main admin can delete a profile. Ask your admin."},
 {t:"Invite people",k:["invite","invite link","join link","share code","my code","qr code","where is code","code kaha","copy invitation","invite people","invite residents","invite employees","invite students"],a:c=>c.adm?"📨 People tab → Invite card: share the join code, show the Join QR code or tap Copy invitation link. People then follow Join my "+c.org+".":"Ask your admin for the join code or invitation link."},
 {t:"Polls, amenities & documents",k:["poll","polls","vote","amenity","amenities","clubhouse","gym","hall booking","document","documents","staff directory","vault","staff list","reports","booking","book amenity","emergency contacts"],a:c=>"🗂️ "+c.me+" tab, scroll down: 🆘 Emergency contacts with the SOS button, 🏊 Amenity booking (pick the date and a 1-hour slot → Book; cancel under Upcoming bookings), 🗳️ Polls (tap an option to vote), 📄 Documents (tap to open or download) and 🧹 Staff directory (📞 to call)."+(c.adm?" As admin you add them in the same cards: amenity with opening hours, poll with 2–6 options (Close poll / Delete), document title + link, staff name, role and phone."+" 📊 Reports (income, expenses, last 6 months) are there too.":c.acc?" 📊 Reports are there too.":" Admins add the content.")+" A quick poll can also be sent in the group chat with ＋ → Poll."},
-{t:"Plans & subscription",k:["plan","plans","subscription","upgrade","pricing","price","cost","free","trial","razorpay","renew","premium","starter","growth","enterprise","expiry","expire","free plan"],a:c=>{const L=c.soc?PLANS_SOC:(PLAN_ORG[c.k]||[]);const u=c.soc?"flats":c.com?"employees":"users";const rows=L.filter(p=>p.m||p.cu).map(p=>"• "+p.name+": "+(p.cu?"custom":"₹"+p.m+"/mo")+" · "+(p.max>=1e9?"unlimited":"up to "+p.max)+" "+u).join("\n");return "⭐ Every new workspace gets a "+TRIAL_DAYS+"-day free trial. After that a plan is needed to keep using the app:\n"+rows+"\nOnly the main admin sees the Plan tab (pay with Razorpay). After paying, tap Download invoice; every plan invoice also stays in the Plan tab under Plan invoices. Everyone sees the plan badge on the home screen and in the side menu."}},
+{t:"Plans & subscription",k:["plan","plans","subscription","upgrade","pricing","price","cost","free","trial","razorpay","renew","premium","starter","growth","enterprise","expiry","expire","free plan"],a:c=>{const L=c.soc?PLANS_SOC:(PLAN_ORG[c.k]||[]);const u=c.soc?"flats":c.com?"employees":"users";const rows=L.filter(p=>p.m||p.cu).map(p=>"• "+p.name+": "+(p.cu?"custom":"₹"+p.m+"/mo")+" · "+(p.max>=1e9?"unlimited":"up to "+p.max)+" "+u).join("\n");return "⭐ Every new workspace gets a "+TRIAL_DAYS+"-day free trial. After that a plan is needed to keep using the app:\n"+rows+"\nOnly the main admin sees the Plan tab (pay with Razorpay). Upgrading while a plan is running keeps the days that are left: they are carried forward as they are and the new 30 days (or 1 year) are added after them, e.g. 15 days left + 30 = 45 days. After paying, tap Download invoice; every plan invoice also stays under Plan invoices (a card on your home screen and in the Plan tab), month by month. Everyone sees the plan badge on the home screen and in the side menu."}},
 {t:"Delete my "+"workspace",k:["delete society","delete company","delete school","close society","remove society","delete workspace","delete organisation","delete organization"],a:c=>c.own?"🗑 "+c.me+" tab → Delete this "+c.org+" → type its name to confirm. This permanently erases the "+c.org+" and all its data.":"Only the main admin can delete the "+c.org+"."},
 {t:"Delete my account",k:["delete account","delete my account","remove my account","account delete","deactivate","close account"],a:c=>c.own?"To remove everything, delete the "+c.org+" from the "+c.me+" tab (type its name to confirm).":"Ask your admin to delete your profile (People tab → Delete). After that you can’t log in unless you sign up again."},
 {t:"Errors & not working",k:["error","not allowed","permission denied","something went wrong","failed","not working","bug","crash","stuck","loading","hang"],a:()=>"⚠️ Try: 1) check your internet 2) refresh the page 3) log out and back in. ‘Not allowed / permission’ errors mean your admin must update the database rules. Still stuck? Email our team below.",m:1},
@@ -2357,7 +2368,26 @@ async function delMember(r){if(/_k\d+$/.test(r.id)){if(!confirm("Remove "+r.name
   await Promise.allSettled([deleteDoc(doc(db,"societies",sid,"directory",uid)),deleteDoc(doc(db,"societies",sid,"presence",uid))]);
   await deleteDoc(doc(db,"societies",sid,"members",uid));
   toast("🗑️","Profile deleted",r.name+" can no longer log in.",true)}catch(e){fail(e)}}
-async function delOrg(){const w=KINDS[KIND].word,n=prompt("This permanently deletes this "+w+" and ALL its data.\nType its name to confirm:\n\n"+S.soc.name);if(n===null)return;if(n.trim()!==S.soc.name){toast("ℹ️","Name did not match","Nothing was deleted",true);return}
+async function orgWipe(name){const w=KINDS[KIND].word,again=()=>setTimeout(()=>{location.href=location.pathname},1800),e=fx("Deleting…","All data, files and logins are being removed. Please keep the app open.",{icon:"<div class='dots big'><i></i><i></i><i></i></div>",noconf:1,ms:300000});e.onclick=null;
+ try{unsubs.forEach(f=>f());unsubs=[];const r=await api("/v1/orgs/delete",{sid:S.sid,confirm:name},280000);e.remove();
+  toast("🗑️","Deleted","Your "+w+" is gone: all data"+(r.files===false?"":", every uploaded file")+" and "+(r.loginsDeleted||0)+" login"+(r.loginsDeleted===1?"":"s")+".",true);again();return true}
+ catch(x){e.remove();if(x.http===404&&x.pcode==="not-found"){try{listen()}catch(q){}return false}
+  if(x.net){toast("ℹ️","Still deleting","The server is finishing it. Open the app again in a few minutes.",true);again();return true}
+  fail(x);try{listen()}catch(q){}return true}}
+/* ---------- anybody can delete their own account: profile, uploads, what they wrote, and the login itself ---------- */
+function delMe(){if(!PAY_API){toast("ℹ️","Not available","Deleting an account needs the "+BRAND+" server.",true);return}
+ sheet(z=>{z.setAttribute("data-noskin","");const w=KINDS[KIND].word;z.appendChild(mk("h2",null,"🗑️ Delete my account"));z.appendChild(mk("p","sub","This removes you from "+BRAND+" for good. It cannot be undone."));
+  const ul=mk("ul","dml");["Your profile"+(kidMany()?" and every student on this login":"")+", in every workspace you belong to","Everything you uploaded: photo, ID proof, documents, chat photos and voice notes","Your chat messages and private chats, complaints, leave, visitors and bookings","Your login: this e-mail and password stop working"].forEach(t=>ul.appendChild(mk("li",null,t)));z.appendChild(ul);
+  z.appendChild(mk("p","meta","Bills and payment receipts stay with the "+w+" as its accounts."+(isOwner()?" You are the main admin: delete the "+w+" itself first, or make someone else its main admin.":"")));
+  const i=mk("input"),b=mk("button","btn r","Delete my account permanently");i.placeholder="Type DELETE to confirm";i.maxLength=10;i.autocomplete="off";i.setAttribute("autocapitalize","characters");i.setAttribute("aria-label","Type DELETE to confirm");i.style.marginTop="12px";b.type="button";b.disabled=true;
+  i.oninput=()=>{b.disabled=i.value.trim().toUpperCase()!=="DELETE"};
+  b.onclick=()=>run(b,async()=>{let r;try{r=await api("/v1/account/delete",{confirm:"DELETE"},280000)}catch(x){if(x.http===404&&x.pcode==="not-found")throw fxBad("This needs the latest "+BRAND+" server. Please try again after it has been updated.");throw x}
+   unsubs.forEach(f=>f());unsubs=[];closeSheet();toast("🗑️","Account deleted",r&&r.files===false?"Your profile and login are removed.":"Your profile, your files and your login are removed.",true);try{await signOut(auth)}catch(e){}setTimeout(()=>{location.href=location.pathname},1600)});
+  z.append(i,b)})}
+async function delOrg(){const w=KINDS[KIND].word,n=prompt("This permanently deletes this "+w+" and ALL its data: every record, every uploaded photo, ID proof and PDF, and the login of every member who is in no other workspace.\nIt cannot be undone.\n\nType its name to confirm:\n\n"+S.soc.name);if(n===null)return;if(n.trim()!==S.soc.name){toast("ℹ️","Name did not match","Nothing was deleted",true);return}
+ /* The server deletes everything for good: all data, every uploaded file (photos, ID proofs, PDFs) and the logins of the
+    members who are in no other workspace. Only when that server does not know this yet does the app remove what it can itself. */
+ if(PAY_API&&await orgWipe(n.trim()))return;
  try{unsubs.forEach(f=>f());unsubs=[];window.__rw=1;const sid=S.sid,wipe=async c=>{const q=await getDocs(collection(db,"societies",sid,c));for(let i=0;i<q.docs.length;i+=400){const bt=writeBatch(db);q.docs.slice(i,i+400).forEach(d=>{const x=d.data();if(c==="members")[x.idUrl,x.photoUrl].forEach(rmRt);bt.delete(d.ref)});await bt.commit()}};
   for(const c of ["announcements","contributions","expenses","complaints","messages","reports","visitors","deliveries","vehicles","parking","bills","helpers","classifieds","alerts","presence","directory","amenities","documents","staff","sos","bookings","polls","leaves","rooms","timetable","homework","attendance"])await wipe(c).catch(()=>{});
   await Promise.all(Object.values(D.mem||{}).filter(x=>x.code).map(x=>deleteDoc(doc(db,"joinCodes",x.code)).catch(()=>{})));
@@ -2384,7 +2414,7 @@ function rMore(){const m=$("mr");m.innerHTML="";if(isAdm()){const ic=mk("div","c
  const cb=mk("button","btn s o","📷 Change profile photo");cb.style.cssText="width:auto;margin:0 auto 12px;padding:7px 16px";cb.onclick=()=>$("pfile").click();p.appendChild(cb);
  p.appendChild(mk("h2",null,S.me.name));p.appendChild(mk("div","meta",S.soc.name+" · "+S.me.flat+" · "+roleLbl(S.me.role)+" · Plan "+planName()));
  const t=mk("button","tg mtb"),ms=mk("small",null,muteSum()+" ›");t.type="button";t.append(mk("span",null,"🔕 Mute notifications"),ms);t.onclick=()=>muteSheet(()=>{ms.textContent=muteSum()+" ›"});p.appendChild(t);
- const lo=mk("button","btn s r","Log out");lo.onclick=logout;p.appendChild(lo);if(isMgr()){const dz=mk("button","btn s o","🗑️ Delete this "+KINDS[KIND].word);dz.style.cssText="margin-top:10px;color:var(--red);border-color:var(--red)";dz.onclick=delOrg;p.appendChild(dz)}{const lg=mk("p","lgl");lg.setAttribute("data-noskin","");[["Privacy Policy","privacy"],["Terms & Conditions","terms"]].forEach(([t,k],i)=>{if(i)lg.appendChild(document.createTextNode(" · "));const a=mk("a",null,t);a.onclick=()=>openLegal(k);lg.appendChild(a)});p.appendChild(lg)}m.appendChild(p);m.appendChild(mySocCard())}
+ const lo=mk("button","btn s r","Log out");lo.onclick=logout;p.appendChild(lo);if(isMgr()){const dz=mk("button","btn s o","🗑️ Delete this "+KINDS[KIND].word);dz.style.cssText="margin-top:10px;color:var(--red);border-color:var(--red)";dz.onclick=delOrg;p.appendChild(dz)}{const da=mk("a","lnk","🗑️ Delete my account");da.style.cssText="display:block;text-align:center;color:var(--red);margin:14px 0 2px";da.setAttribute("role","button");da.tabIndex=0;da.onclick=delMe;p.appendChild(da)}{const lg=mk("p","lgl");lg.setAttribute("data-noskin","");[["Privacy Policy","privacy"],["Terms & Conditions","terms"]].forEach(([t,k],i)=>{if(i)lg.appendChild(document.createTextNode(" · "));const a=mk("a",null,t);a.onclick=()=>openLegal(k);lg.appendChild(a)});p.appendChild(lg)}m.appendChild(p);m.appendChild(mySocCard())}
 authUI();
 
 /* ---------- phase 3 ---------- */
@@ -2859,6 +2889,9 @@ const planList=()=>PLAN_ORG[KIND]||PLANS_SOC;
 const unitsN=()=>isOrg()?Object.values(D.mem||{}).filter(x=>x.status==="approved").length||1:flats().length;
 const PM=[["upi","📲","UPI","GPay, PhonePe, Paytm, BHIM & all UPI apps",["upi"]],["card","💳","Credit / Debit card","Visa, Mastercard, RuPay, Amex",["card"]],["nb","🏦","Net banking / bank account","All major Indian banks",["netbanking"]],["wallet","👛","Wallets","Paytm, PhonePe, Amazon Pay & more",["wallet"]],["all","✨","All options","Let Razorpay show every method",null]];
 function paySheet(p,cyc){sheet(z=>{z.appendChild(mk("h2",null,"Pay for "+p.name));z.appendChild(mk("p","sub",rs(cyc==="m"?p.m:p.y)+(cyc==="m"?" per month":" per year")+" · choose how to pay"));
+ /* what this payment buys: the plan from today, the days still left carried forward one for one, the new days after them */
+ {const st=planState(),run=st.kind==="paid"&&st.until>Date.now(),left=run?Math.max(0,dayGap(st.until)):0,days=cyc==="y"?365:30,e=new Date(run?st.until:Date.now());e.setDate(e.getDate()+days);const nx=new Date(e);nx.setDate(nx.getDate()+1);
+  const n=mk("div","note",(left>0?"Your "+left+" remaining day"+(left===1?" is":"s are")+" carried forward: "+left+" + "+days+" = "+(left+days)+" days. ":"")+p.name+(run&&st.p&&st.p.id===p.id?" continues":" starts today")+" and is valid till "+bdate(e.getTime())+". Next renewal: "+bdate(nx.getTime())+".");n.setAttribute("data-noskin","");n.style.margin="0 0 12px";z.appendChild(n)}
  PM.forEach(x=>{const r=mk("button","pmo"),d=mk("div");d.append(mk("b",null,x[2]),mk("small",null,x[3]));r.append(mk("span",null,x[1]),d);r.onclick=()=>{closeSheet();payOnline("plan",x[4],{plan:p.id,cycle:cyc}).catch(e=>fail(e,"Payment failed"))};z.appendChild(r)});
  z.appendChild(mk("p","meta","Secured by Razorpay."))})}
 function plansCard(m){const n=unitsN(),adm=isAdm(),PL=paidPlans(),rec=PL.find(p=>n<=p.max)||PL.slice(-1)[0];let cyc=subInfo().cy||"m";
@@ -2882,10 +2915,10 @@ function subDot(){const b=$("n_sub");if(!b)return;const o=b.querySelector(".ndot
 function rSub(){const m=$("sb");m.innerHTML="";window.scrollTo(0,0);subDot();
  if(!isMgr()){const c0=mk("div","card subh");c0.appendChild(mk("small",null,"⭐ Your plan"));c0.appendChild(mk("b",null,planName()));m.appendChild(c0);return}
  if(!isAdm()){const bk=mk("a","lnk","‹ Back");bk.style.cssText="display:inline-block;margin:0 0 10px;cursor:pointer";bk.onclick=()=>go("more");m.appendChild(bk)}
- const{sub,p,cy}=subInfo(),left=sub.until?Math.ceil((sub.until-Date.now())/864e5):null,ex=left!==null&&left<=0,pst=planState(),c=mk("div","card subh"+(ex||pst.kind==="locked"?" xp":""));
+ const{sub,p,cy}=subInfo(),ex=!!sub.until&&sub.until<=Date.now(),left=sub.until?(ex?0:Math.max(0,dayGap(sub.until))):null,pst=planState(),c=mk("div","card subh"+(ex||pst.kind==="locked"?" xp":""));
  c.appendChild(mk("small",null,"💳 Your subscription"));
  c.appendChild(mk("b",null,p&&p.m?p.name+(cy?" · "+(cy==="y"?"Yearly":"Monthly"):""):"Free trial"));
- c.appendChild(mk("div","subst",sub.until?(ex?"⚠️ Expired on "+dt(sub.until):"Active · "+left+" day"+(left===1?"":"s")+" left (until "+dt(sub.until)+")"):pst.kind==="trial"?"Free trial · "+pst.left+" day"+(pst.left===1?"":"s")+" left (until "+dt(pst.until)+")":pst.kind==="locked"?"⚠️ Free trial ended on "+dt(pst.until)+" — upgrade to continue.":TRIAL_DAYS+"-day free trial — pick a plan below any time."));
+ c.appendChild(mk("div","subst",sub.until?(ex?"⚠️ Expired on "+dt(sub.until):"Active · "+(left>0?left+" day"+(left===1?"":"s")+" left":"last day today")+" (until "+dt(sub.until)+")"):pst.kind==="trial"?"Free trial · "+pst.left+" day"+(pst.left===1?"":"s")+" left (until "+dt(pst.until)+")":pst.kind==="locked"?"⚠️ Free trial ended on "+dt(pst.until)+" — upgrade to continue.":TRIAL_DAYS+"-day free trial — pick a plan below any time."));
  if(sub.until&&!ex&&cy){const tot=cy==="y"?365:30,bar=mk("div","sbar"),fi=mk("i");fi.style.width=Math.max(4,Math.min(100,Math.round(left/tot*100)))+"%";bar.appendChild(fi);c.appendChild(bar)}
  /* Renew is offered only once the plan has run out. While it is active, its card below says "Active plan". */
  if(isAdm()&&ex){let b=null;
@@ -3020,20 +3053,30 @@ async function shareInvoice(b){dlBlob(await receiptPdf(b,billInv(b)))}
 /* ---- the invoice for a Sangam360 plan. v = a plan payment as the payment server returns it ---- */
 function planInv(v){const d=new Date(v.paidAt||v.createdAt||Date.now()),z=n=>String(n).padStart(2,"0"),no=v.invoiceId||("S360-"+d.getFullYear()+z(d.getMonth()+1)+z(d.getDate())+"-"+String(v.paymentId||"").slice(-6).toUpperCase());
  const pl=planList().find(p=>p.id===v.plan),nm=v.planName||(pl&&pl.name)||"",cy=v.cycle==="y"?"1 year":v.cycle==="m"?"30 days":"",desc=nm?BRAND+" "+nm+" plan"+(cy?" · "+cy:""):(v.description||BRAND+" plan");
- const rows=[["Invoice no.",no],["Invoice date",bdate(d.getTime())],["Billed to",v.organisationName||S.soc.name],["Description",desc]];
+ /* an upgrade with days carried forward: that line takes the place of "Billed to" (the name is printed above the table already) */
+ const cf=v.carriedDays>0&&v.days>0,rows=[["Invoice no.",no],["Invoice date",bdate(d.getTime())],cf?["Validity",v.days+" new days + "+v.carriedDays+" carried forward = "+(v.days+v.carriedDays)+" days"]:["Billed to",v.organisationName||S.soc.name],["Description",desc]];
  if(v.periodStart&&v.periodEnd)rows.push(["Plan valid",bdate(v.periodStart)+" – "+bdate(v.periodEnd)]);
  rows.push(["Amount paid",rs(v.amount)],["Payment method",payMeth(v.paymentMethod)||"Online (Razorpay)"],["Razorpay payment ID",v.razorpayPaymentId]);
  return{inv:1,brand:1,paid:true,no,desc,rows}}
 async function planInvoice(v){dlBlob(await receiptPdf({amount:v.amount},planInv(v)))}
 /* every plan payment of this organisation, for the admins: asked from the payment server, which alone keeps these records */
 let subH={sid:"",at:0,list:null,busy:false};
-function subHist(force){if(!PAY_API||!S.me||!isAdm())return;const sid=S.sid;if(subH.sid!==sid)subH={sid,at:0,list:null,busy:false};if(subH.busy||(!force&&Date.now()-subH.at<120000))return;subH.busy=true;subH.at=Date.now();
- api("/v1/subscriptions/history",{sid}).then(r=>{if(subH.sid!==sid)return;subH.busy=false;subH.list=(r&&r.payments)||[];if(tab==="sub")subInvCard()}).catch(()=>{if(subH.sid===sid){subH.busy=false;if(force)subH.at=0}})}
-function subInvCard(){const old=$("subinv"),L=subH.sid===S.sid&&subH.list?subH.list:[];if(!L.length||!isAdm()){if(old)old.remove();return}
- const c=mk("div","card");c.id="subinv";c.setAttribute("data-noskin","");c.appendChild(mk("h2",null,"🧾 Plan invoices"));c.appendChild(mk("div","meta","One invoice for every plan payment, newest first."));
- L.forEach(v=>{const I=planInv(v),r=mk("div","ptx"),l=mk("div","ptl"),a=mk("div","pta");l.append(mk("b",null,I.desc),mk("span",null,"Paid "+dtm(v.paidAt||v.createdAt)+(payMeth(v.paymentMethod)?" · "+payMeth(v.paymentMethod):"")),mk("span",null,"Invoice "+I.no));a.append(mk("b",null,rs(v.amount)),pPill(v));r.append(l,a);
-  const b=ghost(mk("button","btn s o","⬇️ Download invoice"));b.onclick=()=>run(b,()=>planInvoice(v).catch(x=>fail(x,"Couldn't create invoice")));r.appendChild(b);c.appendChild(r)});
- const at=$("plansCard");if(old)old.replaceWith(c);else if(at)at.before(c);else $("sb").appendChild(c)}
+function subHist(force){if(!PAY_API||!S.me||!isMgr())return;const sid=S.sid;if(subH.sid!==sid)subH={sid,at:0,list:null,busy:false};if(subH.busy||(!force&&Date.now()-subH.at<120000))return;subH.busy=true;subH.at=Date.now();
+ api("/v1/subscriptions/history",{sid}).then(r=>{if(subH.sid!==sid)return;subH.busy=false;subH.list=(r&&r.payments)||[];if(tab==="sub")subInvCard();if(tab==="home")try{rHome()}catch(e){}}).catch(()=>{if(subH.sid===sid){subH.busy=false;if(force)subH.at=0}})}
+/* The invoices are one small card - in the Plan tab and on the admin's home screen. Tapping it opens them month by
+   month: the month in which a plan was bought or renewed holds the invoice of that payment. */
+const invList=()=>subH.sid===S.sid&&subH.list?subH.list:[];
+function invCard(id){const L=invList();if(!L.length||!S.me||!isMgr())return null;const c=mk("button","card pic"),t=mk("div","pict"),last=L[0];c.type="button";if(id)c.id=id;c.setAttribute("data-noskin","");
+ t.append(mk("b",null,"Plan invoices"),mk("span",null,L.length+" invoice"+(L.length===1?"":"s")+" · latest "+bdate(last.paidAt||last.createdAt)));c.append(mk("i","pici","🧾"),t,mk("em",null,"›"));c.onclick=invSheet;return c}
+function subInvCard(){const old=$("subinv"),c=invCard("subinv");if(!c){if(old)old.remove();return}const at=$("plansCard");if(old)old.replaceWith(c);else if(at)at.before(c);else $("sb").appendChild(c)}
+let invOpen="";
+function invSheet(){const L=invList();sheet(z=>{z.classList.add("pivs");z.setAttribute("data-noskin","");z.appendChild(mk("h2",null,"🧾 Plan invoices"));z.appendChild(mk("p","sub","Month by month. Tap a month to see the invoice of the plan you bought or renewed in it."));
+ const by={};L.forEach(v=>{const d=new Date(v.paidAt||v.createdAt||0),k=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0");(by[k]=by[k]||[]).push(v)});const K=Object.keys(by).sort().reverse();if(!by[invOpen])invOpen=K[0]||"";
+ const box=mk("div");z.appendChild(box);if(!K.length)box.appendChild(mk("div","empty","No invoices yet"));
+ const draw=()=>{box.innerHTML="";K.forEach(k=>{const M=by[k],on=k===invOpen,h=mk("button","pivm"+(on?" on":"")),ht=mk("span");h.type="button";h.setAttribute("aria-expanded",on?"true":"false");
+   ht.append(mk("b",null,mname(k)),mk("small",null,M.length+" invoice"+(M.length===1?"":"s")+" · "+rs(M.reduce((a,v)=>a+(+v.amount||0),0))));h.append(ht,mk("em",null,on?"▾":"›"));h.onclick=()=>{invOpen=on?"-":k;draw()};box.appendChild(h);
+   if(!on)return;const w=mk("div","pivl");M.forEach(v=>{const I=planInv(v),r=mk("div","ptx"),l=mk("div","ptl"),a=mk("div","pta");l.append(mk("b",null,I.desc),mk("span",null,"Paid "+dtm(v.paidAt||v.createdAt)+(payMeth(v.paymentMethod)?" · "+payMeth(v.paymentMethod):"")),mk("span",null,"Invoice "+I.no));a.append(mk("b",null,rs(v.amount)),pPill(v));r.append(l,a);
+    const b=ghost(mk("button","btn s o","⬇️ Download invoice"));b.onclick=()=>run(b,()=>planInvoice(v).catch(x=>fail(x,"Couldn't create invoice")));r.appendChild(b);w.appendChild(r)});box.appendChild(w)})};if(K.length)draw()})}
 function custInvoice(m){const g=mk("div","card");g.appendChild(mk("h2",null,"🧾 Raise an invoice"));g.appendChild(mk("div","meta","For a customer or employee. Your company GST number is printed on the invoice."));
  const I=(p,t)=>{const i=mk("input");i.placeholder=p;if(t)i.type=t;i.style.marginTop="8px";return i},cn=I("Customer / employee name"),cg=I("Customer GST number (optional)"),cd=I("Description (e.g. Consulting – October)"),ca=I("Amount ₹ (before GST)","number"),cr=mk("select");
  cn.maxLength=60;cg.maxLength=15;cg.style.textTransform="uppercase";cd.maxLength=80;ca.min=1;[0,5,12,18,28].forEach(v=>cr.appendChild(Object.assign(mk("option",null,"GST "+v+"%"),{value:String(v)})));cr.value="18";
@@ -3082,6 +3125,8 @@ document.addEventListener("visibilitychange",()=>{if(!document.hidden)payWarm()}
    clearing its data changes nothing. The Firestore rules use the same dates, so the lock also holds for an
    old or modified copy of the app. */
 const TRIAL_DAYS=14;
+/* whole calendar days from today to the day of t (0 = today) */
+const dayGap=t=>{const a=new Date(t),b=new Date();return Math.round((new Date(a.getFullYear(),a.getMonth(),a.getDate())-new Date(b.getFullYear(),b.getMonth(),b.getDate()))/864e5)};
 const paidPlans=()=>planList().filter(p=>p.m>0||p.cu);
 /* the badge follows the price: the cheapest paid plan is bronze, then silver, gold, diamond; custom plans wear the crown */
 const PTIER=[["🥉","#b45309"],["🥈","#64748b"],["🥇","#d97706"],["💎","#0284c7"],["👑","#7c3aed"]];
@@ -3150,9 +3195,9 @@ function payWait(title,sub){payLock=true;const c=payFrame("wait",title),p=mk("p"
  paySlowT=setTimeout(()=>{if(p.isConnected)p.textContent="This is taking a little longer than usual. Please keep the app open."},7000)}
 function payDone(v,o){payLock=false;const c=payFrame("ok","Payment Successful");
  c.append(mk("div","pya",rs(v.amount)),mk("p","pys",v.description||""));
- payRows(c,[["Transaction ID",v.razorpayPaymentId,1],["Date & Time",dtm(v.paidAt||Date.now())],["Paid via",payMeth(v.paymentMethod)],["Receipt no.",v.receiptNumber],["Invoice no.",o.plan?v.invoiceId:""]]);
+ payRows(c,[["Transaction ID",v.razorpayPaymentId,1],["Date & Time",dtm(v.paidAt||Date.now())],["Paid via",payMeth(v.paymentMethod)],["Receipt no.",v.receiptNumber],["Invoice no.",o.plan?v.invoiceId:""],["Valid till",o.plan&&v.periodEnd?bdate(v.periodEnd):""]]);
  if(v.duplicate)c.appendChild(mk("div","note","This was already paid earlier, so this amount was received twice. Please ask your admin for a refund."));
- if(o.plan){c.appendChild(mk("p","pyn","Your invoice is ready. You can also download it later from the Plan tab."));
+ if(o.plan){c.appendChild(mk("p","pyn",(v.carriedDays>0?v.carriedDays+" day"+(v.carriedDays===1?"":"s")+" from your earlier plan "+(v.carriedDays===1?"was":"were")+" carried forward. ":"")+"Your invoice is ready. You can also download it later from the Plan tab."));
   payBtns(c,[["⬇️ Download invoice",e=>{const b=e.currentTarget;run(b,()=>planInvoice(v).catch(x=>fail(x,"Couldn't create invoice")))}],["Done",()=>{payClose();if(tab==="sub")rSub();else go("sub")}," o"]])}
  else payBtns(c,[["View Receipt",()=>{payClose();go("fin");receipt(Object.assign(payAsBill(v),o.bill?{flat:o.bill.flat,paidBy:S.me.name,due:o.bill.due,ts:o.bill.ts}:{}))}],["Back to Home",()=>{payClose();go("home")}," o"]]);
  const cfw=mk("div","pycf");cfw.setAttribute("aria-hidden","true");payScr.appendChild(cfw);for(let i=0;i<26;i++){const q=mk("i","cf");q.style.cssText="left:"+Math.random()*100+"%;background:"+["#5b3df5","#ff8a1f","#10b981","#f43f5e","#3b82f6"][i%5]+";animation-delay:"+Math.random()*.4+"s;--x:"+(Math.random()*140-70)+"px;--r:"+Math.round(Math.random()*720)+"deg";cfw.appendChild(q)}

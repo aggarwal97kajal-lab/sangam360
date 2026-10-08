@@ -26,6 +26,9 @@ jobs:
       - name: Add native bridge to the page
         run: sed -i 's#<head>#<head><script src="native-bridge.js"></script>#' www/index.html
 
+      - name: Put Firebase and the fonts inside the app (fast start on slow internet)
+        run: python3 bundle_web.py www || echo "Bundling skipped - the app loads Firebase from the internet"
+
       - name: Patch notifications
         run: python3 patch_push.py
 

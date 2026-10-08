@@ -1554,9 +1554,23 @@ const firebaseConfig = {
 /* ======================== */
 import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {getAuth,GoogleAuthProvider,signInWithPopup,signInWithCredential,getAdditionalUserInfo,createUserWithEmailAndPassword,signInWithEmailAndPassword,updateProfile,signOut,sendPasswordResetEmail,onAuthStateChanged,deleteUser} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import {getFirestore,collection,doc,getDoc,getDocs,setDoc,addDoc,updateDoc,deleteDoc,onSnapshot,query,orderBy,limit,where,writeBatch,arrayUnion} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import {getFirestore,collection,doc,getDoc,getDocs,setDoc as setDoc0,addDoc as addDoc0,updateDoc as updateDoc0,deleteDoc,onSnapshot,query,orderBy,limit,where,writeBatch as writeBatch0,arrayUnion} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import {getFunctions,httpsCallable} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-functions.js";
 import {getDatabase,ref as rRef,set as rSet,get as rGet,update as rUpdate,remove as rRemove} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+/* ===== push notifications (Android) =====
+   After the app writes something other people should hear about (a chat message, a notice, a visitor at the gate,
+   a bill ...), it names that record to the payment server (PAY_API/v1/push/event). The server reads the record
+   itself, decides who is told and sends the notification through Firebase Cloud Messaging, also to phones where
+   the app is closed. Nothing the app says is put into a notification: only what is really in the database. */
+const PUSHC=/^societies\/[^/]+\/(messages|announcements|alerts|complaints|gcomplaints|visitors|deliveries|bills|members|leaves|holidays|vehicles|tasks|payslips|drvmsg)\/[^/]+$|^societies\/[^/]+\/dmchats\/[^/]+\/messages\/[^/]+$/;
+let pushQ=[],pushT=0;
+const pushPing=p=>{try{if(typeof p!=="string"||!PUSHC.test(p))return;pushQ.push(p);if(!pushT)pushT=setTimeout(pushFlush,500)}catch(e){}};
+function pushFlush(){pushT=0;const q=[...new Set(pushQ)];pushQ=[];const by={};q.forEach(p=>{const sid=p.split("/")[1];(by[sid]=by[sid]||[]).push(p)});
+ Object.keys(by).forEach(sid=>{const L=by[sid];for(let i=0;i<L.length;i+=25)api("/v1/push/event",{sid,paths:L.slice(i,i+25)},90000).catch(()=>{})})}
+const setDoc=(r,...a)=>setDoc0(r,...a).then(x=>{pushPing(r&&r.path);return x});
+const addDoc=(c,...a)=>addDoc0(c,...a).then(r=>{pushPing(r&&r.path);return r});
+const updateDoc=(r,...a)=>updateDoc0(r,...a).then(x=>{pushPing(r&&r.path);return x});
+const writeBatch=(...a)=>{const b=writeBatch0(...a),P=[],w={set:(r,...x)=>{P.push(r&&r.path);b.set(r,...x);return w},update:(r,...x)=>{P.push(r&&r.path);b.update(r,...x);return w},delete:(r,...x)=>{b.delete(r,...x);return w},commit:()=>b.commit().then(x=>{P.forEach(pushPing);return x})};return w};
 const $=i=>document.getElementById(i);
 const mk=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
 const rs=n=>"₹"+Number(n||0).toLocaleString("en-IN");
@@ -1700,7 +1714,7 @@ $("lgx").onclick=()=>$("legal").classList.add("hide");
 $("asub").onclick=async()=>{const em=$("ae").value.trim(),pw=$("ap").value,er=$("aerr");er.textContent="";if(mode==="signup"&&!capOk){er.textContent="Please tick “I'm not a robot” first.";$("cap").classList.remove("shk");void $("cap").offsetWidth;$("cap").classList.add("shk");return}if(mode==="signup"&&!$("agc").checked){er.textContent="Please tick the box to agree to the Terms of Use and Privacy Policy.";const g=$("agr");g.classList.remove("shk");void g.offsetWidth;g.classList.add("shk");return}if(!em||!pw){er.textContent="Enter email and password.";return}
  try{if(mode==="login"){loginKind=KIND;await signInWithEmailAndPassword(auth,em,pw)}else{const nm=$("an").value.trim();if(!nm){er.textContent="Enter your name.";return}const c=await createUserWithEmailAndPassword(auth,em,pw);await updateProfile(c.user,{displayName:nm})}}catch(e){er.textContent=fr(e)}};
 $("afg").onclick=()=>{const e=$("ae").value.trim();if(!e){$("aerr").textContent="Type your email first.";return}sendPasswordResetEmail(auth,e).then(()=>$("aerr").textContent="Reset link sent ✔").catch(x=>$("aerr").textContent=fr(x))};
-$("aerr").setAttribute("data-noskin","");const logout=async()=>{try{if(liveS){liveStop();await new Promise(r=>setTimeout(r,700))}else liveNatStop()}catch(e){}await signOut(auth);location.href=location.pathname};$("lo1").onclick=$("lo2").onclick=logout;
+$("aerr").setAttribute("data-noskin","");const logout=async()=>{try{await pushOff()}catch(e){}try{if(liveS){liveStop();await new Promise(r=>setTimeout(r,700))}else liveNatStop()}catch(e){}await signOut(auth);location.href=location.pathname};$("lo1").onclick=$("lo2").onclick=logout;
 /* ---------- waiting for approval: the screen moves on by itself the moment the teacher / admin decides ---------- */
 let waitU=null;
 const waitOff=()=>{if(waitU){try{waitU()}catch(e){}waitU=null}};
@@ -1889,7 +1903,7 @@ function startApp(){
  $("annf").classList.toggle("hide",!isAdm());annSetup();ensureTCode();document.querySelector("#t_fin .bal").classList.toggle("hide",!canFin());$("finf").classList.toggle("hide",!canFin());$("pk_adm").classList.toggle("hide",!isAdm());
  $("vf_res").classList.toggle("hide",isGuard());$("vf_grd").classList.toggle("hide",!staff());$("df_grd").classList.toggle("hide",!staff());$("vh_res").classList.toggle("hide",!isAdm());$("vsr").classList.toggle("hide",!staff());
  setFin("inc");setHero();drawNav();syncDirPhoto();if(KIND==="company"&&isAdm()&&!socGst())setTimeout(()=>toast("🧾","Add your GST number","Finance → GST number. It is printed on every invoice.",true),2500);
- listen();try{kidsWatch()}catch(e){console.warn(e)}show("sMain");lockWas=null;go("home");try{planGate();planEnsure();payWarm()}catch(e){}try{subHist()}catch(e){}fxStart();uxCoach();try{busWatch()}catch(e){console.warn("bus alerts",e)}try{busDrive()}catch(e){console.warn("my bus",e)}try{drvWatch()}catch(e){console.warn("driver alerts",e)}liveResume();setTimeout(firstRunPerms,900);
+ listen();try{kidsWatch()}catch(e){console.warn(e)}show("sMain");lockWas=null;go("home");try{planGate();planEnsure();payWarm()}catch(e){}try{subHist()}catch(e){}fxStart();uxCoach();try{busWatch()}catch(e){console.warn("bus alerts",e)}try{busDrive()}catch(e){console.warn("my bus",e)}try{drvWatch()}catch(e){console.warn("driver alerts",e)}liveResume();setTimeout(firstRunPerms,900);setTimeout(()=>{try{pushSetup();pushTake()}catch(e){}},2500);
 }
 const flats=()=>{const one=S.soc.towers.length===1,r=[];S.soc.towers.forEach(t=>gF(t,one).forEach(l=>r.push((one?"":t.name+" · ")+"Flat "+l)));return r};
 /* my own picture: the login's public one, or - on the 2nd, 3rd ... student of a login - that student's own photo */
@@ -2114,7 +2128,7 @@ function setRoom(r){if(r===curRoom()||!chatRooms().includes(r))return;chatRoom=r
 function roomChips(){const w=$("chrm");if(!w)return;const R=SCH()&&!dmc?chatRooms():[];w.classList.toggle("hide",R.length<2);if(R.length<2){w.innerHTML="";w.dataset.sig="";return}
  const cur=curRoom(),sig=R.join("|")+"#"+cur+"#"+R.map(r=>r!==cur&&roomUnread(r)?1:0).join("");if(w.dataset.sig===sig)return;w.dataset.sig=sig;w.innerHTML="";
  R.forEach(r=>{const b=mk("button",r===cur?"on":null,roomLbl(r));b.type="button";b.setAttribute("aria-pressed",r===cur?"true":"false");if(r!==cur&&roomUnread(r)){const i=mk("i");i.setAttribute("aria-label","new messages");b.appendChild(i)}b.onclick=()=>setRoom(r);w.appendChild(b)})}
-function rChat(){if(!S.me)return;try{roomChips()}catch(e){console.warn(e)}const b=$("msgs"),keep=b.scrollTop,atEnd=b.scrollHeight-b.scrollTop-b.clientHeight<90||!b.scrollHeight;b.innerHTML="";const ppl=chatPpl();updPres(true);const lg=document.querySelector("#chhd .chlogo");if(lg){lg.innerHTML="";lg.classList.toggle("dm",!!dmc);if(dmc)lg.appendChild(av(peerName(),peerPhoto(),42));else lg.textContent=KINDS[KIND].ico}$("stk").style.display=dmc?"none":"";$("mt").placeholder="Message";$("mt").setAttribute("data-noskin","");$("chn").textContent=dmc?peerName():SCH()?roomTitle(curRoom()):S.soc.name+" Community";
+function rChat(){if(!S.me)return;try{if(!dmc&&tab==="comm"&&!$("v_chat").classList.contains("hide"))pushClear("g:"+S.sid+":"+(SCH()?curRoom():""))}catch(e){}try{roomChips()}catch(e){console.warn(e)}const b=$("msgs"),keep=b.scrollTop,atEnd=b.scrollHeight-b.scrollTop-b.clientHeight<90||!b.scrollHeight;b.innerHTML="";const ppl=chatPpl();updPres(true);const lg=document.querySelector("#chhd .chlogo");if(lg){lg.innerHTML="";lg.classList.toggle("dm",!!dmc);if(dmc)lg.appendChild(av(peerName(),peerPhoto(),42));else lg.textContent=KINDS[KIND].ico}$("stk").style.display=dmc?"none":"";$("mt").placeholder="Message";$("mt").setAttribute("data-noskin","");$("chn").textContent=dmc?peerName():SCH()?roomTitle(curRoom()):S.soc.name+" Community";
  const st=$("stk");st.innerHTML="";ppl.slice(0,4).forEach(p=>st.appendChild(av(p.name,p.photo,30)));
  $("chhd").onclick=dmc?()=>profile(dmc.peer,{name:dmc.name}):()=>sheet(z=>{z.appendChild(mk("h2",null,"Members ("+ppl.length+")"));z.appendChild(mk("p","sub",SCH()?roomTitle(curRoom())+" · "+S.soc.name:S.soc.name));ppl.sort((x,y)=>(x.name||"").localeCompare(y.name||"")).forEach(p=>{const r=mk("div","mem");const pu=p.uid||p.id;r.style.cursor="pointer";r.onclick=()=>profile(pu,p);r.appendChild(avd(p.name,p.photo,44,pu));const d=mk("div");const bb=mk("b");bb.append(p.name);d.appendChild(bb);d.appendChild(mk("small",null,(p.flat||"")+" · "+(online(pu)?"Online":"Offline")));r.appendChild(d);if(ROLE[p.role])r.appendChild(mk("span","chip",ROLE[p.role]));z.appendChild(r)})});
  const hd=hid(),v=Object.values(dmc?D.dmm:D.msg).filter(x=>!hd.has(x.id)).sort((x,y)=>x.ts-y.ts);
@@ -2254,7 +2268,7 @@ function openDM(uid,from,cid0){const raw=String(uid||"");uid=AUID(raw);closeShee
   if(mine){sc[S.uid]=mine;cid=base+"_c"+dmHash(mine)}else if(theirs){sc[uid]=theirs;cid=base+"_c"+dmHash(theirs)}}
  if(dmc&&dmc.cid===cid)return;
  const onChat=tab==="comm"&&!$("v_chat").classList.contains("hide")&&!dmc;leaveDM();
- seed.sc=sc;dmc={cid,peer:uid,name:(seed.who[uid]&&seed.who[uid].n)||(D.dir[uid]||{}).name||"Member",sc,seed};dmFrom=from||(onChat?"chat":"inbox");D.dmm={};
+ seed.sc=sc;dmc={cid,peer:uid,name:(seed.who[uid]&&seed.who[uid].n)||(D.dir[uid]||{}).name||"Member",sc,seed};try{pushClear("d:"+cid)}catch(e){}dmFrom=from||(onChat?"chat":"inbox");D.dmm={};
  if(tab!=="comm")goTab("comm");cview("chat");rChat();bottom();
  dmUnsub=onSnapshot(query(collection(db,"societies",S.sid,"dmchats",cid,"messages"),orderBy("ts","desc"),limit(80)),sn=>{const o={};sn.docs.forEach(x=>o[x.id]={id:x.id,...x.data()});D.dmm=o;rChat();markRead()},
   e=>{console.error(e);toast("🔒","Private chat unavailable",e&&e.code==="permission-denied"?"Publish firestore.rules-dm-additions.txt in Firebase → Firestore → Rules.":"Check your connection.",true)})}
@@ -2448,7 +2462,33 @@ const bfix=new Set();function rFin(){if(!S.soc)return;rPo();rGst();const mine=!c
 /* the kinds this person can get at all (a guard has no bills, a society has no leave requests ...) */
 const muteKinds=()=>MUTEK.filter(([k])=>k==="bill"?!isGuard():k==="leave"?KIND!=="society":k==="join"?!!isAdm():true);
 const muteSum=()=>{if(muted)return"All muted";const L=muteKinds().filter(([k])=>muteK.has(k));return!L.length?"Off":L.length===1?L[0][2]:L.length+" kinds muted"};
-function muteSave(){try{localStorage.setItem("sh-mute",muted?"1":"0");localStorage.setItem("sh-mute-k",JSON.stringify([...muteK]))}catch(e){}}
+function muteSave(){try{localStorage.setItem("sh-mute",muted?"1":"0");localStorage.setItem("sh-mute-k",JSON.stringify([...muteK]))}catch(e){}try{pushSetup()}catch(e){}}
+/* The Android app's notifications (push_native.py adds the native part). The server is told this phone's push token
+   and what is muted on it; the phone keeps a key with which "Reply" in a chat notification can send the answer. */
+const PUSHN=()=>{try{const C=window.Capacitor;return C&&C.isNativePlatform&&C.isNativePlatform()&&C.Plugins&&C.Plugins.S360Push?C.Plugins.S360Push:null}catch(e){return null}};
+let pushReg="",pushTok="",pushLis=false;
+async function pushSetup(force){const N=PUSHN();if(!N||!PAY_API||!S.me||!S.sid||!S.uid)return;
+ const k=S.sid+"|"+S.uid+"|"+(muted?1:0)+"|"+[...muteK].sort().join(",");if(!force&&pushReg===k)return;pushReg=k;
+ if(!pushLis){pushLis=true;try{N.addListener("open",o=>pushOpen(o))}catch(e){}}
+ try{const t=await N.register();if(!t||!t.token){pushReg="";return}pushTok=t.token;
+  const r=await api("/v1/push/register",{sid:S.sid,token:t.token,mute:{all:!!muted,kinds:[...muteK]},name:S.me.name||""},90000);
+  await N.setAuth({server:PAY_API,device:r.device,key:r.key,sid:S.sid,uid:S.uid,name:S.me.name||""})}
+ catch(e){pushReg="";console.warn("push setup",e)}}
+/* on log-out this phone stops getting the person's notifications */
+async function pushOff(){const N=PUSHN();if(!N)return;try{if(pushTok&&PAY_API)await TMO(api("/v1/push/unregister",{token:pushTok},8000),8000)}catch(e){}try{await N.clearAuth()}catch(e){}pushReg=""}
+/* a tapped notification opens its screen: the chat, the bill, the visitor ... */
+function pushTake(){const N=PUSHN();if(!N||!S.me)return;N.takeOpen().then(o=>{if(o&&o.open)pushOpen(o)}).catch(()=>{})}
+async function pushOpen(o){if(!o||!o.open||!S.me)return;
+ if(o.sid&&o.sid!==S.sid){try{const {ids}=await socIds();if(!ids.includes(o.sid))return;await switchTo(o.sid);setTimeout(()=>pushOpen({open:o.open}),900)}catch(e){console.warn(e)}return}
+ const v=String(o.open),p=v.split(":");
+ try{if(p[0]==="dm"&&p[1]&&p[2]){openDM(p[2],"inbox",p[1]);return}
+  if(p[0]==="chat"){goTab("comm");if(SCH()&&p[1])try{setRoom(p.slice(1).join(":"))}catch(e){}$("sn2").onclick();return}
+  if(v==="ann"){goTab("comm");$("sn1").onclick();return}
+  go(v)}catch(e){console.warn("open from notification",e)}}
+/* the conversation is on screen: its notification goes */
+let pushClr="";
+function pushClear(tag){const N=PUSHN();if(!N||!tag||document.hidden||pushClr===tag)return;pushClr=tag;setTimeout(()=>{if(pushClr===tag)pushClr=""},4000);N.clear({tag}).catch(()=>{})}
+document.addEventListener("visibilitychange",()=>{if(!document.hidden){try{pushTake()}catch(e){}}});
 function muteSheet(done){sheet(z=>{z.classList.add("mts");z.appendChild(mk("h2",null,"🔕 Mute notifications"));z.appendChild(mk("p","sub","Choose which alerts you do not want on this phone. A muted alert makes no sound, shows no pop-up and is not added to the bell."));
  const rows=[],paint=()=>{all.checked=muted;rows.forEach(([k,i])=>{i.disabled=muted;i.checked=muted||muteK.has(k)})};
  const row=(ic,name,hint,set)=>{const r=mk("label","tg"),sp=mk("span",null,ic+" "+name),i=mk("input");if(hint)sp.appendChild(mk("small",null,hint));i.type="checkbox";i.setAttribute("aria-label",name);i.onchange=()=>{set(i.checked);muteSave();paint();if(done)done()};r.append(sp,i);z.appendChild(r);return i};

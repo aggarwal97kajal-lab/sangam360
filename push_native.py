@@ -64,6 +64,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
  *   S360Push.clearAuth()                         on log-out: no more replies from this phone
  *   S360Push.takeOpen()                          -> { open, sid }       the screen of the notification that was tapped
  *   S360Push.clear({ tag })                      the conversation is open in the app: its notification goes
+ *   S360Push.status()                            -> { granted, enabled, token, auth }   for "Check notifications"
  *   event "open" { open, sid }                   a notification was tapped while the app was running
  */
 @CapacitorPlugin(
@@ -173,6 +174,20 @@ public class S360PushPlugin extends Plugin {
     }
 
     @PluginMethod
+    public void status(PluginCall call) {
+        Context ctx = getContext();
+        SharedPreferences sp = S360Notifier.prefs(ctx);
+        JSObject r = new JSObject();
+        r.put("granted", Build.VERSION.SDK_INT < 33 || getPermissionState("notifications") == PermissionState.GRANTED);
+        boolean on = true;
+        try { on = androidx.core.app.NotificationManagerCompat.from(ctx).areNotificationsEnabled(); } catch (Exception ignored) { }
+        r.put("enabled", on);
+        r.put("token", sp.getString("token", "").length() > 0);
+        r.put("auth", sp.getString("key", "").length() > 0);
+        call.resolve(r);
+    }
+
+    @PluginMethod
     public void clear(PluginCall call) {
         S360Notifier.cancel(getContext(), call.getString("tag", ""));
         call.resolve();
@@ -200,8 +215,8 @@ public class S360MessagingService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage message) {
         Map<String, String> d = message.getData();
         if (d == null || d.isEmpty()) return;
-        // the app is open on screen: it shows its own alert, so nothing is shown twice
-        if (S360PushPlugin.foreground) return;
+        // the app is open on screen: it shows its own alert, so nothing is shown twice (a test from "Check notifications" is shown anyway)
+        if (S360PushPlugin.foreground && !"1".equals(d.get("force"))) return;
         S360Notifier.show(this, d);
     }
 }

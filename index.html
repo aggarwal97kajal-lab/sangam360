@@ -2495,7 +2495,37 @@ function muteSheet(done){sheet(z=>{z.classList.add("mts");z.appendChild(mk("h2",
  const all=row("🌙","Mute all notifications","Every sound, pop-up and bell alert",v=>{muted=v});
  z.appendChild(mk("div","sec","Or mute only some"));
  muteKinds().forEach(([k,ic,name,hint])=>rows.push([k,row(ic,name,hint,v=>{if(v)muteK.add(k);else muteK.delete(k)})]));paint();
- z.appendChild(mk("p","meta","A message that mentions you by name"+(SCH()?" and the school-bus alerts are":" is")+" always shown."))})}
+ z.appendChild(mk("p","meta","A message that mentions you by name"+(SCH()?" and the school-bus alerts are":" is")+" always shown."));
+ {const b=mk("button","btn s o","🔧 Check notifications");b.type="button";b.style.marginTop="12px";b.onclick=()=>pushCheck();z.appendChild(b)}})}
+/* Goes through every step a notification needs on this phone and says in plain words which one fails; then the server
+   sends a test notification (shown even with the app open). "Copy report" gives the result to send to support. */
+function pushCheck(){sheet(z=>{z.appendChild(mk("h2",null,"🔧 Check notifications"));z.appendChild(mk("p","sub","Checks each step on this phone, then sends you a test notification."));
+ const box=mk("div"),lines=[],wait=mk("div","meta","Checking…");z.append(box,wait);
+ const add=(ok,t,hint)=>{const e=mk("div","ex");e.appendChild(mk("span",null,(ok?"✅ ":"❌ ")+t));box.appendChild(e);if(hint){const n=mk("div","note",hint);n.setAttribute("data-noskin","");box.appendChild(n)}lines.push((ok?"OK   ":"FAIL ")+t+(hint?" | "+hint:""))};
+ const end=()=>{wait.remove();const c=mk("button","btn s o","📋 Copy report");c.type="button";c.style.marginTop="10px";c.onclick=()=>cp(lines.join("\n")+"\n"+new Date().toISOString());z.insertBefore(c,z.lastChild)};
+ (async()=>{try{
+  const C=window.Capacitor,nat=!!(C&&C.isNativePlatform&&C.isNativePlatform()),N=PUSHN();
+  if(!nat){add(false,"Not the Android app","Notifications work in the installed Sangam360 app, not in a web browser.");return}
+  if(!N){add(false,"This app version has no notifications","Install the newest APK (GitHub → Actions → the newest build). If its log says \"Building again without push notifications\", send that log.");return}
+  add(true,"This app version has notifications");
+  let st=await N.status();
+  if(!st.granted||!st.enabled){try{await N.register()}catch(e){}st=await N.status()}
+  if(!st.granted||!st.enabled){add(false,"Notifications are turned off for Sangam360","Turn them on: phone Settings → Apps → Sangam360 → Notifications → Allow. Then check again.");return}
+  add(true,"Notifications are allowed on this phone");
+  let t=null;try{t=await N.register()}catch(e){add(false,"No push token from Google",String((e&&e.message)||e)+". Google Play services must be on the phone, and the internet must work.");return}
+  if(!t||!t.token){add(false,"No push token from Google","Try again with a working internet connection.");return}
+  add(true,"Push token received from Google");
+  if(!PAY_API){add(false,"No server address in this app","PAY_API is empty in index.html.");return}
+  let r;try{r=await api("/v1/push/register",{sid:S.sid,token:t.token,mute:{all:!!muted,kinds:[...muteK]},name:S.me.name||""},90000);pushTok=t.token;
+   await N.setAuth({server:PAY_API,device:r.device,key:r.key,sid:S.sid,uid:S.uid,name:S.me.name||""});pushReg=S.sid+"|"+S.uid+"|"+(muted?1:0)+"|"+[...muteK].sort().join(",")}
+  catch(e){if(e.http===404)add(false,"The server does not know notifications yet","Upload push.js, app.js and index.js to the payments server (src folder) on GitHub, and wait until Render shows the deploy as live.");else add(false,"The server did not register this phone",String((e&&e.message)||e));return}
+  add(true,"This phone is registered on the server");
+  if(muted)add(false,"All notifications are muted on this phone","Switch off “Mute all notifications” above.");
+  let x;try{x=await api("/v1/push/test",{},90000)}catch(e){add(false,"The test could not be sent",e.http===404?"The server is older than this app: upload the newest push.js and app.js to the payments server.":String((e&&e.message)||e));return}
+  if(!x.sending){add(false,"The server cannot send notifications","Firebase Messaging did not start on the server. Look for “push notifications are off” in the Render logs.");return}
+  if(!x.sent){add(false,"Firebase did not accept the test notification",(x.errors||[]).join(", ")||"No phone registered for you.");return}
+  add(true,"Test notification sent to "+x.sent+" phone"+(x.sent===1?"":"s"),"It should appear within a few seconds, also while the app is open. If it does not: give Sangam360 “Autostart” and set its battery use to “No restrictions” (Xiaomi, Redmi, Oppo, Vivo, Realme), then check again.")}
+ catch(e){add(false,"The check stopped",String((e&&e.message)||e))}finally{end()}})()})}
 
 /* ---------- people / me ---------- */
 $("pfile").onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const p0=await cropImage(f,[1],true,640,.9);if(!p0)return;

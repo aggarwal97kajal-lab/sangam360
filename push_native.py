@@ -338,7 +338,7 @@ import java.util.Map;
  * How a push looks on the phone. The server sends (all strings):
  *   k kind (chat, ann, sos, bill, comp, gate, leave, join, gen) · t title · b text · org organisation name
  *   tag one notification per tag (a chat: "d:<chat>" or "g:<org>:<room>") · open the screen to open · sid
- *   reply "1" = a chat that can be answered from the notification · from sender · grp name of a group chat
+ *   reply "1" = a chat that can be answered from the notification · frm sender · grp name of a group chat
  */
 final class S360Notifier {
     static final String PREF = "s360push";
@@ -415,7 +415,7 @@ final class S360Notifier {
             JSONArray h = history(ctx, tag);
             try {
                 JSONObject m = new JSONObject();
-                m.put("f", s(d, "from").length() > 0 ? s(d, "from") : s(d, "t"));
+                m.put("f", s(d, "frm").length() > 0 ? s(d, "frm") : s(d, "t"));
                 m.put("b", s(d, "b"));
                 m.put("ts", System.currentTimeMillis());
                 h.put(m);

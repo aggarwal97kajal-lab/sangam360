@@ -1743,8 +1743,14 @@ function openLegal(k){const d=$("lgd");d.innerHTML="";d.appendChild($(k==="terms
 $("lgx").onclick=()=>$("legal").classList.add("hide");
 [["lkT","terms"],["lkP","privacy"],["lkT2","terms"],["lkP2","privacy"]].forEach(([i,k])=>{const go=e=>{e.preventDefault();e.stopPropagation();openLegal(k)};$(i).onclick=go;$(i).onkeydown=e=>{if(e.key==="Enter"||e.key===" ")go(e)}});
 $("asub").onclick=async()=>{const em=$("ae").value.trim(),pw=$("ap").value,er=$("aerr");er.textContent="";if(mode==="signup"&&!capOk){er.textContent="Please tick “I'm not a robot” first.";$("cap").classList.remove("shk");void $("cap").offsetWidth;$("cap").classList.add("shk");return}if(mode==="signup"&&!$("agc").checked){er.textContent="Please tick the box to agree to the Terms of Use and Privacy Policy.";const g=$("agr");g.classList.remove("shk");void g.offsetWidth;g.classList.add("shk");return}if(!em||!pw){er.textContent="Enter email and password.";return}
- try{if(mode==="login"){loginKind=KIND;await signInWithEmailAndPassword(auth,em,pw)}else{const nm=$("an").value.trim();if(!nm){er.textContent="Enter your name.";return}const c=await createUserWithEmailAndPassword(auth,em,pw);await updateProfile(c.user,{displayName:nm})}}catch(e){er.textContent=fr(e)}};
-$("afg").onclick=()=>{const e=$("ae").value.trim();if(!e){$("aerr").textContent="Type your email first.";return}sendPasswordResetEmail(auth,e).then(()=>$("aerr").textContent="Reset link sent ✔").catch(x=>$("aerr").textContent=fr(x))};
+ try{if(mode==="login"){loginKind=KIND;await signInWithEmailAndPassword(auth,em,pw)}else{const nm=$("an").value.trim();if(!nm){er.textContent="Enter your name.";return}const c=await createUserWithEmailAndPassword(auth,em,pw);await updateProfile(c.user,{displayName:nm});try{api("/v1/mail/welcome",{name:nm}).catch(()=>{})}catch(e){}}}catch(e){er.textContent=fr(e)}};
+$("afg").onclick=()=>{const e=$("ae").value.trim(),er=$("aerr");if(!e){er.textContent="Type your email first.";return}
+ const fb=()=>sendPasswordResetEmail(auth,e).then(()=>er.textContent="Reset link sent ✔").catch(x=>er.textContent=fr(x));
+ if(!PAY_API){fb();return}
+ er.textContent="Sending…";
+ fetch(PAY_API.replace(/\/+$/,"")+"/v1/mail/reset",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:e})})
+  .then(r=>r.json().catch(()=>null).then(j=>{if(r.ok&&j&&j.ok)er.textContent="If this email has an account, a reset link is on its way ✔";else if(r.status===429)er.textContent="Too many tries. Please wait a few minutes and try again.";else if(r.status===422)er.textContent="Please enter a valid email.";else fb()}))
+  .catch(fb)};
 $("aerr").setAttribute("data-noskin","");const logout=async()=>{try{await pushOff()}catch(e){}try{if(liveS){liveStop();await new Promise(r=>setTimeout(r,700))}else liveNatStop()}catch(e){}await signOut(auth);location.href=location.pathname};$("lo1").onclick=$("lo2").onclick=logout;
 /* ---------- waiting for approval: the screen moves on by itself the moment the teacher / admin decides ---------- */
 let waitU=null;
@@ -5668,7 +5674,7 @@ async function ggGo(btn){const er=$("aerr");er.textContent="";
   else{const p=new GoogleAuthProvider();p.setCustomParameters({prompt:"select_account"});ggHold=true;cred=await signInWithPopup(auth,p)}
   /* Login tab + a Google account that was never signed up here: the account Google just made is removed again, and the person is told to sign up first */
   if(mode==="login"&&ggIsNew(cred)){loginKind=kind0;authMsg="No account found for this Google ID. Please sign up first: tap “Sign up”, then “Continue with Google”.";try{await deleteUser(cred.user)}catch(e){console.warn("google: remove new account",e&&e.code);try{await signOut(auth)}catch(q){}}keep=true;setTimeout(()=>{ggHold=false},700);const msg=authMsg||"No account found for this Google ID. Please sign up first: tap “Sign up”, then “Continue with Google”.";setTimeout(()=>{if(auth.currentUser)return;authMsg="";mode="login";authUI();show("sAuth");$("aerr").textContent=msg},120);return}
-  const held=ggHold;ggHold=false;if(held&&held!==true){S.user=held;S.uid=held.uid;boot()}}
+  if(mode==="signup"&&ggIsNew(cred)){try{api("/v1/mail/welcome",{}).catch(()=>{})}catch(e){}}const held=ggHold;ggHold=false;if(held&&held!==true){S.user=held;S.uid=held.uid;boot()}}
  catch(e){loginKind=kind0;const held=ggHold;ggHold=false;if(held&&held!==true){S.user=held;S.uid=held.uid;boot();return}const t=ggErr(e);if(t){console.warn("google sign-in",e&&e.code,e&&e.message);er.textContent=t}}
  finally{if(!keep)ggHold=false;btn.disabled=false;btn.classList.remove("on")}}
 function ggInit(){const sub=$("asub");if(!sub||$("agg")||!ggCan())return;

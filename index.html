@@ -966,7 +966,7 @@ b.mtn{color:var(--a);font-weight:600;background:var(--tint,rgba(91,61,245,.1));b
 @keyframes spMsg{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
 </style>
 <style id="pay-ui">
-/* ---- online payments (Razorpay): payment details, processing / success / failed screens, history, admin ---- */
+/* ---- payments: payment details, where to pay, processing / success / failed screens (plans), history, admin ---- */
 :root{--pg:#047857;--py:#92400e;--pr:#b91c1c;--pb:#1d4ed8}
 [data-theme="dark"]{--pg:#34d399;--py:#fbbf24;--pr:#f87171;--pb:#93c5fd}
 [data-theme="light"]{--pg:#047857;--py:#92400e;--pr:#b91c1c;--pb:#1d4ed8}
@@ -1036,7 +1036,7 @@ b.mtn{color:var(--a);font-weight:600;background:var(--tint,rgba(91,61,245,.1));b
 .pk.t span{color:rgba(255,255,255,.82)}
 .pk.t b{color:#fff;font-size:27px}
 .pk.g b{color:var(--pg)}.pk.y b{color:var(--py)}.pk.r b{color:var(--pr)}.pk.b b{color:var(--pb)}
-/* admin: the organisation's Razorpay account */
+/* admin: how the organisation is paid (UPI ID or bank account) · member: where to pay a bill */
 .gws{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-bottom:10px}
 .gws code,.gwc code{font:500 12px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--text);overflow-wrap:anywhere}
 .gwo{margin:0 0 12px 18px;padding:0;font-size:13px;line-height:1.55;color:var(--muted)}
@@ -1049,6 +1049,17 @@ b.mtn{color:var(--a);font-weight:600;background:var(--tint,rgba(91,61,245,.1));b
 .gwc{display:block;width:100%;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 10px;margin:0 0 8px;cursor:pointer;font:inherit;color:inherit}
 .gwc span{display:block;font-size:11px;color:var(--muted);margin-bottom:2px}
 .gwc code{display:block}
+.gwc:not(button){cursor:default}
+.gwc.cpb span:after{content:"  ·  tap to copy  ⧉";font-weight:400}
+.gws+.ex{border-top:1px solid var(--line)}
+.pdd{text-align:left}.pdd h2{text-align:center}
+.pdd .gwc{background:var(--bg)}
+.pdd .gwc code{font-size:14px;font-weight:600}
+.pdd .fxqr{width:168px;margin:12px auto 6px}
+.pdst{font-size:11.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin:18px 0 8px;text-align:left}
+.pdq{font-size:12px;line-height:1.5;color:var(--muted);text-align:center;margin:4px 0 0}
+.pdh2{font-size:12px;line-height:1.5;color:var(--muted);margin:0 0 10px;text-align:left}
+.btn+.pdh2{margin-top:10px}
 .pycf{position:fixed;inset:0;overflow:hidden;pointer-events:none}
 /* plan badge, plan card on the home screen, lock screen, current plan */
 .plb{display:inline-flex;align-items:center;gap:6px;max-width:100%;padding:4px 11px 4px 6px;border-radius:99px;background:color-mix(in srgb,var(--pc,var(--a)) 15%,transparent);color:var(--text);font-size:12px;line-height:1.2;white-space:nowrap}
@@ -1287,7 +1298,7 @@ body.plk nav button:not(#n_home):not(#n_sub){opacity:.4}
 
   <section id="t_fin" class="hide"><div class="card bal"><small>Society fund balance</small><b id="bal">₹0</b><small id="balx"></small></div>
    <a class="btn g hide" id="upi" style="margin-bottom:14px"></a>
-   <div class="card hide" id="gwcard"></div>
+   <div class="card hide" id="pocard"></div>
    <div class="card hide" id="gstcard"><h2>🧾 GST number</h2><p class="sub">Printed on every invoice and receipt.</p><input id="gstin" placeholder="Company GST number (15 characters) *" maxlength="15" style="text-transform:uppercase"><button class="btn s" id="gstsv">Save</button></div>
    <div id="billbox"></div>
    <div class="card hide" id="finf"><h2>Record income / expense</h2><div class="seg"><button id="fi" class="on">Income</button><button id="fe">Expense</button></div>
@@ -1515,9 +1526,9 @@ const LEGAL={entity:"",address:"",city:"",support:"",privacy:"",legal:"",grievan
 /* Link previews in chat: the link someone types is sent to this service to read the page title, text and picture.
    Set it to "" to switch that off – links then show a simple card with only the website name. */
 const LINK_PREVIEW_API="https://api.microlink.io/?url=";
-/* Online payments (Razorpay): the address of the Sangam360 payment server (the "server" folder of this project),
-   for example "https://pay.yourdomain.com". While it is empty, online payment stays switched off in the app.
-   No secret of any kind belongs in this file: Razorpay secrets live only on that server. */
+/* Payments: the address of the Sangam360 payment server, for example "https://pay.yourdomain.com". While it is empty,
+   paying in the app stays switched off. That server keeps how each organisation is paid (its UPI ID or bank account)
+   and takes the payments for Sangam360 plans (Razorpay). No secret of any kind belongs in this file. */
 const PAY_API="https://sangam360-payments.onrender.com";
 const BRAND = "Sangam360", TAGLINE = "One Platform. Every Community.", LOGO_SRC = "data:image/webp;base64,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"; const LOGO='<img class="lg" alt="" src="'+LOGO_SRC+'">', BRANDH = 'Sangam<span class="b3">3</span><span class="b6">6</span><span class="b0">0</span>';
 
@@ -1917,7 +1928,7 @@ function rHome(){const h=$("hm");h.innerHTML="";if(planLocked()){lockHome(h);ret
  const exp=V.filter(v=>v.status==="Expected"&&v.date===today).length,inside=V.filter(v=>v.status==="Inside").length,wait=V.filter(v=>v.status==="Waiting").length,parc=dl.filter(d=>d.status==="Received").length;
  const qa=mk("div","qa"+(isGuard()?" gd":""));const Q=isGuard()?[["✅","Verify visitor","svc:vis"],["🚶","New visitor","svc:vis"],["📦","Parcel","svc:del"],["🚗","Vehicle","svc:veh"]]:[["🛠️","Complaint","svc:comp"],["🎟️","Invite visitor","svc:vis"],["📦","Parcels","svc:del"],["🚗","Vehicles","svc:veh"],["📢","Notices","comm"]].concat(isAdm()?[["💰","Fund","fin"]]:[]).concat(fxList().includes("pay")&&fxShown("pay")?[["📄","Payslips","fx:pay"]]:[]);
  Q.forEach((q,i)=>{const b=mk("button");b.style.animationDelay=i*50+"ms";b.appendChild(mk("span",null,q[0]));b.appendChild(document.createTextNode(q[1]));b.onclick=()=>go(q[2]);qa.appendChild(b)});h.appendChild(qa);
- const g=mk("div","stats");(isGuard()?[["🚪",exp,"Expected today"],["🟢",inside,"Inside now"],["⏳",wait,"Waiting approval"],["📦",parc,"Parcels at desk"]]:[["🛠️",open,"Open complaints"],["🎟️",exp,"Visitors expected today"],["📦",parc,"Parcels waiting"]].concat(isAdm()?[["💰",rs(bal),"Society fund"],["🙋",pend,"Pending approvals"],["🟢",inside,"Visitors inside"]]:[])).forEach((s,i)=>{const d=mk("div","st");d.style.animationDelay=i*70+"ms";d.appendChild(mk("b",null,s[0]+" "+s[1]));d.appendChild(mk("span",null,s[2]));g.appendChild(d)});h.appendChild(g);
+ const payN=isAdm()?Object.values(D.bills||{}).filter(b=>b.status==="Pending").length:0,g=mk("div","stats");(isGuard()?[["🚪",exp,"Expected today"],["🟢",inside,"Inside now"],["⏳",wait,"Waiting approval"],["📦",parc,"Parcels at desk"]]:[["🛠️",open,"Open complaints"],["🎟️",exp,"Visitors expected today"],["📦",parc,"Parcels waiting"]].concat(isAdm()?[["💰",rs(bal),"Society fund"],["🙋",pend,"Pending approvals"],["🟢",inside,"Visitors inside"]].concat(payN?[["💸",payN,"Payments to confirm"]]:[]):[])).forEach((s,i)=>{const d=mk("div","st");d.style.animationDelay=i*70+"ms";d.appendChild(mk("b",null,s[0]+" "+s[1]));d.appendChild(mk("span",null,s[2]));g.appendChild(d)});h.appendChild(g);
  const a=Object.values(D.ann).sort((x,y)=>y.ts-x.ts)[0];if(a){const c=mk("div","card");c.appendChild(mk("h2",null,"Latest notice"));c.appendChild(mk("b",null,a.title));c.appendChild(mk("p","desc",a.text));h.appendChild(c)}
  if(KIND!=="society"){const H=Object.values(D.hol||{}).filter(x=>x.date>=td()).sort((p,q)=>String(p.date).localeCompare(String(q.date))).slice(0,3);if(H.length){const c=mk("div","card");c.appendChild(mk("h2",null,"🎉 Upcoming holidays"));H.forEach(x=>c.appendChild(mk("div","meta",x.date+" · "+x.title)));h.appendChild(c)}}try{pxHome(h);busHome(h)}catch(e){}try{uxHome(h)}catch(e){}}
 
@@ -2312,7 +2323,7 @@ const spMT="☰ menu → More tools → ";
 const KB=[
 {t:"Greeting",k:["hi","hello","hey","hii","helo","namaste","hola"],a:c=>"👋 Hi! I can help with joining, "+c.svc+", chat, "+c.fin+", "+(c.soc?"visitors & parcels":"attendance & leave")+", people and plans. Just ask — Hinglish is fine too."},
 {t:"Thanks",k:["thanks","thank you","thankyou","thx","shukriya","dhanyavad","great","awesome"],a:()=>"😊 Happy to help! Anything else?"},
-{t:"About the app",k:["what is this app","about app","what can you do","features","app kya hai","kya kar sakte","overview","sangam","sangam360","how does it work","kaise kaam"],a:c=>(c.soc?"🏘️ "+BRAND+" runs your whole society: visitor passes with QR and the gate, parcels, complaints, vehicles & parking, domestic help, classifieds, notices, group & private chat, maintenance bills paid online (Razorpay) with receipts, the society fund and reports, SOS, amenity booking, polls, documents and staff directory, plus Lost & Found, Service directory, Meetings & minutes and Expense report.":c.com?"🏢 "+BRAND+" runs your company: employees & approvals, attendance check-in/out, leave, meeting rooms, holidays, helpdesk, grievances, visitors & couriers, parking, team chat, notices, billing with GST invoices paid online (Razorpay), plus Tasks, Shift roster, Payslips & letters, Assets, Expense claims and Birthdays.":"🎓 "+BRAND+" runs your school: teachers, students & staff, attendance, timetable, homework, leave, holidays, complaints, conduct, visitors & parcels, notices, community chat, fees paid online (Razorpay) with receipts, plus Exam results, Gate pass, Parent–teacher meetings, live School bus tracking, Payslips & letters for teachers and staff, and Birthdays.")+" Everything is in the bottom tabs and the ☰ side menu."},
+{t:"About the app",k:["what is this app","about app","what can you do","features","app kya hai","kya kar sakte","overview","sangam","sangam360","how does it work","kaise kaam"],a:c=>(c.soc?"🏘️ "+BRAND+" runs your whole society: visitor passes with QR and the gate, parcels, complaints, vehicles & parking, domestic help, classifieds, notices, group & private chat, maintenance bills paid by UPI or bank transfer with receipts, the society fund and reports, SOS, amenity booking, polls, documents and staff directory, plus Lost & Found, Service directory, Meetings & minutes and Expense report.":c.com?"🏢 "+BRAND+" runs your company: employees & approvals, attendance check-in/out, leave, meeting rooms, holidays, helpdesk, grievances, visitors & couriers, parking, team chat, notices, billing with GST invoices paid by UPI or bank transfer, plus Tasks, Shift roster, Payslips & letters, Assets, Expense claims and Birthdays.":"🎓 "+BRAND+" runs your school: teachers, students & staff, attendance, timetable, homework, leave, holidays, complaints, conduct, visitors & parcels, notices, community chat, fees paid by UPI or bank transfer with receipts, plus Exam results, Gate pass, Parent–teacher meetings, live School bus tracking, Payslips & letters for teachers and staff, and Birthdays.")+" Everything is in the bottom tabs and the ☰ side menu."},
 {t:"Create my workspace",k:["create society","create company","create school","create my","new society","new company","new school","register society","register company","register school","set up","setup","start new","admin banna","naya society","create workspace","create account as admin"],a:c=>"🏗️ Choose “"+c.card+"” on the first screen → Sign up → Create my "+c.org+" → fill the details"+(c.com?" (GST number is mandatory – 15 characters)":"")+", add "+(c.soc?"towers & flats":c.com?"departments":"classes")+" and your admin account. You then get "+(c.sch?"the Principal's code to share with your teachers; each teacher gets a class code for the students.":"a join code to share with your "+c.per+"s.")},
 {t:"Join with a code",k:["join","joining","join code","enter code","society code","company code","school code","code","request to join","kaise join","join kaise","invite code","code dalna","code daalna"],a:c=>c.sch?"🔑 Principal: Create my school → Create as Principal → you get the Principal's code (People tab) → give it only to teachers.\nTeacher: Join as a teacher → enter the Principal's code → choose class and section → the Principal approves → your class code appears in the People tab.\nStudent: Join as a student → enter your class teacher's code → the teacher approves.":"🔑 Choose “"+c.card+"” → Sign up (or log in) → Join my "+c.org+" → enter the code from your admin → pick your "+(c.soc?"flat":c.unit)+", add name, mobile, ID proof (photo/PDF) and your photo → Request to join. Your admin approves you and you’re in. An empty or wrong code shows “Not found”."},
 {t:"Code says Not found",k:["not found","invalid code","wrong code","code not working","code nahi","code galat","code error","code not found"],a:c=>"❌ “Not found” means the code is empty, mistyped, or belongs to another type. Re-check it with your admin and make sure you picked “"+c.card+"” on the first screen."},
@@ -2338,8 +2349,8 @@ const KB=[
 {t:"Private chat",k:["private chat","dm","personal message","one to one","direct message","inbox","new private chat","private message"],a:c=>"✉️ "+c.comm+" → Inbox → New private chat, or tap anyone’s photo in the group chat → Send private message."},
 {t:"SOS & emergency",k:["sos","emergency","panic","danger","emergency alert","sos kaise","help button"],a:c=>c.grd?"🚨 When someone sends an SOS you and the admins are alerted instantly with the person's name and "+c.unit+". The emergency contacts are in your Me tab → 🆘 Emergency contacts (📞 Call).":"🚨 "+c.me+" tab → 🆘 Emergency contacts → SOS — Send emergency alert → Yes, send SOS. Security and the admins are notified instantly with your "+c.unit+". The same card lists the emergency numbers with 📞 Call."+(c.adm?" Admins add the contacts there (Police, Fire, Ambulance…).":"")},
 {t:"Finance & fund",k:["finance","fund","balance","income","expense","expenses","transactions","accounts","accountant","record income","record expense","kharcha"],a:c=>"💰 "+c.fin+" shows the balance and recent transactions."+(c.adm?" Admins and accountants use Record income / expense; you can export reports.":" You see payments recorded against your own "+c.unit+".")},
-{t:"Pay a bill",k:["maintenance","bill","bills","dues","due","pay bill","monthly bill","billing","fees","fee","pay now","i have paid","utr","reference","payment","pay","paise","bharna","bhugtan","how to pay"],a:c=>c.adm?"🧾 "+c.fin+" → Generate a bill & send (monthly "+c.fee+", an event fee or a one-time charge)."+(c.sch?" Choose the class, then the student (name and roll number).":"")+" Members pay it online with Razorpay and it is marked paid automatically. Online collections shows the totals and Transaction History lists every payment and every entry made by hand; choose From and To on its calendar to see only those dates. Use Remind for unpaid bills and Export (CSV).":"💳 "+c.fin+" → your bill → Pay now → Proceed to Pay. Razorpay opens: pay by UPI, card, net banking or wallet. The bill is marked paid as soon as the payment is verified, and the receipt is in Payment History, where the calendar (From / To) shows the payments of any dates."},
-{t:"Online payments (Razorpay)",k:["upi id","upi","bank details","bank account","payment details","payment method","payment setup","razorpay","online payment","connect razorpay","gateway","card","net banking","wallet","webhook"],a:c=>c.own?"💳 "+c.fin+" → Online payments (Razorpay): paste your own Razorpay Key ID and Key Secret and tap Connect, then add the webhook shown there in the Razorpay dashboard. The money goes straight to your "+c.org+"'s Razorpay account."+(c.com?" The company GST number is saved in "+c.fin+" → GST number.":""):c.adm?"💳 Only the main admin can connect Razorpay ("+c.fin+" → Online payments). Once connected, members pay their bills in the app.":"💳 Bills are paid online with Razorpay: UPI, cards, net banking and wallets. Your card or UPI details are entered on Razorpay's secure page, never stored in this app. If Pay is not available, ask your admin to connect Razorpay."},
+{t:"Pay a bill",k:["maintenance","bill","bills","dues","due","pay bill","monthly bill","billing","fees","fee","pay now","i have paid","utr","reference","payment","pay","paise","bharna","bhugtan","how to pay"],a:c=>c.adm?"🧾 "+c.fin+" → Generate a bill & send (monthly "+c.fee+", an event fee or a one-time charge)."+(c.sch?" Choose the class, then the student (name and roll number).":"")+" Members pay it from the app straight to your "+c.org+"'s UPI ID or bank account and enter the payment reference number (UTR). It then waits under Payments to confirm: find it in your bank statement and tap Confirm (or Reject if the money has not arrived). Collections shows the totals and Transaction History lists every payment and every entry made by hand; choose From and To on its calendar to see only those dates. Use Remind for unpaid bills and Export (CSV).":"💳 "+c.fin+" → your bill → Pay now → Proceed to Pay. You see the UPI ID or bank account of your "+c.org+": pay to it from any UPI or bank app, then enter the reference number (UTR) and tap I have paid. The bill shows Awaiting confirmation until your admin confirms it; the receipt is then in Payment History, where the calendar (From / To) shows the payments of any dates."},
+{t:"Receive payments (UPI ID / bank account)",k:["upi id","upi","bank details","bank account","account number","ifsc","payment details","payment method","payment setup","receive payments","online payment","gateway","confirm payment","payments to confirm","utr","reference number"],a:c=>c.own?"💳 "+c.fin+" → Receive payments: choose UPI ID or Bank account, fill in the details and tap Save. Members then pay their bills from the app straight to it: the money goes from their bank to yours and no payment gateway is needed. Each payment waits under Payments to confirm until you confirm it."+(c.com?" The company GST number is saved in "+c.fin+" → GST number.":""):c.adm?"💳 Only the main admin can add the UPI ID or bank account ("+c.fin+" → Receive payments). Once it is saved, members pay their bills from the app and you confirm them under Payments to confirm.":"💳 Bills are paid straight to your "+c.org+" by UPI or bank transfer, from your own UPI or bank app. After paying, enter the reference number (UTR) and your admin confirms it. If Pay is not available, ask your admin to add a UPI ID or bank account."},
 {t:"Receipt",k:["receipt","download receipt","share receipt","payment receipt","pdf","receipt download","receipt kaise"],a:c=>"🧾 "+c.fin+" → "+(c.adm?"Transaction History":"Payment History")+" → View Receipt → Download receipt (PDF) saves it in the Downloads folder of your phone; Share receipt sends it to another app."+(c.com?" The company GST number is printed on it.":"")},
 {t:"Payslips & letters",k:["payslip","payslips","pay slip","salary slip","salary","salary slips","offer letter","appointment letter","form 16","experience letter","my documents","tankhwah","tankha","vetan","salary kaise","payslip kaise"],a:c=>{let on=false;try{on=fxList().includes("pay")&&fxShown("pay")}catch(e){}
  if(!on)return c.soc?"📄 Payslips & letters are for companies and schools. A society does not have them.":c.sch?"📄 Payslips & letters are for teachers and staff. They are not shown to students.":"📄 Payslips & letters are for employees; they are not shown to security guards.";
@@ -2362,9 +2373,9 @@ const KB=[
 {t:"Conduct & grievances",k:["conduct","grievance","grievances","concern","complaint against","complain about","report teacher","report manager","report student","misbehave","misbehaviour","shikayat teacher"],on:c=>!c.soc,a:c=>c.soc?"📣 Private concerns about a person are for schools and companies. In a society use "+c.svc+" → Complaints.":c.own?"📣 "+c.svc+" → "+(c.sub.gc||"Conduct")+" lists the concerns raised privately (All / Still open / Resolved). Only you can see them. Open one, write your note and tap Update to resolve it, or Delete.":"📣 "+c.svc+" → "+(c.sub.gc||"Conduct")+" → choose the person ("+(c.sch?(c.tch?"a student":"a teacher"):(c.adm?"an employee":"a manager"))+"), add a short title and what happened → Send. Only the "+c.boss+" can see it; nobody else is shown it. Your earlier concerns and their status are listed below."},
 {t:"More than one child",k:["second child","another child","two children","siblings","sibling","child","children","kids","add student","add another student","switch student","dusra bacha","dusre bache","bache","bacha","bachon","my students","do bache"],on:c=>c.sch&&c.stu,a:c=>!c.sch?"👨‍👩‍👧 Adding several children on one login is a school feature.":"👨‍👩‍👧 "+c.me+" tab → My students → ➕ Add another student → enter that child's class code and details. After the class teacher approves, switch with ⇅ Switch student in the side menu or the name chips on Home. No second login is needed; each child has their own fees, results, attendance and bus."},
 {t:"Join as school staff",k:["join as staff","staff join","driver join","bus driver join","peon","conductor","office staff","support staff","clerk","receptionist"],on:c=>c.sch,a:c=>!c.sch?"🧹 Join as staff is for schools. In a "+c.org+" people join with the join code and the admin sets their role in the People tab.":"🧹 Drivers, conductors, office and support staff: choose For Schools → Sign up → Join as staff → enter the school code from the Principal → pick your job, add ID proof and your photo → the Principal approves. A bus driver also enters the bus number. Support staff see notices and their own tools, not the discussion chat."},
-{t:"Reminders, defaulters & refunds",k:["defaulter","defaulters","reminder","remind","overdue","refund","refunded","reopen","paisa wapas","late payment"],a:c=>c.adm||c.acc?"⏰ "+c.fin+" tab: an unpaid bill has a Remind button (the member sees ‘Reminder from admin’ on the bill), 🚨 Defaulters lists overdue bills, and ↩️ Refunded bills shows payments refunded from Razorpay with Reopen if the bill still has to be paid. A refund itself is made by the main admin in the Razorpay dashboard; the app updates the bill by itself.":"⏰ Your admin can send a reminder for an unpaid bill; it shows on the bill in "+c.fin+". For a refund ask your admin: refunds are made from their Razorpay account and the bill then shows as refunded here."},
+{t:"Reminders, defaulters & refunds",k:["defaulter","defaulters","reminder","remind","overdue","refund","refunded","reopen","paisa wapas","late payment"],a:c=>c.adm||c.acc?"⏰ "+c.fin+" tab: an unpaid bill has a Remind button (the member sees ‘Reminder from admin’ on the bill), 🚨 Defaulters lists overdue bills. Bills are paid straight to your "+c.org+"'s UPI ID or bank account, so a refund is sent by the main admin from that account.":"⏰ Your admin can send a reminder for an unpaid bill; it shows on the bill in "+c.fin+". For a refund ask your admin: the money was paid straight to your "+c.org+", so it is sent back from that account."},
 {t:"App locked or trial ended",k:["locked","lock","trial ended","trial period","trial khatam","plan expired","expired","app band","upgrade to continue","features locked","unlock"],a:c=>"🔒 Every new "+c.org+" gets a "+TRIAL_DAYS+"-day free trial counted from the day its "+c.boss+" signed up. When the trial or the plan ends, all features lock for everybody and Home shows ‘upgrade to continue’. "+(c.own?"Open the Plan tab → choose a plan → pay with Razorpay; everything opens again at once.":"Only the "+c.boss+" can buy a plan (Plan tab), so kindly ask them to upgrade.")+" Nothing is deleted, and reinstalling or clearing the app does not restart the trial."},
-{t:"Privacy policy & terms",k:["privacy","privacy policy","terms","terms and conditions","conditions","policy","data safe"],a:c=>"📄 ☰ menu → Privacy Policy or Terms & Conditions (also at the bottom of the "+c.me+" tab). Card and UPI details are entered only on Razorpay's secure page and are never stored in this app."},
+{t:"Privacy policy & terms",k:["privacy","privacy policy","terms","terms and conditions","conditions","policy","data safe"],a:c=>"📄 ☰ menu → Privacy Policy or Terms & Conditions (also at the bottom of the "+c.me+" tab). Your bank, card and UPI passwords or PINs are never asked for or stored in this app."},
 {t:"Invoice & GST",k:["invoice","gst","gstin","tax invoice","gst number","customer invoice","raise invoice","bill customer","download invoice"],a:c=>c.com?(c.adm?"🧾 GST number is mandatory when creating a company. "+c.fin+" → Raise an invoice: customer name, optional customer GST, description, amount and GST % → Create & download invoice. Your GSTIN is printed on every invoice and receipt.":"🧾 Open your bill → 📄 Invoice to download a PDF with the company’s GST number."):"🧾 GST invoices are for companies. In "+c.org+"s, every payment gives you a Receipt PDF."},
 {t:"Attendance",k:["attendance","check in","checkin","check out","checkout","punch","haziri","present","absent","office timing","working hours","hours","attendance kaise"],on:c=>!c.soc,a:c=>!(c.com||c.sch)?"Attendance is for companies and schools. In a society the guard tracks visitors and domestic help instead.":c.stu?"🕘 "+c.svc+" → Attendance shows your check-in and check-out for today and your last 14 days. A student's attendance is marked by the school (class teacher or Principal), so there is no button for you to tap.":"🕘 "+c.svc+" → Attendance → tap Check in when you arrive and Check out when you leave. Today’s hours and your last 14 days are listed below."+(c.drv?" As a driver you check in with your duty PIN and a photo.":"")+(c.adm?"\nAdmin: choose a group ("+(c.sch?"Teachers or a class":"everyone or a department")+") and any date to see each person’s check-in and check-out"+(c.sch?", and mark students in or out":"")+". Export CSV asks for the From and To dates.":"")+"\nIf it says ‘not allowed’, ask your admin to update the database permissions."},
 {t:"Leave",k:["leave","leaves","chhutti","sick leave","casual leave","holiday","time off","apply leave","leave request"],a:c=>c.soc?"Leave requests are available for companies and schools.":"🌴 "+c.svc+" → Leave → choose type, dates and reason → submit."+(c.adm?" Approve or reject requests from the same tab.":" Your admin approves or rejects it.")},
@@ -2418,7 +2429,7 @@ $("fs").onclick=()=>run($("fs"),async()=>{const r=$("fr").value.trim(),a=Number(
  await addDoc(vcol(fmode==="inc"?"contributions":"expenses"),{reason:r,amount:a,category:$("fcat").value,ts:Date.now(),by:S.uid});$("fr").value="";$("fa").value="";toast("✅","Saved","",true)});
 /* the organisation's GST number (companies): printed on invoices and receipts */
 $("gstsv").onclick=()=>run($("gstsv"),async()=>{const g=$("gstin").value.trim().toUpperCase();if(!GSTRE.test(g))throw new Error("Enter a valid 15-character GST number");await updateDoc(doc(db,"societies",S.sid),{gstin:g});S.soc.gstin=g;toast("✅","GST number saved","",true)});
-const bfix=new Set();function rFin(){if(!S.soc)return;rGw();rGst();const mine=!canFin(),I0=Object.values(D.inc),I=mine?I0.filter(t=>t.flat===S.me.flat):I0,E=mine?[]:Object.values(D.exp),ti=I.reduce((a,c)=>a+c.amount,0),te=E.reduce((a,c)=>a+c.amount,0);{const bc=document.querySelector("#t_fin .bal");if(bc)bc.classList.toggle("hide",mine);if(!mine&&S.me.role!=="ACCOUNTANT")I0.forEach(t=>{if(!t.flat&&t.category==="Maintenance"&&/ maintenance /.test(t.reason||"")&&!bfix.has(t.id)){bfix.add(t.id);updateDoc(doc(db,"societies",S.sid,"contributions",t.id),{flat:t.reason.split(" maintenance ")[0]}).catch(()=>{})}})}$("bal").textContent=rs(ti-te);$("balx").textContent="Collected "+rs(ti)+" · Spent "+rs(te);
+const bfix=new Set();function rFin(){if(!S.soc)return;rPo();rGst();const mine=!canFin(),I0=Object.values(D.inc),I=mine?I0.filter(t=>t.flat===S.me.flat):I0,E=mine?[]:Object.values(D.exp),ti=I.reduce((a,c)=>a+c.amount,0),te=E.reduce((a,c)=>a+c.amount,0);{const bc=document.querySelector("#t_fin .bal");if(bc)bc.classList.toggle("hide",mine);if(!mine&&S.me.role!=="ACCOUNTANT")I0.forEach(t=>{if(!t.flat&&t.category==="Maintenance"&&/ maintenance /.test(t.reason||"")&&!bfix.has(t.id)){bfix.add(t.id);updateDoc(doc(db,"societies",S.sid,"contributions",t.id),{flat:t.reason.split(" maintenance ")[0]}).catch(()=>{})}})}$("bal").textContent=rs(ti-te);$("balx").textContent="Collected "+rs(ti)+" · Spent "+rs(te);
  const st=S.soc.settings||{},u=$("upi");if(false){u.classList.remove("hide");u.textContent="Pay"+(st.monthlyAmount?" "+rs(st.monthlyAmount):"")+" via UPI";u.href="upi://pay?pa="+encodeURIComponent(st.upiId)+"&pn="+encodeURIComponent(S.soc.name)+(st.monthlyAmount?"&am="+st.monthlyAmount:"")+"&cu=INR&tn=Society%20maintenance"}else u.classList.add("hide");
  /* the entries themselves are listed in Transaction History (payAdminCards) */
  if(!mine)try{rBills()}catch(e){console.warn(e)}}
@@ -3117,7 +3128,7 @@ async function receiptPdf(b,o){const IV=!!(o&&o.inv),BR=!!(o&&o.brand);/* BR: is
  g.fillStyle="#6b6890";g.font="600 26px "+F;g.fillText(IV?"INVOICE AMOUNT":"AMOUNT RECEIVED",130,486);g.fillStyle=PUR;g.font="800 88px "+F;g.fillText(rs(b.amount),130,570);
  g.save();g.translate(W-290,515);g.rotate(-.18);const sc=IV&&!o.paid?"#dc2626":"#16a34a";g.strokeStyle=sc;g.fillStyle=sc;g.lineWidth=8;rr(-150,-48,300,96,16);g.stroke();g.font="800 "+(IV&&!o.paid?54:62)+"px "+F;g.textAlign="center";g.textBaseline="middle";g.fillText(IV&&!o.paid?"UNPAID":"PAID",0,4);g.restore();
  g.textAlign="left";g.textBaseline="middle";
- const rows=IV?o.rows:[["Receipt no.",b.receiptNo],["Date of payment",bdate(b.paidAt)],[KK.unit,b.flat],[KK.person+" name",b.paidBy||(S.me&&S.me.flat===b.flat?S.me.name:"")],["Payment for",bTitle(b)],["Amount paid",rs(b.amount)]].concat(b.gateway==="razorpay"?[["Payment method",payMeth(b.payMethod)],["Razorpay payment ID",b.utr]]:[["Payment reference (UTR)",b.utr],["Confirmed by",b.confirmedBy]]);
+ const rows=IV?o.rows:[["Receipt no.",b.receiptNo],["Date of payment",bdate(b.paidAt)],[KK.unit,b.flat],[KK.person+" name",b.paidBy||(S.me&&S.me.flat===b.flat?S.me.name:"")],["Payment for",bTitle(b)],["Amount paid",rs(b.amount)]].concat(b.gateway==="razorpay"?[["Payment method",payMeth(b.payMethod)],["Online payment ID",b.utr]]:[["Reference no. (UTR)",[b.utr,payMeth(b.payMethod)].filter(Boolean).join(" · ")],["Confirmed by",b.confirmedBy]]);
  const X=90,Y=650,RH=88,LW=420,TW=W-180;g.strokeStyle="#d9d5f5";g.lineWidth=2;
  rows.forEach((r,i)=>{const y=Y+i*RH;g.fillStyle="#f7f6fd";g.fillRect(X,y,LW,RH);g.fillStyle="rgba(255,255,255,.55)";g.fillRect(X+LW,y,TW-LW,RH);g.strokeRect(X,y,LW,RH);g.strokeRect(X+LW,y,TW-LW,RH);g.fillStyle="#6b6890";g.font="600 27px "+F;g.fillText(r[0],X+24,y+RH/2,LW-40);g.fillStyle="#1b1740";g.font="700 30px "+F;g.fillText(String(r[1]||"—"),X+LW+24,y+RH/2,TW-LW-48)});
  const BY=Y+rows.length*RH+44,BH=rows.length>7?206:250,BW=(TW-40)/2;
@@ -3144,20 +3155,29 @@ function planInv(v){const d=new Date(v.paidAt||v.createdAt||Date.now()),z=n=>Str
  rows.push(["Amount paid",rs(v.amount)],["Payment method",payMeth(v.paymentMethod)||"Online (Razorpay)"],["Razorpay payment ID",v.razorpayPaymentId]);
  return{inv:1,brand:1,paid:true,no,desc,rows}}
 async function planInvoice(v){dlBlob(await receiptPdf({amount:v.amount},planInv(v)))}
-/* every plan payment of this organisation, for the admins: asked from the payment server, which alone keeps these records */
-let subH={sid:"",at:0,list:null,busy:false};
-function subHist(force){if(!PAY_API||!S.me||!isMgr())return;const sid=S.sid;if(subH.sid!==sid)subH={sid,at:0,list:null,busy:false};if(subH.busy||(!force&&Date.now()-subH.at<120000))return;subH.busy=true;subH.at=Date.now();
- api("/v1/subscriptions/history",{sid}).then(r=>{if(subH.sid!==sid)return;subH.busy=false;subH.list=(r&&r.payments)||[];if(tab==="sub")subInvCard();if(tab==="home")try{rHome()}catch(e){}}).catch(()=>{if(subH.sid===sid){subH.busy=false;if(force)subH.at=0}})}
-/* The invoices are one small card - in the Plan tab and on the admin's home screen. Tapping it opens them month by
-   month: the month in which a plan was bought or renewed holds the invoice of that payment. */
+/* every plan payment of this organisation, for the main admin: asked from the payment server, which alone keeps these records */
+let subH={sid:"",at:0,list:null,busy:false,err:false},invZ=null;
+function subHist(force){if(!PAY_API||!S.me||!isMgr())return;const sid=S.sid;if(subH.sid!==sid)subH={sid,at:0,list:null,busy:false,err:false};if(subH.busy||(!force&&Date.now()-subH.at<120000))return;subH.busy=true;subH.err=false;subH.at=Date.now();
+ /* the card in the Plan tab, the card on the home screen and the open list of invoices all follow the answer */
+ const show=()=>{try{if(tab==="sub")subInvCard();if(tab==="home")rHome();if(invZ&&invZ.isConnected)invSheet()}catch(e){console.warn(e)}};
+ api("/v1/subscriptions/history",{sid}).then(r=>{if(subH.sid!==sid)return;subH.busy=false;subH.list=(r&&r.payments)||[];show()}).catch(()=>{if(subH.sid!==sid)return;subH.busy=false;subH.err=true;subH.at=0;show()})}
+/* "Plan invoices" is one small card. The main admin of every kind of workspace (society, company, school) has it
+   in the Plan tab from the first day, also before the first payment; on the home screen it appears once there is
+   an invoice. Tapping it opens the invoices month by month: the month in which a plan was bought or renewed
+   holds the invoice of that payment. */
 const invList=()=>subH.sid===S.sid&&subH.list?subH.list:[];
-function invCard(id){const L=invList();if(!L.length||!S.me||!isMgr())return null;const c=mk("button","card pic"),t=mk("div","pict"),last=L[0];c.type="button";if(id)c.id=id;c.setAttribute("data-noskin","");
- t.append(mk("b",null,"Plan invoices"),mk("span",null,L.length+" invoice"+(L.length===1?"":"s")+" · latest "+bdate(last.paidAt||last.createdAt)));c.append(mk("i","pici","🧾"),t,mk("em",null,"›"));c.onclick=invSheet;return c}
-function subInvCard(){const old=$("subinv"),c=invCard("subinv");if(!c){if(old)old.remove();return}const at=$("plansCard");if(old)old.replaceWith(c);else if(at)at.before(c);else $("sb").appendChild(c)}
+const invGot=()=>!PAY_API||(subH.sid===S.sid&&!!subH.list),invErr=()=>subH.sid===S.sid&&subH.err;
+function invCard(id,always){const L=invList();if(!S.me||!isMgr()||(!L.length&&!always))return null;const c=mk("button","card pic"),t=mk("div","pict"),last=L[0];c.type="button";if(id)c.id=id;c.setAttribute("data-noskin","");
+ t.append(mk("b",null,"Plan invoices"),mk("span",null,L.length?L.length+" invoice"+(L.length===1?"":"s")+" · latest "+bdate(last.paidAt||last.createdAt):invGot()?"No invoices yet · they appear here when you buy a plan":invErr()?"Could not load · tap to try again":"Loading…"));c.append(mk("i","pici","🧾"),t,mk("em",null,"›"));
+ c.onclick=()=>{if(!invGot())subHist(true);invSheet()};return c}
+function subInvCard(){const old=$("subinv"),c=invCard("subinv",true);if(!c){if(old)old.remove();return}const at=$("plansCard");if(old)old.replaceWith(c);else if(at)at.before(c);else $("sb").appendChild(c)}
 let invOpen="";
-function invSheet(){const L=invList();sheet(z=>{z.classList.add("pivs");z.setAttribute("data-noskin","");z.appendChild(mk("h2",null,"🧾 Plan invoices"));z.appendChild(mk("p","sub","Month by month. Tap a month to see the invoice of the plan you bought or renewed in it."));
+function invSheet(){const L=invList();sheet(z=>{invZ=z;z.classList.add("pivs");z.setAttribute("data-noskin","");z.appendChild(mk("h2",null,"🧾 Plan invoices"));z.appendChild(mk("p","sub","Month by month. Tap a month to see the invoice of the plan you bought or renewed in it."));
  const by={};L.forEach(v=>{const d=new Date(v.paidAt||v.createdAt||0),k=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0");(by[k]=by[k]||[]).push(v)});const K=Object.keys(by).sort().reverse();if(!by[invOpen])invOpen=K[0]||"";
- const box=mk("div");z.appendChild(box);if(!K.length)box.appendChild(mk("div","empty","No invoices yet"));
+ const box=mk("div");z.appendChild(box);
+ if(!K.length){const got=invGot(),err=!got&&invErr();box.appendChild(mk("div","empty",got?"No invoices yet":err?"Could not load your invoices":"Loading your invoices…"));
+  box.appendChild(mk("p","meta",got?"You have not bought a plan for this "+KINDS[KIND].word+" yet. When you buy or renew one in the Plan tab, its invoice appears here under that month.":err?"Check your internet connection and try again.":"This can take a moment."));
+  if(err){const b=mk("button","btn s","Try again");b.type="button";b.onclick=()=>{subHist(true);invSheet()};box.appendChild(b)}}
  const draw=()=>{box.innerHTML="";K.forEach(k=>{const M=by[k],on=k===invOpen,h=mk("button","pivm"+(on?" on":"")),ht=mk("span");h.type="button";h.setAttribute("aria-expanded",on?"true":"false");
    ht.append(mk("b",null,mname(k)),mk("small",null,M.length+" invoice"+(M.length===1?"":"s")+" · "+rs(M.reduce((a,v)=>a+(+v.amount||0),0))));h.append(ht,mk("em",null,on?"▾":"›"));h.onclick=()=>{invOpen=on?"-":k;draw()};box.appendChild(h);
    if(!on)return;const w=mk("div","pivl");M.forEach(v=>{const I=planInv(v),r=mk("div","ptx"),l=mk("div","ptl"),a=mk("div","pta");l.append(mk("b",null,I.desc),mk("span",null,"Paid "+dtm(v.paidAt||v.createdAt)+(payMeth(v.paymentMethod)?" · "+payMeth(v.paymentMethod):"")),mk("span",null,"Invoice "+I.no));a.append(mk("b",null,rs(v.amount)),pPill(v));r.append(l,a);
@@ -3178,14 +3198,17 @@ async function shareReceipt(b,dl){const f=await receiptPdf(b);
   if(N){if(await N.share(f,f.name,{title:"Payment receipt "+b.receiptNo,text:tx}))return}
   else if(navigator.canShare&&navigator.canShare({files:[f]})){try{await navigator.share({files:[f],title:"Payment receipt "+b.receiptNo,text:tx});return}catch(e){if(e&&e.name==="AbortError")return}}}
  dlBlob(f)}
-function receipt(b){sheet(z=>{z.appendChild(mk("h2",null,"🧾 Payment receipt"));const on=b.gateway==="razorpay";[["Receipt no.",b.receiptNo],["Society",S.soc.name],["Flat",b.flat],["Paid by",b.paidBy],["For",bTitle(b)],["Amount",rs(b.amount)],["Paid on",on?dtm(b.paidAt):bdate(b.paidAt)],["Payment method",on?payMeth(b.payMethod):""],[on?"Razorpay payment ID":"Reference",b.utr],["Status","PAID"]].concat(socGst()?[["GSTIN",socGst()]]:[]).filter(r=>r[1]).forEach(r=>{const e=mk("div","ex");e.append(mk("span",null,r[0]),mk("b",null,r[1]));if(/ID$/.test(r[0])){e.style.cursor="pointer";e.onclick=()=>cp(r[1])}z.appendChild(e)});
+function receipt(b){sheet(z=>{z.appendChild(mk("h2",null,"🧾 Payment receipt"));const on=b.gateway==="razorpay",dr=b.gateway==="direct";[["Receipt no.",b.receiptNo],["Society",S.soc.name],["Flat",b.flat],["Paid by",b.paidBy],["For",bTitle(b)],["Amount",rs(b.amount)],["Paid on",on?dtm(b.paidAt):bdate(b.paidAt)],["Payment method",on||dr?payMeth(b.payMethod):""],["Paid to",dr?b.paidTo:""],[on?"Online payment ID":"Reference no. (UTR)",b.utr],["Confirmed by",on?"":b.confirmedBy],["Status","PAID"]].concat(socGst()?[["GSTIN",socGst()]]:[]).filter(r=>r[1]).forEach(r=>{const e=mk("div","ex");e.append(mk("span",null,r[0]),mk("b",null,r[1]));if(/ID$|UTR\)$/.test(r[0])){e.style.cursor="pointer";e.onclick=()=>cp(r[1])}z.appendChild(e)});
  const w=mk("button","btn s g","⬇️ Download receipt (PDF)");w.style.marginTop="12px";w.onclick=()=>run(w,()=>shareReceipt(b,true).catch(x=>fail(x,"Couldn't create receipt")));z.append(w);if(canShareFile()){const sh=mk("button","btn s o","📤 Share receipt");sh.style.marginTop="8px";sh.onclick=()=>run(sh,()=>shareReceipt(b,false).catch(x=>fail(x,"Couldn't share the receipt")));z.append(sh)}{const iv=mk("button","btn s o","📄 Download invoice");iv.style.marginTop="8px";iv.onclick=()=>run(iv,()=>shareInvoice(b).catch(x=>fail(x,"Couldn't create invoice")));z.appendChild(iv)}})}
-/* ================= online payments (Razorpay) =================
-   The app never decides an amount and never marks anything as paid.
-   It asks the payment server (PAY_API) to create an order for a bill, opens Razorpay Checkout and sends
-   Razorpay's answer back to the server to be verified. Only the server writes payment records and "Paid". */
+/* ================= payments =================
+   The bills of an organisation (maintenance, fees, invoices) are paid straight to the organisation: to the UPI ID
+   or the bank account its main admin saved (Finance -> Receive payments). No payment gateway is involved. The
+   member pays from their own UPI or bank app and enters the reference number (UTR); an admin confirms it after
+   finding the payment in the bank statement. Where to pay, how much, and "Paid" all come from the payment
+   server (PAY_API): the app never decides an amount and never marks anything as paid.
+   Razorpay is used for one thing only: the plan an organisation buys from Sangam360 (the Plan tab). */
 const RZP_JS="https://checkout.razorpay.com/v1/checkout.js";
-const payOn=()=>!!PAY_API,gwOn=()=>!!(S.soc&&S.soc.gateway&&S.soc.gateway.keyId);
+const payOn=()=>!!PAY_API,poOn=()=>!!(S.soc&&S.soc.payout&&(S.soc.payout.method==="upi"||S.soc.payout.method==="bank"));
 async function api(path,body,ms){
  if(!PAY_API){const x=new Error("Online payments are not switched on yet.");x.fxv=true;throw x}
  /* a sleeping server can need about a minute to answer its first request, so the limit is generous */
@@ -3257,11 +3280,11 @@ const uGrp=f=>String(f).split(" · ")[0],uId=f=>String(f).split(" · ").slice(1)
 const uLabel=(f,names)=>{const nm=(names||[]).join(", ");if(!isOrg())return nm?f+" — "+nm:f;const id=uId(f);return(nm||f)+(id?" · "+(KIND==="school"?"Roll ":"")+id:"")};
 const BTYPES=[["maintenance","Monthly maintenance"],["event","Event fee"],["other","One-time charge"]];
 const bTitle=b=>String((b&&b.title)||"").trim()||((b&&b.month?mname(b.month)+" ":"")+KINDS[KIND].fee);
-const payMeth=m=>({upi:"UPI",card:"Card",netbanking:"Net banking",wallet:"Wallet",emi:"EMI",paylater:"Pay later"})[m]||(m?String(m):"");
+const payMeth=m=>({upi:"UPI",bank:"Bank transfer",card:"Card",netbanking:"Net banking",wallet:"Wallet",emi:"EMI",paylater:"Pay later"})[m]||(m?String(m):"");
 const dtm=t=>bdate(t)+", "+tm(t);
 const closedBill=b=>b.status==="Paid"||b.status==="Refunded";
-/* a payment record shown through the receipt / invoice code that already exists for bills */
-const payAsBill=p=>({id:p.chargeId,flat:p.flat||"",month:p.period||"",title:p.description,amount:p.amount,due:p.dueAt||p.createdAt,ts:p.createdAt,status:"Paid",paidAt:p.paidAt,receiptNo:p.receiptNumber,paidBy:p.payerName||"",utr:p.razorpayPaymentId,payMethod:p.paymentMethod,gateway:"razorpay",confirmedBy:"Razorpay (verified online)"});
+/* a payment made online before bills were paid directly, shown through the receipt / invoice code of the bills */
+const payAsBill=p=>({id:p.chargeId,flat:p.flat||"",month:p.period||"",title:p.description,amount:p.amount,due:p.dueAt||p.createdAt,ts:p.createdAt,status:"Paid",paidAt:p.paidAt,receiptNo:p.receiptNumber,paidBy:p.payerName||"",utr:p.razorpayPaymentId,payMethod:p.paymentMethod,gateway:"razorpay",confirmedBy:"Verified online"});
 
 /* ---- full-screen payment states: processing, success, failed, being verified ---- */
 let payScr=null,payLock=false,payPoll=null,paySlowT=null;
@@ -3308,7 +3331,7 @@ function payUnsure(kind,paymentId,o){payLock=false;const c=payFrame("unsure","Ve
   busy=false};
  payBtns(c,[["Check status",()=>check(true)],o.plan?["Close",payClose," o"]:["View Payment History",toHistory," o"]]);
  payPoll=setInterval(()=>{if(++n>12){clearInterval(payPoll);payPoll=null;return}check(false)},6000)}
-/* kind: "payments" = a bill of this organisation · "subscriptions" = a Sangam360 plan */
+/* Razorpay Checkout for a Sangam360 plan (kind = "subscriptions"). Bills of an organisation do not come here: see payBill. */
 async function payStart(kind,body,o){
  if(payLock||payScr)return;
  payWait("Starting secure payment…","Please wait a moment.");
@@ -3348,17 +3371,52 @@ async function payStart(kind,body,o){
  try{clearTimeout(paySlowT);const r=new window.Razorpay(opts);r.on("payment.failed",x=>{lastErr=(x&&x.error)||{}});r.open()}
  catch(e){console.error(e);release();payFailed(o,{soft:1,msg:"Razorpay could not be opened. Please try again."})}}
 
-/* ---- payment details -> proceed to pay ---- */
+/* ---- pay a bill: straight to the organisation's UPI ID or bank account ----
+   1. Payment Details: the bill.
+   2. Where to pay: the UPI ID or the bank account, exactly as the payment server gives it (the full account
+      number is given only now, to the member who is about to pay an open bill of their own).
+   3. The member pays in their own UPI / bank app and enters the reference number (UTR). The bill then waits
+      for an admin, who confirms it after finding the payment in the bank statement. */
+const ACT={savings:"Savings account",current:"Current account"};
 function payBill(b){sheet(z=>{z.classList.add("pds");z.appendChild(mk("h2",null,"Payment Details"));const now=Date.now(),ov=b.due<now;
  const hd=mk("div","pdh");hd.append(mk("b",null,bTitle(b)),mk("span",null,b.title&&b.month?mname(b.month):S.soc.name));z.appendChild(hd);
  const am=mk("div","pda");am.append(mk("small",null,"Amount"),mk("b",null,rs(b.amount)));z.appendChild(am);
  [["Due Date",bdate(b.due)+(ov?" · Overdue":"")],[KINDS[KIND].unit,b.flat],["Invoice no.",invNo(b)]].forEach(r=>{const e=mk("div","ex");e.append(mk("span",null,r[0]),mk("b",ov&&r[0]==="Due Date"?"neg":null,r[1]||"—"));z.appendChild(e)});
- const ready=payOn()&&gwOn(),p=mk("button","btn","Proceed to Pay");p.type="button";p.style.marginTop="16px";p.disabled=!ready;
- if(!ready){const n=mk("div","note","Online payment is not set up for this society yet. Please ask your admin to connect Razorpay.");n.style.marginTop="14px";z.appendChild(n)}
- p.onclick=()=>{if(p.disabled)return;p.disabled=true;closeSheet();payStart("payments",{sid:S.sid,chargeId:b.id,profileId:PID()},{name:S.soc.name,bill:b,retry:()=>payBill(b)})};z.appendChild(p);
- const s=mk("p","pdsec","🔒 Secure payment by Razorpay · UPI, cards, net banking and wallets");s.setAttribute("data-noskin","");z.appendChild(s)})}
+ const ready=payOn()&&poOn(),pm=ready?S.soc.payout.method:"",p=mk("button","btn","Proceed to Pay");p.type="button";p.style.marginTop="16px";p.disabled=!ready;
+ if(!ready){const n=mk("div","note","Payments are not set up for this "+KINDS[KIND].word+" yet. Please ask your admin to add a UPI ID or bank account.");n.setAttribute("data-noskin","");n.style.marginTop="14px";z.appendChild(n)}
+ p.onclick=()=>{if(p.disabled)return;run(p,async()=>{let d;
+   try{d=await api("/v1/payments/direct/details",{sid:S.sid,chargeId:b.id,profileId:PID()})}
+   catch(e){const paid=e.pcode==="already-paid";if(paid||e.pcode==="already-reported"){closeSheet();toast(paid?"✅":"⏳",paid?"Already paid":"Waiting for confirmation",e.message,true);try{rBills()}catch(_){}return}throw e}
+   payDirect(b,d)})};z.appendChild(p);
+ if(ready){const s=mk("p","pdsec","🔒 You pay "+S.soc.name+" directly by "+(pm==="upi"?"UPI":"bank transfer")+". "+BRAND+" never holds your money.");s.setAttribute("data-noskin","");z.appendChild(s)}})}
+/* d = the answer of the payment server: {method, amount, note} and the UPI ID or the bank account */
+function payDirect(b,d){sheet(z=>{z.classList.add("pds","pdd");z.setAttribute("data-noskin","");const upi=d.method==="upi",amt=Number(d.amount)||0,app=upi?"UPI":"bank";
+ z.appendChild(mk("h2",null,"Pay "+rs(amt)));
+ const hd=mk("div","pdh");hd.append(mk("b",null,bTitle(b)),mk("span",null,S.soc.name));z.appendChild(hd);
+ z.appendChild(mk("div","pdst",upi?"Step 1 · Pay to this UPI ID":"Step 1 · Send to this bank account"));
+ /* copy: true = the value itself, a string = that text instead (the amount without the rupee sign) */
+ const row=(l,v,copy)=>{if(!v)return;const e=mk(copy?"button":"div","gwc"+(copy?" cpb":""));if(copy){e.type="button";e.title="Tap to copy";e.onclick=()=>cp(copy===true?String(v):String(copy))}e.append(mk("span",null,l),mk("code",null,String(v)));z.appendChild(e)};
+ if(upi){row("UPI ID",d.upiId,true);row("Name",d.payeeName)}
+ else{row("Account holder",d.holder,true);row("Account number",d.accountNumber,true);row("IFSC",d.ifsc,true);row("Bank",[d.bankName,ACT[d.type]].filter(Boolean).join(" · "))}
+ row("Amount",rs(amt),String(amt));row(upi?"Note":"Remark",d.note,true);
+ if(upi){const link="upi://pay?pa="+encodeURIComponent(d.upiId)+"&pn="+encodeURIComponent(d.payeeName||"")+"&am="+amt.toFixed(2)+"&cu=INR&tn="+encodeURIComponent(d.note||"");
+  const a=mk("a","btn","📲 Open UPI app");a.href=link;a.style.marginTop="6px";z.appendChild(a);
+  const q=mk("div","fxqr");z.appendChild(q);try{fxQR(q,link)}catch(e){}
+  z.appendChild(mk("p","pdq","Or scan this QR code with any UPI app. If your UPI app does not open, copy the UPI ID and pay to it from the app."))}
+ else z.appendChild(mk("p","pdq","Use NEFT, IMPS or UPI (to bank account) from your bank app."));
+ z.appendChild(mk("div","pdst","Step 2 · Enter the reference number"));
+ const ref=mk("input");ref.placeholder=upi?"UPI reference no. (UTR), e.g. 412345678901":"UTR / reference no. of the transfer";ref.maxLength=44;ref.autocomplete="off";ref.spellcheck=false;ref.setAttribute("autocapitalize","characters");ref.setAttribute("aria-label","Payment reference number (UTR)");ref.setAttribute("data-noskin","");
+ const ok=mk("button","btn","I have paid");ok.type="button";
+ ok.onclick=()=>run(ok,async()=>{const u=ref.value.replace(/[\s-]/g,"").toUpperCase();
+  if(!/^[A-Z0-9]{8,35}$/.test(u)){try{ref.focus()}catch(e){}throw fxBad("Enter the reference number of your payment (UTR / Ref no.). You find it in your "+app+" app after paying.")}
+  await api("/v1/payments/direct/report",{sid:S.sid,chargeId:b.id,profileId:PID(),reference:u});
+  closeSheet();toast("✅","Sent to your admin","Reference "+u+". The bill is marked paid as soon as your admin confirms it.",true);try{rBills()}catch(e){}});
+ z.append(ref,mk("p","pdh2","Pay first, then enter the number. Your "+app+" app shows it as UTR, "+(upi?"UPI Ref. No.":"Reference No.")+" or Transaction ID."),ok);
+ z.appendChild(mk("p","pdsec","🔒 The money goes straight from your bank to "+S.soc.name+". Your admin confirms it after checking the bank statement."))})}
 
-/* ---- payment history (member) and transactions (admin) ---- */
+/* ---- payment history (member) and transactions (admin) ----
+   PST / pState / pIn describe a payment record: the ones made online before bills were paid directly, and the
+   bills themselves when they are listed as payments (see payHistCard). */
 const PST={SUCCESS:["Successful","g"],PENDING:["Pending","y"],CREATED:["Pending","y"],FAILED:["Failed","r"],CANCELLED:["Cancelled","m"],REFUNDED:["Refunded","b"]};
 const PFILT=[["all","All"],["ok","Successful"],["pend","Pending"],["fail","Failed"],["ref","Refunded"]];
 /* an order that was opened but never paid stops being "pending" once it has expired */
@@ -3368,12 +3426,9 @@ const pWhen=p=>p.paidAt||p.createdAt||0;
 const pPill=p=>{const s=pState(p),q=PST[s]||[s,"m"],e=mk("span","pst "+q[1],q[0]);return e};
 const pChips=(cur,set,cnt,F)=>{const w=mk("div","fxch pfl");w.setAttribute("role","group");w.setAttribute("aria-label","Filter by status");(F||PFILT).forEach(([k,t])=>{const b=mk("button",cur===k?"on":null,t+(cnt&&k!=="all"&&cnt[k]?" · "+cnt[k]:""));b.type="button";b.setAttribute("aria-pressed",cur===k?"true":"false");b.onclick=()=>set(k);w.appendChild(b)});return w};
 const pCount=P=>{const c={};PFILT.forEach(([k])=>{c[k]=P.filter(p=>pIn(p,k)).length});return c};
-async function payCheck(p,btn){await run(btn,async()=>{let v=await api("/v1/payments/status",{sid:S.sid,paymentId:p.paymentId});
- if(v.status==="CREATED"&&v.gatewayChecked)v=await api("/v1/payments/fail",{sid:S.sid,paymentId:p.paymentId,outcome:"cancelled"});
- const q=PST[v.status]||[v.status];toast(v.status==="SUCCESS"?"✅":"ℹ️","Payment "+q[0].toLowerCase(),v.status==="PENDING"?"Still being verified. Please check again in a few minutes.":bTitle({title:v.description}),true)})}
-let phF="all",txF="all",txMax=40,payAuto="",hFrom="",hTo="",hX={k:""};
+let phF="all",txF="all",txMax=40,hFrom="",hTo="",hX={k:""};
 /* ---- the calendar on the history card: only the payments / entries of the chosen dates ---- */
-const TFILT=PFILT.concat([["man","Entered by hand"]]),HLIM=1000;
+const HLIM=1000,tFilt=old=>[["all","All"],["bill","Bill payments"],["man","Entered by hand"]].concat(old?[["pend","Pending"],["fail","Failed"],["ref","Refunded"]]:[]);
 const dayMs=(s,end)=>{const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(s||"");return m?new Date(+m[1],+m[2]-1,+m[3],end?23:0,end?59:0,end?59:0,end?999:0).getTime():null};
 const hOn=()=>!!(hFrom||hTo),hIn=t=>{const a=dayMs(hFrom),b=dayMs(hTo,1);return(a==null||t>=a)&&(b==null||t<=b)};
 const hLabel=()=>{const f=x=>bdate(dayMs(x));return hFrom&&hTo?(hFrom===hTo?f(hFrom):f(hFrom)+" – "+f(hTo)):hFrom?"From "+f(hFrom):"Up to "+f(hTo)};
@@ -3384,98 +3439,128 @@ function hDates(){const w=mk("div","hdf"),F=mk("input"),T=mk("input"),lf=mk("lab
  const d=new Date(),ymd=x=>x.getFullYear()+"-"+String(x.getMonth()+1).padStart(2,"0")+"-"+String(x.getDate()).padStart(2,"0"),m0=ymd(new Date(d.getFullYear(),d.getMonth(),1)),p0=ymd(new Date(d.getFullYear(),d.getMonth()-1,1)),p1=ymd(new Date(d.getFullYear(),d.getMonth(),0));
  const q=mk("div","fxch");q.setAttribute("role","group");q.setAttribute("aria-label","Quick dates");[["All dates","",""],["Today",t0,t0],["This month",m0,t0],["Last month",p0,p1]].forEach(([t,a,b])=>{const on=hFrom===a&&hTo===b,x=mk("button",on?"on":null,t);x.type="button";x.setAttribute("aria-pressed",on?"true":"false");x.onclick=()=>set(a,b);q.appendChild(x)});
  w.append(lf,lt,q);return w}
-/* The chosen dates may reach further back than what is kept loaded (the latest 500 payments and 100 entries),
+/* The chosen dates may reach further back than what is kept loaded (the latest 100 entries of each kind),
    so that range is read once from the database. Finance roles only: a member's own payments are all loaded. */
 const hKey=()=>S.sid+"|"+hFrom+"|"+hTo;
 function hFetch(){const k=hKey();if(hX.k===k)return;const a=dayMs(hFrom)||0,b=dayMs(hTo,1)||Date.now()+864e5,x=hX={k,busy:true,ok:false,err:false,cap:false,pay:[],inc:[],exp:[]};
  const G=(n,f,lo)=>getDocs(query(vcol(n),where(f,">=",lo),where(f,"<=",b),orderBy(f,"desc"),limit(HLIM))).then(q=>{if(q.docs.length>=HLIM)x.cap=true;return q.docs.map(v=>({id:v.id,...v.data()}))});
  /* a payment is listed under the day it was paid, which can be a little later than the day it was started */
  Promise.all([G("payments","createdAt",Math.max(0,a-2*864e5)),G("contributions","ts",a),G("expenses","ts",a)]).then(([p,i,e])=>{x.pay=p;x.inc=i;x.exp=e;x.ok=true},e=>{console.warn("history",e);x.err=true}).then(()=>{x.busy=false;if(hX===x)try{rBills()}catch(e){console.warn(e)}})}
-/* payments of mine that were left open (app closed mid-payment): ask the server once what became of them */
-function payResume(){const k=S.sid+"|"+S.uid;if(payAuto===k||!payOn())return;const L=Object.values(D.pay||{}).filter(p=>p.userId===S.uid&&(p.status==="PENDING"||p.status==="CREATED")&&p.razorpayOrderId);if(!Object.keys(D.pay||{}).length)return;payAuto=k;
- L.slice(0,3).forEach(p=>api("/v1/payments/status",{sid:S.sid,paymentId:p.paymentId}).catch(()=>{}))}
-/* everybody without a finance role: "Payment History" = their own payments */
+/* everybody without a finance role: "Payment History" = their own bill payments */
 function payHistCard(m,B){const mineP=Object.values(D.pay||{}).filter(p=>p.userId===S.uid&&(!p.flat||!S.me.flat||p.flat===S.me.flat));
- /* bills settled before online payments existed keep their place in the history */
- const old=B.filter(b=>b.status==="Paid"&&!b.paymentId).map(b=>({legacy:b,status:"SUCCESS",description:bTitle(b),amount:b.amount,paidAt:b.paidAt,receiptNumber:b.receiptNo}));
- const all=mineP.concat(old).sort((a,b)=>pWhen(b)-pWhen(a)),c=mk("div","card");c.id="payhist";c.appendChild(mk("h2",null,"📜 Payment History"));m.appendChild(c);
+ /* a bill paid straight to the organisation: reported and waiting for the admin, or confirmed */
+ const own=B.filter(b=>(b.status==="Paid"&&!b.paymentId)||b.status==="Pending").map(b=>({bill:b,status:b.status==="Paid"?"SUCCESS":"PENDING",description:bTitle(b),amount:b.amount,paidAt:b.paidAt,createdAt:b.reportedAt||b.ts,receiptNumber:b.receiptNo,paymentMethod:b.payMethod,utr:b.utr}));
+ const all=mineP.concat(own).sort((a,b)=>pWhen(b)-pWhen(a)),c=mk("div","card");c.id="payhist";c.appendChild(mk("h2",null,"📜 Payment History"));m.appendChild(c);
  if(!all.length){c.appendChild(mk("div","empty","No payments yet"));return}
- const R=all.filter(p=>hIn(pWhen(p)));c.appendChild(hDates());c.appendChild(pChips(phF,k=>{phF=k;rBills()},pCount(R)));
+ /* "Failed" and "Refunded" exist only for payments made online before bills were paid directly */
+ const F=[["all","All"],["ok","Paid"],["pend","Awaiting confirmation"]].concat(mineP.length?[["fail","Failed"],["ref","Refunded"]]:[]);if(!F.some(x=>x[0]===phF))phF="all";
+ const R=all.filter(p=>hIn(pWhen(p)));c.appendChild(hDates());c.appendChild(pChips(phF,k=>{phF=k;rBills()},pCount(R),F));
  const L=R.filter(p=>pIn(p,phF));
  if(hOn()){const paid=L.filter(p=>pState(p)==="SUCCESS").reduce((a,p)=>a+(+p.amount||0),0);c.appendChild(mk("div","hds",hLabel()+" · "+L.length+" payment"+(L.length===1?"":"s")+(paid?" · paid "+rs(paid):"")))}
  if(!L.length)c.appendChild(mk("div","meta",hOn()?"No payments on these dates.":"Nothing here yet."));
- L.slice(0,60).forEach(p=>{const s=pState(p),r=mk("div","ptx"),l=mk("div","ptl"),a=mk("div","pta");r.setAttribute("data-noskin","");
-  l.append(mk("b",null,p.description||"Payment"),mk("span",null,[s==="SUCCESS"||s==="REFUNDED"?"Paid "+dtm(pWhen(p)):dtm(pWhen(p)),payMeth(p.paymentMethod)].filter(Boolean).join(" · ")));
-  a.append(mk("b",null,rs(p.amount)),pPill(p));r.append(l,a);
+ L.slice(0,60).forEach(p=>{const s=pState(p),wait=!!p.bill&&s==="PENDING",r=mk("div","ptx"),l=mk("div","ptl"),a=mk("div","pta");r.setAttribute("data-noskin","");
+  l.append(mk("b",null,p.description||"Payment"),mk("span",null,[s==="SUCCESS"||s==="REFUNDED"?"Paid "+dtm(pWhen(p)):wait?"Reported "+dtm(pWhen(p)):dtm(pWhen(p)),payMeth(p.paymentMethod)].filter(Boolean).join(" · ")));
+  if(p.bill&&p.utr)l.appendChild(mk("span",null,"Ref "+p.utr));
+  a.append(mk("b",null,rs(p.amount)),wait?mk("span","pst y","Awaiting confirmation"):pPill(p));r.append(l,a);
   if(p.refundedAmountPaise>0&&s!=="REFUNDED")r.appendChild(mk("div","ptn",rs(p.refundedAmountPaise/100)+" of this was refunded"));
   if(p.duplicate&&s==="SUCCESS")r.appendChild(mk("div","ptn","Received twice for the same bill. Please ask your admin for a refund."));
   if((s==="FAILED")&&p.failure&&p.failure.reason)r.appendChild(mk("div","ptn",p.failure.reason));
-  if(s==="SUCCESS"){const b=ghost(mk("button","btn s o","View Receipt"));b.onclick=()=>receipt(p.legacy||payAsBill(p));r.appendChild(b)}
-  else if((s==="PENDING"||s==="CREATED")&&payOn()){const b=ghost(mk("button","btn s o","Check status"));b.onclick=()=>payCheck(p,b);r.appendChild(b)}
+  if(wait)r.appendChild(mk("div","ptn","Your admin confirms it after checking the bank statement."));
+  if(s==="SUCCESS"){const b=ghost(mk("button","btn s o","View Receipt"));b.onclick=()=>receipt(p.bill||payAsBill(p));r.appendChild(b)}
   c.appendChild(r)})}
-/* finance roles: the totals of the online collections, and "Transaction History" = every online payment of the
+/* finance roles: what the bills have brought in, and "Transaction History" = every bill payment of the
    organisation together with the income and expenses that were entered by hand */
-function payAdminCards(m){const P0=Object.values(D.pay||{}).sort((a,b)=>pWhen(b)-pWhen(a)),sum=f=>P0.filter(f).reduce((a,p)=>a+(+p.amount||0),0),n=f=>P0.filter(f).length;
- const ok=p=>p.status==="SUCCESS",refd=P0.reduce((a,p)=>a+(p.refundedAmountPaise||0)/100,0),part=sum(p=>ok(p))-P0.filter(ok).reduce((a,p)=>a+(p.refundedAmountPaise||0)/100,0);
- const c=mk("div","card");c.appendChild(mk("h2",null,"💳 Online collections"));
- const g=mk("div","pks");g.setAttribute("data-noskin","");[["Total Collected",rs(part),"t"],["Successful",n(ok),"g"],["Pending",n(p=>pIn(p,"pend")),"y"],["Failed",n(p=>pIn(p,"fail")),"r"],["Refunded",rs(refd),"b"]].forEach(k=>{const e=mk("div","pk "+k[2]);e.append(mk("span",null,k[0]),mk("b",null,String(k[1])));g.appendChild(e)});c.appendChild(g);
- if(!P0.length)c.appendChild(mk("div","meta",gwOn()?"No online payments yet. Members can pay their bills from the app.":"Connect Razorpay (below) so members can pay their bills in the app."));
- m.appendChild(c);
+function payAdminCards(m){const P0=Object.values(D.pay||{}).sort((a,b)=>pWhen(b)-pWhen(a)),now=Date.now();
+ /* the totals come from the bills, which only the admins hold in full */
+ if(isAdm()){const B=Object.values(D.bills||{}),n=f=>B.filter(f).length,paid=B.filter(b=>b.status==="Paid"),c=mk("div","card");c.appendChild(mk("h2",null,"💳 Collections"));
+  const g=mk("div","pks");g.setAttribute("data-noskin","");[["Total Collected",rs(paid.reduce((a,b)=>a+(+b.amount||0),0)),"t"],["Paid",paid.length,"g"],["To confirm",n(b=>b.status==="Pending"),"y"],["Unpaid",n(b=>b.status==="Unpaid"&&b.due>=now),"b"],["Overdue",n(b=>b.status==="Unpaid"&&b.due<now),"r"]].forEach(k=>{const e=mk("div","pk "+k[2]);e.append(mk("span",null,k[0]),mk("b",null,String(k[1])));g.appendChild(e)});c.appendChild(g);
+  if(!poOn()){const x=mk("div","note",isOwner()?"Add your UPI ID or bank account in Receive payments (above) so members can pay their bills from the app.":"The main admin has not added a UPI ID or bank account yet, so members cannot pay from the app.");x.setAttribute("data-noskin","");c.appendChild(x)}
+  else if(!B.length)c.appendChild(mk("div","meta","No bills yet. Generate a bill and members pay it from the app."));
+  m.appendChild(c)}
  const rg=hOn();if(rg)hFetch();const X=rg&&hX.k===hKey()?hX:null,both=(a,b)=>{const o={};(a||[]).concat(b||[]).forEach(v=>{o[v.id||v.paymentId]=v});return Object.values(o)};
- /* a payment made online also writes an entry into the ledger: it is shown once, as the payment */
- const hand=v=>!v.online&&!v.paymentId,I0=Object.values(D.inc||{}).filter(hand),E0=Object.values(D.exp||{});
- const all=both(X&&X.pay,P0).map(p=>({p,ts:pWhen(p)})).concat(both(X&&X.inc,I0).filter(hand).map(l=>({l,k:1,ts:l.ts||0})),both(X&&X.exp,E0).map(l=>({l,k:0,ts:l.ts||0}))).filter(r=>hIn(r.ts)).sort((a,b)=>b.ts-a.ts);
+ /* a payment made online (before bills were paid directly) also wrote an entry into the ledger: it is shown once, as the payment */
+ const hand=v=>!v.online&&!v.paymentId,I0=Object.values(D.inc||{}).filter(hand),E0=Object.values(D.exp||{}),PA=both(X&&X.pay,P0);
+ const all=PA.map(p=>({p,ts:pWhen(p)})).concat(both(X&&X.inc,I0).filter(hand).map(l=>({l,k:1,ts:l.ts||0})),both(X&&X.exp,E0).map(l=>({l,k:0,ts:l.ts||0}))).filter(r=>hIn(r.ts)).sort((a,b)=>b.ts-a.ts);
  const t=mk("div","card");t.id="payhist";t.appendChild(mk("h2",null,"🧾 Transaction History"));m.appendChild(t);
  if(!rg&&!P0.length&&!I0.length&&!E0.length){t.appendChild(mk("div","empty","No transactions yet"));return}
- const rIn=(r,f)=>r.p?pIn(r.p,f):f==="all"||f==="man",cnt={};TFILT.forEach(([k])=>{cnt[k]=all.filter(r=>rIn(r,k)).length});
- t.appendChild(hDates());t.appendChild(pChips(txF,k=>{txF=k;txMax=40;rBills()},cnt,TFILT));
+ /* l.direct: the ledger line the payment server wrote when an admin confirmed a bill paid by UPI / bank transfer */
+ const TF=tFilt(PA.length>0);if(!TF.some(x=>x[0]===txF))txF="all";
+ const rIn=(r,f)=>f==="all"||(r.p?(f==="bill"?pState(r.p)==="SUCCESS":pIn(r.p,f)):f===(r.l.direct?"bill":"man")),cnt={};TF.forEach(([k])=>{cnt[k]=all.filter(r=>rIn(r,k)).length});
+ t.appendChild(hDates());t.appendChild(pChips(txF,k=>{txF=k;txMax=40;rBills()},cnt,TF));
  const L=all.filter(r=>rIn(r,txF)),got=L.reduce((a,r)=>a+(r.p?(pState(r.p)==="SUCCESS"?(+r.p.amount||0)-(r.p.refundedAmountPaise||0)/100:0):r.k?+r.l.amount||0:0),0),out=L.reduce((a,r)=>a+(r.l&&!r.k?+r.l.amount||0:0),0);
  t.appendChild(mk("div","hds",(rg?hLabel()+" · ":"")+L.length+(L.length===1?" entry":" entries")+" · received "+rs(got)+(out?" · spent "+rs(out):"")));
  if(X&&X.busy)t.appendChild(mk("div","meta","Loading these dates…"));
  else if(X&&X.err)t.appendChild(mk("div","note","Older entries could not be loaded just now. Showing what is already on this phone."));
  else if(X&&X.cap)t.appendChild(mk("div","note","These dates hold more than "+HLIM+" entries, so the oldest are left out. Choose fewer days to see them all."));
  if(!L.length&&!(X&&X.busy))t.appendChild(mk("div","meta",rg?"No transactions on these dates.":"No transactions in this view."));
+ const how=v=>v.direct?[payMeth(v.method)||"Paid directly",v.utr?"Ref "+v.utr:""].filter(Boolean).join(" · "):"Entered by hand";
  L.slice(0,txMax).forEach(q=>{const r=mk("div","ptx"),l=mk("div","ptl"),a=mk("div","pta");r.setAttribute("data-noskin","");
-  if(q.l){const v=q.l;l.append(mk("b",null,v.reason||(q.k?"Income":"Expense")),mk("span",null,[v.category,v.flat].filter(Boolean).join(" · ")),mk("span",null,"Entered by hand · "+dtm(q.ts)));
-   a.append(mk("b",q.k?"pos":"neg",(q.k?"+ ":"− ")+rs(v.amount)),mk("span","pst "+(q.k?"g":"m"),q.k?"Income":"Expense"));r.append(l,a);t.appendChild(r);return}
+  if(q.l){const v=q.l,bl=v.direct&&v.billId&&D.bills?D.bills[v.billId]:null;l.append(mk("b",null,v.reason||(q.k?"Income":"Expense")),mk("span",null,[v.category,v.flat].filter(Boolean).join(" · ")),mk("span",null,how(v)+" · "+dtm(q.ts)));
+   a.append(mk("b",q.k?"pos":"neg",(q.k?"+ ":"− ")+rs(v.amount)),mk("span","pst "+(q.k?"g":"m"),v.direct?"Bill paid":q.k?"Income":"Expense"));r.append(l,a);
+   if(bl&&bl.status==="Paid"){const b=ghost(mk("button","btn s o","View Receipt"));b.onclick=()=>receipt(bl);r.appendChild(b)}
+   t.appendChild(r);return}
   const p=q.p,s=pState(p);
   l.append(mk("b",null,[p.payerName||"Member",p.flat].filter(Boolean).join(" · ")),mk("span",null,[p.description,p.invoiceId].filter(Boolean).join(" · ")),mk("span",null,[payMeth(p.paymentMethod),dtm(pWhen(p))].filter(Boolean).join(" · ")));
   a.append(mk("b",null,rs(p.amount)),pPill(p));r.append(l,a);
   if(p.razorpayPaymentId){const x=mk("button","ptid","Txn "+p.razorpayPaymentId+"  ⧉");x.type="button";x.title="Copy transaction ID";x.onclick=()=>cp(p.razorpayPaymentId);r.appendChild(x)}
-  if(p.duplicate&&s==="SUCCESS")r.appendChild(mk("div","ptn w","⚠️ Paid twice for the same bill. Refund this payment from your Razorpay dashboard."));
+  if(p.duplicate&&s==="SUCCESS")r.appendChild(mk("div","ptn w","⚠️ Paid twice for the same bill. Please send this amount back to the member."));
   if(p.refundedAmountPaise>0&&s!=="REFUNDED")r.appendChild(mk("div","ptn",rs(p.refundedAmountPaise/100)+" refunded"));
   if(s==="FAILED"&&p.failure&&p.failure.reason)r.appendChild(mk("div","ptn",p.failure.reason));
   if(s==="SUCCESS"){const b=ghost(mk("button","btn s o","View Receipt"));b.onclick=()=>receipt(payAsBill(p));r.appendChild(b)}
   t.appendChild(r)});
  if(L.length>txMax){const b=mk("button","btn s o","Show more ("+(L.length-txMax)+")");b.style.marginTop="10px";b.onclick=()=>{txMax+=40;rBills()};t.appendChild(b)}
- if(L.length){const eb=mk("button","btn s o","⬇️ Export transactions (CSV)");eb.style.marginTop="10px";eb.onclick=()=>exportCSV("transactions"+(rg?"-"+(hFrom||"start")+"-to-"+(hTo||td()):""),["User","Unit","Invoice","Description","Amount","Method","Status","Date","Transaction ID","Receipt","Refunded"],L.map(q=>q.l?["",q.l.flat||"","",q.l.reason||"",q.k?q.l.amount:-q.l.amount,"Entered by hand",q.k?"Income":"Expense",dtm(q.ts),"","",""]:[q.p.payerName||"",q.p.flat||"",q.p.invoiceId||"",q.p.description||"",q.p.amount,payMeth(q.p.paymentMethod),(PST[pState(q.p)]||[q.p.status])[0],dtm(pWhen(q.p)),q.p.razorpayPaymentId||"",q.p.receiptNumber||"",q.p.refundedAmountPaise?q.p.refundedAmountPaise/100:""]),rg);t.appendChild(eb)}}
+ if(L.length){const eb=mk("button","btn s o","⬇️ Export transactions (CSV)");eb.style.marginTop="10px";eb.onclick=()=>exportCSV("transactions"+(rg?"-"+(hFrom||"start")+"-to-"+(hTo||td()):""),["User","Unit","Invoice","Description","Amount","Method","Status","Date","Reference / transaction ID","Receipt","Refunded"],L.map(q=>q.l?["",q.l.flat||"","",q.l.reason||"",q.k?q.l.amount:-q.l.amount,q.l.direct?payMeth(q.l.method)||"Paid directly":"Entered by hand",q.l.direct?"Bill paid":q.k?"Income":"Expense",dtm(q.ts),q.l.utr||"","",""]:[q.p.payerName||"",q.p.flat||"",q.p.invoiceId||"",q.p.description||"",q.p.amount,payMeth(q.p.paymentMethod),(PST[pState(q.p)]||[q.p.status])[0],dtm(pWhen(q.p)),q.p.razorpayPaymentId||"",q.p.receiptNumber||"",q.p.refundedAmountPaise?q.p.refundedAmountPaise/100:""]),rg);t.appendChild(eb)}}
 
-/* ---- the organisation's own Razorpay account (main admin) ---- */
-let gwHook=null;
-function rGw(force){const c=$("gwcard");if(!c)return;const own=!!(S.me&&isOwner());c.classList.toggle("hide",!own);if(!own)return;
+/* ---- how the organisation is paid: its UPI ID or its bank account (main admin) ----
+   Saved on the payment server: the bank account number is stored encrypted and is never sent back in full.
+   What every member's app may see (which way, the UPI ID, the last 4 digits) is published by the server in
+   societies/{sid}.payout. One way at a time: saving replaces what was there. */
+const VPA_RE=/^[A-Za-z0-9][A-Za-z0-9._-]{1,254}@[A-Za-z][A-Za-z0-9.]{1,63}$/,IFSC_RE=/^[A-Z]{4}0[A-Z0-9]{6}$/;
+let poEdit=false,poM="";
+function rPo(force){const c=$("pocard");if(!c)return;const own=!!(S.me&&isOwner());c.classList.toggle("hide",!own);if(!own)return;
  if(!force&&c.contains(document.activeElement)&&c.dataset.sig)return;
- const g=S.soc.gateway,sig=[S.sid,g?g.keyId+g.mode:"",gwHook?gwHook.webhookUrl+(gwHook.webhookSecret||""):"",payOn()?1:0].join("|");if(!force&&c.dataset.sig===sig)return;c.dataset.sig=sig;c.innerHTML="";
- c.appendChild(mk("h2",null,"💳 Online payments (Razorpay)"));
- if(!payOn()){c.appendChild(mk("div","note","Online payments are not switched on in this version of the app yet. The payment server address (PAY_API) has to be added first."));return}
- const hook=()=>{if(!gwHook)return;const w=mk("div","gwh");w.setAttribute("data-noskin","");w.appendChild(mk("b",null,"Add this webhook in Razorpay"));w.appendChild(mk("p",null,"Razorpay Dashboard → Developers → Webhooks → Add new webhook. It confirms a payment even when the member closes the app right after paying."));
-  [["Webhook URL",gwHook.webhookUrl],["Secret",gwHook.webhookSecret]].forEach(r=>{if(!r[1])return;const e=mk("button","gwc");e.type="button";e.title="Tap to copy";e.append(mk("span",null,r[0]),mk("code",null,r[1]));e.onclick=()=>cp(r[1]);w.appendChild(e)});
-  if(gwHook.webhookSecret)w.appendChild(mk("p","gww","Copy the secret now. It is shown only once."));
-  w.appendChild(mk("p",null,"Events to tick: payment.captured, payment.failed, order.paid, refund.processed"));c.appendChild(w)};
- if(g&&g.keyId){const h=mk("div","gws");h.setAttribute("data-noskin","");h.append(mk("span","pst g","Connected"),mk("span","pst "+(g.mode==="live"?"b":"y"),g.mode==="live"?"Live":"Test mode"),mk("code",null,g.keyId.slice(0,12)+"••••"+g.keyId.slice(-4)));c.appendChild(h);
-  c.appendChild(mk("p","sub","Members pay their bills in the app with UPI, cards, net banking and wallets. The money goes straight to your society's own Razorpay account."));
-  if(g.mode!=="live")c.appendChild(mk("div","note","Test mode: no real money moves. Connect your live keys when you are ready."));
-  hook();
-  const q=mk("div","g2");q.style.marginTop="12px";const wb=mk("button","btn s o","Webhook details"),nw=mk("button","btn s o","New webhook secret");
-  wb.onclick=()=>run(wb,async()=>{const r=await api("/v1/orgs/gateway/status",{sid:S.sid});gwHook={webhookUrl:r.webhookUrl};rGw(true)});
-  nw.onclick=()=>{if(!confirm("Create a new webhook secret? The old one stops working, so you must update it in the Razorpay dashboard."))return;run(nw,async()=>{gwHook=await api("/v1/orgs/gateway/rotate-webhook",{sid:S.sid});rGw(true)})};q.append(wb,nw);c.appendChild(q);
-  const dc=mk("a","lnk","Disconnect Razorpay");dc.style.color="var(--red)";dc.onclick=()=>{if(!confirm("Disconnect Razorpay? Members will not be able to pay online until you connect it again."))return;api("/v1/orgs/gateway/disconnect",{sid:S.sid}).then(()=>{S.soc.gateway=null;gwHook=null;rGw(true);rBills();toast("ℹ️","Razorpay disconnected","",true)}).catch(e=>fail(e))};c.appendChild(dc);return}
- c.appendChild(mk("p","sub","Connect your society's own Razorpay account. Members then pay their bills in the app and the money goes straight to your account."));
- const ol=mk("ol","gwo");ol.setAttribute("data-noskin","");["Open dashboard.razorpay.com → Account & Settings → API Keys.","Generate a key and copy the Key ID and Key Secret.","Paste both here. The secret is checked, encrypted and stored on the server. It is never shown again."].forEach(t=>ol.appendChild(mk("li",null,t)));c.appendChild(ol);
- const kid=mk("input"),ks=mk("input");kid.placeholder="Key ID (rzp_live_… or rzp_test_…)";kid.maxLength=60;kid.autocomplete="off";kid.spellcheck=false;kid.setAttribute("autocapitalize","off");kid.setAttribute("data-noskin","");kid.setAttribute("aria-label","Razorpay Key ID");
- ks.placeholder="Key Secret";ks.type="password";ks.maxLength=80;ks.autocomplete="new-password";ks.setAttribute("data-noskin","");ks.setAttribute("aria-label","Razorpay Key Secret");
- const b=mk("button","btn s","Connect Razorpay");b.onclick=()=>run(b,async()=>{const a=kid.value.trim(),s=ks.value.trim();const bad=t=>Object.assign(new Error(t),{fxv:true});if(!/^rzp_(test|live)_\w{8,}$/.test(a))throw bad("Enter the Key ID. It starts with rzp_live_ or rzp_test_.");if(s.length<12)throw bad("Enter the Key Secret.");
-  const r=await api("/v1/orgs/gateway/connect",{sid:S.sid,keyId:a,keySecret:s});ks.value="";S.soc.gateway={provider:"razorpay",keyId:r.keyId,mode:r.mode,connectedAt:Date.now()};gwHook={webhookUrl:r.webhookUrl,webhookSecret:r.webhookSecret};rGw(true);rBills();toast("✅","Razorpay connected","Now add the webhook shown below.",true)});
- c.append(kid,ks,b)}
+ const p=poOn()?S.soc.payout:null,sig=[S.sid,JSON.stringify(p),poEdit?1:0,poM,payOn()?1:0].join("|");if(!force&&c.dataset.sig===sig)return;c.dataset.sig=sig;c.innerHTML="";c.setAttribute("data-noskin","");
+ const fee=KIND==="society"?"maintenance bills":KIND==="school"?"fees":"bills";
+ c.appendChild(mk("h2",null,"💳 Receive payments"));
+ if(!payOn()){c.appendChild(mk("div","note","Payments are not switched on in this version of the app yet. The payment server address (PAY_API) has to be added first."));return}
+ if(p&&!poEdit){const up=p.method==="upi",u=p.upi||{},k=p.bank||{},h=mk("div","gws");h.append(mk("span","pst g","Active"),mk("span","pst b",up?"UPI ID":"Bank account"));c.appendChild(h);
+  (up?[["UPI ID",u.id],["Name",u.name]]:[["Account holder",k.holder],["Account number",k.last4?"•••• "+k.last4:""],["IFSC",k.ifsc],["Bank",k.bankName],["Account type",ACT[k.type]]]).forEach(r=>{if(!r[1])return;const e=mk("div","ex");e.append(mk("span",null,r[0]),mk("b",null,r[1]));c.appendChild(e)});
+  const s=mk("p","sub","Members pay their "+fee+" straight to this "+(up?"UPI ID":"account")+" from the app and enter the payment reference number (UTR). Each payment waits in Payments to confirm until you have seen it in your bank statement.");s.style.margin="12px 0";c.appendChild(s);
+  const q=mk("div","g2"),ch=mk("button","btn s o","Change"),rm=mk("button","btn s o","Remove");ch.type=rm.type="button";rm.style.color="var(--red)";
+  ch.onclick=()=>{poEdit=true;poM=p.method;rPo(true)};
+  rm.onclick=()=>{if(!confirm("Remove these payment details? Members will not be able to pay in the app until you add a UPI ID or bank account again."))return;run(rm,async()=>{const r=await api("/v1/orgs/payout/remove",{sid:S.sid});S.soc.payout=(r&&r.payout)||null;poEdit=false;poM="";rPo(true);rBills();toast("ℹ️","Payment details removed","",true)})};
+  q.append(ch,rm);c.appendChild(q);return}
+ const m=poM||(p&&p.method)||"upi";
+ c.appendChild(mk("p","sub","Choose how members pay you. The money goes from their bank straight to yours: no payment gateway is needed and "+BRAND+" never holds it."));
+ const sg=mk("div","seg"),bu=mk("button",m==="upi"?"on":null,"UPI ID"),bb=mk("button",m==="bank"?"on":null,"Bank account");bu.type=bb.type="button";bu.setAttribute("aria-pressed",m==="upi"?"true":"false");bb.setAttribute("aria-pressed",m==="bank"?"true":"false");
+ bu.onclick=()=>{if(m!=="upi"){poM="upi";rPo(true)}};bb.onclick=()=>{if(m!=="bank"){poM="bank";rPo(true)}};sg.append(bu,bb);c.appendChild(sg);
+ const I=(ph,al,max,o)=>{const i=mk("input");i.placeholder=ph;i.maxLength=max;i.autocomplete="off";i.spellcheck=false;i.setAttribute("aria-label",al);i.setAttribute("data-noskin","");return Object.assign(i,o||{})},F={};
+ if(m==="upi"){F.upiId=I("UPI ID (e.g. 9876543210@upi)","UPI ID",300);F.upiId.setAttribute("autocapitalize","off");F.payeeName=I("Name on the UPI ID (as members see it while paying)","Name the UPI ID is registered to",60);
+  if(p&&p.method==="upi"&&p.upi){F.upiId.value=p.upi.id||"";F.payeeName.value=p.upi.name||""}
+  c.append(F.upiId,F.payeeName)}
+ else{F.holder=I("Account holder name (as in the bank)","Account holder name",120);F.accountNumber=I("Account number","Bank account number",24,{inputMode:"numeric"});F.accountNumber2=I("Re-enter account number","Re-enter the bank account number",24,{inputMode:"numeric"});
+  F.ifsc=I("IFSC (e.g. HDFC0001234)","IFSC",11);F.ifsc.style.textTransform="uppercase";F.ifsc.setAttribute("autocapitalize","characters");F.bankName=I("Bank name (optional)","Bank name",60);
+  F.type=mk("select");F.type.setAttribute("aria-label","Account type");F.type.setAttribute("data-noskin","");[["","Account type (optional)"],["savings",ACT.savings],["current",ACT.current]].forEach(([v,t])=>F.type.appendChild(Object.assign(mk("option",null,t),{value:v})));
+  if(p&&p.method==="bank"&&p.bank){F.holder.value=p.bank.holder||"";F.ifsc.value=p.bank.ifsc||"";F.bankName.value=p.bank.bankName||"";F.type.value=p.bank.type||""}
+  c.append(F.holder,F.accountNumber,F.accountNumber2,F.ifsc,F.bankName,F.type);
+  if(p&&p.method==="bank"&&p.bank)c.appendChild(mk("p","pdh2","For safety the saved account number (•••• "+(p.bank.last4||"")+") is not shown. Type it again to save a change."))}
+ const sv=mk("button","btn s",p?"Save changes":"Save"),bad=(t,el)=>{try{el.focus()}catch(e){}return fxBad(t)};sv.type="button";
+ sv.onclick=()=>run(sv,async()=>{const body={sid:S.sid,method:m};
+  if(m==="upi"){const id=F.upiId.value.trim(),nm=F.payeeName.value.trim();
+   if(!VPA_RE.test(id))throw bad("That UPI ID does not look right. It looks like name@bank, for example 9876543210@upi.",F.upiId);
+   if(nm.length<3)throw bad("Enter the name the UPI ID is registered to, as members will see it while paying.",F.payeeName);
+   body.upiId=id;body.payeeName=nm}
+  else{const ho=F.holder.value.trim(),a1=F.accountNumber.value.replace(/[\s-]/g,""),a2=F.accountNumber2.value.replace(/[\s-]/g,""),ic=F.ifsc.value.replace(/\s/g,"").toUpperCase();
+   if(ho.length<3)throw bad("Enter the account holder name exactly as it is in the bank.",F.holder);
+   if(!/^[0-9]{6,20}$/.test(a1))throw bad("Enter the bank account number: digits only.",F.accountNumber);
+   if(a1!==a2)throw bad("The two account numbers are not the same. Please type them again.",F.accountNumber2);
+   if(!IFSC_RE.test(ic))throw bad("Enter the 11-character IFSC of the branch, for example HDFC0001234.",F.ifsc);
+   Object.assign(body,{holder:ho,accountNumber:a1,accountNumber2:a2,ifsc:ic,bankName:F.bankName.value.trim(),type:F.type.value})}
+  let r;try{r=await api("/v1/orgs/payout/save",body)}catch(e){const el=F[e.info&&e.info.field];if(el)try{el.focus()}catch(_){}throw e}
+  S.soc.payout=(r&&r.payout)||null;poEdit=false;poM="";rPo(true);rBills();toast("✅","Payment details saved","Members can now pay their "+fee+" from the app.",true)});
+ c.appendChild(sv);
+ if(p){const cx=mk("a","lnk","Cancel");cx.onclick=()=>{poEdit=false;poM="";rPo(true)};c.appendChild(cx)}
+ else c.appendChild(mk("p","pdh2","Until you save this, members cannot pay their "+fee+" in the app."))}
 function rGst(){const c=$("gstcard");if(!c)return;const on=!!(S.me&&isAdm()&&KIND==="company");c.classList.toggle("hide",!on);if(on&&!c.contains(document.activeElement))$("gstin").value=socGst()}
 /* Societies: one list of flats with the residents' names. Schools and companies: first the class / department,
    then the people in it by name with roll number / employee id, so two students with the same name can be told apart. */
@@ -3489,7 +3574,7 @@ function syncBillFlats(){const s=$("bfl");if(!s)return;const U=billUnits(),F=Obj
  if(s.dataset.sig===sig)return;const v=s.value;s.dataset.sig=sig;s.innerHTML="";s.setAttribute("aria-label",org?"Choose "+K.person.toLowerCase():"Choose flat");
  opt(s,"",!org?"All occupied flats":grp?"All "+who+" of "+grp:"All "+who);L.forEach(f=>opt(s,f,uLabel(f,U[f])));if(L.includes(v))s.value=v}
 setInterval(()=>{if(S.me&&isAdm())syncBillFlats()},3000);
-function initBills(m){if(isAdm()){const g=mk("div","card");g.appendChild(mk("h2",null,"🧾 Generate a bill"));g.appendChild(mk("div","meta","The bill is sent to the resident(s) of the flat you choose. They pay it online in the app."));
+function initBills(m){if(isAdm()){const g=mk("div","card");g.appendChild(mk("h2",null,"🧾 Generate a bill"));g.appendChild(mk("div","meta","The bill is sent to the resident(s) of the flat you choose. They pay it from the app, straight to your UPI ID or bank account."));
   const fl=mk("select");fl.id="bfl";fl.style.marginTop="8px";const ty=mk("select");ty.setAttribute("aria-label","Type of bill");BTYPES.forEach(([v,t])=>ty.appendChild(Object.assign(mk("option",null,t),{value:v})));const ti=mk("input");ti.placeholder="Name of this charge (e.g. Diwali event fee)";ti.maxLength=60;const tw=mk("div","hide");tw.appendChild(ti);ty.onchange=()=>tw.classList.toggle("hide",ty.value==="maintenance");const mi=mk("input");mi.type="month";mi.value=mKey(new Date());const ai=mk("input");ai.type="number";ai.min=1;ai.placeholder="Amount ₹";ai.value=(S.soc.settings||{}).monthlyAmount||"";
   const di=mk("input");di.type="date";const d0=new Date();d0.setDate(d0.getDate()+10);di.value=d0.getFullYear()+"-"+String(d0.getMonth()+1).padStart(2,"0")+"-"+String(d0.getDate()).padStart(2,"0");
   const fi=mk("input");fi.type="file";fi.accept="image/*,application/pdf";fi.className="hide";const fb=mk("label","btn s o"),ft=mk("span",null,"📎 Upload maintenance bill (photo or PDF)");fb.append(ft,fi);fb.style.cssText="margin-bottom:10px;cursor:pointer";fi.onchange=()=>{if(fi.files[0])ft.textContent="✓ "+fi.files[0].name.slice(0,26)};
@@ -3503,34 +3588,42 @@ function initBills(m){if(isAdm()){const g=mk("div","card");g.appendChild(mk("h2"
  if(isAdm()&&KIND==="company")custInvoice(m);
  const l=mk("div");l.id="billlist";m.appendChild(l)}
 const billDoc=(b,e)=>{if(b.docUrl&&(/^https:\/\/firebasestorage\.googleapis\.com\//.test(b.docUrl)||isR(b.docUrl))){const v=ghost(mk("button","btn s o","📎 View bill"),"auto");v.style.marginTop="8px";v.style.marginRight="8px";v.onclick=()=>openRef(b.docUrl,b.docName||"bill.pdf");e.appendChild(v)}};
-function rBills(){if(!S.me||isGuard())return;ensure("billbox",initBills);try{rGw();rGst()}catch(e){console.warn(e)}const m=$("billlist");if(!m)return;m.innerHTML="";const B=Object.values(D.bills),now=Date.now(),card=t=>{const c=mk("div","card");c.appendChild(mk("h2",null,t));m.appendChild(c);return c};
+function rBills(){if(!S.me||isGuard())return;ensure("billbox",initBills);try{rPo();rGst()}catch(e){console.warn(e)}const m=$("billlist");if(!m)return;m.innerHTML="";const B=Object.values(D.bills),now=Date.now(),card=t=>{const c=mk("div","card");c.appendChild(mk("h2",null,t));m.appendChild(c);return c};
  /* my own dues: every member, and an admin who also has a flat */
  const mineB=(isAdm()?B.filter(b=>b.flat&&b.flat===S.me.flat):B).slice().sort((a,b)=>String(b.month).localeCompare(String(a.month))||(b.ts||0)-(a.ts||0)),due=mineB.filter(b=>!closedBill(b));
- if(!isAdm()||due.length){const c=card("🧾 Maintenance dues"),tot=due.filter(b=>b.status==="Unpaid").reduce((a,b)=>a+b.amount,0),ver={};Object.values(D.pay||{}).forEach(p=>{if(p.userId===S.uid&&p.status==="PENDING")ver[p.chargeId]=p});
+ if(!isAdm()||due.length){const c=card("🧾 Maintenance dues"),tot=due.filter(b=>b.status==="Unpaid").reduce((a,b)=>a+b.amount,0);
   c.appendChild(mk("div","meta",due.length?(tot?"Outstanding: "+rs(tot):"Waiting for admin to confirm your payment"):"No dues — you're all paid up ✅"));
-  due.forEach(b=>{const pend=b.status==="Pending",pv=ver[b.id],ov=!pend&&b.due<now,e=mk("div","item"+(pend||pv?" ann":ov?"":" s2")),h=mk("div","ih"),tt=mk("b",null,bTitle(b)+" · "+rs(b.amount));tt.setAttribute("data-noskin","");h.append(tt,mk("span","badge"+(pend||pv?"":ov?" r":" y"),pv?"Verifying payment":pend?"Awaiting confirmation":ov?"Overdue":"Due "+dt(b.due)));e.appendChild(h);
+  due.forEach(b=>{const pend=b.status==="Pending",rej=!pend&&b.rejectedAt>0&&b.rejectedAt>=(b.reportedAt||0),ov=!pend&&b.due<now,e=mk("div","item"+(pend?" ann":ov?"":" s2")),h=mk("div","ih"),tt=mk("b",null,bTitle(b)+" · "+rs(b.amount));tt.setAttribute("data-noskin","");h.append(tt,mk("span","badge"+(pend?"":ov?" r":" y"),pend?"Awaiting confirmation":ov?"Overdue":"Due "+dt(b.due)));e.appendChild(h);
    if(b.title&&b.month)e.appendChild(mk("div","meta",mname(b.month)));
+   /* reported by the member as paid: it waits for an admin · rejected by an admin: it can be paid or reported again */
+   if(pend){const n=mk("div","meta",[b.utr?"Ref "+b.utr:"",b.reportedAt?"reported "+dtm(b.reportedAt):""].filter(Boolean).join(" · ")+(b.utr||b.reportedAt?". ":"")+"Your admin confirms it after checking the bank statement.");n.setAttribute("data-noskin","");e.appendChild(n)}
+   if(rej){const n=mk("div","note","⚠️ Your last payment could not be confirmed"+(b.rejectNote?": "+b.rejectNote:"")+". Check the reference number and report it again, or contact your admin.");n.setAttribute("data-noskin","");e.appendChild(n)}
    if(b.remindedAt&&!pend)e.appendChild(mk("div","note","⏰ Reminder from admin · "+dt(b.remindedAt)));billDoc(b,e);{const ib=ghost(mk("button","btn s o","📄 Invoice"));ib.style.marginTop="8px";ib.style.marginRight="8px";ib.onclick=()=>run(ib,()=>shareInvoice(b).catch(x=>fail(x,"Couldn't create invoice")));e.appendChild(ib)}
-   if(pv){e.appendChild(mk("div","note","Payment status is being verified. Please check Payment History before trying again."));const q=ghost(mk("button","btn s","Check status"));q.style.marginTop="8px";q.onclick=()=>payCheck(pv,q);e.appendChild(q)}
-   else if(!pend){const p=mk("button","btn s","Pay now");p.style.marginTop="8px";p.onclick=()=>payBill(b);e.appendChild(p)}c.appendChild(e)});
+   if(!pend){const p=mk("button","btn s",rej?"Pay / report again":"Pay now");p.style.marginTop="8px";p.onclick=()=>payBill(b);e.appendChild(p)}c.appendChild(e)});
   try{due.forEach(b=>{if(b.status!=="Unpaid")return;const dl=Math.ceil((b.due-now)/864e5);if(dl>7)return;const k="sh-rem-"+b.id+"-"+td();if(localStorage.getItem(k))return;localStorage.setItem(k,"1");toast("⏰",dl<0?"Maintenance bill overdue":dl===0?"Maintenance due today":"Maintenance due in "+dl+" day"+(dl===1?"":"s"),bTitle(b)+" · "+rs(b.amount),false,"bill")})}catch(_){}}
+ /* reported by members as paid: an admin finds the reference number in the bank statement and confirms it, or
+    rejects it when the money has not arrived. Both are done by the payment server, which also writes the ledger. */
+ if(isAdm()){const pd=B.filter(b=>b.status==="Pending").sort((a,b)=>(a.reportedAt||0)-(b.reportedAt||0)),PU=billUnits();
+  if(pd.length){const c=card("⏳ Payments to confirm ("+pd.length+")");c.id="payconf";{const n=mk("div","meta","Members say they have paid these. Find the reference number in your bank statement or UPI app, then confirm. Reject it if the money has not arrived.");n.style.marginBottom="12px";c.appendChild(n)}
+   pd.forEach(b=>{const e=mk("div","item ann"),who=isOrg()?uLabel(b.flat,PU[b.flat]):b.flat;e.appendChild(mk("b",null,who+" · "+bTitle(b)+" · "+rs(b.amount)));
+    e.appendChild(mk("div","meta",["by "+(b.paidBy||"resident"),[payMeth(b.payMethod),b.paidTo?"to "+b.paidTo:""].filter(Boolean).join(" "),b.reportedAt?dtm(b.reportedAt):""].filter(Boolean).join(" · ")));
+    if(b.utr){const x=mk("button","ptid","Ref "+b.utr+"  ⧉");x.type="button";x.title="Copy reference number";x.setAttribute("data-noskin","");x.onclick=()=>cp(b.utr);e.appendChild(x)}
+    const q=mk("div","g2");q.style.marginTop="8px";const ok=mk("button","btn s g","Confirm"),no=mk("button","btn s r","Reject");ok.type=no.type="button";
+    ok.onclick=()=>run(ok,async()=>{const r=await api("/v1/payments/direct/confirm",{sid:S.sid,chargeId:b.id});toast("✅","Payment confirmed",who+" · "+rs(b.amount)+(r&&r.receiptNo?" · receipt "+r.receiptNo:""),true)});
+    no.onclick=()=>{const why=prompt("Reject this payment? The bill becomes unpaid again and the member is told.\n\nReason (the member sees it):","Payment not found in the bank statement");if(why===null)return;run(no,async()=>{await api("/v1/payments/direct/reject",{sid:S.sid,chargeId:b.id,reason:String(why).trim().slice(0,160)});toast("ℹ️","Payment rejected",who+" · the bill is unpaid again",true)})};
+    q.append(ok,no);e.appendChild(q);c.appendChild(e)})}}
  if(!canFin())payHistCard(m,mineB);
  if(canFin())payAdminCards(m);
  if(isAdm()){syncBillFlats();
-  /* reported by members before online payments were switched on: the admin can still settle these */
-  const pd=B.filter(b=>b.status==="Pending");
-  if(pd.length){const c=card("⏳ Old manual payments to confirm ("+pd.length+")");c.appendChild(mk("div","meta","Reported by members before online payments were switched on. Confirm the ones you received."));pd.forEach(b=>{const e=mk("div","item ann");e.appendChild(mk("b",null,b.flat+" · "+bTitle(b)+" · "+rs(b.amount)));e.appendChild(mk("div","meta","Ref "+b.utr+" · by "+(b.paidBy||"resident")));const q=mk("div","g2");q.style.marginTop="8px";const ok=mk("button","btn s g","Confirm"),no=mk("button","btn s r","Reject");
-   ok.onclick=()=>run(ok,async()=>{const t=Date.now();await updateDoc(doc(db,"societies",S.sid,"bills",b.id),{status:"Paid",paidAt:t,receiptNo:"R"+t.toString(36).toUpperCase(),confirmedBy:S.me.name});await addDoc(vcol("contributions"),{reason:b.flat+" maintenance "+mname(b.month),amount:b.amount,category:"Maintenance",flat:b.flat,ts:t,by:S.uid})});
-   no.onclick=()=>run(no,()=>updateDoc(doc(db,"societies",S.sid,"bills",b.id),{status:"Unpaid",utr:""}));q.append(ok,no);e.appendChild(q);c.appendChild(e)})}
   const rf=B.filter(b=>b.status==="Refunded");
-  if(rf.length){const c=card("↩️ Refunded bills ("+rf.length+")");c.appendChild(mk("div","meta","The payment for these bills was refunded from Razorpay. Reopen a bill if it still has to be paid."));rf.forEach(b=>{const r=mk("div","ex"),t=mk("div",null,b.flat);t.appendChild(mk("span",null,bTitle(b)+" · "+rs(b.amount)));const o=ghost(mk("button","btn s o","Reopen"));o.onclick=()=>{if(!confirm("Reopen this bill so it can be paid again?"))return;run(o,()=>updateDoc(doc(db,"societies",S.sid,"bills",b.id),{status:"Unpaid",paymentId:"",utr:"",receiptNo:"",payMethod:"",paidAt:0,reopenedAt:Date.now()}))};r.append(t,o);c.appendChild(r)})}
+  if(rf.length){const c=card("↩️ Refunded bills ("+rf.length+")");c.appendChild(mk("div","meta","The payment for these bills was refunded. Reopen a bill if it still has to be paid."));rf.forEach(b=>{const r=mk("div","ex"),t=mk("div",null,b.flat);t.appendChild(mk("span",null,bTitle(b)+" · "+rs(b.amount)));const o=ghost(mk("button","btn s o","Reopen"));o.onclick=()=>{if(!confirm("Reopen this bill so it can be paid again?"))return;run(o,()=>updateDoc(doc(db,"societies",S.sid,"bills",b.id),{status:"Unpaid",paymentId:"",utr:"",receiptNo:"",payMethod:"",paidAt:0,reopenedAt:Date.now()}))};r.append(t,o);c.appendChild(r)})}
   const od=B.filter(b=>b.status==="Unpaid"&&b.due<now),by={};od.forEach(b=>(by[b.flat]=by[b.flat]||[]).push(b));const fs=Object.keys(by).sort((a,b)=>a.localeCompare(b,undefined,{numeric:true}));
   const df=card("🚨 Defaulters ("+fs.length+")");const out=B.filter(b=>!closedBill(b)).reduce((a,b)=>a+b.amount,0);df.appendChild(mk("div","meta","Total outstanding "+rs(out)+" · collected "+rs(B.filter(b=>b.status==="Paid").reduce((a,b)=>a+b.amount,0))));if(!fs.length)df.appendChild(mk("div","meta","No overdue dues 🎉"));
   const BU=billUnits();fs.forEach(f=>{const L=by[f],tot=L.reduce((a,b)=>a+b.amount,0),r=mk("div","ex"),t=mk("div",null,isOrg()?uLabel(f,BU[f]):f),rm=Math.max(...L.map(x=>x.remindedAt||0));t.appendChild(mk("span",null,rs(tot)+" · "+L.length+" overdue: "+L.map(x=>bTitle(x)).join(", ")+(rm?" · reminded "+dt(rm):"")));
    const b=ghost(mk("button","btn s o","Remind"));b.onclick=()=>{const mm=Object.values(D.mem).find(x=>x.flat===f&&x.mobile),msg="Hello, dues of "+rs(tot)+" for "+f+" ("+S.soc.name+") are overdue: "+L.map(x=>bTitle(x)).join(", ")+". Please pay in the "+BRAND+" app at the earliest.";if(mm)window.open("https://wa.me/91"+mm.mobile.replace(/\D/g,"").slice(-10)+"?text="+encodeURIComponent(msg),"_blank");
     run(b,async()=>{const bt=writeBatch(db);L.forEach(x=>bt.update(doc(db,"societies",S.sid,"bills",x.id),{remindedAt:Date.now()}));await bt.commit();toast("⏰","Reminder sent","In-app alert"+(mm?" + WhatsApp":""),true)})};r.append(t,b);df.appendChild(r)});
-  if(B.length){const eb=mk("button","btn s o","⬇️ Export all bills (CSV)");eb.style.marginTop="10px";eb.onclick=()=>exportCSV("bills",["Month","Bill","Flat","Amount","Due","Status","Paid on","Receipt","Paid via","Reference"],B.sort((a,b)=>b.month.localeCompare(a.month)).map(b=>[b.month,bTitle(b),b.flat,b.amount,bdate(b.due),b.status==="Unpaid"&&b.due<now?"Overdue":b.status,b.paidAt?bdate(b.paidAt):"",b.receiptNo||"",b.gateway==="razorpay"?"Razorpay "+payMeth(b.payMethod):"",b.utr||""]));df.appendChild(eb)}}
- try{payResume()}catch(e){}}
+  if(B.length){const eb=mk("button","btn s o","⬇️ Export all bills (CSV)");eb.style.marginTop="10px";eb.onclick=()=>exportCSV("bills",["Month","Bill","Flat","Amount","Due","Status","Paid on","Receipt","Paid via","Reference"],B.sort((a,b)=>b.month.localeCompare(a.month)).map(b=>[b.month,bTitle(b),b.flat,b.amount,bdate(b.due),b.status==="Unpaid"&&b.due<now?"Overdue":b.status,b.paidAt?bdate(b.paidAt):"",b.receiptNo||"",b.gateway==="razorpay"?"Online "+payMeth(b.payMethod):payMeth(b.payMethod),b.utr||""]));df.appendChild(eb)}}
+}
 
 /* ---------- domestic help ---------- */
 const HTYPES=["Maid","Cook","Driver","Nanny","Gardener","Other"];let hOpen=null,hMon=new Date(new Date().getFullYear(),new Date().getMonth(),1);
@@ -3573,11 +3666,14 @@ function rMkt(){if(!S.me)return;ensure("p_mkt",initMkt);const l=$("mlist");if(!l
   if(g.children.length){if(g.children.length===1)g.style.gridTemplateColumns="1fr";d.appendChild(g)}l.appendChild(d)})}
 
 function listen4(C){
- if(!isGuard())w(isAdm()?query(C("bills"),limit(600)):query(C("bills"),where("flat","==",S.me.flat),limit(60)),"bills",rBills,(d,t)=>{if(t==="modified"&&!isAdm()&&d.status==="Unpaid"&&d.remindedAt&&Date.now()-d.remindedAt<12e4)toast("⏰","Maintenance reminder",bTitle(d)+" · "+rs(d.amount)+" is overdue",false,"bill");if(t==="added"&&isAdm()===false&&d.status==="Unpaid")toast("🧾","New maintenance bill",bTitle(d)+" · "+rs(d.amount),false,"bill");if(t==="modified"&&!isAdm()&&d.status==="Paid"&&!payScr)toast("✅","Payment confirmed","Receipt "+d.receiptNo,false,"bill")});
- /* payment records are written only by the payment server; a member sees their own, finance roles see the organisation's */
+ if(!isGuard())w(isAdm()?query(C("bills"),limit(600)):query(C("bills"),where("flat","==",S.me.flat),limit(60)),"bills",rBills,(d,t)=>{if(t==="modified"&&!isAdm()&&d.status==="Unpaid"&&d.remindedAt&&Date.now()-d.remindedAt<12e4)toast("⏰","Maintenance reminder",bTitle(d)+" · "+rs(d.amount)+" is overdue",false,"bill");if(t==="added"&&isAdm()===false&&d.status==="Unpaid")toast("🧾","New maintenance bill",bTitle(d)+" · "+rs(d.amount),false,"bill");if(t==="modified"&&!isAdm()&&d.status==="Paid"&&!payScr)toast("✅","Payment confirmed","Receipt "+d.receiptNo,false,"bill");
+  /* a bill paid directly: the admins hear that a member has reported a payment, the member hears when it is rejected */
+  if(t==="modified"&&isAdm()&&d.status==="Pending"&&d.paidByUid!==S.uid&&Date.now()-(d.reportedAt||0)<12e4)toast("💸","Payment to confirm",d.flat+" · "+bTitle(d)+" · "+rs(d.amount),false,"bill");
+  if(t==="modified"&&!isAdm()&&d.status==="Unpaid"&&d.rejectedAt&&Date.now()-d.rejectedAt<12e4)toast("⚠️","Payment not confirmed",bTitle(d)+" · "+(d.rejectNote||"Please check the reference number and report it again"),false,"bill")});
+ /* payments made online before bills were paid directly: kept for the history; a member sees their own, finance roles the organisation's */
  if(!isGuard())w(canFin()?query(C("payments"),orderBy("createdAt","desc"),limit(500)):query(C("payments"),where("userId","==",S.uid),limit(200)),"pay",rBills);
- unsubs.push(onSnapshot(doc(db,"societies",S.sid),s=>{if(!s.exists()||!S.soc)return;const d=s.data(),g0=JSON.stringify(S.soc.gateway||null),p0=JSON.stringify([S.soc.subscription||null,S.soc.trial||null]);S.soc.gateway=d.gateway||null;if(d.subscription)S.soc.subscription=d.subscription;if(d.trial)S.soc.trial=d.trial;
-  if(g0!==JSON.stringify(S.soc.gateway)){try{rGw();rBills()}catch(e){}}if(p0!==JSON.stringify([S.soc.subscription||null,S.soc.trial||null])){try{subDot();planGate();if(tab==="sub")rSub();if(tab==="home")rHome()}catch(e){}}},()=>{}));
+ unsubs.push(onSnapshot(doc(db,"societies",S.sid),s=>{if(!s.exists()||!S.soc)return;const d=s.data(),g0=JSON.stringify(S.soc.payout||null),p0=JSON.stringify([S.soc.subscription||null,S.soc.trial||null]);S.soc.payout=d.payout||null;if(d.subscription)S.soc.subscription=d.subscription;if(d.trial)S.soc.trial=d.trial;
+  if(g0!==JSON.stringify(S.soc.payout)){try{rPo();rBills()}catch(e){}}if(p0!==JSON.stringify([S.soc.subscription||null,S.soc.trial||null])){try{subDot();planGate();if(tab==="sub")rSub();if(tab==="home")rHome()}catch(e){}}},()=>{}));
  w(staff()?query(C("helpers"),limit(300)):query(C("helpers"),where("uid","==",S.uid),limit(20)),"help",rHelp);
  w(query(C("classifieds"),limit(150)),"cls",rMkt)}
 

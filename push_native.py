@@ -336,7 +336,7 @@ import java.util.Map;
 
 /**
  * How a push looks on the phone. The server sends (all strings):
- *   k kind (chat, ann, sos, bill, comp, gate, leave, join, gen) · t title · b text · org organisation name
+ *   k kind (chat, ann, sos, bill, comp, gate, leave, join, gen, bus) · t title · b text · org organisation name
  *   tag one notification per tag (a chat: "d:<chat>" or "g:<org>:<room>") · open the screen to open · sid
  *   reply "1" = a chat that can be answered from the notification · frm sender · grp name of a group chat
  */
@@ -344,7 +344,7 @@ final class S360Notifier {
     static final String PREF = "s360push";
     static final String EXTRA_OPEN = "s360open", EXTRA_SID = "s360sid", EXTRA_TAG = "s360tag";
     static final String REPLY_KEY = "s360reply";
-    private static final String CH_CHAT = "s360_chat", CH_ALERT = "s360_alerts", CH_INFO = "s360_updates";
+    private static final String CH_CHAT = "s360_chat", CH_ALERT = "s360_alerts", CH_INFO = "s360_updates", CH_BUS = "s360_bus";
     private static final int ACCENT = Color.parseColor("#5B3DF5");
     private static final int KEEP = 8;   // messages kept in a chat notification
 
@@ -370,6 +370,10 @@ final class S360Notifier {
         nm.createNotificationChannel(chat);
         nm.createNotificationChannel(alert);
         nm.createNotificationChannel(info);
+        NotificationChannel bus = new NotificationChannel(CH_BUS, "School bus", NotificationManager.IMPORTANCE_HIGH);
+        bus.setDescription("The bus has started, is near, has arrived; reached school");
+        bus.enableVibration(true);
+        nm.createNotificationChannel(bus);
     }
 
     private static int smallIcon(Context ctx) {
@@ -429,7 +433,8 @@ final class S360Notifier {
             chat(ctx, tag, false, null);
             return;
         }
-        String ch = "sos".equals(kind) ? CH_ALERT : CH_INFO;
+        boolean busK = "bus".equals(kind);
+        String ch = "sos".equals(kind) ? CH_ALERT : busK ? CH_BUS : CH_INFO;
         NotificationCompat.Builder b = new NotificationCompat.Builder(ctx, ch)
             .setSmallIcon(smallIcon(ctx))
             .setColor(ACCENT)
@@ -439,7 +444,7 @@ final class S360Notifier {
             .setStyle(new NotificationCompat.BigTextStyle().bigText(s(d, "b")))
             .setSubText(s(d, "org"))
             .setAutoCancel(true)
-            .setPriority("sos".equals(kind) ? NotificationCompat.PRIORITY_MAX : NotificationCompat.PRIORITY_DEFAULT)
+            .setPriority("sos".equals(kind) ? NotificationCompat.PRIORITY_MAX : busK ? NotificationCompat.PRIORITY_HIGH : NotificationCompat.PRIORITY_DEFAULT)
             .setCategory("sos".equals(kind) ? NotificationCompat.CATEGORY_ALARM : NotificationCompat.CATEGORY_EVENT)
             .setContentIntent(tap(ctx, s(d, "open"), sid, idOf(tag)));
         post(ctx, idOf(tag), b);

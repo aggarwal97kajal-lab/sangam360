@@ -257,7 +257,7 @@ import java.util.concurrent.Executors;
  */
 public class LiveLocationService extends Service implements LocationListener {
     static final String PREF = "live_location";
-    static final String[] KEYS = { "project", "apiKey", "sid", "uid", "cid", "bus", "geo", "gn", "gl", "lid", "idToken", "refreshToken" };
+    static final String[] KEYS = { "project", "apiKey", "sid", "uid", "cid", "bus", "geo", "gn", "gl", "lid", "idToken", "refreshToken", "pay" };
     private static final float NEAR_M = 120f, MAX_ACC_M = 150f, SLOW_MS = 4.2f;
     private static final String CH = "live_location";
     private static final int NID = 7301;
@@ -583,10 +583,45 @@ public class LiveLocationService extends Service implements LocationListener {
                     sp.edit().putString("arr", d.toString()).apply();
                 }
                 if (end == 0) watchTrip(c, lid);
+                notifyServer(sp, tok, sid, bus, hit.size() > 0 || end > 0);
             }
         } finally {
             c.disconnect();
         }
+    }
+
+    /** School bus: name the bus to the Sangam360 server (at most every 20 s, at once on an arrival or the end),
+     *  which then sends the parents their "bus is near / has arrived" notifications, also to closed apps. */
+    private volatile long lastPing = 0;
+    private void notifyServer(SharedPreferences sp, final String tok, final String sid, final String bus, boolean now) {
+        final String pay = sp.getString("pay", "").replaceAll("/+$", "");
+        if (pay.length() == 0 || !pay.startsWith("https://")) return;
+        long t = System.currentTimeMillis();
+        if (!now && t - lastPing < 20000) return;
+        lastPing = t;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                HttpURLConnection c = null;
+                try {
+                    JSONObject b = new JSONObject().put("sid", sid).put("paths", new org.json.JSONArray().put("societies/" + sid + "/buses/" + bus));
+                    c = (HttpURLConnection) new URL(pay + "/v1/push/event").openConnection();
+                    c.setConnectTimeout(20000);
+                    c.setReadTimeout(90000);   // the free server may need a minute to wake up
+                    c.setRequestMethod("POST");
+                    c.setRequestProperty("Authorization", "Bearer " + tok);
+                    c.setRequestProperty("Content-Type", "application/json; charset=utf-8");
+                    c.setDoOutput(true);
+                    OutputStream os = c.getOutputStream();
+                    os.write(b.toString().getBytes("UTF-8"));
+                    os.close();
+                    c.getResponseCode();
+                } catch (Exception ignored) {
+                } finally {
+                    if (c != null) c.disconnect();
+                }
+            }
+        }).start();
     }
 
     /** The sign-in token lasts one hour; renew it with the refresh token so 8-hour sharing keeps working. */

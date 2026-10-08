@@ -1583,9 +1583,10 @@ import {getDatabase,ref as rRef,set as rSet,get as rGet,update as rUpdate,remove
    a bill ...), it names that record to the payment server (PAY_API/v1/push/event). The server reads the record
    itself, decides who is told and sends the notification through Firebase Cloud Messaging, also to phones where
    the app is closed. Nothing the app says is put into a notification: only what is really in the database. */
-const PUSHC=/^societies\/[^/]+\/(messages|announcements|alerts|complaints|gcomplaints|visitors|deliveries|bills|members|leaves|holidays|vehicles|tasks|payslips|drvmsg)\/[^/]+$|^societies\/[^/]+\/dmchats\/[^/]+\/messages\/[^/]+$/;
+const PUSHC=/^societies\/[^/]+\/(messages|announcements|alerts|complaints|gcomplaints|visitors|deliveries|bills|members|leaves|holidays|vehicles|tasks|payslips|drvmsg|buses|busmap|busissues|businc|busveh)\/[^/]+$|^societies\/[^/]+\/dmchats\/[^/]+\/messages\/[^/]+$/;
 let pushQ=[],pushT=0;
-const pushPing=p=>{try{if(typeof p!=="string"||!PUSHC.test(p))return;pushQ.push(p);if(!pushT)pushT=setTimeout(pushFlush,500)}catch(e){}};
+const busPT={},busPW={};
+const pushPing=p=>{try{if(typeof p!=="string"||!PUSHC.test(p))return;if(/\/buses\//.test(p)){const now=Date.now(),t=busPT[p];if(t!=null&&now-t<20000){if(!busPW[p])busPW[p]=setTimeout(()=>{busPW[p]=0;pushPing(p)},20000-(now-t));return}busPT[p]=now}pushQ.push(p);if(!pushT)pushT=setTimeout(pushFlush,500)}catch(e){}};
 function pushFlush(){pushT=0;const q=[...new Set(pushQ)];pushQ=[];const by={};q.forEach(p=>{const sid=p.split("/")[1];(by[sid]=by[sid]||[]).push(p)});
  Object.keys(by).forEach(sid=>{const L=by[sid];for(let i=0;i<L.length;i+=25)api("/v1/push/event",{sid,paths:L.slice(i,i+25)},90000).catch(()=>{})})}
 const setDoc=(r,...a)=>setDoc0(r,...a).then(x=>{pushPing(r&&r.path);return x});
@@ -1959,12 +1960,12 @@ function listen(){unsubs.forEach(f=>f());unsubs=[];if(wsub){wsub();wsub=null}wsu
 /* ---------- home ---------- */
 function rHome(){const h=$("hm");h.innerHTML="";if(planLocked()){lockHome(h);return}planHome(h);try{const ic=invCard();if(ic)h.appendChild(ic)}catch(e){console.warn(e)}
  if(isDrv()){try{drvHome(h)}catch(e){console.warn("driver home",e)}try{uxHome(h)}catch(e){}return}
- const V=Object.values(D.vis),dl=Object.values(D.del),today=td();
+ const V=Object.values(D.vis).filter(visShown),dl=Object.values(D.del),today=td();
  const open=Object.values(D.comp).filter(c=>!["Resolved","Closed"].includes(c.status)).length,bal=Object.values(D.inc).reduce((a,c)=>a+c.amount,0)-Object.values(D.exp).reduce((a,c)=>a+c.amount,0),pend=Object.values(D.mem).filter(m=>m.status==="pending").length;
  const exp=V.filter(v=>v.status==="Expected"&&v.date===today).length,inside=V.filter(v=>v.status==="Inside").length,wait=V.filter(v=>v.status==="Waiting").length,parc=dl.filter(d=>d.status==="Received").length;
  const qa=mk("div","qa"+(isGuard()?" gd":""));const Q=isGuard()?[["✅","Verify visitor","svc:vis"],["🚶","New visitor","svc:vis"],["📦","Parcel","svc:del"],["🚗","Vehicle","svc:veh"]]:[["🛠️","Complaint","svc:comp"],["🎟️","Invite visitor","svc:vis"],["📦","Parcels","svc:del"],["🚗","Vehicles","svc:veh"],["📢","Notices","comm"]].concat(isAdm()?[["💰","Fund","fin"]]:[]).concat(fxList().includes("pay")&&fxShown("pay")?[["📄","Payslips","fx:pay"]]:[]);
  Q.forEach((q,i)=>{const b=mk("button");b.style.animationDelay=i*50+"ms";b.appendChild(mk("span",null,q[0]));b.appendChild(document.createTextNode(q[1]));b.onclick=()=>go(q[2]);qa.appendChild(b)});h.appendChild(qa);
- const payN=isAdm()?Object.values(D.bills||{}).filter(b=>b.status==="Pending").length:0,g=mk("div","stats");(isGuard()?[["🚪",exp,"Expected today"],["🟢",inside,"Inside now"],["⏳",wait,"Waiting approval"],["📦",parc,"Parcels at desk"]]:[["🛠️",open,"Open complaints"],["🎟️",exp,"Visitors expected today"],["📦",parc,"Parcels waiting"]].concat(isAdm()?[["💰",rs(bal),"Society fund"],["🙋",pend,"Pending approvals"],["🟢",inside,"Visitors inside"]].concat(payN?[["💸",payN,"Payments to confirm"]]:[]):[])).forEach((s,i)=>{const d=mk("div","st");d.style.animationDelay=i*70+"ms";d.appendChild(mk("b",null,s[0]+" "+s[1]));d.appendChild(mk("span",null,s[2]));g.appendChild(d)});h.appendChild(g);
+ const payN=isAdm()?Object.values(D.bills||{}).filter(b=>b.status==="Pending").length:0,g=mk("div","stats");(isGuard()?[["🚪",exp,"Verified at gate"],["🟢",inside,"Inside now"],["⏳",wait,"Waiting approval"],["📦",parc,"Parcels at desk"]]:[["🛠️",open,"Open complaints"],["🎟️",exp,staff()?"Passes verified today":"Visitors expected today"],["📦",parc,"Parcels waiting"]].concat(isAdm()?[["💰",rs(bal),"Society fund"],["🙋",pend,"Pending approvals"],["🟢",inside,"Visitors inside"]].concat(payN?[["💸",payN,"Payments to confirm"]]:[]):[])).forEach((s,i)=>{const d=mk("div","st");d.style.animationDelay=i*70+"ms";d.appendChild(mk("b",null,s[0]+" "+s[1]));d.appendChild(mk("span",null,s[2]));g.appendChild(d)});h.appendChild(g);
  const a=Object.values(D.ann).sort((x,y)=>y.ts-x.ts)[0];if(a){const c=mk("div","card");c.appendChild(mk("h2",null,"Latest notice"));c.appendChild(mk("b",null,a.title));c.appendChild(mk("p","desc",a.text));h.appendChild(c)}
  if(KIND!=="society"){const H=Object.values(D.hol||{}).filter(x=>x.date>=td()).sort((p,q)=>String(p.date).localeCompare(String(q.date))).slice(0,3);if(H.length){const c=mk("div","card");c.appendChild(mk("h2",null,"🎉 Upcoming holidays"));H.forEach(x=>c.appendChild(mk("div","meta",x.date+" · "+x.title)));h.appendChild(c)}}try{pxHome(h);busHome(h)}catch(e){}try{uxHome(h)}catch(e){}}
 
@@ -2024,17 +2025,20 @@ $("vsc").onclick=()=>sheet(s=>{
 async function verify(){const c=$("vcode").value.trim(),out=$("vres");out.innerHTML="";if(!/^\d{6}$/.test(c))return;
  let v=Object.values(D.vis).find(x=>x.code===c&&["Expected","Approved"].includes(x.status));
  if(!v){try{const s=await getDocs(query(vcol("visitors"),where("code","==",c),limit(5)));const a=s.docs.map(d=>({id:d.id,...d.data()}));v=a.find(x=>["Expected","Approved"].includes(x.status))||a[0]}catch(e){fail(e);return}}
- if(!v){out.appendChild(mk("div","empty","No visitor found with this code."));return}out.appendChild(visCard(v));out.dataset.vid=v.id;if(["Expected","Approved"].includes(v.status))fx("Verified","QR pass is valid",{ms:1500})}
+ if(!v){out.appendChild(mk("div","empty","No visitor found with this code."));return}
+ if(staff()&&v.status==="Expected"&&!v.vfTs){const vf={vfTs:Date.now(),vfBy:S.uid,vfName:S.me.name||""};v=Object.assign({},v,vf);if(D.vis[v.id])Object.assign(D.vis[v.id],vf);updateDoc(vref(v.id),vf).catch(e=>fail(e,"Could not mark the pass as verified"))}
+ out.appendChild(visCard(v));out.dataset.vid=v.id;if(["Expected","Approved"].includes(v.status))fx("Verified","QR pass is valid",{ms:1500})}
 $("vv").onclick=verify;$("vcode").addEventListener("keydown",e=>{if(e.key==="Enter")verify()});
 const vref=id=>doc(db,"societies",S.sid,"visitors",id);
 function visCard(v){const d=mk("div","item"+({Inside:" s4",Waiting:" s2",Expected:" ann",Approved:" s4"}[v.status]||" gr")),h=mk("div","vid"),pic=okImg(v.photo),a=av(v.name,pic?v.photo:"",56);if(pic){a.style.cursor="zoom-in";a.onclick=()=>viewImg(v.photo)}
  const tx=mk("div","vit");tx.append(mk("b",null,v.name),mk("small",null,v.type||"Visitor"));h.append(a,tx,mk("span","badge"+({Inside:" g",Approved:" g",Denied:" r",Cancelled:" r",Waiting:" y"}[v.status]||""),v.status));d.appendChild(h);
  d.appendChild(mk("div","meta",v.flat+(v.purpose?" · "+v.purpose:"")+" · "+v.date+(v.time?" "+v.time:"")+(v.mobile?" · "+v.mobile:"")));
+ if(v.vfTs&&["Expected","Approved","Inside","Exited","Denied"].includes(v.status))d.appendChild(mk("div","meta","🔍 Pass verified"+(v.vfName?" by "+v.vfName:"")+" · "+tm(v.vfTs)));
  if(v.entryTs)d.appendChild(mk("div","meta","In: "+tm(v.entryTs)+(v.exitTs?" · Out: "+tm(v.exitTs):"")));
  if(v.status==="Expected"&&v.date!==td()&&staff())d.appendChild(mk("div","note","⚠️ This pass is for "+v.date+", not today."));
  {const si={Waiting:1,Approved:2,Inside:3,Exited:3}[v.status];if(si!=null)d.appendChild(stepper(["Arriving","Notified","Approved","Inside"],si,["🚗","🔔","👤","🟢"]))}
  const g=mk("div","g2");g.style.marginTop="8px";const B=(t,c,fn)=>{const b=mk("button","btn s "+c,t);b.onclick=()=>run(b,fn);g.appendChild(b)};
- if(staff()){if(["Expected","Approved"].includes(v.status))B("Allow entry","g",async()=>{await updateDoc(vref(v.id),{status:"Inside",entryTs:Date.now()});clearVres()});if(v.status==="Inside")B("Mark exit","",async()=>{await updateDoc(vref(v.id),{status:"Exited",exitTs:Date.now()});clearVres()})}
+ if(staff()){if(["Expected","Approved"].includes(v.status))B("Allow entry","g",async()=>{await updateDoc(vref(v.id),{status:"Inside",entryTs:Date.now()});clearVres()});if(v.status==="Expected"&&v.vfTs)B("Deny entry","r",async()=>{if(!confirm("Deny entry to "+v.name+"?"))return;await updateDoc(vref(v.id),{status:"Denied",decidedTs:Date.now(),deniedBy:S.uid});clearVres()});if(v.status==="Inside")B("Mark exit","",async()=>{await updateDoc(vref(v.id),{status:"Exited",exitTs:Date.now()});clearVres()})}
  if(v.uid===S.uid||(!staff()&&v.flat===S.me.flat)){if(v.status==="Waiting"){B("Approve","g",async()=>{await updateDoc(vref(v.id),{status:"Approved",decidedTs:Date.now()});fx("Approved","Visitor allowed — "+v.name)});B("Deny","r",()=>updateDoc(vref(v.id),{status:"Denied",decidedTs:Date.now()}))}
   if(v.status==="Expected"&&!staff()){const p=mk("button","btn s o","Show pass");p.onclick=()=>passSheet(v);g.appendChild(p);B("Cancel","r",()=>updateDoc(vref(v.id),{status:"Cancelled"}))}}
  if(!okImg(v.photo)&&["Waiting","Expected","Approved","Inside"].includes(v.status)&&(staff()||v.uid===S.uid)){const l=mk("label","btn s o","📷 Add visitor photo");l.style.cssText="width:auto;display:inline-flex;margin:8px 0 0";const f=mk("input");f.type="file";f.accept="image/*";f.style.display="none";l.appendChild(f);
@@ -2042,8 +2046,10 @@ function visCard(v){const d=mk("div","item"+({Inside:" s4",Waiting:" s2",Expecte
  if(v.uid===S.uid||isAdm()||isGuard())B("Delete entry","r",async()=>{if(!confirm("Delete this visitor entry?"))return;await deleteDoc(vref(v.id));toast("🗑","Visitor entry deleted","",true)});
  if(g.children.length)d.appendChild(g);return d}
 function clearVres(){const r=$("vres");if(r){r.innerHTML="";delete r.dataset.vid}const c=$("vcode");if(c)c.value=""}
-function rVis(){const l=$("vlist");l.innerHTML="";{const vr=$("vres");if(vr&&vr.dataset.vid){const x=D.vis[vr.dataset.vid];if(!x||!["Expected","Approved"].includes(x.status))clearVres()}}const V=Object.values(D.vis).sort((a,b)=>b.ts-a.ts);if(!V.length){l.appendChild(mk("div","empty","No visitors yet"));return}
- const grp=[["⏳ Waiting for approval",x=>x.status==="Waiting"],["✅ Approved – let in",x=>x.status==="Approved"],["🎟️ Expected",x=>x.status==="Expected"],["🟢 Inside now",x=>x.status==="Inside"],["🕘 History",x=>["Exited","Denied","Cancelled"].includes(x.status)]];
+/* a pass made by a resident reaches the admin / guard list only once it is verified at the gate */
+const visShown=x=>!(staff()&&x.status==="Expected"&&!x.vfTs&&x.uid!==S.uid);
+function rVis(){const l=$("vlist");l.innerHTML="";{const vr=$("vres");if(vr&&vr.dataset.vid){const x=D.vis[vr.dataset.vid];if(!x||!["Expected","Approved"].includes(x.status))clearVres()}}const V=Object.values(D.vis).filter(visShown).sort((a,b)=>(b.vfTs||b.ts)-(a.vfTs||a.ts));if(!V.length){l.appendChild(mk("div","empty",staff()?"No visitors yet. A visitor pass shows here after you scan its QR or enter its code.":"No visitors yet"));return}
+ const grp=[["⏳ Waiting for approval",x=>x.status==="Waiting"],["✅ Approved – let in",x=>x.status==="Approved"],[staff()?"🔍 Pass verified – allow entry":"🎟️ Expected",x=>x.status==="Expected"],["🟢 Inside now",x=>x.status==="Inside"],["🕘 History",x=>["Exited","Denied","Cancelled"].includes(x.status)]];
  grp.forEach(g=>{const a=V.filter(g[1]).slice(0,g[0].includes("History")?20:50);if(!a.length)return;l.appendChild(mk("div","sec",g[0]+" ("+a.length+")"));a.forEach(v=>l.appendChild(visCard(v)))})}
 
 /* ---------- parcels ---------- */
@@ -3946,7 +3952,7 @@ const liveNatStop=()=>{const N=liveNat();if(N)try{Promise.resolve(N.stop({})).ca
 async function liveNatStart(s){const N=liveNat(),u=auth.currentUser;if(!N||!u)return false;
  try{const idToken=await u.getIdToken(true).catch(()=>u.getIdToken());
   if(s.bus){const st=await liveTO(N.status({}),4000).catch(()=>null);if(!st||!(st.v>=2))return false}
-  await liveTO(N.start({project:firebaseConfig.projectId||"",apiKey:firebaseConfig.apiKey||"",sid:S.sid,uid:S.uid,cid:s.cid||"",bus:s.bus||"",geo:s.geo||"",gn:s.gn||"",gl:s.gl||"",lid:s.lid,until:String(s.until),idToken,refreshToken:u.refreshToken||""}),6000);return true}
+  await liveTO(N.start({project:firebaseConfig.projectId||"",apiKey:firebaseConfig.apiKey||"",sid:S.sid,uid:S.uid,cid:s.cid||"",bus:s.bus||"",geo:s.geo||"",gn:s.gn||"",gl:s.gl||"",lid:s.lid,until:String(s.until),idToken,refreshToken:u.refreshToken||"",pay:s.bus&&typeof PAY_API==="string"?PAY_API:""}),6000);return true}
  catch(e){console.warn("live location service",e);return false}}
 /* shown once: many phones pause background apps unless battery use is set to unrestricted */
 function liveBattery(){const N=liveNat();if(!N||typeof N.status!=="function")return;try{if(localStorage.getItem("sh-live-bat"))return}catch(e){}
@@ -5031,7 +5037,7 @@ function placeShow(p,title,lbl){const V=mapScreen(title||"Place");V.lb.textConte
 /* ---------- a driver's own bus: the number is given while registering, the bus is added when the Principal approves ---------- */
 const busKey=s=>String(s||"").toLowerCase().replace(/[^a-z0-9]/g,"");
 async function busFromMember(r){const B=r&&r.bus;if(!B||!B.name||B.done||!SCH())return"";let res="";
- const q=await getDocs(query(FXC("buses"),limit(200))),all=q.docs.map(d=>({id:d.id,...d.data()})),o={driverUid:r.id,driverName:r.name||"",phone:r.mobile||""},sc=(all.find(x=>x.sch&&x.sch.lat)||{}).sch||null;
+ const q=await getDocs(query(FXC("buses"),limit(200))),all=q.docs.map(d=>({id:d.id,...d.data()})),o={driverUid:r.id,driverName:r.name||"",phone:r.mobile||"",edAt:Date.now(),edBy:S.uid},sc=(all.find(x=>x.sch&&x.sch.lat)||{}).sch||null;
  if(!all.some(x=>x.driverUid===r.id)){const same=all.find(x=>busKey(x.name)===busKey(B.name));
   if(same&&same.driverUid&&same.driverUid!==r.id&&D.mem[same.driverUid]&&D.mem[same.driverUid].status==="approved")res="taken";
   else if(same){await updateDoc(FXD("buses",same.id),{...o,...(!same.route&&B.route?{route:B.route}:{})});res="linked"}
@@ -5078,7 +5084,7 @@ function busParent(b){const P=myProfiles().filter(k=>k.status==="approved"||k.id
   if(denied){fxState(b,[],{code:"permission-denied"},"","");return}if(ready<P.length){fxState(b,null,null,"","");return}
   P.forEach(k=>{const a=A[k.id]||null,c=mk("div","fxk"),top=mk("div","fxr");top.appendChild(av(k.name,k.id===S.uid?photoOf(S.uid):k.photoUrl,34));const nm=mk("div");nm.append(mk("b","fxt",k.name),mk("div","meta",k.flat||""));top.appendChild(nm);c.appendChild(top);
    const pk=a&&a.pk&&a.pk.lat?a.pk:null;c.appendChild(busPkBox({pid:k.id,name:k.name,cls:clsOf(k),pk,has:!!a}));
-   if(a&&(a.amBus||a.pmBus)){const off=busOffToday(a),t=mk("label","tg busoff"),i=mk("input");i.type="checkbox";i.checked=off;i.onchange=()=>{i.disabled=true;updateDoc(FXD("busmap",k.id),{off:i.checked?td():"",ts:Date.now()}).then(()=>toast(i.checked?"🏠":"🚌",i.checked?String(k.name).split(" ")[0]+" will not take the bus today":"Back on the bus list","The driver has been told.",true)).catch(e=>{i.checked=!i.checked;i.disabled=false;fail(e)})};
+   if(a&&(a.amBus||a.pmBus)){const off=busOffToday(a),t=mk("label","tg busoff"),i=mk("input");i.type="checkbox";i.checked=off;i.onchange=()=>{i.disabled=true;updateDoc(FXD("busmap",k.id),{off:i.checked?td():"",offAt:Date.now(),ts:Date.now()}).then(()=>toast(i.checked?"🏠":"🚌",i.checked?String(k.name).split(" ")[0]+" will not take the bus today":"Back on the bus list","The driver has been told.",true)).catch(e=>{i.checked=!i.checked;i.disabled=false;fail(e)})};
     t.append(mk("span",null,"Not taking the bus today"),i);c.appendChild(t)}
    if(!a||(!a.amBus&&!a.pmBus)){c.appendChild(mk("div","meta","No bus has been assigned yet — the school office does that."+(pk?" Your pickup point is saved and will be used.":"")));b.appendChild(c);return}
    ["am","pm"].forEach(dir=>{const id=a[dir+"Bus"];if(!id)return;const x=B[id],run=x&&busOn(x)&&x.dir===dir,l=run?busLive(x):null,what=dir==="am"?"pickup":"drop";
@@ -5189,7 +5195,7 @@ FX.bus={ic:"🚌",get t(){return S.me&&isStu(S.me)&&!isAdm()?"My child's bus":S.
  /* --- bus form --- */
  const edit=x=>{let P=fxPpl();{const d=P.filter(p=>isBusJob(D.mem[p.uid]||p)),st=P.filter(p=>!isStu(p));P=d.length?d.concat(st.filter(p=>!d.includes(p))):st.length?st:P}
   fxForm(x?"Edit bus":"Add a bus","The driver only starts and ends the trip on their own phone. A driver who joins with Join as staff → Bus driver enters the bus number himself, and the bus is added here when you approve him.",[{k:"name",l:"Bus number / name",ph:"e.g. BUS-04 · DL1PC 1234",req:1,val:x&&x.name,max:40},{k:"route",l:"Route",ph:"e.g. Rohini → School",val:x&&x.route,max:120},{k:"driverUid",l:"Driver (the person who carries the phone)",type:"select",opts:P.map(p=>[p.uid,p.name+" · "+(p.flat||roleLbl(p.role))]),val:x?x.driverUid:(P[0]||{}).uid,req:1},{k:"phone",l:"Driver's phone",type:"tel",val:x&&x.phone,max:15},{k:"reg",l:"Vehicle registration no.",ph:"e.g. DL1PC 1234",val:(x&&VEH[x.id]||{}).reg,max:20},{k:"ins",l:"Insurance valid until",type:"date",val:(x&&VEH[x.id]||{}).ins},{k:"puc",l:"PUC valid until",type:"date",val:(x&&VEH[x.id]||{}).puc},{k:"svc",l:"Next service due",type:"date",val:(x&&VEH[x.id]||{}).svc}],"Save",
-   async v=>{const p=P.find(q=>q.uid===v.driverUid);if(!p)throw fxBad("Choose the driver.");const o={name:v.name,route:v.route,driverUid:p.uid,driverName:p.name,phone:v.phone};let id=x&&x.id;if(x)await updateDoc(FXD("buses",x.id),o);else id=(await fxAdd("buses",{...o,sch:schOf(),on:false,lid:"",until:0,riders:[],uid:S.uid})).id;
+   async v=>{const p=P.find(q=>q.uid===v.driverUid);if(!p)throw fxBad("Choose the driver.");const o={name:v.name,route:v.route,driverUid:p.uid,driverName:p.name,phone:v.phone,edAt:Date.now(),edBy:S.uid};let id=x&&x.id;if(x)await updateDoc(FXD("buses",x.id),o);else id=(await fxAdd("buses",{...o,sch:schOf(),on:false,lid:"",until:0,riders:[],uid:S.uid})).id;
     await setDoc(FXD("busveh",id),{busId:id,busName:v.name,reg:String(v.reg||"").toUpperCase(),ins:v.ins||"",puc:v.puc||"",svc:v.svc||"",ts:Date.now()},{merge:true}).catch(e=>console.warn("vehicle details",e));toast("✅","Saved","",true)})};
  /* --- a driver without a bus sends the bus number; the Principal's app turns it into a bus --- */
  const myBus=mb=>fxForm("My bus","",[{k:"name",l:"Bus number",ph:"e.g. BUS-04 · DL1PC 1234",req:1,val:mb.name,max:40},{k:"route",l:"Route",ph:"e.g. Rohini → School",val:mb.route,max:120}],"Send to the Principal",async v=>{const o={name:v.name,route:v.route||""};await updateDoc(doc(db,"societies",S.sid,"members",S.uid),{bus:o});S.me.bus=o;toast("✅","Sent","The bus appears under My bus once the Principal's app adds it.",true);draw()});
@@ -5207,7 +5213,7 @@ FX.bus={ic:"🚌",get t(){return S.me&&isStu(S.me)&&!isAdm()?"My child's bus":S.
    const opts=[["","No bus"]].concat(B2.map(q=>[q.id,q.name])),AM=fxSel(opts,cur?cur.amBus||"":x?x.id:""),PM=fxSel(opts,cur?cur.pmBus||"":x?x.id:""),g=mk("div","g2");g.append(fxLbl("Morning · to school",AM),fxLbl("Evening · back home",PM));z.appendChild(g);
    const sv=mk("button","btn","Save");sv.type="button";sv.style.marginTop="6px";sv.onclick=()=>{const T=cur?[{uid:cur.pid,name:cur.name,cls:cur.cls||"",roll:cur.roll||""}]:fxStuds(cs.value).filter(p=>sel.has(p.uid)).map(p=>({uid:p.uid,name:p.name,cls:cs.value,roll:fxRoll(p.flat)||""}));
     if(!T.length){toast("ℹ️","Tick the students first","",true);return}const bn=id=>{const q=B2.find(v=>v.id===id);return q?q.name:""},now=Date.now();
-    run(sv,async()=>{await Promise.all(T.map(t=>setDoc(FXD("busmap",t.uid),{pid:t.uid,puid:AUID(t.uid),name:t.name,cls:t.cls,roll:t.roll,amBus:AM.value,amName:bn(AM.value),pmBus:PM.value,pmName:bn(PM.value),ts:now},{merge:true})));closeSheet();toast("✅","Saved",T.length===1?T[0].name:T.length+" students",true)})};z.appendChild(sv)})};
+    run(sv,async()=>{await Promise.all(T.map(t=>setDoc(FXD("busmap",t.uid),{pid:t.uid,puid:AUID(t.uid),name:t.name,cls:t.cls,roll:t.roll,amBus:AM.value,amName:bn(AM.value),pmBus:PM.value,pmName:bn(PM.value),asAt:now,ts:now},{merge:true})));closeSheet();toast("✅","Saved",T.length===1?T[0].name:T.length+" students",true)})};z.appendChild(sv)})};
  const students=x=>sheet(z=>{m3(z);z.appendChild(mk("h2",null,"Students · "+x.name));const R=onBus(x),n=R.filter(hasPk).length;z.appendChild(mk("p","sub",R.length+" student"+(R.length===1?"":"s")+" on this bus · "+n+" with a pickup point"+(R.length>n?" · "+(R.length-n)+" still to set it (the parent does it in the app)":"")));
   R.forEach(m=>{const r=mk("div","fxbd"),t=mk("div","t");t.appendChild(mk("b",null,m.name+" · "+m.cls));t.appendChild(mk("small",null,[m.amBus===x.id?"Morning":"",m.pmBus===x.id?"Evening":""].filter(Boolean).join(" + ")+" · "+(hasPk(m)?"📍 "+busPkTxt(m.pk)+(pkByParent(m)?" · set by the parent":" · set by the school"):"⚠️ no pickup point yet")));r.appendChild(t);
    if(own){const lk=pkByParent(m),p=mk("button","btn s o",lk?"🔒":"📍");p.type="button";

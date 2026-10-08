@@ -366,7 +366,7 @@ nav.six{gap:0;padding-left:4px;padding-right:4px}nav.six button{font-size:9.5px;
 .dchk{display:flex;align-items:center;gap:10px;margin:14px 0;font-size:14px;text-align:left;cursor:pointer}.dchk input{width:20px;height:20px;margin:0;flex:none}
 .bub .ed{font-style:italic;margin-right:4px}
 #upg{position:fixed;top:calc(10px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);z-index:90;background:var(--a);color:#fff;padding:8px 16px;border-radius:99px;font:600 13px Poppins,sans-serif;box-shadow:var(--sh)}
-img[src^="rtdb:"]{visibility:hidden}
+img[src^="rtdb:"],img[src^="r2:"]{visibility:hidden}
 .pln,.pln.recp{display:block!important;background:none;border-radius:18px;box-shadow:none}
 
 /* in-app PDF viewer + permission dialogs */
@@ -1278,8 +1278,8 @@ body.plk nav button:not(#n_home):not(#n_sub){opacity:.4}
     <div id="dlist"></div></div>
 
    <div id="p_veh" class="hide">
-    <div id="vh_res" class="card"><h2>🚗 Add my vehicle</h2><div class="g2"><input id="ven" placeholder="Number e.g. DL1CAB1234" maxlength="14"><select id="vet"><option>Car</option><option>Bike</option><option>Scooter</option><option>Other</option></select></div>
-     <div class="g2"><input id="vem" placeholder="Model" maxlength="30"><input id="vec" placeholder="Colour" maxlength="20"></div><button class="btn" id="vad">Save vehicle</button></div>
+    <div id="vh_res" class="card hide"><h2>🚗 Add a vehicle</h2><p class="sub">Only admins add vehicles. Choose the resident it belongs to; they see it in their app.</p><select id="vrs" aria-label="Resident the vehicle belongs to"></select><div class="g2"><input id="ven" placeholder="Number e.g. DL1CAB1234" maxlength="14"><select id="vet"><option>Car</option><option>Bike</option><option>Scooter</option><option>Other</option></select></div>
+     <div class="g2"><input id="vem" placeholder="Model" maxlength="30"><input id="vec" placeholder="Colour" maxlength="20"></div><button class="btn" id="vad">Add vehicle</button></div>
     <input id="vsr" class="hide" placeholder="🔍 Search by vehicle number…" maxlength="14"><div id="vhl"></div></div>
 
    <div id="p_help" class="hide"></div><div id="p_mkt" class="hide"></div>
@@ -1457,6 +1457,7 @@ body.plk nav button:not(#n_home):not(#n_sub){opacity:.4}
 <p>Sangam360 uses selected third-party infrastructure and services. Their processing is governed by their own terms and privacy policies.</p>
 <ul>
 <li><strong>Firebase / Google:</strong> authentication, database, application infrastructure and related functionality.</li>
+<li><strong>Cloudflare:</strong> storage of uploaded photos, ID proofs, documents and voice notes (Cloudflare R2). Files are kept private and are opened only through short-lived links given to members who are allowed to see them.</li>
 <li><strong>Razorpay:</strong> payment checkout and payment processing where enabled. Payment credentials such as card/UPI authentication information are handled by the payment provider and are not intended to be stored by Sangam360 as raw payment credentials.</li>
 <li><strong>Pollinations AI:</strong> the in-app support assistant may send the support question you enter to its AI service so that it can generate a response. Do not enter passwords, payment credentials, government ID numbers or other highly sensitive information into the AI support prompt.</li>
 <li><strong>Other providers:</strong> we may use hosting, email, security, analytics or infrastructure providers as reasonably necessary. We will update this policy when material changes occur.</li>
@@ -1639,7 +1640,7 @@ const planName=()=>{try{const st=planState();return st.kind==="paid"?(st.p?st.p.
 const socGst=()=>String((S.soc&&(S.soc.gstin||(S.soc.extra&&(S.soc.extra["GST number"]||S.soc.extra["GST / registration no."]))))||"").toUpperCase();
 const fill=(el,a)=>{el.innerHTML="";a.forEach(x=>el.appendChild(Object.assign(mk("option",null,x),{value:x})))};
 const COLS=["#6d5dfc","#ff6b9d","#00a8e8","#f59e0b","#10b981","#ef4444","#8b5cf6","#0ea5e9"];const col=n=>{let h=0;for(const c of (n||"?"))h=(h*31+c.charCodeAt(0))|0;return COLS[Math.abs(h)%COLS.length]};
-const okU=p=>typeof p==="string"&&(/^https:\/\/firebasestorage\.googleapis\.com\//.test(p)||p.startsWith("rtdb:files/")||p.startsWith("rtdb:idfiles/"));const okImg=p=>typeof p==="string"&&(p.startsWith("data:image/")||okU(p));
+const okU=p=>typeof p==="string"&&(/^https:\/\/firebasestorage\.googleapis\.com\//.test(p)||p.startsWith("rtdb:files/")||p.startsWith("rtdb:idfiles/")||p.startsWith("r2:files/")||p.startsWith("r2:idfiles/"));const okImg=p=>typeof p==="string"&&(p.startsWith("data:image/")||okU(p));
 const av=(name,photo,sz)=>{const e=mk("div","ava");e.style.cssText="width:"+sz+"px;height:"+sz+"px;font-size:"+Math.round(sz*.42)+"px;background:"+col(name);if(okImg(photo)){const i=mk("img");i.src=photo;i.alt="";e.appendChild(i)}else e.textContent=(name||"?")[0].toUpperCase();return e};
 const photoOf=u=>(D.dir[u]||{}).photo||(u===S.uid&&S.me&&S.me.photoUrl)||(D.mem[u]||{}).photoUrl;
 function shrink(file,max,q,sq){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>{const i=new Image();i.onload=()=>{let sw=i.width,sh=i.height,sx=0,sy=0;if(sq){const m=Math.min(sw,sh);sx=(sw-m)/2;sy=(sh-m)/2;sw=sh=m}const s=Math.min(1,max/Math.max(sw,sh)),w=Math.round(sw*s),h=Math.round(sh*s),c=document.createElement("canvas");c.width=w;c.height=h;c.getContext("2d").drawImage(i,sx,sy,sw,sh,0,0,w,h);res(c.toDataURL("image/jpeg",q))};i.onerror=rej;i.src=r.result};r.onerror=rej;r.readAsDataURL(file)})}
@@ -1886,7 +1887,7 @@ function startApp(){
  initComp();fill($("at"),ANN);fill($("vt"),VTYPES);fill($("wt2"),VTYPES);fill($("dc"),COURIERS);
  const fl=flats();fill($("wf"),fl);fill($("df"),fl);$("vd").value=td();
  $("annf").classList.toggle("hide",!isAdm());annSetup();ensureTCode();document.querySelector("#t_fin .bal").classList.toggle("hide",!canFin());$("finf").classList.toggle("hide",!canFin());$("pk_adm").classList.toggle("hide",!isAdm());
- $("vf_res").classList.toggle("hide",isGuard());$("vf_grd").classList.toggle("hide",!staff());$("df_grd").classList.toggle("hide",!staff());$("vh_res").classList.toggle("hide",isGuard());$("vsr").classList.toggle("hide",!staff());
+ $("vf_res").classList.toggle("hide",isGuard());$("vf_grd").classList.toggle("hide",!staff());$("df_grd").classList.toggle("hide",!staff());$("vh_res").classList.toggle("hide",!isAdm());$("vsr").classList.toggle("hide",!staff());
  setFin("inc");setHero();drawNav();syncDirPhoto();if(KIND==="company"&&isAdm()&&!socGst())setTimeout(()=>toast("🧾","Add your GST number","Finance → GST number. It is printed on every invoice.",true),2500);
  listen();try{kidsWatch()}catch(e){console.warn(e)}show("sMain");lockWas=null;go("home");try{planGate();planEnsure();payWarm()}catch(e){}try{subHist()}catch(e){}fxStart();uxCoach();try{busWatch()}catch(e){console.warn("bus alerts",e)}try{busDrive()}catch(e){console.warn("my bus",e)}try{drvWatch()}catch(e){console.warn("driver alerts",e)}liveResume();setTimeout(firstRunPerms,900);
 }
@@ -1908,7 +1909,7 @@ function listen(){unsubs.forEach(f=>f());unsubs=[];if(wsub){wsub();wsub=null}wsu
   if(isGuard()){if(t==="modified"&&["Approved","Denied"].includes(d.status))toast(d.status==="Approved"?"✅":"⛔",d.flat+" "+d.status.toLowerCase()+" "+d.name,"Visitor decision",false,"gate")}
   else{if(t==="added"&&d.status==="Waiting")toast("🚪","Visitor at the gate",d.name+" wants to visit — please approve or deny",false,"gate");if(t==="modified"&&d.status==="Inside")toast("🚪","Visitor arrived",d.name+" has entered",false,"gate")}});
  w(staff()?L("deliveries",100):F("deliveries"),"del",rDel,(d,t)=>{if(t==="added"&&!staff())toast("📦","Parcel received","Your "+d.courier+" parcel is at the security desk",false,"gate")});
- w(staff()?query(C("vehicles"),limit(300)):query(C("vehicles"),where("uid","==",S.uid),limit(20)),"veh",rVeh);
+ w(staff()?query(C("vehicles"),limit(300)):query(C("vehicles"),where("uid","==",S.uid),limit(20)),"veh",rVeh,(d,t)=>{if(t==="added"&&!staff()&&d.uid===S.uid)toast("🚗","Vehicle added",d.number+" · added by your admin",false)});
  w(query(C("parking"),limit(200)),"park",rPark);
  if(KIND!=="society"){
   w(isAdm()?query(C("leaves"),limit(300)):query(C("leaves"),where("uid","==",S.uid),limit(300)),"lv",()=>{if(tab==="svc"&&sub==="leave"&&!busyIn("leave"))rMod("leave")},(d,t)=>{
@@ -2023,14 +2024,23 @@ function rDel(){const l=$("dlist");l.innerHTML="";const v=Object.values(D.del).s
 
 /* ---------- vehicles & parking ---------- */
 const nv=s=>s.toUpperCase().replace(/[^A-Z0-9]/g,"");
-$("vad").onclick=()=>run($("vad"),async()=>{const n=nv($("ven").value);if(n.length<4){toast("ℹ️","Enter a valid vehicle number","",true);return}
- await addDoc(vcol("vehicles"),{uid:S.uid,flat:S.me.flat,owner:S.me.name,number:n,type:$("vet").value,model:$("vem").value.trim(),color:$("vec").value.trim(),ts:Date.now()});$("ven").value="";$("vem").value="";$("vec").value="";toast("✅","Vehicle saved","",true)});
+/* Only an admin adds a vehicle, for a resident chosen here. The vehicle carries that resident's uid, so it shows in
+   their own app (they can see it, not change or remove it). The list is filled again whenever it is opened. */
+const vehOwners=()=>Object.values(D.mem||{}).filter(x=>x.status==="approved"&&x.flat&&!["SECURITY_GUARD","STAFF"].includes(x.role)).sort((a,b)=>String(a.flat).localeCompare(String(b.flat),undefined,{numeric:true})||String(a.name||"").localeCompare(String(b.name||"")));
+function fillVrs(){const s=$("vrs");if(!s||!isAdm())return;const cur=s.value;s.innerHTML="";const o0=mk("option",null,"— Select flat / resident —");o0.value="";s.appendChild(o0);vehOwners().forEach(x=>{const o=mk("option",null,x.flat+" — "+x.name);o.value=x.id||x.uid;s.appendChild(o)});s.value=cur}
+["pointerdown","focus"].forEach(ev=>$("vrs").addEventListener(ev,fillVrs));
+$("vad").onclick=()=>run($("vad"),async()=>{if(!isAdm()){toast("ℹ️","Only an admin can add vehicles","",true);return}
+ const res=(D.mem||{})[$("vrs").value];if(!res){toast("ℹ️","Select a flat / resident","Choose whose vehicle this is.",true);return}
+ const n=nv($("ven").value);if(n.length<4){toast("ℹ️","Enter a valid vehicle number","",true);return}
+ const dup=Object.values(D.veh||{}).find(x=>x.number===n);if(dup&&!confirm(n+" is already added for "+(dup.owner||"someone")+" ("+dup.flat+"). Add it again?"))return;
+ await addDoc(vcol("vehicles"),{uid:res.id||res.uid,flat:res.flat,owner:res.name||"",number:n,type:$("vet").value,model:$("vem").value.trim(),color:$("vec").value.trim(),ts:Date.now(),by:S.uid,byName:S.me.name});
+ $("ven").value="";$("vem").value="";$("vec").value="";$("vrs").value="";toast("✅","Vehicle added",n+" · "+res.flat+" — "+(res.name||""),true)});
 $("vsr").oninput=rVeh;
-function rVeh(){const l=$("vhl");l.innerHTML="";let v=Object.values(D.veh).sort((a,b)=>b.ts-a.ts);const q=nv($("vsr").value);if(staff()&&q)v=v.filter(x=>x.number.includes(q));v=v.slice(0,60);
- if(!v.length){l.appendChild(mk("div","empty",staff()&&q?"No vehicle matches.":"No vehicles added yet"));return}
+function rVeh(){try{fillVrs()}catch(e){}const l=$("vhl");l.innerHTML="";let v=Object.values(D.veh).sort((a,b)=>b.ts-a.ts);const q=nv($("vsr").value);if(staff()&&q)v=v.filter(x=>x.number.includes(q));v=v.slice(0,60);
+ if(!v.length){l.appendChild(mk("div","empty",staff()&&q?"No vehicle matches.":staff()?"No vehicles added yet":"No vehicle added for you yet"));if(!staff())l.appendChild(mk("p","meta","Vehicles are added by your society admin. Ask them to add yours; it shows here as soon as it is added."));return}
  v.forEach(x=>{const d=mk("div","item ann"),h=mk("div","ih");h.appendChild(mk("b",null,(x.type==="Car"?"🚗 ":x.type==="Bike"||x.type==="Scooter"?"🏍️ ":"🚙 ")+x.number));h.appendChild(mk("span","badge",x.type));d.appendChild(h);
   const slot=Object.values(D.park).find(p=>p.vehicleNo===x.number||(p.flat===x.flat&&p.kind==="Resident"&&!p.vehicleNo));d.appendChild(mk("div","meta",[x.model,x.color].filter(Boolean).join(" · ")+(x.model||x.color?" · ":"")+"Owner: "+(x.owner||"")+" ("+x.flat+")"+(slot?" · Slot "+slot.slot:"")));
-  if(x.uid===S.uid||isAdm()){const b=mk("button","btn s r","Remove");b.style.marginTop="8px";b.onclick=()=>confirm("Remove this vehicle?")&&deleteDoc(doc(db,"societies",S.sid,"vehicles",x.id)).catch(e=>fail(e));d.appendChild(b)}l.appendChild(d)})}
+  if(x.byName&&isAdm())d.appendChild(mk("div","meta","Added by "+x.byName+" · "+dt(x.ts)));if(isAdm()){const b=mk("button","btn s r","Remove");b.style.marginTop="8px";b.onclick=()=>confirm("Remove this vehicle?")&&deleteDoc(doc(db,"societies",S.sid,"vehicles",x.id)).catch(e=>fail(e));d.appendChild(b)}l.appendChild(d)})}
 $("pa").onclick=()=>run($("pa"),async()=>{const n=$("pn").value.trim();if(!n)return;await addDoc(vcol("parking"),{slot:n,kind:$("pk").value,flat:"",vehicleNo:"",ts:Date.now()});$("pn").value=""});
 function rPark(){const l=$("pkl");l.innerHTML="";let v=Object.values(D.park).sort((a,b)=>a.slot.localeCompare(b.slot,undefined,{numeric:true}));if(!isAdm())v=v.filter(p=>p.flat===S.me.flat);
  if(!v.length){l.appendChild(mk("div","empty",isAdm()?"No parking slots yet. Add one above.":"No parking slot is assigned to your flat yet."));return}
@@ -2341,7 +2351,7 @@ const KB=[
 {t:"Visitors",k:["visitor","visitors","guest","pass","qr","gate","walk in","walkin","invite visitor","mehmaan","guest aa raha","verify visitor","visitor code"],a:c=>c.grd?"🚪 Guard: Visitors → Verify visitor pass (type the 6-digit code or Scan QR) or add a Walk-in. The "+c.per+" gets a request to approve or deny. Mark visitors inside/out as they come and go.":"🎟️ "+c.svc+" → Visitors → Invite a visitor → fill the details → share the 6-digit code or QR. The guard verifies it at the gate; walk-ins need your approval."},
 {t:"Parcels",k:["parcel","parcels","courier","delivery","amazon","flipkart","package","delete parcel","remove parcel","parcel delete","parcel kaha"],a:c=>c.grd?"📦 Guard: Parcels → Record a parcel (courier + "+c.unit+") — the person is notified. Mark it collected when handed over.":"📦 The guard records every parcel and you’re notified. Open "+c.svc+" → "+c.sub.del+" and tap Mark collected when you pick it up."+(c.adm?" As admin you can delete any parcel record any time (🗑 Delete parcel).":"")},
 {t:"Complaints",k:["complaint","complaints","complain","issue","problem","helpdesk","lift","leak","repair","shikayat","report problem","ticket","raise complaint"],a:c=>"🛠️ "+c.svc+" → "+c.sub.comp+" → pick category, sub-category & location, describe it, add a photo if useful → Submit. Status moves Open → Assigned → In Progress → Resolved."+(c.adm?"\nAdmin: assign staff, update status, export CSV or delete a complaint.":"")},
-{t:"Vehicles & parking",k:["vehicle","vehicles","car","bike","scooter","vehicle number","gaadi","parking","parking slot","slot"],a:c=>c.soc?"🚗 "+c.svc+" → Vehicles → Add my vehicle (number & type). Admins add parking slots under Parking and can assign them to a "+c.unit+".":c.com?"🅿️ Parking is under "+c.svc+" → Parking. Vehicle registration is available for societies.":"Vehicle & parking tools are for societies and companies."},
+{t:"Vehicles & parking",k:["vehicle","vehicles","car","bike","scooter","vehicle number","gaadi","parking","parking slot","slot"],a:c=>c.soc?(c.adm?"🚗 "+c.svc+" → Vehicles → Add a vehicle: choose the flat / resident, then the number and type. Only admins add or remove vehicles; the resident sees theirs in the app.":"🚗 Your vehicles are added by your society admin. Once added they show in "+c.svc+" → Vehicles; ask the admin to add or remove one.")+" Admins add parking slots under Parking and can assign them to a "+c.unit+".":c.com?"🅿️ Parking is under "+c.svc+" → Parking. Vehicle registration is available for societies.":"Vehicle & parking tools are for societies and companies."},
 {t:"Domestic help",k:["domestic help","maid","cook","driver","nanny","helper","bai","servant","house help","maid attendance"],a:c=>c.soc?"🧹 "+c.svc+" → Domestic help: admins add helpers; guards mark their entry/exit; you can rate your own helper.":"Domestic help is a society feature."},
 {t:"Classifieds",k:["classified","classifieds","buy sell","sell","marketplace","for sale","olx","post classified"],a:c=>c.soc?"🛍️ "+c.svc+" → Classifieds → Post a classified (photo, price, details). You can delete your own post any time.":"Classifieds are a society feature."},
 {t:"Notices",k:["notice","notices","announcement","announcements","circular","emergency notice","post notice","publish notice","announce"],a:c=>"📢 "+c.comm+" → Notices shows every announcement; the latest one is also on Home."+(c.adm?" To publish: Publish a notice → choose type, add title & text → Publish (Emergency type alerts everyone)."+(c.sch?(c.own?" As Principal you choose who it is for: all teachers, all students or everyone.":" A teacher's notice goes to their own class."):""):" "+(c.sch?"The Principal and teachers":"Admins")+" publish them.")},
@@ -2453,7 +2463,7 @@ $("pfile").onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const p
  if(S.pid&&S.pid!==S.uid){const pid=S.pid,was=S.me.photoUrl,p=await UP(await dataBlob(p0),"avatars","kid.jpg");try{await updateDoc(doc(db,"societies",S.sid,"members",pid),{photoUrl:p})}catch(x){rmFile(p);throw x}
   if(S.pid===pid)S.me.photoUrl=p;const k=(S.kids||[]).find(q=>q.id===pid);if(k)k.photoUrl=p;if(was&&was!==p)rmFile(was);kidsPaint();toast("✅","Profile photo updated",S.me.name||"",true);e.target.value="";return}
  const old=(D.dir[S.uid]||{}).photo,p=await UP(await dataBlob(p0),"avatars","a.jpg");await setDoc(doc(db,"societies",S.sid,"directory",S.uid),{uid:S.uid,name:S.me.name,flat:S.me.flat,role:S.me.role,photo:p},{merge:true});if(old&&old!==p)rmFile(old);toast("✅","Profile photo updated","",true)}catch(x){fail(x,"Could not update photo")}e.target.value=""};
-const rmRt=u=>{if(typeof u==="string"&&u.startsWith("rtdb:"))rRemove(rRef(rtdb,u.slice(5))).catch(()=>{})};
+const rmRt=u=>dropFile(u);
 async function delMember(r){if(/_k\d+$/.test(r.id)){if(!confirm("Remove "+r.name+" from the school?\nThe parent's login and their other children stay."))return;
  try{await deleteDoc(doc(db,"societies",S.sid,"members",r.id));getDocs(query(collection(db,"societies",S.sid,"attendance"),where("uid","==",r.id))).then(q=>q.docs.forEach(d=>deleteDoc(d.ref))).catch(()=>{});deleteDoc(doc(db,"societies",S.sid,"busmap",r.id)).catch(()=>{});rmRt(r.photoUrl);toast("🗑️","Removed",r.name,true)}catch(e){fail(e)}return}
  if(!confirm("Delete "+r.name+"'s profile permanently?\nAll their data is erased. They can no longer log in and must sign up again."))return;
@@ -2567,6 +2577,11 @@ function p4(m){const adm=isAdm(),sub=S.soc.subscription||{},now=Date.now(),left=
   const q=mk("div","card");q.style.textAlign="center";q.appendChild(mk("h2",null,"📱 Join QR code"));const box=mk("div");box.style.cssText="display:inline-block;background:#fff;padding:10px;border-radius:14px";q.appendChild(box);const jcd=isTeacher()?(S.me.code||""):S.soc.code;{const qm=mk("div","meta",SCH()?(isTeacher()?"Your students scan this to join "+myCls()+" · class code "+jcd:"Teachers scan this to join · Principal's code "+jcd):"Residents scan this to join · code "+jcd);if(SCH())qm.setAttribute("data-noskin","");q.appendChild(qm)}if(jcd)m.appendChild(q);
    if(jcd)loadJS("https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js").then(()=>new QRCode(box,{text:link(jcd),width:170,height:170})).catch(()=>box.textContent=link(jcd))}
  const st=S.soc.settings||{};
+ if(isSuper&&PAY_API){const c=mk("div","card");c.appendChild(mk("h2",null,"☁️ Move files to Cloudflare"));
+  c.appendChild(mk("div","meta","Copies every photo, ID proof, PDF and voice note that is still in the Realtime Database to Cloudflare R2, checks the copy, then removes it from the Realtime Database. The app keeps working meanwhile. You can stop and start again; it continues where it stopped."));
+  const st=mk("div","meta"),b=mk("button","btn s","Start moving");b.style.marginTop="10px";st.style.marginTop="8px";
+  b.onclick=()=>run(b,async()=>{let r;do{r=await api("/v1/admin/files/migrate",{},150000);st.textContent="Moved "+r.moved+" file"+(r.moved===1?"":"s")+" ("+fuSize(r.bytes||0)+")"+(r.skipped?" · "+r.skipped+" could not be moved":"")+(r.done?" · All done ✅":" · still working…")}while(!r.done&&st.isConnected);if(r.done)toast("✅","Files moved to Cloudflare",r.moved+" in total",true)});
+  c.append(b,st);m.appendChild(c)}
  if(isSuper){const c=mk("div","card");c.appendChild(mk("h2",null,"🛡️ Super admin · all societies"));const l=mk("div","meta","Loading…");c.appendChild(l);m.appendChild(c);
   getDocs(query(collection(db,"societies"),limit(200))).then(sn=>{l.remove();const all=sn.docs.map(d=>({id:d.id,...d.data()}));c.appendChild(mk("div","stats")).append(...[["Societies",all.length],["Active paid",all.filter(x=>(x.subscription||{}).until>Date.now()).length]].map(z=>{const e=mk("div","st");e.appendChild(mk("b",null,z[1]));e.appendChild(mk("span",null,z[0]));return e}));
    all.forEach(x=>{const r=mk("div","ex"),t=mk("div",null,x.name);const u=(x.subscription||{}).until;t.appendChild(mk("span",null,"Code "+x.code+" · "+(u?(u>Date.now()?"paid till "+dt(u):"expired"):"trial")));const b=mk("button","btn s o","+30d");b.style.cssText="width:auto;padding:6px 12px";b.onclick=()=>run(b,async()=>{await api("/v1/admin/extend-subscription",{sid:x.id,days:30});toast("✅","Extended",x.name,true)});r.append(t,b);c.appendChild(r)})}).catch(e=>{l.textContent="Could not load: "+fr(e)})}}
@@ -2616,7 +2631,7 @@ function delMsg(m,mine){sheet(z=>{z.appendChild(mk("h2",null,"Delete message"));
  const can=mine||(isAdm()&&!dmc);let ck=null;
  if(can){const l=mk("label","dchk");ck=mk("input");ck.type="checkbox";l.append(ck,document.createTextNode(dmc?"Delete for "+peerName():"Delete for everyone"));z.appendChild(l)}
  const g=mk("div","g2"),c=mk("button","btn o","Cancel"),d=mk("button","btn r","Delete");c.onclick=closeSheet;
- d.onclick=()=>run(d,async()=>{if(ck&&ck.checked){await updateDoc(msgRef(m.id),{deleted:true,text:"",img:"",stk:"",voice:"",file:null,loc:null,contact:null,edited:false,delBy:S.uid});[m.img,m.voice,m.file&&m.file.url].filter(isR).forEach(p=>rRemove(rRef(rtdb,p.slice(5))).catch(()=>{}))}else{const h=hid();h.add(m.id);try{localStorage.setItem(hkey(),JSON.stringify([...h]))}catch(e){}}closeSheet();openMsg=null;rChat()});
+ d.onclick=()=>run(d,async()=>{if(ck&&ck.checked){await updateDoc(msgRef(m.id),{deleted:true,text:"",img:"",stk:"",voice:"",file:null,loc:null,contact:null,edited:false,delBy:S.uid});[m.img,m.voice,m.file&&m.file.url].filter(isR).forEach(dropFile)}else{const h=hid();h.add(m.id);try{localStorage.setItem(hkey(),JSON.stringify([...h]))}catch(e){}}closeSheet();openMsg=null;rChat()});
  g.append(c,d);z.appendChild(g)});$("ov").classList.add("mmc")}
 const EDIT_MS=5*60*1000;
 function msgMenu(m,mine){const o=$("ov");o.innerHTML="";o.classList.remove("hide");o.classList.add("mmc");const p=mk("div","mmenu");p.appendChild(mk("div","pv",lbl(m).slice(0,60)));
@@ -2660,15 +2675,55 @@ const _toast=toast;toast=(ic,t,x,q,k)=>{if(!q&&!isMuted(k))notif(ic,t,x);_toast(
 
 /* ---------- v3 additions ---------- */
 const TMO=(p,ms,msg)=>Promise.race([p,new Promise((_,no)=>setTimeout(()=>no(new Error(msg||"Timed out")),ms))]);
-/* ===== Realtime Database file storage (free Spark plan) ===== */
-const RC=new Map(),RP=new Map(),RMime=new Map(),isR=p=>typeof p==="string"&&p.startsWith("rtdb:");
+/* ===== file storage =====
+   Files are kept in Cloudflare R2. The app never holds the R2 keys: it sends a file to the payment server
+   (PAY_API/v1/files/upload), which checks it and stores it, and writes "r2:<place>" into Firestore. To open a file
+   it asks the server for a short-lived link (several files in one request).
+   Older files say "rtdb:<place>": they were kept in the Realtime Database. Once Sangam360 has moved them (Super
+   admin -> Move files to Cloudflare) they are opened from R2 under the same place; until then from the Realtime
+   Database. While the server has no R2 set up, new files still go to the Realtime Database, so nothing stops. */
+const RC=new Map(),RP=new Map(),RMime=new Map(),isR=p=>typeof p==="string"&&(p.startsWith("rtdb:")||p.startsWith("r2:"));
+let r2Off=false;const r2Pause=()=>{r2Off=true;setTimeout(()=>{r2Off=false},600000)};
+/* sends one file to the server with real progress; resolves to "r2:<place>" */
+const r2Put=(path,blob,name,onp)=>new Promise(async(ok,no)=>{let tok="";try{tok=await auth.currentUser.getIdToken()}catch(e){}if(!tok)return no(new Error("Please sign in again and try once more."));
+ const x=new XMLHttpRequest();x.open("POST",PAY_API.replace(/\/+$/,"")+"/v1/files/upload?path="+encodeURIComponent(path));x.setRequestHeader("Authorization","Bearer "+tok);x.setRequestHeader("Content-Type",blob.type||"application/octet-stream");if(name)x.setRequestHeader("X-File-Name",encodeURIComponent(String(name).slice(0,100)));x.timeout=600000;
+ /* stalled while sending (no progress for 75 s): stop. Once everything is sent, a sleeping server may need a minute to answer */
+ let last=Date.now(),stall=false;const tick=setInterval(()=>{if(Date.now()-last>75000){stall=true;clearInterval(tick);try{x.abort()}catch(e){}}},5000),fin=()=>clearInterval(tick);
+ x.upload.onprogress=e=>{last=Date.now();if(e.lengthComputable&&onp)onp(Math.min(99,Math.round(e.loaded/e.total*100)))};x.upload.onload=fin;
+ x.onabort=()=>{fin();no(new Error(stall?"Upload stopped: the internet is too slow or was lost. Please try again on a better connection.":"Upload cancelled."))};
+ x.onload=()=>{fin();let j=null;try{j=JSON.parse(x.responseText)}catch(e){}if(x.status>=200&&x.status<300&&j&&j.ref){if(onp)onp(100);ok(j.ref);return}const er=(j&&j.error)||{};
+  if((x.status===412&&er.code==="storage-not-configured")||(x.status===404&&er.code==="not-found"))return no(Object.assign(new Error(er.message||"No file storage"),{r2off:1}));
+  no(Object.assign(new Error(er.message||"Upload failed ("+x.status+"). Please try again."),{fxv:true}))};
+ x.onerror=()=>{fin();no(new Error("Upload failed: check your internet connection and try again."))};x.ontimeout=()=>{fin();no(new Error("Upload timed out — please check your internet and try again."))};x.send(blob)});
+/* puts a file in its place: Cloudflare R2, or the Realtime Database while the server has no R2 */
+async function store(path,blob,label,name){
+ if(PAY_API&&!r2Off){try{payWarm()}catch(e){}pill(true,label);const onp=p=>{try{const e=$("upg");if(e)e.textContent="⬆️ "+(label||"Uploading")+"… "+p+"%";if(fuCur)fuCur(p)}catch(q){}};
+  try{return await r2Put(path,blob,name,onp)}catch(e){if(!e||!e.r2off)throw e;r2Pause()}finally{pill(false)}}
+ await rPut(path,await toDataUrl(blob),label);return "rtdb:"+path}
+/* links to files, asked for together: every file shown at the same moment costs one request */
+let rxQ=new Map(),rxT=0;
+const r2Link=p=>new Promise((ok,no)=>{rxQ.set(p,(rxQ.get(p)||[]).concat([[ok,no]]));if(!rxT)rxT=setTimeout(rxFlush,25)});
+async function rxFlush(){rxT=0;const q=rxQ;rxQ=new Map();const refs=[...q.keys()];
+ for(let i=0;i<refs.length;i+=40){const part=refs.slice(i,i+40);let r=null,err=null;try{r=await api("/v1/files/url",{refs:part},90000)}catch(e){err=e;if(e&&(e.pcode==="storage-not-configured"||(e.http===404&&e.pcode==="not-found")))r2Pause()}
+  part.forEach(p=>{const a=r&&r.files&&r.files[p];q.get(p).forEach(([ok,no])=>{if(a)ok(a);else no(err||new Error("File not found"))})})}}
+const rtFile=async p=>{const v=(await rGet(rRef(rtdb,p.slice(5)))).val();if(typeof v!=="string")return null;const bl=await dataBlob(v);return{u:URL.createObjectURL(bl),type:bl.type}};
+async function rsv0(p){const r2=p.startsWith("r2:");
+ if(PAY_API&&(r2||!r2Off)){const link=r2Link(p);link.catch(()=>{});let a;
+  /* an old file: if the server is slow to wake, the Realtime Database is tried meanwhile (it still has every file that is not moved yet) */
+  if(!r2){a=await Promise.race([link.catch(()=>null),new Promise(t=>setTimeout(()=>t(0),8000))]);if(a===0){const x=await rtFile(p).catch(()=>null);if(x)return x;a=await link.catch(()=>null)}}
+  else a=await link;
+  if(a&&a.url){/* the file itself, so it is saved, shown and shared as before; only the link if the browser may not read it */
+   try{const rs=await fetch(a.url);if(!rs.ok)throw new Error(rs.status);const bl=await rs.blob();return{u:URL.createObjectURL(bl),type:bl.type||a.type}}catch(e){return{u:a.url,type:a.type,until:a.until}}}
+  if(r2)throw new Error(a&&a.error==="forbidden"?"You cannot open this file.":"File not found")}
+ if(r2)throw new Error("File not available right now. Please try again.");
+ const x=await rtFile(p);if(!x)throw new Error("File not found");return x}
 const toDataUrl=b=>new Promise((ok,no)=>{const r=new FileReader();r.onload=()=>ok(r.result);r.onerror=()=>no(r.error);r.readAsDataURL(b)});
 let upN=0;const pill=(on,label)=>{upN+=on?1:-1;let e=$("upg");if(upN<=0){upN=0;if(e)e.remove();return}if(!e){e=mk("div");e.id="upg";document.body.appendChild(e)}e.textContent="⬆️ "+(label||"Uploading")+"…"};
 const rPut=async(path,val,label)=>{pill(true,label);const onp=p=>{try{const e=$("upg");if(e)e.textContent="⬆️ "+(label||"Uploading")+"… "+p+"%";if(fuCur)fuCur(p)}catch(q){}};let t;
  try{try{await rPutX(path,val,onp)}catch(e){if(!e||!e.fuSoft)throw e;await Promise.race([rSet(rRef(rtdb,path),val),new Promise((_,no)=>{t=setTimeout(()=>no(new Error("Upload timed out — please check your internet and try again.")),60000+Math.round((typeof val==="string"?val.length:0)/1e6)*45000)})]);onp(100)}}
  catch(e){const m=String((e&&e.message)||e);if(/PERMISSION_DENIED|permission/i.test(m)&&typeof val==="string"&&val.length>4000000)throw new Error("The server did not accept a file this large. Smaller files work. For files up to 5 MB the latest Realtime Database rules have to be published in Firebase.");if(/PERMISSION_DENIED|permission/i.test(m))throw new Error("Upload not allowed yet. If you were just approved, ask your society admin to open the app once, then try again.");throw e}finally{clearTimeout(t);pill(false)}};
-function rsv(p){if(!isR(p))return Promise.resolve(p);if(RC.has(p))return Promise.resolve(RC.get(p));if(RP.has(p))return RP.get(p);
- const pr=rGet(rRef(rtdb,p.slice(5))).then(async s=>{const v=s.val();if(typeof v!=="string")throw new Error("File not found");const bl=await dataBlob(v),u=URL.createObjectURL(bl);RC.set(p,u);RMime.set(u,bl.type);RP.delete(p);return u}).catch(x=>{RP.delete(p);throw x});RP.set(p,pr);return pr}
+function rsv(p){if(!isR(p))return Promise.resolve(p);const c=RC.get(p);if(c&&(!c.until||c.until>Date.now()+120000))return Promise.resolve(c.u);if(RP.has(p))return RP.get(p);
+ const pr=rsv0(p).then(x=>{RC.set(p,x);if(x.type)RMime.set(x.u,x.type);RP.delete(p);return x.u}).catch(x=>{RP.delete(p);throw x});RP.set(p,pr);return pr}
 
 /* ===== in-app PDF viewer (pdf.js from cdnjs) with Download ===== */
 let pdfLibP=null;
@@ -2899,14 +2954,16 @@ async function openRef(p,name,mime){const isPdfN=/\.pdf(\?|$)/i.test(name||"")||
  try{const u=await rsv(p);if(isPdfN||RMime.get(u)==="application/pdf"){openPdf(u,name||"document.pdf");return}if(view&&w){w.location=u}else{const a=mk("a");a.href=u;a.download=name||"file";document.body.appendChild(a);a.click();a.remove()}}catch(x){if(w)w.close();fail(x,"Couldn't open file")}}
 const fixEl=el=>{const s=el.getAttribute("src");if(!isR(s)||el.dataset.rs===s)return;el.dataset.rs=s;
  rsv(s).then(u=>{if(el.getAttribute("src")!==s)return;if(el.tagName==="IMG"&&RMime.get(u)==="application/pdf"){const a=mk("button","btn s o","📄 Open PDF");a.onclick=()=>openPdf(u,"document.pdf");a.style.cssText="width:auto;display:inline-flex";el.replaceWith(a)}else el.src=u}).catch(x=>{console.warn("file load",x);el.removeAttribute("src")})};
-new MutationObserver(ms=>{for(const m of ms){if(m.type==="attributes"){if(m.target.tagName==="IMG"||m.target.tagName==="AUDIO")fixEl(m.target)}else m.addedNodes.forEach(n=>{if(n.nodeType!==1)return;if(n.tagName==="IMG")fixEl(n);if(n.querySelectorAll)n.querySelectorAll('img[src^="rtdb:"]').forEach(fixEl)})}}).observe(document.documentElement,{subtree:true,childList:true,attributes:true,attributeFilter:["src"]});
+new MutationObserver(ms=>{for(const m of ms){if(m.type==="attributes"){if(m.target.tagName==="IMG"||m.target.tagName==="AUDIO")fixEl(m.target)}else m.addedNodes.forEach(n=>{if(n.nodeType!==1)return;if(n.tagName==="IMG")fixEl(n);if(n.querySelectorAll)n.querySelectorAll('img[src^="rtdb:"],img[src^="r2:"]').forEach(fixEl)})}}).observe(document.documentElement,{subtree:true,childList:true,attributes:true,attributeFilter:["src"]});
 const UP=async(blob,kind,name,raw)=>{{const h=fuHit(blob);if(h)return h}if(!S.sid||!S.uid)throw new Error("Please sign in to a society first.");let b=blob;
  if(!raw&&/^image\//.test(b.type||"")&&(b.size>200*1024||kind==="avatars")){try{b=await dataBlob(await shrink(b,kind==="avatars"?320:kind==="helpers"?480:1024,.7))}catch(e){}}
  const isImg=/^image\//.test(b.type||""),cap=kind==="voice"?2*1048576:(kind==="docs"||kind==="billdocs"||kind==="drv")?5*1048576:480*1024;
  if(b.size>cap)throw new Error(isImg?"This photo is too large. Please choose a smaller one.":"File is too large (max "+(cap/1048576)+" MB).");
- const d=await toDataUrl(b),path="files/"+S.sid+"/"+kind+"/"+S.uid+"/"+Date.now().toString(36)+Math.random().toString(36).slice(2,8);
- await rPut(path,d,kind==="voice"?"Sending voice note":"Uploading");return "rtdb:"+path};
-const rmFile=p=>{if(isR(p)&&p.startsWith("rtdb:files/"))rRemove(rRef(rtdb,p.slice(5))).catch(e=>console.warn("rm file",e))};
+ const path="files/"+S.sid+"/"+kind+"/"+S.uid+"/"+Date.now().toString(36)+Math.random().toString(36).slice(2,8);
+ return store(path,b,kind==="voice"?"Sending voice note":"Uploading",name)};
+/* deletes a file wherever it is: the server checks that it is the uploader's own (or that an admin asks) */
+const dropFile=p=>{if(!isR(p))return;if(PAY_API)api("/v1/files/delete",{ref:p}).catch(e=>console.warn("rm file",e));if(p.startsWith("rtdb:"))rRemove(rRef(rtdb,p.slice(5))).catch(()=>{})};
+const rmFile=p=>{if(isR(p)&&/^(rtdb|r2):files\//.test(p))dropFile(p)};
 /* admin-managed access list so the database rules can limit who reads what */
 let aclSig="",aclBusy=false;
 async function syncAcl(){if(!S.me||!S.sid||!isMgr()||aclBusy)return;const ms=Object.values(D.mem||{});if(!ms.length)return;
@@ -3038,7 +3095,7 @@ const upID=async(sid,f,kind,sq,sfx)=>{{const h=fuHit(f,sid+"|"+kind+"|"+(sfx||""
  if(pdf){if(f.size>5*1048576)throw new Error("PDF is too large (max 5 MB). Please upload a photo of the ID instead.");d=await toDataUrl(f)}
  else{try{d=kind==="idproofs"?await imgToPdfUrl(f,1100,.65):await shrink(f,sq?400:1100,sq?.7:.65,!!sq)}catch(e){throw new Error("Couldn't read this image. Please use a JPG/PNG photo or a PDF.")}}
  if(d.length>(sq?390000:7000000))throw new Error("File is too large. Please choose a smaller one.");
- const path="idfiles/"+sid+"/"+S.uid+"/"+(kind==="idphotos"?"photo":"proof")+(sfx||"");await rPut(path,d,sq?"Uploading photo":"Uploading ID");return "rtdb:"+path};
+ const path="idfiles/"+sid+"/"+S.uid+"/"+(kind==="idphotos"?"photo":"proof")+(sfx||"");return store(path,await dataBlob(d),sq?"Uploading photo":"Uploading ID",null)};
 function jpegToPdfFit(jpg,w,h){const pw=595.28,ph=Math.round(pw*h/w*100)/100,enc=new TextEncoder(),parts=[];let off=0;const offs=[],push=u=>{parts.push(u);off+=u.length},s=t=>push(enc.encode(t));
  s("%PDF-1.4\n");offs[1]=off;s("1 0 obj\n<</Type/Catalog/Pages 2 0 R>>\nendobj\n");offs[2]=off;s("2 0 obj\n<</Type/Pages/Kids[3 0 R]/Count 1>>\nendobj\n");
  offs[3]=off;s("3 0 obj\n<</Type/Page/Parent 2 0 R/MediaBox[0 0 "+pw+" "+ph+"]/Resources<</XObject<</Im0 4 0 R>>>>/Contents 5 0 R>>\nendobj\n");
@@ -5256,7 +5313,7 @@ function drvHome(h){const B=Object.values(busMy),x=B[0],duty=drvDutyC&&drvDutyC.
    - a file that is too big or of the wrong kind is refused before anything is sent
    - fields that are registered here are uploaded as soon as they are chosen and their Submit button stays
      locked until the server has confirmed; the form then gets the stored address instead of uploading again
-   - the Realtime Database rules check size and type once more on the server side
+   - the payment server checks size and type once more (from the file's own bytes) before it stores the file
    ===================================================================================================== */
 const FUMAX=5,FUSKIP={mimg:1,mgal:1,mdoc:1,mcam:1};
 const FUTY={jpg:["image/jpeg",[255,216,255]],jpeg:["image/jpeg",[255,216,255]],png:["image/png",[137,80,78,71]],pdf:["application/pdf",[37,80,68,70]],mp4:["video/mp4",null],mov:["video/quicktime",null],webm:["video/webm",[26,69,223,163]],"3gp":["video/3gpp",null]};

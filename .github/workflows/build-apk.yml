@@ -1,4 +1,4 @@
-name: Build Android APK
+name: Build Android APK (Flutter)
 
 on:
   push:
@@ -8,93 +8,83 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
+      # The project can be uploaded as one zip file (Sangam360-Flutter.zip): it is unpacked here.
+      - name: Unpack the project zip
+        run: |
+          Z=$(ls *.zip 2>/dev/null | head -n 1)
+          if [ -n "$Z" ]; then
+            echo "unpacking $Z"
+            unzip -o -q "$Z" -d .
+          fi
+          ls
 
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 17
 
-      - name: Prepare app folder
-        run: mkdir -p www && cp index.html www/index.html && cp native-bridge.js www/native-bridge.js
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.24.5
+          channel: stable
+          cache: true
 
-      - name: Add native bridge to the page
-        run: sed -i 's#<head>#<head><script src="native-bridge.js"></script>#' www/index.html
+      - name: Flutter version
+        run: flutter --version
 
-      - name: Put Firebase and the fonts inside the app (fast start on slow internet)
-        run: python3 bundle_web.py www || echo "Bundling skipped - the app loads Firebase from the internet"
+      # The repository has no binary files of Gradle: they are taken from a fresh Flutter project.
+      - name: Add the Gradle wrapper
+        run: |
+          if [ ! -f android/gradlew ]; then
+            flutter create --platforms=android --org com.sangam360 /tmp/gw_template >/dev/null
+            cp /tmp/gw_template/android/gradlew android/gradlew
+            cp /tmp/gw_template/android/gradlew.bat android/gradlew.bat
+            mkdir -p android/gradle/wrapper
+            cp /tmp/gw_template/android/gradle/wrapper/gradle-wrapper.jar android/gradle/wrapper/gradle-wrapper.jar
+            chmod +x android/gradlew
+          fi
 
-      - name: Patch notifications
-        run: python3 patch_push.py
-
-      - name: Install packages
-        run: npm install
-
-      - name: Create Android project
-        run: npx cap add android
-
-      - name: Install image tools
-        run: pip install pillow
-
-      - name: Add app icon and fix screen fit
-        run: python3 brand.py
-
-      - name: Add Firebase config
-        run: if [ -f google-services.json ]; then cp google-services.json android/app/google-services.json; else echo "No google-services.json found - building without notifications"; fi
-
-      # A fresh install must start clean - do not restore old app data (saved payment details, login) from a Google backup after a reinstall.
-      - name: Turn off app data backup
-        run: sed -i 's#android:allowBackup="true"#android:allowBackup="false"#' android/app/src/main/AndroidManifest.xml
-
-      - name: Turn off app data backup (fallback)
-        run: grep -q 'android:allowBackup' android/app/src/main/AndroidManifest.xml || sed -i '0,/<application/s#<application#<application android:allowBackup="false"#' android/app/src/main/AndroidManifest.xml
-
-      - name: Add permissions
-        run: sed -i 's#</manifest># <uses-permission android:name="android.permission.CAMERA" />\n <uses-permission android:name="android.permission.RECORD_AUDIO" />\n <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />\n <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />\n <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />\n <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />\n</manifest>#' android/app/src/main/AndroidManifest.xml
-
-      # keeps "Share live location" updating in the background and when the phone is locked
-      - name: Add background live location
-        run: python3 live_native.py
-
-      # "Download" saves the file in the phone's Downloads folder (Download/Sangam360) instead of opening the share sheet
-      - name: Add file downloads
-        run: python3 download_native.py
-
-      # Notifications also when the app is closed (Firebase Cloud Messaging): with the app's logo, and Reply in chat notifications
-      - name: Add push notifications
-        run: python3 push_native.py
-
-      # The app's own signing key (repository secrets KEYSTORE_BASE64 and KEYSTORE_PASSWORD): every APK then has the same signature, so a new APK installs over the old one.
+      # The app's own signing key (repository secrets KEYSTORE_BASE64 and KEYSTORE_PASSWORD) - the same key as the old app,
+      # so the new APK installs over the old one and Google sign-in keeps working.
       - name: Add signing key
         env:
           KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
-        run: if [ -n "$KEYSTORE_BASE64" ]; then (printf '%s' "$KEYSTORE_BASE64" | tr -d ' \r\n\t' | base64 -d > android/app/sangam360.keystore) || rm -f android/app/sangam360.keystore; else echo "No signing key in the repository secrets - this APK gets a temporary key"; fi
-
-      # Signs the APK with that key and adds "Continue with Google" (needs google-services.json in the repository).
-      - name: Add signing and Google sign-in
-        env:
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-        run: python3 google_native.py
+        run: |
+          if [ -n "$KEYSTORE_BASE64" ]; then
+            (printf '%s' "$KEYSTORE_BASE64" | tr -d ' \r\n\t' | base64 -d > android/app/sangam360.keystore) || rm -f android/app/sangam360.keystore
+          fi
+          if [ -f android/app/sangam360.keystore ] && [ -n "$KEYSTORE_PASSWORD" ]; then
+            if keytool -list -v -keystore android/app/sangam360.keystore -storetype PKCS12 -alias sangam360 -storepass:env KEYSTORE_PASSWORD | grep -E "SHA(1|-1|256):"; then
+              echo "signing: this APK is signed with the app's own key"
+            else
+              echo "signing: the key and KEYSTORE_PASSWORD do not fit together - a temporary key is used"
+              rm -f android/app/sangam360.keystore
+            fi
+          else
+            rm -f android/app/sangam360.keystore
+            echo "signing: no key in the repository secrets - this APK gets a temporary key (it will not install over the old app)"
+          fi
 
-      - name: Copy app files
-        run: npx cap sync android
+      - name: Get packages
+        run: flutter pub get
 
-      # The build is tried again with less each time, so that there is always an APK:
-      #   0. everything   1. without push notifications   2. without the download plugin (downloads then go through the Filesystem plugin or the share sheet)
-      #   3. with the download plugin, without Google sign-in   4. also without the own key   5. as 4 and without the download plugin
+      # Lists every code problem at once (the build below stops at the first ones). Copy this log if the build fails.
+      - name: Check the code
+        continue-on-error: true
+        run: flutter analyze --no-fatal-infos --no-fatal-warnings lib
+
       - name: Build APK
-        working-directory: android
         env:
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-        run: ./gradlew assembleDebug || (echo "Building again without push notifications" && cd .. && python3 push_native.py --remove && cd android && ./gradlew assembleDebug) || (echo "Building again without the download plugin" && cd .. && python3 download_native.py --remove && cd android && ./gradlew assembleDebug) || (echo "Building again without Google sign-in" && cd .. && python3 download_native.py && python3 google_native.py --remove && cd android && ./gradlew assembleDebug) || (echo "Building again with a temporary key" && cd .. && python3 google_native.py --plain && cd android && ./gradlew assembleDebug) || (echo "Building again with a temporary key and without the download plugin" && cd .. && python3 download_native.py --remove && cd android && ./gradlew assembleDebug)
+        run: flutter build apk --release --no-tree-shake-icons
 
       - name: Rename APK
-        run: cp android/app/build/outputs/apk/debug/app-debug.apk Sangam360.apk
+        run: cp build/app/outputs/flutter-apk/app-release.apk Sangam360.apk
 
       - name: Upload APK
         uses: actions/upload-artifact@v4

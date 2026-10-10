@@ -73,15 +73,49 @@ jobs:
       - name: Get packages
         run: flutter pub get
 
-      # Lists every code problem at once (the build below stops at the first ones). Copy this log if the build fails.
+      # Lists every code problem at once. The errors are also shown as text on the run's page (Summary) and saved as the
+      # "logs" artifact, so they can be copied and sent.
       - name: Check the code
         continue-on-error: true
-        run: flutter analyze --no-fatal-infos --no-fatal-warnings lib
+        run: |
+          set +e
+          flutter analyze --no-fatal-infos --no-fatal-warnings lib > analyze.txt 2>&1
+          code=$?
+          cat analyze.txt
+          grep -E "^ *error " analyze.txt > errors.txt
+          n=$(wc -l < errors.txt)
+          {
+            echo "## Code check: $n error(s)"
+            echo '```'
+            head -n 150 errors.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          exit $code
 
       - name: Build APK
         env:
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-        run: flutter build apk --release --no-tree-shake-icons
+        run: |
+          set -o pipefail
+          flutter build apk --release --no-tree-shake-icons 2>&1 | tee build.txt || {
+            {
+              echo "## Build failed"
+              echo '```'
+              grep -E "Error:|error:|FAILURE|What went wrong" -A3 build.txt | head -n 120
+              echo '```'
+            } >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          }
+
+      - name: Save logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: logs
+          path: |
+            analyze.txt
+            build.txt
+          if-no-files-found: ignore
 
       - name: Rename APK
         run: cp build/app/outputs/flutter-apk/app-release.apk Sangam360.apk

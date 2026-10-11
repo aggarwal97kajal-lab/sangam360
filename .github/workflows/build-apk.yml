@@ -92,6 +92,29 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
           exit $code
 
+      # Languages: every translation file is checked (a broken {0} placeholder fails here), then the automated tests run.
+      - name: Check translations and run tests
+        continue-on-error: true
+        run: |
+          set +e
+          dart run tool/l10n_check.dart > l10n.txt 2>&1
+          lc=$?
+          flutter test --reporter expanded > test.txt 2>&1
+          tc=$?
+          cat l10n.txt
+          tail -n 60 test.txt
+          {
+            echo "## Translations: $([ $lc -eq 0 ] && echo OK || echo PROBLEM)"
+            echo '```'
+            cat l10n.txt
+            echo '```'
+            echo "## Tests: $([ $tc -eq 0 ] && echo 'all passed' || echo FAILED)"
+            echo '```'
+            grep -E "^[0-9:]+ \+[0-9]+|Some tests failed|All tests passed|\[E\]|Expected|Actual|reason" test.txt | tail -n 60
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          exit $(( lc + tc ))
+
       - name: Build APK
         env:
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
@@ -115,6 +138,8 @@ jobs:
           path: |
             analyze.txt
             build.txt
+            l10n.txt
+            test.txt
           if-no-files-found: ignore
 
       - name: Rename APK
@@ -125,3 +150,4 @@ jobs:
         with:
           name: Sangam360
           path: Sangam360.apk
+          
